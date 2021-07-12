@@ -10,6 +10,7 @@
 <body>
 
 	서프 메인화면
-
+	
+	<jsp:include page="common/footer.jsp"/>
 </body>
 </html>
