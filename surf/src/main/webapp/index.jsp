@@ -4,8 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!--favicon 추가-->
+<link rel="shortcut icon" href="resources/favicon.ico">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SURF</title>
 </head>
 <body>
 	
