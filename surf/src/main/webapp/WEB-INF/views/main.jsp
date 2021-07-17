@@ -12,7 +12,7 @@
     #body{
         /*border: blue solid 1px;*/
         width: 1200px;
-        height: 500px;
+        height: 100px;
         margin: auto;
     }
 </style>
