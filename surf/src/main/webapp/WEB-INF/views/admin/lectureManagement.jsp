@@ -15,7 +15,7 @@
         <div>
           <h4>클래스 등록관리</h4>
             
-          <div style="float: right; width: 25%;"><input type="text" placeholder="입력하라냥">
+          <div style="float: right; width: 28%;"><input type="text" placeholder="입력하라냥">
             <button>검색</button></div>
             <div id="filter" style=" float: right; width: 15%;">
               <select id="qna-filter" style="width:140px; height: 30px; font-size:14px;">

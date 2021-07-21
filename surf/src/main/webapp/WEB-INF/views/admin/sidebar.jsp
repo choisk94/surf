@@ -50,17 +50,17 @@
       <!--여기서부터 좌측 메뉴바-->
           <div id="nav">
             <ul class="menu">
-              <li><a href="#">광고베너관리</a>
+              <li><a href="ad.do">광고베너관리</a>
               </li>
               <li><a href="#">결제내역관리</a>
                 <ul class="sub">
-                  <li><a href="#"> > 정산내역조회</a></li>
-                  <li><a href="#"> > 결제내역조회</a></li>
+                  <li><a href="settlementDetails.do"> > 정산내역조회</a></li>
+                  <li><a href="paymentDetailsCheck.do"> > 결제내역조회</a></li>
                 </ul>
               </li>
-              <li><a href="#">회원관리</a>
+              <li><a href="userManagement.do">회원관리</a>
               </li>
-              <li><a href="#">클래스관리</a>
+              <li><a href="lectureManagement.do">클래스관리</a>
               </li>
               <li><a href="#">강사관리</a>
               </li>
