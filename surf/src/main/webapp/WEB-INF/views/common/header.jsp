@@ -58,6 +58,17 @@
         #nav-part1>a:hover {
             color: rgb(32, 155, 212);
         }
+        
+        #nav-part1>a::after{
+            content: "|";
+            color: #ccc;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #nav-part1>a:last-child::after{
+            content : none;
+        }
     
         #nav-part2>div,
         .icons>div {
@@ -119,14 +130,14 @@
         <!-- 메뉴바 상단 -->
         <div id="header-outer">
             <div class="nav1" id="nav-part1" align="right">
-                <a href="" data-toggle="modal" data-target="#loginModal">로그인</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="" data-toggle="modal" data-target="#loginModal">로그인</a>
                 <!--
-                    <a href="">로그아웃</a>  &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="">로그아웃</a>
                 -->
-                <a href="">회원가입</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="">회원가입</a>
                 <a href="">고객센터</a>
                 <!--
-                    <a href="">강사페이지</a>  &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="">강사페이지</a>
                 -->
             </div>
     

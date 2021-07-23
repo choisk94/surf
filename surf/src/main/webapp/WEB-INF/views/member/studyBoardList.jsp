@@ -20,6 +20,18 @@
             color: rgb(0, 179, 136);
         }
 
+   		/*모집여부 사이사이에 |넣기*/        
+        #selectBy>a::after{
+            content: "|";
+            color:#ccc;
+            padding-left: 9px;
+        }
+		
+		/*모집여부 사이사이에 |넣기(마지막거는 안넣음)*/        
+        #selectBy>a:last-child::after{
+            content:"";
+        }
+
         /*스터디글 제목*/
         .studyTitle {
             font-size: 15px;
@@ -30,14 +42,6 @@
         /*스터디글 내용*/
         .studyContent {
             font-size: 13px;
-        }
-
-        /*작성자 정보 스타일*/
-        .writerInfo {
-            font-size: 12px;
-            margin-left: 10px;
-            margin-top: 5px;
-            color: rgb(94, 94, 94);
         }
 
         /*항목관련*/
@@ -85,8 +89,8 @@
             </div>
             <!-- 정렬 기준 -->
             <div id="selectBy">
-                <a href="">&nbsp;전체&nbsp;</a> |
-                <a href="">모집중</a> |
+                <a href="">전체</a>
+                <a href="">모집중</a>
                 <a href="">모집완료</a>
             </div>
             <br>
