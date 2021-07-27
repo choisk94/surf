@@ -20,13 +20,14 @@
     }
     #body-wrap{
         width: 1080px;
-        height: auto;
+        height: 1350px;
         margin: auto;
     }
     #banner{
         width: 100%;
         height: auto;
-        margin: 20px 0px;
+        margin-top: 40px;
+        margin-bottom: 20px;
     }
 
     /* 광고 배너 슬라이드 관련 */
@@ -80,12 +81,13 @@
         width: 70px;
         text-align: center;
         font-size: 14px;
+        margin-top: 4px;
     }
 
     /* 추천 클래스 */
     #recommend{
         width: 100%;
-        height: 350px;
+        height: 360px;
         position: relative;
     }
     #recommend-title{
@@ -148,7 +150,7 @@
     }
     #recommend hr{
         position: relative;
-        top: 340px;
+        top: 345px;
     }
 
     /* 커뮤니티 */
