@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="TeacherMapper">
+
+<!-- resultMap에 type등록이 안되어있어서 서버 start가 안되길래 주석처리했습니다. 사용하실 때 주석 삭제해주세요.(최서경)
+
 	<resultMap type="" id="">
 		<result column="" property=""/>
 		<result column="" property=""/>
@@ -13,4 +16,5 @@
 	<select id="">
 	
 	</select>
+ -->	
 </mapper>
