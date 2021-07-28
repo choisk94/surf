@@ -97,51 +97,11 @@
 
   <div id="header-outer">
         <div class="nav1" id="nav-part1" align="right">
+        	<b style="font-size: 17px">${ loginUser.userName }님 환영합니다</b>
             &nbsp;&nbsp; | &nbsp;&nbsp;
-            <a href="" data-toggle="modal" data-target="#loginModal">로그인</a>  
+            <a href="logout.ad" style="font-size: 17px">로그아웃</a>  
         </div>
-
-
-	   <!-- 로그인 modal -->
-	  <!-- The Modal -->
-	  <div class="modal fade" id="loginModal" align="center">
-	    <div class="modal-dialog modal-dialog-centered modal-sm">
-	      <div class="modal-content">
-	
-	      <!-- Modal Header -->
-	      <div class="modal-header">
-	        <h6 class="modal-title">로그인</h6>
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      </div>
-	      
-	        <!-- Modal body -->
-	        <div class="modal-body">
-	            <form action="">
-	                <div class="input-group mb-3 mp-3">
-	                  <div class="input-group-prepend">
-	                    <span class="input-group-text">
-	                        <i class="fa fa-user"></i>
-	                    </span>
-	                  </div>
-	                  <input type="text" class="form-control loginInputs" placeholder="아이디" id="usr" name="username">
-	                </div>
-	
-	                <div class="input-group mb-3">
-	                    <div class="input-group-prepend">
-	                      <span class="input-group-text">
-	                        <i class="fa fa-lock"></i>
-	                      </span>
-	                    </div>
-	                    <input type="password" class="form-control loginInputs" placeholder="비밀번호" id="pwd" name="username">
-	                  </div>
-	              </form>
-	        </div>        
-	      </div>
-	    </div>
-	  </div>
-	  <!-- 로그인 modal 끝 -->
-
-
+        
         <div class="nav1" id="nav-part2" style="height: 65%;">
             <div style="width: 20%;">
                 <div style="width: 60%; float: left;">
@@ -156,7 +116,7 @@
             
         </div>
     </div>
-    </div>
+    
 
 </body>
 </html>

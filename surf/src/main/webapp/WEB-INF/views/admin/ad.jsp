@@ -15,8 +15,9 @@
         <br><br><br>
         <div>
           <h4>광고 베너 관리</h4>
-          <div align="right"><input type="text" placeholder="입력하라냥">
-            <button>검색</button></div>
+          <div align="right"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA;" placeholder="입력하라냥">
+            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
+              🔍</button></div>
         </div>
         <hr>
         <table class="table">
@@ -78,8 +79,8 @@
           </tr>
         </table>
         <div style="text-align: right;">
-          <button type="button" class="btn btn-primary">등록</button>
-          <button type="button" class="btn btn-success">수정</button>
+          <a type="button" class="btn btn-primary" href="adEnroll.ad">등록</a>
+          <a type="button" class="btn btn-success">수정</a>
           <button type="button" class="btn btn-danger">삭제</button>
           <button type="button" class="btn btn-warning" style="color: white;">표시</button>
         </div>

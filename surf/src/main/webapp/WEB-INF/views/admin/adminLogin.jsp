@@ -104,18 +104,18 @@
     <div class="wrap">
         <div id="copy" align="center"><label>SURF 관리자</label></div>
         <div id="etc">
-            <div id="symbol"><img src="admin\SURF.png" alt=""></div>
-            <form action="" method="POST" id="login-area">
+            <div id="symbol"><img src="resources\img\SURF.png" alt=""></div>
+            <form action="login.ad" method="POST" id="login-area">
                 <div id="login">
                     <div>
                         <label for="adminId">아이디:</label>
                         <br>
-                        <input type="text" class="form-control" id="adminId" placeholder="Enter ID" name="adminId">
+                        <input type="text" class="form-control" id="adminId" placeholder="Enter ID" name="email">
                     </div>
                     <div>
                         <label for="adminPwd">비밀번호:</label>
                         <br>
-                        <input type="password" class="form-control" id="adminPwd" placeholder="Enter Password" name="adminPwd">
+                        <input type="password" class="form-control" id="adminPwd" placeholder="Enter Password" name="password">
                     </div>
                 </div>
                 <div id="login-etc">
