@@ -98,8 +98,6 @@
     
         }
     
-    
-    
         #cat-detail,
         #cat-detail a {
             text-align: center;
@@ -122,6 +120,15 @@
     
         .loginInputs {
             font-size: 14px;
+        }
+        
+        .easyLogin{
+            height: 35px; 
+            width: 45%; 
+            font-size: 13px; 
+            padding: 0 8px 0 0; 
+            line-height: 33px; 
+            margin-bottom: 3px;
         }
     </style>
     </head>
@@ -180,9 +187,14 @@
                                     <div class="hr-sect" style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
                                 </div>
     
-                                <button type="button" class="btn btn-warning loginButtons" style="width: 45%;">카카오</button>
-                                <button type="button" class="btn btn-success loginButtons" style="width: 45%;">네이버</button>
-    
+	                            <button type="button" class="btn btn-warning loginButtons easyLogin" style="background-color: #FFCD00;">
+	                                <img style="width: 42px; height: 30px;" src="https://img.shields.io/badge/-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=black" />
+	                                                                      카카오
+	                            </button>
+	                            <button type="button" class="btn btn-success loginButtons easyLogin" style="background-color: #03C75A;">
+	                                <img style="width: 42px; height: 30px;" src="https://img.shields.io/badge/-03C75A?style=flat-square&logo=Naver&logoColor=white" />
+	                                                                      네이버
+	                            </button>
     
                                 <button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
                                 <button type="button" class="btn btn-secondary loginButtons" style="width: 93%;">아이디/비밀번호

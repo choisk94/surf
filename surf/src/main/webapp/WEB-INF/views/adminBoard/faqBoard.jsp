@@ -47,6 +47,22 @@
         line-height: 30px;
         font-weight: 500;
     }
+    
+    #adminBoardMenu>a {
+		font-size: 18px;
+		font-weight: 600;
+		margin-right: 30px;
+		text-decoration: none;
+		color: black;
+		height: 35px;
+		display: inline-block;
+	}
+		
+	#adminBoardMenu>a:hover {
+	   color: rgb(94, 94, 94);
+	   border-bottom: rgb(32, 155, 212) 4px solid;
+	   transition: all .2s ease;
+	}
 </style>
 
 

@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<div style="width: 39%; float: left;" align="right">
-					<button class="btn btn-info">
+					<button class="btn btn-info" onclick="location.href='enrollForm.sb';">
 						글쓰기 <i class="fas fa-file-alt" style="font-size: 15px;"></i>
 					</button>
 				</div>

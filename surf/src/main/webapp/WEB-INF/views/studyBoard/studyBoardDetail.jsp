@@ -93,6 +93,7 @@ input[name=whyReport] {
 #goBackBtn:hover {
 	opacity: 0.7;
 }
+
 </style>
 
 </head>
@@ -237,54 +238,99 @@ input[name=whyReport] {
 		</div>
 	</div>
 
-	<!-- 신고하기 Modal -->
-	<div class="modal" id="reportModal">
+    <!-- 게시글 신고하기 Modal -->
+    <div class="modal" id="bReportModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h6 class="modal-title"><b>신고 사유를 선택해주세요.</b></h6>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
 
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h6 class="modal-title">
-							<b>신고 사유를 선택해주세요.</b>
-						</h6>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <br>
+                        <form action="">
+                            <input type="hidden" name="reportContent" value="board">
+                            <div class="form-check">
+                                <label class="form-check-label" for="illegalAd" class="">
+                                    <input type="radio" class="form-check-input" id="illegalAd" name="whyReport"
+                                        value="부적절한 홍보 게시물">부적절한 홍보 게시물
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-check">
+                                <label class="form-check-label" for="infringement">
+                                    <input type="radio" class="form-check-input" id="infringement" name="whyReport"
+                                        value="명예훼손/사생활 침해 등">명예훼손/사생활 침해 등
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-check">
+                                <label class="form-check-label" for="abuse">
+                                    <input type="radio" class="form-check-input" id="abuse" name="whyReport"
+                                        value="욕설 및 비방 글">욕설 및 비방 글
+                                </label>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-sm btn-danger">신고하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-					<!-- Modal body -->
-					<div class="modal-body">
-						<br>
-						<form action="">
-							<div class="form-check">
-								<label class="form-check-label" for="illegalAd" class="">
-									<input type="radio" class="form-check-input" id="illegalAd"
-									name="whyReport" value="부적절한 홍보 게시물">부적절한 홍보 게시물
-								</label>
-							</div>
-							<br>
-							<div class="form-check">
-								<label class="form-check-label" for="infringement"> <input
-									type="radio" class="form-check-input" id="infringement"
-									name="whyReport" value="명예훼손/사생활 침해 등">명예훼손/사생활 침해 등
-								</label>
-							</div>
-							<br>
-							<div class="form-check">
-								<label class="form-check-label" for="abuse"> <input
-									type="radio" class="form-check-input" id="abuse"
-									name="whyReport" value="욕설 및 비방 글">욕설 및 비방 글
-								</label>
-							</div>
-							<br>
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-sm btn-danger">신고하기</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- 댓글 신고하기 Modal -->
+    <div class="modal" id="rReportModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h6 class="modal-title"><b>신고 사유를 선택해주세요.</b></h6>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <br>
+                        <form action="">
+                            <input type="hidden" name="reportContent" value="reply">
+                            <div class="form-check">
+                                <label class="form-check-label" for="illegalAd" class="">
+                                    <input type="radio" class="form-check-input" id="illegalAd" name="whyReport"
+                                        value="부적절한 홍보 게시물">부적절한 홍보 게시물
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-check">
+                                <label class="form-check-label" for="infringement">
+                                    <input type="radio" class="form-check-input" id="infringement" name="whyReport"
+                                        value="명예훼손/사생활 침해 등">명예훼손/사생활 침해 등
+                                </label>
+                            </div>
+                            <br>
+                            <div class="form-check">
+                                <label class="form-check-label" for="abuse">
+                                    <input type="radio" class="form-check-input" id="abuse" name="whyReport"
+                                        value="욕설 및 비방 글">욕설 및 비방 글
+                                </label>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-sm btn-danger">신고하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 	
 	<jsp:include page="../common/footer.jsp"/>
 </body>

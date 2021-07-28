@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>공지사항</title>
 
 <style>
@@ -31,9 +32,43 @@
 	padding-right: 0;
 }
 
+/*뒤로가기버튼*/
+#goBackBtn {
+	position: fixed;
+	z-index: 998;
+	margin-left: 120px;
+	font-size: 12px;
+	border-radius: 10px;
+	padding: 8px 12px 8px 12px;
+	border: 1px solid lightgrey;
+	color: rgb(94, 94, 94);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#goBackBtn:hover {
+	opacity: 0.7;
+}
+
+#adminBoardMenu>a {
+	font-size: 18px;
+	font-weight: 600;
+	margin-right: 30px;
+	text-decoration: none;
+	color: black;
+	height: 35px;
+	display: inline-block;
+}
+	
+#adminBoardMenu>a:hover {
+   color: rgb(94, 94, 94);
+   border-bottom: rgb(32, 155, 212) 4px solid;
+   transition: all .2s ease;
+}
+
 </style>
 </head>
 <body>
+	<jsp:include page="../common/header.jsp"/>
 	<div class="body-outer">
 		<br>
 		<br>
@@ -89,6 +124,8 @@
 			<br>
 		</div>
 	</div>
+	
+	<jsp:include page="../common/footer.jsp"/>
 
 	<script>
     $(function () {
