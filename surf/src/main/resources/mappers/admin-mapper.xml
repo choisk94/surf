@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminMapper">
+
+	<resultMap id="memberResult" type="Member">
+		<result column="user_no" property="userNo"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+		<result column="age_range" property="ageRange"/>
+		<result column="password" property="password"/>
+		<result column="nickname" property="nickname"/>
+		<result column="user_code" property="userCode"/>
+		<result column="status" property="status"/>
+		<result column="mem_enrolldate" property="memEnrolldate"/>
+		<result column="enroll_type" property="enrollType"/>
+	</resultMap>
+	
+	<select id="adminLogin" resultMap="memberResult">
+		SELECT
+            USER_NO,
+            EMAIL,
+            GENDER,
+            AGE_RANGE,
+            PASSWORD,
+            NICKNAME,
+            USER_CODE,
+            STATUS,
+            MEM_ENROLLDATE,
+            ENROLL_TYPE
+     FROM   MEMBER
+    WHERE   EMAIL = #{email}
+      AND   PASSWORD = #{password}
+      AND   USER_CODE = 'A'
+      AND   STATUS = 'N'
+	</select>
+</mapper>
