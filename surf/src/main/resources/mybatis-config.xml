@@ -16,26 +16,17 @@
 		<typeAlias type="com.kh.surf.teacher.model.vo.Teacher" alias="Teacher"/>
 	</typeAliases>
  -->
-<<<<<<< Updated upstream
 
-	
-	<mappers>
-		<mapper resource="/mappers/member-mapper.xml"/>
-		<mapper resource="/mappers/teacher-mapper.xml"/>
-=======
- <typeAliases>
+	<typeAliases>
 		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/admin-mapper.xml"/>
->>>>>>> Stashed changes
+		<mapper resource="/mappers/teacher-mapper.xml"/>
 	</mappers>
 	
-	
-	
-
 
 
 </configuration>
