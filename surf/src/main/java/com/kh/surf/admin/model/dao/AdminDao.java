@@ -16,7 +16,7 @@ public class AdminDao {
 
 	public int insertAd(SqlSessionTemplate sqlSession, Ad a) {
 		
-		return 0;
+		return sqlSession.insert("AdminMapper.insertAd", a);
 	}
 	
 	

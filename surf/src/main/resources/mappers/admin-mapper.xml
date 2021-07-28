@@ -33,4 +33,24 @@
       AND   USER_CODE = 'A'
       AND   STATUS = 'N'
 	</select>
+	
+	<insert id="insertAd">
+		insert
+			into ad
+			(
+				AD_NO
+			,	AD_TITLE
+			,	AD_LINK
+			,	ORIGIN_NAME
+			,	CHANGE_NAME
+			)
+			values
+			(
+				seq_fno.nextval
+			  , #{adTitle}
+			  , #{adLink}
+			  , #{originName}
+			  , #{changeName}
+		  )
+	</insert>
 </mapper>

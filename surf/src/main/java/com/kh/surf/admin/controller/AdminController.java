@@ -96,7 +96,7 @@ public class AdminController {
 		return "admin/classFundingManagement";
 	}
 	@RequestMapping("insert.ad")
-	public void insertAdmin(Ad a, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertAdmin(Ad a, MultipartFile upfile, HttpSession session, Model model) {
 		
 		if(!upfile.getOriginalFilename().equals("")) {
 			
@@ -111,7 +111,7 @@ public class AdminController {
 		
 		if(result > 0) { // 성공 => 게시글 리스트페이지
 			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
-			return "redirect:list.bo";
+			return "admin/ad";
 		}else { // 실패 => 에러페이지
 			model.addAttribute("errorMsg", "게시글 등록 실패");
 			return "common/errorPage";
