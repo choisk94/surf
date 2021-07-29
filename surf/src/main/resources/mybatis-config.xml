@@ -19,12 +19,15 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.surf.adminBoard.model.vo.Faq" alias="Faq"/>
+		<typeAlias type="com.kh.surf.adminBoard.model.vo.Notice" alias="Notice"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/admin-mapper.xml"/>
 		<mapper resource="/mappers/teacher-mapper.xml"/>
+		<mapper resource="/mappers/adminboard-mapper.xml"/>
 	</mappers>
 	
 
