@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>광고 베너 관리</title>
 </head>
+<style>
+.clbtn{text-decoration: none; color: black; font-weight: bold;}
+</style>
 <body>
 <jsp:include page="sidebar.jsp"/>
       <br>
@@ -15,9 +18,10 @@
         <div>
           <h4>클래스 등록관리</h4>
             
-          <div style="float: right; width: 28%;"><input type="text" placeholder="입력하라냥">
-            <button>검색</button></div>
-            <div id="filter" style=" float: right; width: 15%;">
+          <div align="right" style="float: right; width: 28%;"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA; " placeholder="입력하라냥">
+            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
+              🔍</button></div>
+            <div id="filter" style=" float: right; width: 72%;">
               <select id="qna-filter" style="width:140px; height: 30px; font-size:14px;">
                   <option value="">전체 조회</option>
                   <option value="승인">승인</option>
@@ -44,7 +48,7 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>
@@ -53,25 +57,7 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
-            <td>2021-07-20</td>
-            <td>펀딩</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
-            <td>2021-07-20</td>
-            <td>반려</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>
@@ -80,7 +66,7 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>
@@ -89,7 +75,7 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>
@@ -98,7 +84,7 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>
@@ -107,7 +93,25 @@
             <td>sdfsdf@naver.com</td>
             <td>강보람</td>
             <td>글쓰기</td>
-            <td>야 너두 글 쓸수 있어</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
+            <td>2021-07-20</td>
+            <td>승인</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>sdfsdf@naver.com</td>
+            <td>강보람</td>
+            <td>글쓰기</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
+            <td>2021-07-20</td>
+            <td>승인</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>sdfsdf@naver.com</td>
+            <td>강보람</td>
+            <td>글쓰기</td>
+            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
             <td>2021-07-20</td>
             <td>승인</td>
           </tr>

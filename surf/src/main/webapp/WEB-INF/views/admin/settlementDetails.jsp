@@ -8,14 +8,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-<br>
+
 	<jsp:include page="sidebar.jsp"/>
+	<br>
       <div class="ml-4" style="width:950px">
         <br><br><br>
         <div>
           <h4>결제내역관리>정산 내역</h4>
-          <div align="right"><input type="text" placeholder="입력하라냥">
-            <button>검색</button></div>
+          <div align="right"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA;" placeholder="입력하라냥">
+            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
+              🔍</button></div>
         </div>
         <hr>
         <table class="table">

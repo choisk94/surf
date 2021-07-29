@@ -18,32 +18,31 @@
         </div>
         <hr>
         <div align="center">
-          <form>
-              <!-- 내용:  db에서 가져온게 null이면 placeholder, null이 아니면 그 값 보여줌 -->
-              <div class="top" align="left">
-                  <table id="NoticeTitle">
-                      <td><input type="text" class="form-control" name="title" placeholder="제목을 입력해주세요." size="40"></td>
-                      <td><button type="button" class="btn btn-link">첨부.png</button></td>
-                      <td><button type="button" class="btn btn-primary btn-sm">파일 첨부하기</button></td>
-                      <td><h6>작성자 : 누구누구</h6></td>
+          <form  id="enrollForm" method="post" action="insert.ad" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <th><label for="title">제목</label></th>
+                        <td><input type="text" id="title" class="form-control" name="adTitle" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="upfile">첨부파일</label></th>
+                        <td><input type="file" id="upfile" class="form-control-file border" name="upfile"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><label for="content">링크</label></th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><textarea class="form-control" required name="adLink" id="content" rows="10" style="resize:none;"></textarea></th>
+                    </tr>
                   </table>
-              </div>
-  
               <br>
   
-              <div id="noticeContent">
-                  <textarea name="content" class="form-control" rows="20" placeholder="내용을 입력해주세요."  style="resize:none;"></textarea>
-              </div>
               <div class="bottom" id="buttons" align="right">
-                  <button type="button" class="btn btn-secondary btn-sm">삭제</button> &nbsp;
-                  <button type="button" class="btn btn-dark btn-sm">등록</button> &nbsp;
+                  <button type="reset" class="btn btn-secondary btn-sm">삭제</button> &nbsp;
+                  <button type="submit" class="btn btn-dark btn-sm">등록</button> &nbsp;
                   <button type="button" class="btn btn-primary btn-sm">목록으로</button>
               </div>
-          </form>
-      </div>
-      
-      </div>
-      
+             </form>
       </div>
       
 </body>

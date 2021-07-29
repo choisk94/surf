@@ -17,12 +17,16 @@
 	</typeAliases>
  -->
 
+	<typeAliases>
+		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
+	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/admin-mapper.xml"/>
 		<mapper resource="/mappers/teacher-mapper.xml"/>
 	</mappers>
-
+	
 
 
 </configuration>
