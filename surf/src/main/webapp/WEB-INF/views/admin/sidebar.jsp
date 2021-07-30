@@ -50,7 +50,7 @@
       <!--여기서부터 좌측 메뉴바-->
           <div id="nav">
             <ul class="menu">
-              <li><a href="ad.do">광고베너관리</a>
+              <li><a href="list.bo">광고베너관리</a>
               </li>
               <li><a href="#">결제내역관리</a>
                 <ul class="sub">

@@ -1,11 +1,18 @@
 package com.kh.surf.admin.model.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.surf.admin.model.dao.AdminDao;
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
 
 @Service
@@ -13,7 +20,6 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired
 	private AdminDao aDao;
-	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
@@ -26,6 +32,15 @@ public class AdminServiceImpl implements AdminService{
 	public int insertAd(Ad a) {
 		
 		return aDao.insertAd(sqlSession, a);
+	}
+	@Override
+	public int selectListCount() {
+		return aDao.selectListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Ad> selectList(PageInfo pi) {
+		return aDao.selectList(sqlSession, pi);
 	}
 
 }

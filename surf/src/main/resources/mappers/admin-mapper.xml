@@ -15,6 +15,18 @@
 		<result column="enroll_type" property="enrollType"/>
 	</resultMap>
 	
+	<resultMap id="adResult" type="Ad">
+		<result column="ad_no" property="adNo"/>
+		<result column="ad_title" property="adTitle"/>
+		<result column="ad_link" property="adLink"/>
+		<result column="modify_Date" property="modifyDate"/>
+		<result column="ad_status" property="adStatus"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		<result column="upload_date" property="uploadDate"/>
+		<result column="count" property="count"/>
+	</resultMap>
+	
 	<select id="adminLogin" resultMap="memberResult">
 		SELECT
             USER_NO,
@@ -53,4 +65,28 @@
 			  , #{changeName}
 		  )
 	</insert>
+	
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from ad
+	</select>
+	
+	<select id="selectList" resultMap="adResult">
+		select
+		        AD_NO
+			,	AD_TITLE
+			,	AD_LINK
+			,	MODIFY_DATE
+			,	AD_STATUS
+			,	ORIGIN_NAME
+			,	CHANGE_NAME
+			,	UPLOAD_DATE
+			,	COUNT
+		  from  ad
+		 order
+		    by ad_no desc
+	</select>
+	
+	
 </mapper>
