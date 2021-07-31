@@ -29,4 +29,17 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.selectTeacher(userNo, sqlSession);
 	}
 	
+	
+	@Override
+	public int checkNickname(Teacher t) {
+		return tDao.checkNickname(t, sqlSession);
+	}
+
+
+	@Override
+	public int updateTeacher(Teacher t) {
+		return tDao.updateTeacher(t, sqlSession);
+	}
+	
+	
 }

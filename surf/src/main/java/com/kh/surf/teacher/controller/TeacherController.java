@@ -20,7 +20,7 @@ public class TeacherController {
 	@Autowired
 	private TeacherService tService;
 	
-	// 수정할것
+	// 로그인 기능 생기면 수정할것
 	@RequestMapping("updateForm.te")
 	public String selectTeacher(HttpSession session, Model model) {
 		
@@ -28,7 +28,7 @@ public class TeacherController {
 		int userNo = 3;//Integer.parseInt((session.getAttribute("loginUser")).getUserNo);
 		Teacher t = tService.selectTeacher(userNo);
 		model.addAttribute("t", t);
-		return "teacher/profileUpdateForm.jsp";
+		return "teacher/profileUpdateForm";
 	}
 	
 }
