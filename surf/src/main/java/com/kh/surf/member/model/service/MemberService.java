@@ -1,17 +1,22 @@
 package com.kh.surf.member.model.service;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.kh.surf.member.model.vo.Member;
 
-import com.kh.surf.member.model.dao.MemberDao;
-
-@Service	
-public class MemberService {
-
-	@Autowired
-	private MemberDao mDao;
+public interface MemberService {
 	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+	// 로그인
+	Member loginMember(Member m);
+	
+	// 회원가입
+	int insertMember(Member m);
+	
+	// 회원정보 수정
+	int updateMember(Member m);
+	
+	// 회원탈퇴
+	int deleteMember(String userId);
+	
+	// 아이디 중복체크
+	int idCheck(String userId);
+
 }

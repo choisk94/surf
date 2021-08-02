@@ -15,12 +15,12 @@ public class Member {
 	private int userNo;
 	private String email;
 	private String gender;
-	private String ageRange;
+	private int ageRange;
 	private String password;
 	private String nickname;
 	private String userCode;
 	private String status;
-	private Date memEnrolldate;
+	private Date memEnrollDate;
 	private String enrollType;
 	
 }
