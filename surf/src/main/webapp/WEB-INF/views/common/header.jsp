@@ -57,6 +57,7 @@
     
         #nav-part1>a:hover {
             color: rgb(32, 155, 212);
+            cursor : pointer;
         }
         
         #nav-part1>a::after{
@@ -94,13 +95,14 @@
             background-color: whitesmoke;
             opacity: 0.9;
             width: 1000px;
-            height: 250px;
+            height: 200px;
     
         }
     
- 		#cat-detail ul {
+    	/*카테고리*/
+		#cat-detail ul {
             float: left;
-            height: 250px;
+            height: 100%;
             width: calc(100%/7);
             padding: 0;
             text-align: center;
@@ -108,9 +110,24 @@
 
         #cat-detail ul li {
             width: 100%;
-            height: 40px;
-            line-height: 40px;
+            height: 45px;
+            line-height: 45px;
             list-style-type: none;
+        }
+    	
+    	#cat-detail a {
+    		width:100%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 15px;
+            color: rgb(94, 94, 94);    	
+    	}
+    	
+
+        #cat-detail a:hover {
+            color: rgb(32, 155, 212);
+            font-weight: bold;
+            cursor:pointer;
         }
     
     
@@ -134,18 +151,45 @@
     </head>
     
     <body>
+    
+    	<c:if test="${ !empty alertMsg }">
+    		<script>
+    			alert("${alertMsg}");
+    		</script>
+    		<c:remove var="alertMsg" scope="session"/>
+    	</c:if>
+    
         <!-- 메뉴바 상단 -->
         <div id="header-outer">
             <div class="nav1" id="nav-part1" align="right">
-                <a href="" data-toggle="modal" data-target="#loginModal">로그인</a>
-                <!--
-                    <a href="">로그아웃</a>
-                -->
-                <a href="">회원가입</a>
+            	<c:choose>
+            		<c:when test="${ empty loginUser }">
+		                <a data-toggle="modal" data-target="#loginModal">로그인</a>
+            		</c:when>
+            		<c:otherwise>
+	                    <a href="logout.me">로그아웃</a>
+            		</c:otherwise>
+            	</c:choose>
+            	
+            	<c:choose>
+            		<c:when test="${ empty loginUser }">
+		                <a href="enrollForm.me">회원가입</a>
+            		</c:when>
+            		<c:otherwise>
+            			<c:choose>
+            				<c:when test="${ loginUser.userCode eq 'M' }">
+			                    <a href="">강사신청</a>
+            				</c:when>
+            				<c:when test="${ loginUser.userCode eq 'T' }">
+		            		    <a href="">강사페이지</a>
+            				</c:when>
+            				<c:otherwise>
+			                    <a href="">관리자 페이지</a>
+            				</c:otherwise>
+            			</c:choose>
+            		</c:otherwise>
+            	</c:choose>
                 <a href="">고객센터</a>
-                <!--
-                    <a href="">강사페이지</a>
-                -->
             </div>
     
     
@@ -163,15 +207,16 @@
     
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <form action="">
+                        
+                        <!-- 로그인 form -->
+                            <form action="login.me" method="post">
                                 <div class="input-group mb-3 mp-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
                                             <i class="fa fa-user"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control loginInputs" placeholder="아이디" id="usr"
-                                        name="username">
+                                    <input type="text" class="form-control loginInputs" placeholder="아이디" id="usr" name="email">
                                 </div>
     
                                 <div class="input-group mb-3">
@@ -180,9 +225,9 @@
                                             <i class="fa fa-lock"></i>
                                         </span>
                                     </div>
-                                    <input type="password" class="form-control loginInputs" placeholder="비밀번호" id="pwd"
-                                        name="username">
+                                    <input type="password" class="form-control loginInputs" placeholder="비밀번호" id="pwd" name="password">
                                 </div>
+                                
                                 <div>
                                     <div class="hr-sect" style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
                                 </div>
@@ -195,8 +240,7 @@
 	                            </button>
 	                            
                                 <button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
-                                <button type="button" class="btn btn-secondary loginButtons" style="width: 93%;">아이디/비밀번호
-                                    찾기</button>
+                                <button type="button" onclick="location.href='findIdPwd.me';" class="btn btn-secondary loginButtons" style="width: 93%;">아이디/비밀번호  찾기</button>
                             </form>
                         </div>
                     </div>
@@ -227,8 +271,8 @@
                     <div class="input-group mb-3" style="margin-top: 20px; width: 90%;">
                         <input type="search" class="form-control" placeholder="관심있는 클래스를 찾아보세요!">
                         <div class="input-group-append">
-                            <button class="btn btn-success" type="submit" style="background-color: rgb(32, 155, 212);"><i
-                                    class="fa fa-search"></i></button>
+                            <button class="btn btn-success" type="submit" style="background-color: rgb(32, 155, 212);">
+                            <i class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
@@ -254,65 +298,7 @@
         <!-- 카테고리(햄버거아이콘 hover하면 보여짐) -->
         <div id="cat-detail">
     
-             <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>대분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	            <li>소분류</li>
-	        </ul>
-	        <ul>
-	            <li>커뮤니티</li>
-	            <li>스터디 게시판</li>
-	            <li style="visibility: hidden;">소분류</li>
-	            <li style="visibility: hidden;">소분류</li>
-	            <li style="visibility: hidden;">소분류</li>
-	            <li style="visibility: hidden;">소분류</li>
-	        </ul>
         </div>
-    
-    
     
         <script>
 
@@ -359,6 +345,51 @@
                     $(this).css("color", "rgb(94, 94, 94)");
                 });
             })
+            
+            // 카테고리 조회
+            $.ajax({
+                	url:"cat.do",
+                	success:function(resultArr){
+                		
+                		console.log("resultArr : " + resultArr);
+                		
+                		//카테고리 최대 길이 구하기
+                		var maxLength = 0;
+                		for(var i in resultArr){
+                			
+                			if(resultArr[i].length > maxLength){
+                				maxLength = resultArr[i].length;
+                			}
+                		}
+
+                		//카테고리 만들기
+                		var value = "";
+                		for(var j in resultArr){
+                				
+                			value += "<ul>";
+                			
+                			for(var k=0; k<maxLength; k++){
+                				if(k == 0){
+                        			value += "<li>" + resultArr[j][k] + "</li>"
+                				} else {
+	                    			value += "<li><a>" + resultArr[j][k] + "</a></li>"
+                				}
+                			}
+                			value += "</ul>";
+                			
+                		}
+                			value += "<ul>"
+                				   		+ "<li>커뮤니티</li>"
+                				   		+ "<li><a>스터디게시판</a></li>"
+                				   + "</ul>";
+                		
+                		$("#cat-detail").html(value);
+                		
+                	}, error:function(){
+                		console.log("ajax실패");
+                	}
+                })
+            
         </script>
     
     

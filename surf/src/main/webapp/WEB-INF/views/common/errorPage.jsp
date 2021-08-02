@@ -17,7 +17,7 @@
         <div align="center" class="w3-padding-small w3-card-4 w3-light-grey" style="width: 600px; height: 600px; margin: auto;">
             
             <div style="font-size: 60px; color: rgb(0, 155, 179); font-weight: bolder; margin-top: 30px;">
-                SORRY..
+                ${ errorMsg }
             </div>
             <div style="width: 350px; height: 350px; margin: 10px;">
                 <img src="resources/images/errorIsland.jpg" style="width: 100%;">
