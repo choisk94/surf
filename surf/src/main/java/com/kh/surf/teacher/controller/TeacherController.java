@@ -1,10 +1,7 @@
 package com.kh.surf.teacher.controller;
 
-import java.util.ArrayList;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,9 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.lecture.model.vo.Survey;
-import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.service.TeacherService;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -31,15 +28,14 @@ import com.kh.surf.teacher.model.vo.Teacher;
 @Controller
 public class TeacherController {
 	
-	// ★★★★★★★★★★★★★★로그인 기능 생기면 수정할것 '회원정보 접근'
 	@Autowired
 	private TeacherService tService;
 	
 	@RequestMapping("updateForm.te")
 	public String selectTeacher(HttpSession session, Model model) {
 		
-		// userNo 임의 작성
-		int userNo = 3;//Integer.parseInt((session.getAttribute("loginUser")).getUserNo);
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		
 		Teacher t = tService.selectTeacher(userNo);
 		model.addAttribute("t", t);
 		return "teacher/profileUpdateForm";
@@ -83,7 +79,7 @@ public class TeacherController {
 	@RequestMapping("monthlyStatsView.te")
 	public String monthlyStatsAll(HttpSession session, Model model) {
 		
-		int userNo = 3;	// 지우고 수정할것 !
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		
 		ArrayList<MonthlyStats> list = tService.monthlyStatsAll(userNo);
 		

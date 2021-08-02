@@ -91,6 +91,10 @@
 	    font-size: 22px;
 	    line-height: 40px;
 	}
+	#home:hover, #ins-home:hover, #user-icon:hover{
+		cursor: pointer;
+		opacity: 0.9;
+	}
 	
 	#ins-home {
 	    width: 130px;
@@ -198,15 +202,28 @@
 	</script>
 	<c:remove var="alertMsg" scope="session"/>
 </c:if>
+<script>
+	// 강사 이미지, 닉네임 load
+	$.ajax({
+		type: "post",
+		url : "ajaxLoadInfo.te"
+		, success : function(teacher){
+			$('.profile-img').children('img').attr('src', teacher.profileImage);
+			$('.update-page').children('span').text(teacher.nickname);
+		}, error : function(){
+
+		}
+	});
+</script>
 
     <div id="outer">
         <div id="head-outer">
             <div id="head">
                 <div id="home">
-                    <a href="">SURF</a>
+                    <a href="<%=request.getContextPath()%>">SURF</a>
                 </div>
                 <div id="ins-home">
-                    <a href="">강사페이지</a>
+                    <a href="updateForm.te">강사페이지</a>
                 </div>
                 <div id="user-icon">
                     <a data-toggle="dropdown"><img style="width:30px; height:30px;"
@@ -214,14 +231,14 @@
                     <div class="dropdown-menu" id="dropdown-ins">
                         <div class="profile">
                             <div class="profile-img">
-                                <img src="">
+                                <img src="" width="50px">
                             </div>
                             <div class="update-page">
-                                닉네임<br>
+                                <span>닉네임</span><br>
                                 <a href="updateForm.te">강사 수정 페이지></a>
                             </div>
                             <div class="logout-area">
-                                <a href="">로그아웃</a>
+                                <a href="logout.me">로그아웃</a>
                             </div>
                         </div>
                     </div>

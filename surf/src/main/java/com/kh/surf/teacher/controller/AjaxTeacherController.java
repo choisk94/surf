@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.kh.surf.common.template.SaveFile;
-import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.service.TeacherService;
@@ -25,6 +24,19 @@ public class AjaxTeacherController {
 	
 	@Autowired
 	private TeacherService tService;
+	
+	/**
+	 * @author HeeRak
+	 * 공통영역 강사 이미지 노출을 위한 정보요청
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxLoadInfo.te", produces="application/json; charset=utf-8")
+	public String selectTeacher(HttpSession session) {
+		
+		Teacher t = tService.selectTeacher(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		return new Gson().toJson(t);
+	}
 	
 	/**
 	 * 닉네임 중복확인 ajax
