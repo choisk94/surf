@@ -66,11 +66,16 @@
 	cursor: pointer;
 }
 
-#pagination {
+#paging-wrap {
 	width: 300px;
 	height: 50px;
 	margin-top: 60px;
 	margin-left: 340px;
+	display: flex;
+}
+
+#pagination {
+	margin: auto;
 }
 </style>
 </head>
@@ -82,12 +87,11 @@
 		<div id="content">
 			<div id="page-title">클래스 관리 > 수강 후기 조회</div>
 			<div id="select-wrap">
-				<label for="select-class">조회 클래스 선택</label> <select
-					class="form-control" id="select-class">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
+				<label for="select-class">조회 클래스 선택</label>
+				<select class="form-control" id="select-class">
+					<c:forEach var="c" items="${ clist }">
+						<option>${ c.classTitle }</option>
+					</c:forEach>
 				</select>
 			</div>
 
@@ -102,18 +106,54 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">5</td>
-						<td class="text-center">작성자~~~~~~~</td>
-						<td class="text-center">2021-07-12</td>
-					</tr>
 
+					<c:forEach var="r" items="${ rlist }">
+	                    <tr>
+	                        <td class="text-center sno">${ r.surveyNo }</td>
+	                        <td>${ r.review }</td>
+	                        <td class="text-center">${ r.score }</td>
+	                        <td class="text-center">${ r.userNo }</td>
+	                        <td class="text-center">${ r.createDate }</td>
+	                    </tr>
+                    </c:forEach>
+                    
+                    <script>
+		            	$(function(){
+		            		$("#class-list>tbody>tr").click(function(){
+		            			location.href="reviewDetail.te?sno=" + $(this).children(".sno").text();
+		            		})
+		            	})
+		            </script>
 				</tbody>
 			</table>
-			<!-- 페이지네이션 위치 고정해야 -->
-			<div id="pagination">페이지네이션~~~~~~~~~~~~~~~~~~</div>
+			
+			<div id="paging-wrap">
+				<div id="pagination">
+					<ul class="pagination">
+	                    <c:choose>
+		                    <c:when test="${ pi.currentPage eq 1 }">
+		                    	<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<li class="page-item"><a class="page-link" href="classReview.te?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                    </c:otherwise>
+	                    </c:choose>
+	                    
+	                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                    <li class="page-item"><a class="page-link" href="classReview.te?currentPage=${ p }">${ p }</a></li>
+	                    </c:forEach>
+	                    
+	                    <c:choose>
+	                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<li class="page-item"><a class="page-link" href="classReview.te?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                    </c:otherwise>
+	                    </c:choose>
+	                </ul>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

@@ -21,6 +21,8 @@
 		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.surf.admin.model.vo.Ad" alias="Ad"/>
 		<typeAlias type="com.kh.surf.teacher.model.vo.Teacher" alias="Teacher"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.Survey" alias="Survey"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.Lecture" alias="Lecture"/>
 	</typeAliases>
 	
 	<mappers>

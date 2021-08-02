@@ -12,6 +12,20 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="lectureResult" type="Lecture">
+		<result column="class_no" property="classNo"/>
+		<result column="class_title" property="classTitle"/>
+	</resultMap>
+	
+	<resultMap id="surveyResult" type="Survey">
+		<result column="survey_no" property="surveyNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="score" property="score"/>
+		<result column="review" property="review"/>
+		<result column="create_date" property="createDate"/>
+		<result column="" property=""/>
+	</resultMap>
+	
 	<!--
 		@author HeeRak
 		
@@ -48,4 +62,40 @@
 		 where teacher_no = #{teacherNo}
 		   and status = 'Y'
 	</update>
+	
+	
+	<!-- 
+		@author: Woojoo Seo
+	-->
+	<!-- 클래스 조회 조건 상태값 수정필요 -->
+	<select id="selectClassList" resultMap="lectureResult">
+		select
+			   class_no
+			 , class_title
+	      from lecture
+	     where status = 'O'
+	       and user_no = #{userNo}
+	     order 
+	        by class_no
+	</select>
+	
+	<select id="selectReviewCount" resultType="_int">
+		select
+			   count(*)
+		  from survey
+		 where teacher_no = #{userNo}
+	</select>
+	
+	<select id="selectReviewList" resultMap="surveyResult">
+		select
+			   survey_no
+			 , user_no
+			 , score
+			 , review
+			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from survey
+		 where teacher_no = #{userNo}
+		 order
+		    by survey_no desc
+	</select>
 </mapper>
