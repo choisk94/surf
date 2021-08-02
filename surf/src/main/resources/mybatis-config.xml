@@ -14,7 +14,9 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.Survey" alias="Survey"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.MonthlyStats" alias="MonthlyStats"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.Lecture" alias="Lecture"/>
-		<!-- <typeAlias type="com.kh.surf.payment.model.vo.Payment" alias="Payment"/> -->
+		<typeAlias type="com.kh.surf.payment.model.vo.Payment" alias="Payment"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="Studing"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ScrapSupport" alias="ScrapSupport"/>
 	</typeAliases>
 	
 	<mappers>
@@ -23,7 +25,7 @@
 		<mapper resource="/mappers/teacher-mapper.xml"/>
 		<mapper resource="/mappers/adminboard-mapper.xml"/>
 		<mapper resource="/mappers/category-mapper.xml"/>
-		<!-- <mapper resource="/mappers/payment-mapper.xml"/> -->
+		<mapper resource="/mappers/payment-mapper.xml"/>
 		<mapper resource="/mappers/lecture-mapper.xml"/>
 	</mappers>
 	
