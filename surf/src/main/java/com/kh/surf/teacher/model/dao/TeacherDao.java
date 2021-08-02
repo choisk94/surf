@@ -9,6 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import java.util.List;
+import java.util.Map;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -37,6 +45,31 @@ public class TeacherDao {
 	public int updateTeacher(Teacher t, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("teacherMapper.updateTeacher", t);
 	}
+
+	/**
+	 * @author HeeRak
+	 * @return 강사의 모든 클래스번호
+	 */
+	public ArrayList<Lecture> selectTeacherClassAll(int userNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectTeacherClassAll", userNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * @return 한 강사의 전체 클래스 월별수익
+	 */
+	public ArrayList<MonthlyStats> monthlyStatsAll(int userNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.monthlyStatsAll", userNo);
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return 한 강사의 한 클래스 월별수익
+	 */
+	public ArrayList<MonthlyStats> monthlyStatsLecture(int classNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.monthlyStatsLecture", classNo);
+	}
+
 	
 	
 	/**

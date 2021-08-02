@@ -1,6 +1,10 @@
 package com.kh.surf.teacher.controller;
 
 import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +19,8 @@ import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.teacher.model.service.TeacherService;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -25,10 +31,10 @@ import com.kh.surf.teacher.model.vo.Teacher;
 @Controller
 public class TeacherController {
 	
+	// ★★★★★★★★★★★★★★로그인 기능 생기면 수정할것 '회원정보 접근'
 	@Autowired
 	private TeacherService tService;
 	
-	// 로그인 기능 생기면 수정할것
 	@RequestMapping("updateForm.te")
 	public String selectTeacher(HttpSession session, Model model) {
 		
@@ -38,7 +44,7 @@ public class TeacherController {
 		model.addAttribute("t", t);
 		return "teacher/profileUpdateForm";
 	}
-	
+
 	/**
 	 * @author: Woojoo Seo
 	 * @MethodInfo: 
@@ -70,4 +76,28 @@ public class TeacherController {
 		
 	}
 	
+	/**
+	 * 강사페이지_정산내역관리_월별집계 view
+	 * @param session
+	 */
+	@RequestMapping("monthlyStatsView.te")
+	public String monthlyStatsAll(HttpSession session, Model model) {
+		
+		int userNo = 3;	// 지우고 수정할것 !
+		
+		ArrayList<MonthlyStats> list = tService.monthlyStatsAll(userNo);
+		
+		int allCount = 0;
+		for(int i=0; i<list.size(); i++) {
+			allCount += list.get(i).getLoan();
+		}
+		DecimalFormat formatter = new DecimalFormat("###,###,###");
+		
+		ArrayList<Lecture> clist = tService.selectTeacherClassAll(userNo);
+		
+		model.addAttribute("allCount", formatter.format(allCount));
+		model.addAttribute("list", list);
+		model.addAttribute("clist", clist);
+		return "teacher/monthlySettlement";
+	}
 }

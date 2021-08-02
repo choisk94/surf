@@ -246,7 +246,7 @@
                     </ul>
                     <ul>
                         정산 내역 관리
-                        <li><a href="monthlySettlement.te">월별 집계</a></li>
+                        <li><a href="monthlyStatsView.te">월별 집계</a></li>
                     </ul>
                 </div>
             </div>

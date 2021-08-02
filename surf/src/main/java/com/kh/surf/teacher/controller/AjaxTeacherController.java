@@ -1,6 +1,7 @@
 package com.kh.surf.teacher.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
 import com.kh.surf.common.template.SaveFile;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.service.TeacherService;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -75,6 +80,25 @@ public class AjaxTeacherController {
 		return responseData;
 	}
 		
-	
+	/**
+	 * 강사 특정 클래스 월별집계통계 요청
+	 * @author HeeRak
+	 * @return 
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxSelectClassLoan.te", produces="application/json; charset=utf-8")
+	public String monthlyStatsLecture(int classNo, HttpSession session) {
+			
+		ArrayList<MonthlyStats> list = new ArrayList<>();
+		
+		if(classNo == 0) {	// 전체클래스 요청
+			list = tService.monthlyStatsAll(((Member)session.getAttribute("loginUser")).getUserNo());
+		}else {		// 한 클래스 요청
+			list = tService.monthlyStatsLecture(classNo);			
+		}
+		
+		return new Gson().toJson(list);
+		
+	}
 	
 }

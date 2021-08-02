@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lectureMapper">
+  	<resultMap id="lectureResult" type="Lecture">
+  		<result column="class_no" property="classNo"/>
+  		<result column="class_title" property="classTitle"/>
+  		<result column="create_date" property="createDate"/>
+  		<result column="thumbnail" property="thumbnail"/>
+  		<result column="intro_file" property="introFile"/>
+  		<result column="intro_title" property="introTitle"/>
+  		<result column="intro_content" property="introContent"/>
+  		<result column="status" property="status"/>
+  		<result column="period" property="period"/>
+  		<result column="need" property="need"/>
+  		<result column="note" property="note"/>
+  		<result column="pos_term" property="posTerm"/>
+  		<result column="price" property="price"/>
+  		<result column="subcat_no" property="subcatNo"/>
+  		<result column="user_no" property="userNo"/>
+  	</resultMap>
+  	
+  	<!-- 
+  		@author HeeRak
+  		월별정산_ 한 강사의 모든 클래스번호, 이름 조회 
+  	-->
+  	<select id="selectTeacherClassAll" resultMap="lectureResult">
+  		select
+  			   class_no
+  			 , class_title
+  		  from lecture
+  		 where user_no = #{userNo}
+  		   and status = 'O'
+  		 order
+  		    by create_date asc
+  	</select>
+</mapper>

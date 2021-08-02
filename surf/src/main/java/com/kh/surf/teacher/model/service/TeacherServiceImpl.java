@@ -1,6 +1,8 @@
 package com.kh.surf.teacher.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.teacher.model.dao.TeacherDao;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -35,17 +39,24 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 	
 	
+	/**
+	 * @author HeeRak
+	 * 강사정보수정시 닉네임 중복체크
+	 */
 	@Override
 	public int checkNickname(Teacher t) {
 		return tDao.checkNickname(t, sqlSession);
 	}
 
 
+	/**
+	 * @author HeeRak
+	 * 강사정보수정 처리 결과
+	 */
 	@Override
 	public int updateTeacher(Teacher t) {
 		return tDao.updateTeacher(t, sqlSession);
 	}
-
 
 	/**
 	 * @author: Woojoo Seo
@@ -67,7 +78,33 @@ public class TeacherServiceImpl implements TeacherService{
 	public ArrayList<Survey> selectReviewList(PageInfo pi, int userNo) {
 		return tDao.selectReviewList(pi, userNo, sqlSession);
 	}
+	/**
+	 * @author HeeRak
+	 * 한 강사의 모든 클래스 정보 가져오기
+	 */
+	@Override
+	public ArrayList<Lecture> selectTeacherClassAll(int userNo) {
+		return tDao.selectTeacherClassAll(userNo, sqlSession);
+	}
+	/**
+	 * @author HeeRak
+	 * 월별집계 (전체 클래스)
+	 */
+	@Override
+	public ArrayList<MonthlyStats> monthlyStatsAll(int userNo) {
+		return tDao.monthlyStatsAll(userNo, sqlSession);
+	}
 	
+	/**
+	 * @author HeeRak
+	 * 월별집계 (특정 1개 클래스)
+	 */
+	@Override
+	public ArrayList<MonthlyStats> monthlyStatsLecture(int classNo) {
+		return tDao.monthlyStatsLecture(classNo, sqlSession);
+	}
+
+
 	
 	@Override
 	public Survey selectReviewDetail(int surveyNo) {
