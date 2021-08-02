@@ -183,7 +183,7 @@
 			                    <a href="">강사신청</a>
             				</c:when>
             				<c:when test="${ loginUser.userCode eq 'T' }">
-		            		    <a href="">강사페이지</a>
+		            		    <a href="updateForm.te">강사페이지</a>
             				</c:when>
             				<c:otherwise>
 			                    <a href="">관리자 페이지</a>
