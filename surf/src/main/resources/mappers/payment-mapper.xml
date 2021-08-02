@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="paymentMapper">
+
+	<!-- 
+	<resultMap type="Payment" id="paymentResult">
+		<result column="order_no" property="orderNo"/>
+		<result column="class_no" property="classNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="price" property="price"/>
+		<result column="payment_date" property="paymentDate"/>
+		<result column="pay_method" property="payMethod"/>
+		<result column="status" property="status"/>
+		<result column="refund_status" property="refundStatus"/>
+		<result column="refund_date" property="refundDate"/>
+		<result column="refund_reason" property="refundReason"/>
+	</resultMap>
+	
+	
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from payment
+		 where user_no = #{userNo};
+	</select>
+	
+	<select id="selectOrderList" resultMap="paymentResult">
+		select
+               order_no
+             , class_no
+             , user_no
+             , price
+             , payment_date
+             , pay_method
+             , status
+             , refund_status
+             , refund_date
+             , refund_reason
+         from payment
+        where user_no = #{userNo}
+        order
+           by payment_date desc
+	</select>
+	-->
+	
+	
+</mapper>
