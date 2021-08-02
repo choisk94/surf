@@ -1,20 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TeacherMapper">
-
-<!-- resultMap에 type등록이 안되어있어서 서버 start가 안되길래 주석처리했습니다. 사용하실 때 주석 삭제해주세요.(최서경)
-
-	<resultMap type="" id="">
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
+<!-- author 윤희락 -->
+<mapper namespace="teacherMapper">
+	<resultMap id="teacherResult" type="Teacher">
+		<result column="teacher_no" property="teacherNo"/>
+		<result column="profile_image" property="profileImage"/>
+		<result column="nickname" property="nickname"/>
+		<result column="phone" property="phone"/>
+		<result column="intro_content" property="introContent"/>
+		<result column="subcat_no" property="subCatNo"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<resultMap id="lectureResult" type="Lecture">
+		<result column="class_no" property="classNo"/>
+		<result column="class_title" property="classTitle"/>
+	</resultMap>
+	
+	<resultMap id="surveyResult" type="Survey">
+		<result column="survey_no" property="surveyNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="score" property="score"/>
+		<result column="review" property="review"/>
+		<result column="create_date" property="createDate"/>
 		<result column="" property=""/>
 	</resultMap>
-	<select id="">
 	
+	<!--
+		@author HeeRak
+		
+	-->
+	<select id="selectTeacher" resultMap="teacherResult">
+		select 
+			   teacher_no
+			 , profile_image
+			 , nickname
+			 , phone
+			 , intro_content
+			 , subcat_no
+			 , status
+		  from teacher
+		 where teacher_no = #{userNo}
+		   and status = 'Y'
 	</select>
- -->	
+	
+	<select id="checkNickname" resultType="_int" parameterType="Teacher">
+		select count(*)
+		  from teacher
+		 where nickname = #{nickname}
+		   and teacher_no != #{teacherNo}
+	</select>
+	
+	<update id="updateTeacher">
+		update teacher
+		   set nickname = #{nickname}
+		     , phone = #{phone}
+		     , intro_content = #{introContent}
+		     <if test="profileImage != null">
+		     , profile_image = #{profileImage}
+		     </if>
+		 where teacher_no = #{teacherNo}
+		   and status = 'Y'
+	</update>
+	
+	
+	<!-- 
+		@author: Woojoo Seo
+	-->
+	<!-- 클래스 조회 조건 상태값 수정필요 -->
+	<select id="selectClassList" resultMap="lectureResult">
+		select
+			   class_no
+			 , class_title
+	      from lecture
+	     where status = 'O'
+	       and user_no = #{userNo}
+	     order 
+	        by class_no
+	</select>
+	
+	<select id="selectReviewCount" resultType="_int">
+		select
+			   count(*)
+		  from survey
+		 where teacher_no = #{userNo}
+	</select>
+	
+	<select id="selectReviewList" resultMap="surveyResult">
+		select
+			   survey_no
+			 , user_no
+			 , score
+			 , review
+			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from survey
+		 where teacher_no = #{userNo}
+		 order
+		    by survey_no desc
+	</select>
 </mapper>

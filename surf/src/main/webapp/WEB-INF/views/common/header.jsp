@@ -106,7 +106,7 @@
             width: calc(100%/7);
             padding: 0;
             text-align: center;
-        }
+     }
 
         #cat-detail ul li {
             width: 100%;
@@ -114,6 +114,7 @@
             line-height: 45px;
             list-style-type: none;
         }
+   
     	
     	#cat-detail a {
     		width:100%;
@@ -143,9 +144,10 @@
         .easyLogin{
             height: 35px; 
             width: 45%; 
-            padding: 0; 
-            margin: 0;
-            border: none;
+            font-size: 13px; 
+            padding: 0 8px 0 0; 
+            line-height: 33px; 
+            margin-bottom: 3px;
         }
     </style>
     </head>
@@ -231,14 +233,16 @@
                                 <div>
                                     <div class="hr-sect" style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
                                 </div>
-
-	                            <button type="button" class="btn loginButtons easyLogin">
-	                                <img src="resources/images/kakao_login_medium_narrow.png" style="width: 100%;">
+    
+	                            <button type="button" class="btn btn-warning loginButtons easyLogin" style="background-color: #FFCD00;">
+	                                <img style="width: 42px; height: 30px;" src="https://img.shields.io/badge/-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=black" />
+	                                                                      카카오
 	                            </button>
-	                            <button type="button" class="btn loginButtons easyLogin">
-	                                <img src="resources/images/btnNaver.png" style="width: 100%;">
+	                            <button type="button" class="btn btn-success loginButtons easyLogin" style="background-color: #03C75A;">
+	                                <img style="width: 42px; height: 30px;" src="https://img.shields.io/badge/-03C75A?style=flat-square&logo=Naver&logoColor=white" />
+	                                                                      네이버
 	                            </button>
-	                            
+    
                                 <button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
                                 <button type="button" onclick="location.href='findIdPwd.me';" class="btn btn-secondary loginButtons" style="width: 93%;">아이디/비밀번호  찾기</button>
                             </form>
@@ -297,8 +301,9 @@
     
         <!-- 카테고리(햄버거아이콘 hover하면 보여짐) -->
         <div id="cat-detail">
-    
-        </div>
+        
+        
+         </div>
     
         <script>
 
