@@ -7,16 +7,6 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 
-
-<!-- typeAliases 위치 표시하려고 임지로 작성한거에요
-
-	<typeAliases>
-		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
-		
-		<typeAlias type="com.kh.surf.teacher.model.vo.Teacher" alias="Teacher"/>
-	</typeAliases>
- -->
-
 	<typeAliases>
 		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.surf.adminBoard.model.vo.Faq" alias="Faq"/>
@@ -28,6 +18,7 @@
 		<mapper resource="/mappers/admin-mapper.xml"/>
 		<mapper resource="/mappers/teacher-mapper.xml"/>
 		<mapper resource="/mappers/adminboard-mapper.xml"/>
+		<mapper resource="/mappers/category-mapper.xml"/>
 	</mappers>
 	
 
