@@ -89,8 +89,8 @@
 	<div id="content">
 		<div id="page-title">클래스 관리 > 수강 후기 조회</div>
 		<div id="select-wrap">
-			<label for="select-class">조회 클래스 선택</label>
-			<select class="form-control" id="select-class" name="selectClass">
+			<label for="select-class">조회 클래스 선택</label> <select
+				class="form-control" id="select-class" name="selectClass">
 				<option value="all">전체 클래스</option>
 				<c:forEach var="c" items="${ clist }">
 					<option value="${ c.classNo }">${ c.classTitle }</option>
@@ -147,7 +147,7 @@
 		            		})
 		            	})
 		        </script>
-		        
+
 			</tbody>
 		</table>
 
@@ -166,8 +166,17 @@
 						</c:choose>
 
 						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-							<li class="page-item"><a class="page-link"
-								href="classReview.te?currentPage=${ p }">${ p }</a></li>
+
+							<c:choose>
+								<c:when test="${ p eq pi.currentPage }">
+									<li class="page-item"><a class="page-link"><b>${ p }</b></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item"><a class="page-link"
+										href="classReview.te?currentPage=${ p }&cno=${ cno }">${ p }</a></li>
+								</c:otherwise>
+							</c:choose>
+
 						</c:forEach>
 
 						<c:choose>

@@ -46,7 +46,7 @@
 }
 
 #user-img {
-	background: url("resources/images/user_icon3.png") no-repeat;
+	background: url("resources/images/user_icon1.png") no-repeat;
 	background-size: cover;
 	margin-left: 20px;
 	width: 40px;
