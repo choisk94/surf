@@ -30,4 +30,17 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.idCheck", userId);
 	}
 
+	/** @author 최서경
+	 * 마이페이지 회원정보 수정
+	 */
+	public int updateMemInfo(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.updateMemInfo", m);
+	}
+	
+	/** @author 최서경
+	 * 마이페이지 비밀번호 수정
+	 */
+	public int updateMemPwd(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.updateMemPwd", m);
+	}
 }

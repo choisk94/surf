@@ -79,6 +79,9 @@
             height: 100%;
         }
     
+    	#logo, #redHair:hover{
+    		cursor:pointer;
+    	}
     
         .icons {
             text-align: center;
@@ -153,7 +156,6 @@
     </head>
     
     <body>
-    
     	<c:if test="${ !empty alertMsg }">
     		<script>
     			alert("${alertMsg}");
@@ -161,7 +163,7 @@
     		<c:remove var="alertMsg" scope="session"/>
     	</c:if>
     
-        <!-- 메뉴바 상단 -->
+        <!-------------------------------- 메뉴바 우측 상단(로그인, 회원가입 등) -------------------------------------------->
         <div id="header-outer">
             <div class="nav1" id="nav-part1" align="right">
             	<c:choose>
@@ -186,7 +188,7 @@
 		            		    <a href="">강사페이지</a>
             				</c:when>
             				<c:otherwise>
-			                    <a href="">관리자 페이지</a>
+			                    <a href="">관리자페이지</a>
             				</c:otherwise>
             			</c:choose>
             		</c:otherwise>
@@ -195,7 +197,7 @@
             </div>
     
     
-            <!-- 로그인 modal -->
+            <!------------------------------- 로그인 modal ------------------------------------>
             <!-- The Modal -->
             <div class="modal fade" id="loginModal" align="center">
                 <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -244,23 +246,23 @@
 	                            </button>
     
                                 <button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
-                                <button type="button" onclick="location.href='findIdPwd.me';" class="btn btn-secondary loginButtons" style="width: 93%;">아이디/비밀번호  찾기</button>
+                                <button type="button" onclick="location.href='findIdPwd.me';" class="btn btn-secondary loginButtons" style="width: 93%;">비밀번호  찾기</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- 로그인 modal 끝 -->
+            <!----------------------------------------- 로그인 modal 끝 ------------------------------------>
     
-            <!-- 메뉴바 하부 -->
+            <!---------------------- 메뉴바 하부(로고, 검색창 등) ----------------------------------------------->
             <div class="nav1" id="nav-part2" style="height: 65%;">
                 <!-- 로고 -->
                 <div style="width: 20%;">
                     <div style="width: 60%; float: left;">
-                        <span style="font-size: 50px; font-weight:bold; color: rgb(32, 155, 212);">SURF</span>
+                        <span id="logo" style="font-size: 50px; font-weight:bold; color: rgb(32, 155, 212);" onclick="location.href='${pageContext.request.contextPath}';">SURF</span>
                     </div>
                     <div style="width: 40%; height:100%; float:left;">
-                        <img src="resources/images/redhair.png" style="height: 100%;">
+                        <img id="redHair" src="resources/images/redhair.png" style="height: 100%;" onclick="location.href='${pageContext.request.contextPath}';">
                     </div>
                 </div>
     
@@ -281,32 +283,58 @@
                     </div>
                 </div>
     
-                <!-- 우측 아이콘(마이페이지|찜|내클래스) -->
+                <!------------------------------ 하단 우측 아이콘(마이페이지|찜|내클래스) ----------------------------------------------->
+                
                 <div style="width: 12%;" class="icons">
                     <div style="width: 33%;">
-                        <i id="mypage" data-toggle="tooltip" title="마이페이지" class="fa fa-user-circle"
+                        <i id="mypage" data-toggle="tooltip" title="마이페이지" class="fa fa-user-circle memBtn"
                             style="font-size:30px; color: rgb(94, 94, 94);"></i>
                     </div>
                     <div style="width: 33%;">
-                        <i id="like" data-toggle="tooltip" title="찜 목록" class="fa fa-heart"
+                        <i id="like" data-toggle="tooltip" title="찜 목록" class="fa fa-heart memBtn"
                             style="font-size:30px; color:rgb(94, 94, 94);"></i>
                     </div>
                     <div style="width: 34%;">
-                        <i id="myclass" data-toggle="tooltip" title="내 강의실" class="fa fa-book"
+                        <i id="myclass" data-toggle="tooltip" title="내 강의실" class="fa fa-book memBtn"
                             style="font-size:30px; color:rgb(94, 94, 94); "></i>
                     </div>
                 </div>
+                <script>
+                	$(function(){
+                		 $(".memBtn").on("click", function(){
+                         	
+                         	if(${empty loginUser}){
+                         		alert("로그인 후 이용가능한 서비스입니다.");
+                         	} else {
+
+                         		if($(this).is("#mypage")){
+                         			location.href='myPage.me';
+                         		} else if($(this).is("#like")){
+                         			/* 찜하기 페이지로 이동
+                         			location.href='';
+                         			*/
+                         		} else {
+                         			/* 마이클레스로 이동
+                         			location.href='';
+                         			*/
+                         			
+                         		}
+                         	}
+                         })
+                	})
+                
+                </script>
+                
+                
             </div>
         </div>
     
-        <!-- 카테고리(햄버거아이콘 hover하면 보여짐) -->
+        <!-------------------------- 카테고리(햄버거아이콘 hover하면 보여짐) ------------------------------->
         <div id="cat-detail">
-        
         
          </div>
     
         <script>
-
             $(function () {
                 //카테고리 hover 관련
 
@@ -349,14 +377,12 @@
                 }, function () {
                     $(this).css("color", "rgb(94, 94, 94)");
                 });
-            })
+       
             
             // 카테고리 조회
             $.ajax({
                 	url:"cat.do",
                 	success:function(resultArr){
-                		
-                		console.log("resultArr : " + resultArr);
                 		
                 		//카테고리 최대 길이 구하기
                 		var maxLength = 0;
@@ -394,11 +420,8 @@
                 		console.log("ajax실패");
                 	}
                 })
-            
+            })
         </script>
-    
-    
-    
     </body>
-    
+
     </html>

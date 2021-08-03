@@ -11,7 +11,10 @@ public interface MemberService {
 	int insertMember(Member m);
 	
 	// 회원정보 수정
-	int updateMember(Member m);
+	int updateMemInfo(Member m);
+	
+	// 회원 비밀번호 수정
+	int updateMemPwd(Member m);
 	
 	// 회원탈퇴
 	int deleteMember(String userId);

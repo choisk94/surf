@@ -16,7 +16,6 @@
 	</resultMap>
 
 
-
 	<select id="loginMember" resultMap="memberResult">
 		select
 			  user_no
@@ -70,6 +69,22 @@
 		  from member
 		 where email = #{userId}
 	</select>
+	
+	<update id="updateMemInfo">
+		update 
+		    member
+		   set nickname = #{nickname}
+		     , gender = #{gender}
+		     , age_range = #{ageRange}
+		 where email = #{email}
+	</update>
+	
+	<update id="updateMemPwd">
+		update 
+		    member
+		   set password = #{password}
+		 where user_no = #{userNo}
+	</update>	
 
 
 </mapper>
