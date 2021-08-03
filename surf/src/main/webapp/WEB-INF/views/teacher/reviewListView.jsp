@@ -8,6 +8,7 @@
 <title>수강 후기 조회</title>
 <style>
 #content {
+	font-family: 'Nanum Gothic', sans-serif;
 	width: 980px;
 	height: 850px;
 	float: left;
@@ -101,8 +102,8 @@
 			$(function(){
 	    		$("#select-class").change(function(){
 	    			location.href="classReview.te?cno=" + $(this).val();
-	    			$("#select-class option[value=${cno}]").attr("selected", true);
 	    		})
+	    		$("#select-class option[value=${cno}]").attr("selected", true);
 	    	})
 		</script>
 

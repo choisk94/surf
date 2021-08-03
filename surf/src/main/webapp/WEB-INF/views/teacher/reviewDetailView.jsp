@@ -8,6 +8,7 @@
 <title>수강 후기 조회</title>
 <style>
 #content {
+	font-family: 'Nanum Gothic', sans-serif;
 	width: 980px;
 	height: 850px;
 	float: left;
@@ -45,8 +46,9 @@
 }
 
 #user-img {
-	background-color: lightgray;
-	margin-left: 10px;
+	background: url("resources/images/user_icon3.png") no-repeat;
+	background-size: cover;
+	margin-left: 20px;
 	width: 40px;
 	height: 40px;
 	border-radius: 70%;
@@ -63,13 +65,14 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	width: 200px;
 }
 
 #star-score {
 	float: left;
 	width: 100px;
 	margin-top: 10px;
-	margin-left: 560px;
+	margin-left: 390px;
 }
 
 #star-score img {
@@ -116,23 +119,18 @@
 			<div class="horizontal-line"></div>
 			<div>
 				<div id="user-img"></div>
-				<!-- 유저 이미지는 뭘로? -->
 				<div id="user-name">${ s.userNo }</div>
-				<div id="star-score">
-				
-				</div>
-				<!-- 
-					<script>
-						$(document).ready(function(){
-							var score = "<c:out value='${s.score}'/>";
-							for (var i = 0; i < score; i++) {
-								var star = "<img src=\"https://img.icons8.com/color/48/000000/filled-star--v1.png\" />";
-								console.log("반복중");
-								$("#star-score").appendChild(star);
-							}
-		            	})
-					</script>
-				 -->
+				<div id="star-score"></div>
+				<script>
+					$(document).ready(function(){
+						var score = "<c:out value='${s.score}'/>";
+						for (var i = 0; i < score; i++) {
+							var star = "<img src=\"https://img.icons8.com/color/48/000000/filled-star--v1.png\" />";
+							$("#star-score").append(star);
+						}
+		           	})
+				</script>
+					
 				<div id="create-date">${ s.createDate }</div>
 				<div id="review-content">${ s.review }</div>
 				<div class="horizontal-line"></div>
