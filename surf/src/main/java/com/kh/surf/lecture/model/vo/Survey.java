@@ -11,7 +11,7 @@ import lombok.ToString;
 public class Survey {
 
 	private int surveyNo;
-	private int userNo;
+	private String userNo;
 	private int quality;
 	private int satisfaction;
 	private int difficulty;
@@ -21,4 +21,6 @@ public class Survey {
 	private String createDate;
 	private int classNo;
 	private int teacherNo;
+	
+	private String classTitle;
 }

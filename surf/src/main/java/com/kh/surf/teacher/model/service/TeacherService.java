@@ -25,16 +25,14 @@ public interface TeacherService {
 	int updateTeacher(Teacher t);
 
 	// 4. 강사별 개설 클래스 목록 조회
-	ArrayList<Lecture> selectClassList(int userNo);
+	ArrayList<Lecture> selectClassList(String userNo);
 	
-	// 5_1. 전체 후기 목록 조회
-	int selectReviewCount(int userNo);
-	ArrayList<Survey> selectReviewList(PageInfo pi, int userNo);
-	
-	// 5_2. 선택된 클래스 후기 목록 조회
+	// 5. 후기 목록 조회
+	int selectReviewCount(HashMap<String, String> map);
+	ArrayList<Survey> selectReviewList(PageInfo pi, HashMap<String, String> map);
 	
 	// 6. 후기 상세 조회
-	Survey selectReviewDetail(int surveyNo);
+	Survey selectReviewDetail(int sno);
 	
 	// 7. 클래스 등록 페이지 정보 가져오기(등록, 수정)
 		

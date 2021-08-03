@@ -1,6 +1,7 @@
 package com.kh.surf.teacher.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,26 +59,47 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.updateTeacher(t, sqlSession);
 	}
 
+	
 	/**
-	 * @author: Woojoo Seo
-	 * @MethodInfo: 
+	 * @author WooJoo
+	 * 후기 조회 가능한 클래스 목록 조회 
 	 */
 	@Override
-	public ArrayList<Lecture> selectClassList(int userNo) {
+	public ArrayList<Lecture> selectClassList(String userNo) {
 		return tDao.selectClassList(userNo, sqlSession);
 	}
 	
 	
+	/**
+	 * @author WooJoo
+	 * 조회할 후기의 개수 조회 
+	 */
 	@Override
-	public int selectReviewCount(int userNo) {
-		return tDao.selectReviewCount(userNo, sqlSession);
+	public int selectReviewCount(HashMap<String, String> map) {
+		return tDao.selectReviewCount(map, sqlSession);
 	}
 
 
+	/**
+	 * @author WooJoo
+	 * 후기 목록 조회 
+	 */
 	@Override
-	public ArrayList<Survey> selectReviewList(PageInfo pi, int userNo) {
-		return tDao.selectReviewList(pi, userNo, sqlSession);
+	public ArrayList<Survey> selectReviewList(PageInfo pi, HashMap<String, String> map) {
+		return tDao.selectReviewList(pi, map, sqlSession);
 	}
+	
+	
+	/**
+	 * @author WooJoo
+	 * 후기 상세 내용 조회
+	 */
+	@Override
+	public Survey selectReviewDetail(int sno) {
+		return tDao.selectReviewDetail(sno, sqlSession);
+	}
+	
+	
 	/**
 	 * @author HeeRak
 	 * 한 강사의 모든 클래스 정보 가져오기
@@ -102,14 +124,6 @@ public class TeacherServiceImpl implements TeacherService{
 	@Override
 	public ArrayList<MonthlyStats> monthlyStatsLecture(int classNo) {
 		return tDao.monthlyStatsLecture(classNo, sqlSession);
-	}
-
-
-	
-	@Override
-	public Survey selectReviewDetail(int surveyNo) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

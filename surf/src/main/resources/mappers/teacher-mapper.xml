@@ -19,11 +19,11 @@
 	
 	<resultMap id="surveyResult" type="Survey">
 		<result column="survey_no" property="surveyNo"/>
-		<result column="user_no" property="userNo"/>
+		<result column="nickname" property="userNo"/>
 		<result column="score" property="score"/>
 		<result column="review" property="review"/>
 		<result column="create_date" property="createDate"/>
-		<result column="" property=""/>
+		<result column="class_title" property="classTitle"/>
 	</resultMap>
 	
 	<resultMap id="monthlyStatsResult" type="MonthlyStats">
@@ -79,7 +79,6 @@
 	<!-- 
 		@author: Woojoo Seo
 	-->
-	<!-- 클래스 조회 조건 상태값 수정필요 -->
 	<select id="selectClassList" resultMap="lectureResult">
 		select
 			   class_no
@@ -91,24 +90,59 @@
 	        by class_no
 	</select>
 	
+	<!-- 
+		@author: Woojoo Seo
+	-->
 	<select id="selectReviewCount" resultType="_int">
 		select
 			   count(*)
 		  from survey
-		 where teacher_no = #{userNo}
+		  <choose>
+		  	<when test="cno == 'all'">
+		 		where teacher_no = #{userNo}
+		  	</when>
+		  	<otherwise>
+		  		where class_no = #{cno}
+		  	</otherwise>
+		  </choose>
 	</select>
 	
+	<!-- 
+		@author: Woojoo Seo
+	-->
 	<select id="selectReviewList" resultMap="surveyResult">
 		select
 			   survey_no
-			 , user_no
+			 , nickname
 			 , score
-			 , review
+			 , replace(review, '&lt;br&gt;', ' ') review
 			 , to_char(create_date, 'YYYY-MM-DD') as create_date
 		  from survey
-		 where teacher_no = #{userNo}
+		  join member using(user_no)
+		 <choose>
+		  	<when test="cno == 'all'">
+		 		where teacher_no = #{userNo}
+		  	</when>
+		  	<otherwise>
+		  		where class_no = #{cno}
+		  	</otherwise>
+		  </choose>
 		 order
 		    by survey_no desc
+	</select>
+	
+	<select id="selectReviewDetail" resultMap="surveyResult">
+		select
+			   class_title
+             , survey_no
+			 , nickname
+			 , score
+			 , review
+			 , to_char(s.create_date, 'YYYY-MM-DD') as create_date
+		  from survey s
+          join lecture l on s.class_no = l.class_no
+          join member m on s.user_no = m.user_no
+		 where survey_no = #{sno}
 	</select>
 	
 	<!--

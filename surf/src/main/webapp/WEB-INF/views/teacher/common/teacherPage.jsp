@@ -254,7 +254,7 @@
                     <ul>
                         클래스 관리
                         <li><a href="">문의 조회 및 답변</a></li>
-                        <li><a href="">수강 후기 조회</a></li>
+                        <li><a href="classReview.te">수강 후기 조회</a></li>
                     </ul>
                     <ul>
                         클래스 통계

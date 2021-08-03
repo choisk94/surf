@@ -22,7 +22,7 @@
 }
 
 #review-wrap {
-	margin-top: 10px;
+	margin-top: 15px;
 	margin-left: 40px;
 	width: 900px;
 }
@@ -92,7 +92,7 @@
 	margin-left: 30px;
 	margin-bottom: 23px;
 	width: 840px;
-	height: 530px;
+	height: 440px;
 	overflow-y: scroll;
 }
 
@@ -104,62 +104,54 @@
 </style>
 </head>
 <body>
-	<div id="outer">
 
-		<jsp:include page="common/teacherHeaderTemp.jsp" />
-		<div id="content">
-			<div id="page-title">클래스 관리 > 수강 후기 조회</div>
+	<jsp:include page="common/teacherPage.jsp" />
 
-			<div id="review-wrap">
-				<div class="horizontal-line"></div>
-				<div id="review-class">수강 클래스 : 클래스명</div>
-				<div class="horizontal-line"></div>
-				<div>
-					<div id="user-img"></div>
-					<div id="user-name">닉네임</div>
-					<div id="star-score">
-						<img
-							src="https://img.icons8.com/color/48/000000/filled-star--v1.png" />
-						<img
-							src="https://img.icons8.com/color/48/000000/filled-star--v1.png" />
-						<img
-							src="https://img.icons8.com/color/48/000000/filled-star--v1.png" />
-						<img
-							src="https://img.icons8.com/color/48/000000/filled-star--v1.png" />
-						<img
-							src="https://img.icons8.com/color/48/000000/filled-star--v1.png" />
-					</div>
-					<div id="create-date">2021-07-12</div>
-					<div id="review-content">
-						보이는 끝까지 찾아다녀도 목숨이 있는 때까지 방황하여도 보이는 것은 거친 모래뿐일 것이다 이상의 꽃이 없으면 쓸쓸한
-						인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디
-						있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고
-						간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을
-						위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기
-						위하여서 그리하였는가? 아니다 그들은<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-						<br>길이테스트
-					</div>
-					<div class="horizontal-line"></div>
-					<button type="button" class="btn btn-secondary btn-sm">목록</button>
+	<div id="content">
+		<div id="page-title">클래스 관리 > 수강 후기 조회</div>
+
+		<div id="review-wrap">
+			<div class="horizontal-line"></div>
+			<div id="review-class">수강 클래스 : ${ s.classTitle }</div>
+			<div class="horizontal-line"></div>
+			<div>
+				<div id="user-img"></div>
+				<!-- 유저 이미지는 뭘로? -->
+				<div id="user-name">${ s.userNo }</div>
+				<div id="star-score">
+				
 				</div>
+				<!-- 
+					<script>
+						$(document).ready(function(){
+							var score = "<c:out value='${s.score}'/>";
+							for (var i = 0; i < score; i++) {
+								var star = "<img src=\"https://img.icons8.com/color/48/000000/filled-star--v1.png\" />";
+								console.log("반복중");
+								$("#star-score").appendChild(star);
+							}
+		            	})
+					</script>
+				 -->
+				<div id="create-date">${ s.createDate }</div>
+				<div id="review-content">${ s.review }</div>
+				<div class="horizontal-line"></div>
+				<button type="button" class="btn btn-secondary btn-sm" id="prePage">목록</button>
+				<script>
+					var prePage = document.referrer;
+					$(function(){
+	            		$("#prePage").click(function(){
+	            			window.location.href = prePage;
+	            		})
+	            	})
+				</script>
 			</div>
 		</div>
 	</div>
+	</div>
+	</div>
+	
+	<jsp:include page="../common/footer.jsp" />
+	
 </body>
 </html>
