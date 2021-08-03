@@ -80,7 +80,7 @@
             <label class="mt-2" for="checkPwd">비밀번호 확인</label>
             <input type="password" class="form-control" id="checkPwd" name="checkPwd" placeholder="password" required>
           </div>
-          <div id="checkPwdResult" style="font-size:0.8em; height: 16px; padding-top:5px; visibility:hidden; margin-bottom:5px;">ddd</div>
+          <div id="checkPwdResult" style="font-size:0.8em; height: 16px; padding-top:5px; visibility:hidden; margin-bottom:5px;"></div>
           
           <!-- submit 버튼 -->
           <div class="text-center">
