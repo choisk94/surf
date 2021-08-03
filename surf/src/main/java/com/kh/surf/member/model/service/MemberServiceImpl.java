@@ -33,7 +33,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updateMemInfo(Member m) {
 		return mDao.updateMemInfo(sqlSession, m);
-		
 	}
 
 	@Override
@@ -42,9 +41,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int deleteMember(String userId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteMember(int userNo) {
+		return mDao.deleteMember(sqlSession, userNo);
 	}
 
 

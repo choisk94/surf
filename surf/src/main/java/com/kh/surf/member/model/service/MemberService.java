@@ -17,7 +17,7 @@ public interface MemberService {
 	int updateMemPwd(Member m);
 	
 	// 회원탈퇴
-	int deleteMember(String userId);
+	int deleteMember(int userNo);
 	
 	// 아이디 중복체크
 	int idCheck(String userId);

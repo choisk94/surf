@@ -85,6 +85,14 @@
 		   set password = #{password}
 		 where user_no = #{userNo}
 	</update>	
+	
+	<update id="deleteMember">
+		update
+			member
+		   set status = 'Y'
+		 where user_no = #{userNo}
+	</update>
+	
 
 
 </mapper>

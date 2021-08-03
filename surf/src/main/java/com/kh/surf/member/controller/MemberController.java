@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -165,6 +164,38 @@ public class MemberController {
 		return "member/findIdPwd";
 	}
 	
+	/** @author 최서경
+	 * 회원탈퇴화면 포워딩
+	 */
+	@RequestMapping("deleteView.me")
+	public String deleteView() {
+		return "member/deleteMember";
+	}
 	
-	
+	/** @author 최서경
+	 * 회원탈퇴
+	 */
+	@RequestMapping("delete.me")
+	public ModelAndView deleteMember(Member m, HttpSession session, ModelAndView mv) {
+		// 암호화된 비밀번호
+		String encPwd = ((Member)session.getAttribute("loginUser")).getPassword();
+
+		if(bcryptPasswordEncoder.matches(m.getPassword(), encPwd)){
+			int result = mService.deleteMember(m.getUserNo());
+			
+			if(result>0) {
+				session.removeAttribute("loginUser");
+				mv.setViewName("member/deleteMemberSuccess");
+			} else {
+				mv.addObject("errorMsg", "회원탈퇴 실패ㅠ").setViewName("common/errorPage");
+			}
+			
+		} else {
+			session.setAttribute("alertMsg", "비밀번호가 일치하지 않습니다.");
+			mv.setViewName("redirect:deleteView.me");
+		}
+		
+		return mv;
+		
+	}
 }

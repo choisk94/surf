@@ -206,8 +206,7 @@
 					</script>
 					
 					<div class="text-center">
-						<button type="button" class="btn btn-secondary mt-2"
-							style="width: 50%;">회원 탈퇴</button>
+						<button type="button" class="btn btn-secondary mt-2" style="width: 50%;" onclick="location.href='deleteView.me';">회원 탈퇴</button>
 					</div>
 				</div>
 			</div>

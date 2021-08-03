@@ -43,4 +43,11 @@ public class MemberDao {
 	public int updateMemPwd(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.update("memberMapper.updateMemPwd", m);
 	}
+	
+	/** @author 최서경
+	 * 회원탈퇴
+	 */
+	public int deleteMember(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.update("memberMapper.deleteMember", userNo);
+	}
 }
