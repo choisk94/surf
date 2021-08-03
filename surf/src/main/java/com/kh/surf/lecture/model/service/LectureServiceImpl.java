@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.dao.LectureDao;
 import com.kh.surf.lecture.model.vo.Lecture;
 
+@Service
 public class LectureServiceImpl implements LectureService{
 
 	@Autowired
