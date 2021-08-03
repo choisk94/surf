@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +70,29 @@ public class AdminController {
 		
 		
 	}
+	//게시물 선택삭제
+    @RequestMapping("delete")
+    public String ajaxTest(HttpServletRequest request) throws Exception {
+            
+        String[] ajaxMsg = request.getParameterValues("valueArr");
+        int size = ajaxMsg.length;
+        for(int i=0; i<size; i++) {
+        	aService.delete(ajaxMsg[i]);
+        }
+        return "redirect:list.bo";
+    }
+  //광고베너 표시
+    @RequestMapping("update")
+    public String ajaxTest2(HttpServletRequest request) throws Exception {
+            
+        String[] ajaxMsg = request.getParameterValues("valueArr");
+        int size = ajaxMsg.length;
+        for(int i=0; i<size; i++) {
+        	aService.update(ajaxMsg[i]);
+        }
+        return "redirect:list.bo";
+    }
+    
 	@RequestMapping("logout.ad")
 	public String logoutMember(HttpSession session) {
 		session.invalidate();
@@ -126,11 +149,11 @@ public class AdminController {
 		
 		int result = aService.insertAd(a);
 		
-		if(result > 0) { // 성공 => 게시글 리스트페이지
-			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+		if(result > 0) { // �꽦怨� => 寃뚯떆湲� 由ъ뒪�듃�럹�씠吏�
+			session.setAttribute("alertMsg", "�꽦怨듭쟻�쑝濡� 寃뚯떆湲��씠 �벑濡앸릺�뿀�뒿�땲�떎.");
 			return "redirect:list.bo";
-		}else { // 실패 => 에러페이지
-			model.addAttribute("errorMsg", "게시글 등록 실패");
+		}else { // �떎�뙣 => �뿉�윭�럹�씠吏�
+			model.addAttribute("errorMsg", "寃뚯떆湲� �벑濡� �떎�뙣");
 			return "common/errorPage";
 		}
 		

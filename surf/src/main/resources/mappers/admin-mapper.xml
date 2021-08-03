@@ -88,5 +88,19 @@
 		    by ad_no desc
 	</select>
 	
+	<!-- 게시물 선택 삭제  -->
+    <delete id="delete">
+        delete from ad
+        where ad_no=#{adNo}
+    </delete>
+    
+    <!-- 광고베너 표시  -->
+    <update id="update">
+        update
+		       ad
+		   set ad_status = 'Y'
+		 where ad_no = #{adNo}
+    </update>
+	
 	
 </mapper>

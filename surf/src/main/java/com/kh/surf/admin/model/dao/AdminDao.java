@@ -34,6 +34,13 @@ public Member adminLogin(SqlSessionTemplate sqlSession, Member m) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectList", null, rowBounds);
 		
 	}
-	
+	//게시물 선택 삭제
+	public void delete(SqlSessionTemplate sqlSession, String adNo){
+	    sqlSession.delete("adminMapper.delete", adNo); 
+	}
+	//광고베너 표시
+	public void update(SqlSessionTemplate sqlSession, String adNo){
+		    sqlSession.update("adminMapper.update", adNo); 
+	}
 
 }
