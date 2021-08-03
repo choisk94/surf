@@ -17,6 +17,11 @@ public interface AdminService {
 		// 1. 게시판 리스트 페이지 조회용 (페이징)
 		int selectListCount();
 		ArrayList<Ad> selectList(PageInfo pi);
+		
+		//게시물 선택 삭제
+		void delete(String adNo);
+		//광고베너 표시
+		void update(String adNo);
 }
 		
 

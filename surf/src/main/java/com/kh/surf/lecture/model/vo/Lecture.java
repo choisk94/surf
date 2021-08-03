@@ -1,5 +1,7 @@
 package com.kh.surf.lecture.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,6 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class Lecture {
-
 	private int classNo;
 	private String classTitle;
 	private String createDate;
@@ -27,4 +28,14 @@ public class Lecture {
 	private int price;
 	private int subcatNo;
 	private int userNo;
+	private String teacherName; // 강사명
+	private int fundingCount; // 펀딩 응원수
+	
+	// Has a 관계
+	private ClassFunding cf;
+	
+	// Has many관계
+	private ArrayList<Chapter> chapList;
+	private ArrayList<ClassIntro> classIntroList;
+	
 }

@@ -23,7 +23,6 @@
 	
 	<context:component-scan base-package="com.kh.surf" />
 	
-	
 	<interceptors>
 		<interceptor>
 			<mapping path="/myPage.me"/>
@@ -31,6 +30,14 @@
 			<mapping path="/enrollForm.bo"/>
 			 -->
 			<beans:bean id="loginInterceptor" class="com.kh.surf.common.interceptor.LoginInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/updateForm.te"/>
+			<mapping path="/classReview.te"/>
+			<mapping path="/reviewDetail.te"/>
+			<mapping path="/monthlyStatsView.te"/>
+			<beans:bean id="teacherInterceptor" class="com.kh.surf.common.interceptor.TeacherInterceptor"/>
 		</interceptor>
 	</interceptors>
 	

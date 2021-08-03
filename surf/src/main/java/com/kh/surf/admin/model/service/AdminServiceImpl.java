@@ -42,5 +42,17 @@ public class AdminServiceImpl implements AdminService{
 	public ArrayList<Ad> selectList(PageInfo pi) {
 		return aDao.selectList(sqlSession, pi);
 	}
+	//게시물 선택 삭제
+	@Override
+	public void delete(String adNo) {
+		aDao.delete(sqlSession, adNo);
+		
+	}
+	//광고베너 표시
+	@Override
+	public void update(String adNo) {
+		aDao.update(sqlSession, adNo);
+			
+	}
 
 }
