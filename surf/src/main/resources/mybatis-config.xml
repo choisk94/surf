@@ -17,6 +17,7 @@
 		<typeAlias type="com.kh.surf.payment.model.vo.Payment" alias="Payment"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="Studing"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ScrapSupport" alias="ScrapSupport"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassInquiry" alias="ClassInquiry"/>
 	</typeAliases>
 	
 	<mappers>

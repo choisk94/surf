@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
@@ -217,4 +218,45 @@ public class TeacherController {
 		
 		return mv;
 	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 문의 목록 조회 및 페이지 반환
+	 */
+	@RequestMapping("classInquiry.te")
+	public ModelAndView selectInquiryList(HttpSession session, ModelAndView mv, 
+			@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+			@RequestParam(value="cno", defaultValue="all") String cno,
+			@RequestParam(value="status", defaultValue="all") String status) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		map.put("status", status);
+			
+		ArrayList<Lecture> clist = tService.selectClassList(userNo);
+		
+		int inquiryCount = tService.selectInquiryCount(map);
+		
+		System.out.println(inquiryCount);
+			
+		PageInfo pi = Pagination.getPageInfo(inquiryCount, currentPage, 10, 12);
+		ArrayList<ClassInquiry> ilist = tService.selectInquiryList(pi, map);
+		
+		System.out.println(ilist);
+		
+		mv.addObject("cno", cno)
+		  .addObject("clist", clist)
+		  .addObject("pi", pi)
+		  .addObject("ilist", ilist)
+		  .setViewName("teacher/inquiryListView");
+
+		return mv;
+		
+	}
+	
+	
+	
 }

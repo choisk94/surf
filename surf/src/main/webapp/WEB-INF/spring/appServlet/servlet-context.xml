@@ -36,6 +36,7 @@
 			<mapping path="/updateForm.te"/>
 			<mapping path="/classReview.te"/>
 			<mapping path="/reviewDetail.te"/>
+			<mapping path="/classInquiry.te"/>
 			<mapping path="/monthlyStatsView.te"/>
 			<mapping path="/lectureList.te"/>
 			<beans:bean id="teacherInterceptor" class="com.kh.surf.common.interceptor.TeacherInterceptor"/>

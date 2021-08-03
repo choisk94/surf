@@ -8,16 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.lecture.model.vo.Survey;
-import java.util.List;
-import java.util.Map;
-
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
-
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -143,6 +137,18 @@ public class TeacherDao {
 	public int deleteLecture(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("teacherMapper.deleteLecture", l);
 	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 조회할 문의의 총 개수
+	 */
+	public int selectInquiryCount(HashMap<String, String> map , SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("teacherMapper.selectInquiryCount", map);
+	}
 
+	
+	public ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map , SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectInquiryList", map);
+	}
 	
 }

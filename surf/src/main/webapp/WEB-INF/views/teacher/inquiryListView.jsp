@@ -8,6 +8,7 @@
 <title>문의 조회 및 답변</title>
 <style>
 #content {
+	font-family: 'Nanum Gothic', sans-serif;
 	width: 980px;
 	height: 850px;
 	float: left;
@@ -49,7 +50,7 @@
 
 #class-list {
 	width: 900px;
-	margin-top: 100px;
+	margin-top: 80px;
 	table-layout: fixed;
 }
 
@@ -67,137 +68,139 @@
 	cursor: pointer;
 }
 
-#pagination {
+#paging-wrap {
 	width: 300px;
 	height: 50px;
-	margin-top: 60px;
+	top: 840px;
 	margin-left: 340px;
+	display: flex;
+	position: absolute;
+}
+
+#pagination {
+	margin: auto;
 }
 </style>
 </head>
 <body>
-	<div id="outer">
 
-		<jsp:include page="common/teacherHeaderTemp.jsp" />
-		<div id="content">
-			<div id="page-title">클래스 관리 > 문의 조회 및 답변</div>
-			<div id="select-wrap">
-				<label for="select-class">조회 클래스 선택</label> <select
-					class="form-control" id="select-class">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-				</select>
+	<jsp:include page="common/teacherPage.jsp" />
+	
+	<div id="content">
+		<div id="page-title">클래스 관리 > 문의 조회 및 답변</div>
+		<div id="select-wrap">
+			<label for="select-class">조회 클래스 선택</label>
+			<select class="form-control" id="select-class" name="selectClass">
+				<option value="all">전체 클래스</option>
+				<c:forEach var="c" items="${ clist }">
+					<option value="${ c.classNo }">${ c.classTitle }</option>
+				</c:forEach>
+			</select>
+		</div>
+		
+		<script>
+			$(function(){
+	    		$("#select-class").change(function(){
+	    			location.href="classInquiry.te?cno=" + $(this).val();
+	    		})
+	    		$("#select-class option[value=${cno}]").attr("selected", true);
+	    	})
+		</script>
+		
+		<div id="check-wrap">
+			<div class="form-check">
+				<label class="form-check-label">
+					<input type="checkbox" class="form-check-input inquiry-check" name="status" value="noCM">
+					대기 중인 문의만 조회
+				</label>
 			</div>
-			<div id="check-wrap">
-				<div class="form-check">
-					<label class="form-check-label"> <input type="checkbox"
-						class="form-check-input inquiry-check" value="">대기 중인 문의만
-						조회
-					</label>
-				</div>
-			</div>
+		</div>
+		
+		<script>
+			$(function(){
+	    		$(".inquiry-check").change(function(){
+	    			if($(".inquiry-check").is(":checked") == true) {
+		    			location.href="classInquiry.te?status=" + $(this).val();
+	    			}else{
+	    				location.href="classInquiry.te?status=all";
+	    			}
+	    		})
+	    	})
+		</script>
 
-			<table class="table table-hover" id="class-list" align="center">
-				<thead class="thead-light">
-					<tr>
-						<th style="width: 70px;" class="text-center">번호</th>
-						<th style="width: 480px;" class="text-center">내용</th>
-						<th style="width: 150px;" class="text-center">작성자</th>
-						<th style="width: 130px;" class="text-center">작성일</th>
-						<th style="width: 70px;" class="text-center">상태</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자최대길이</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-					<tr>
-						<td class="text-center">1</td>
-						<td>내용~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</td>
-						<td class="text-center">작성자</td>
-						<td class="text-center">2021-07-12</td>
-						<td class="text-center">대기</td>
-					</tr>
-				</tbody>
-			</table>
-			<div id="pagination">페이지네이션~~~~~~~~~~~~~~~~~~</div>
+		<table class="table table-hover" id="class-list" align="center">
+			<thead class="thead-light">
+				<tr>
+					<th style="width: 70px;" class="text-center">번호</th>
+					<th style="width: 480px;" class="text-center">내용</th>
+					<th style="width: 150px;" class="text-center">작성자</th>
+					<th style="width: 130px;" class="text-center">작성일</th>
+					<th style="width: 70px;" class="text-center">상태</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-center">${ ilist.inquiryNo }</td>
+					<td>${ ilist.inqContent }</td>
+					<td class="text-center">${ ilist.userNo }</td>
+					<td class="text-center">${ ilist.inqDate }</td>
+					<td class="text-center">
+						<c:choose>
+							<c:when test="${ empty ilist.ansContent }">대기</c:when>
+							<c:otherwise>완료</c:otherwise>
+						</c:choose>
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+		
+		<div id="paging-wrap">
+			<div id="pagination">
+				<c:if test="${ !empty rlist }">
+					<ul class="pagination">
+						<c:choose>
+							<c:when test="${ pi.currentPage eq 1 }">
+								<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="classInquiry.te?currentPage=${ pi.currentPage-1 }">&lt;</a></li>
+							</c:otherwise>
+						</c:choose>
+
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+
+							<c:choose>
+								<c:when test="${ p eq pi.currentPage }">
+									<li class="page-item"><a class="page-link"><b>${ p }</b></a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item"><a class="page-link"
+										href="classInquiry.te?currentPage=${ p }&cno=${ cno }">${ p }</a></li>
+								</c:otherwise>
+							</c:choose>
+
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${ pi.currentPage eq pi.maxPage }">
+								<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="classInquiry.te?currentPage=${ pi.currentPage+1 }">&gt;</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</c:if>
+			</div>
 		</div>
 	</div>
+	</div>
+	</div>
+	
+	<jsp:include page="../common/footer.jsp" />
+	
 </body>
 </html>

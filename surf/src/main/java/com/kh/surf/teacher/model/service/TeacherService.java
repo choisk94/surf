@@ -1,16 +1,13 @@
 package com.kh.surf.teacher.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.lecture.model.vo.Survey;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface TeacherService {
@@ -27,11 +24,11 @@ public interface TeacherService {
 	// 4. 강사별 개설 클래스 목록 조회
 	ArrayList<Lecture> selectClassList(String userNo);
 	
-	// 5. 후기 목록 조회
+	// 5. 클래스 후기 목록 조회
 	int selectReviewCount(HashMap<String, String> map);
 	ArrayList<Survey> selectReviewList(PageInfo pi, HashMap<String, String> map);
 	
-	// 6. 후기 상세 조회
+	// 6. 클래스 후기 상세 조회
 	Survey selectReviewDetail(int sno);
 	
 	// 7. 클래스 등록 페이지 정보 가져오기(등록, 수정)
@@ -55,4 +52,10 @@ public interface TeacherService {
 	int deleteLecture(Lecture l);
 	int startFunding(Lecture l);
 	
+	// 14. 클래스 문의 목록 조회
+	int selectInquiryCount(HashMap<String, String> map);
+	ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map);
+	
+	// 15. 클래스 문의 상세 조회
+	ClassInquiry selectInquiryDetail(int cno);
 }
