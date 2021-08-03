@@ -28,6 +28,8 @@ public class Lecture {
 	private int price;
 	private int subcatNo;
 	private int userNo;
+	private String teacherName; // 강사명
+	private int fundingCount; // 펀딩 응원수
 	
 	// Has a 관계
 	private ClassFunding cf;

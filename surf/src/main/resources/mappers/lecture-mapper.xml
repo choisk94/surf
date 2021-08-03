@@ -17,6 +17,8 @@
   		<result column="price" property="price"/>
   		<result column="subcat_no" property="subcatNo"/>
   		<result column="user_no" property="userNo"/>
+		<result column="count" property="fundingCount"/>
+		<result column="nickname" property="teacherName"/>
   	</resultMap>
   	
   	<resultMap id="studingResult" type="Studing">
@@ -49,5 +51,34 @@
   		    by create_date asc
   	</select>
   	
+  	<!-- 
+		@author leeyeji
+		펀딩 클래스 페이징	
+	 -->
+	 <select id="selectFundingCount" resultType="_int">
+	 	select
+	 		   count(*)
+	 	  from class_funding 
+	 </select>
+	
+	<!-- 
+		@author leeyeji
+		펀딩 클래스 조회용
+	 -->
+	<select id="selectFundingList" resultMap="lectureResult">
+		select 
+               class_no
+             , thumbnail
+             , class_title
+             , create_date
+             , f.count
+             , t.nickname
+          from lecture l
+          join class_funding f using(class_no)
+          join teacher t on(l.user_no = t.teacher_no)
+         where l.status = 'F'
+         order 
+            by create_date desc
+	</select>
   	
 </mapper>
