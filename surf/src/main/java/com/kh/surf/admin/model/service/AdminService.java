@@ -9,7 +9,7 @@ import com.kh.surf.member.model.vo.Member;
 
 public interface AdminService {
 
-	//어드민 로그인용 서비스
+		//어드민 로그인용 서비스
 		Member loginAdmin(Member m);
 
 		int insertAd(Ad a);
@@ -22,6 +22,8 @@ public interface AdminService {
 		void delete(String adNo);
 		//광고베너 표시
 		void update(String adNo);
+
+		Member selectAdmin(int userNo);
 }
 		
 

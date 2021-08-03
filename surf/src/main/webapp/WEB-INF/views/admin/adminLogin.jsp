@@ -105,7 +105,7 @@
         <div id="copy" align="center"><label>SURF 관리자</label></div>
         <div id="etc">
             <div id="symbol"><img src="resources\img\SURF.png" alt=""></div>
-            <form action="login.ad" method="POST" id="login-area">
+            <form action="" method="POST" id="login-area">
                 <div id="login">
                     <div>
                         <label for="adminId">아이디:</label>

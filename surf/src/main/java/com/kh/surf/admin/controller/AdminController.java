@@ -28,13 +28,13 @@ public class AdminController {
 
 	@Autowired
 	private AdminService aService;
-
-	@RequestMapping("admin.ad")
-	public String  adminLogin() {
-		
-		return "admin/adminLogin";
-		
-	}
+//
+//	@RequestMapping("admin.ad")
+//	public String  adminLogin() {
+//		
+//		return "admin/adminLogin";
+//		
+//	}
 	@RequestMapping("list.bo")
 	public ModelAndView selectList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		
@@ -52,24 +52,35 @@ public class AdminController {
 		return mv;
 		
 	}
-	
+	//원래 어드민 로그인
+//	@RequestMapping("login.ad")
+//	public String adminLogin(Model model, Member m, HttpSession session) {
+//		
+//		Member adminLogin = aService.loginAdmin(m);
+//		
+//		if(adminLogin == null) {
+//			
+//			model.addAttribute("errorMsg", "로그인 오류");
+//			return "common/errorPage";
+//		}else {
+//			
+//			session.setAttribute("adminLogin", adminLogin);
+//			return "redirect:list.bo";
+//		}
+//		
+//		
+//	}
+	//관리자 페이지 이동
 	@RequestMapping("login.ad")
-	public String adminLogin(Model model, Member m, HttpSession session) {
+	public String selectTeacher(HttpSession session, Model model) {
 		
-		Member adminLogin = aService.loginAdmin(m);
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		
-		if(adminLogin == null) {
-			
-			model.addAttribute("errorMsg", "로그인 오류");
-			return "common/errorPage";
-		}else {
-			
-			session.setAttribute("adminLogin", adminLogin);
-			return "redirect:list.bo";
-		}
-		
-		
+		Member m = aService.selectAdmin(userNo);
+		model.addAttribute("m", m);
+		return "redirect:list.bo";
 	}
+	
 	//게시물 선택삭제
     @RequestMapping("delete")
     public String ajaxTest(HttpServletRequest request) throws Exception {

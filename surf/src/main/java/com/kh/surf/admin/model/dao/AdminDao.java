@@ -43,4 +43,8 @@ public Member adminLogin(SqlSessionTemplate sqlSession, Member m) {
 		    sqlSession.update("adminMapper.update", adNo); 
 	}
 
+	public Member selectAdmin(int userNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectAdmin", userNo);
+	}
+
 }
