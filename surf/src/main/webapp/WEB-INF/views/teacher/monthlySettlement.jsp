@@ -20,18 +20,9 @@
 		/*저장 데이터*/
 		var data = google.visualization.arrayToDataTable([
 			['month', '수입(원)'],
-			['1월', 0],
-			['2월', 220000],
-			['3월', 820000],
-			['4월', 1280000],
-			['5월', 820000],
-			['6월', 120000],
-			['7월', 320000],
-			['8월', 0],
-			['9월', 0],
-			['10월', 0],
-			['11월', 0],
-			['12월', 0]
+			<c:forEach var="l" items="${ list }">
+			['${l.month}월', ${ l.loan }],
+			</c:forEach>
 		]);
 			/*표현 옵션*/
 			var options = {
@@ -81,10 +72,13 @@
 
 			.stats-head>span:nth-child(3) {
 				margin-left: 30px;
+				width: 430px;
+				display: inline-block;
 			}
 
 			.stats-head>span:last-child {
-				margin-left: 230px;
+				width: 160px;
+				display: inline-block;
 			}
 			/*차트 스타일 선택*/
 			#table_div{
@@ -122,12 +116,14 @@
 				</div>
 				<br>
 				<div class="stats-menu">
-					<select name="" id="" class="form-control"
-						style="width: 300px; height: 40px; display: inline;">
-						<option value="">전체 클래스</option>
+					<select id="classSelect" name="classNo" class="form-control"
+						style="width: 300px; height: 40px; display: inline;" onchange="changeClass();">
+						<option value="0">전체 클래스</option>
+						<c:forEach var="c" items="${ clist }">
+							<option value="${ c.classNo }">${ c.classTitle }</option>
+						</c:forEach>
 					</select>
 					<select style="width: 100px; height: 40px; display: inline;" class="form-control">
-						<option value="">2020</option>
 						<option value="">2021</option>
 					</select>
 					<input type="checkbox" name="tax-option" id="onlyTax"><label for="onlyTax">수수료만</label>
@@ -138,46 +134,18 @@
 				<div class="stats-head">
 					<span class="table-style">표</span> | <span class="column-style">그래프</span>
 					<span>전체 클래스 수익 월별 집계</span>
-					<span>총 수익 : 3,570,000원</span>
+					<span align="right">총 수익 : ${ allCount }원</span>
 				</div>
 				<div id="table_div">
 					<table border="2">
-						<tr width="750px">
-							<th width="187px">1월</th>
-							<td width="187px">0원</td>
-							<th width="187px">7월</th>
-							<td width="187px">110,000원</td>
-						</tr>
-						<tr>
-							<th>2월</th>
-							<td>320,000원</td>
-							<th>8월</th>
-							<td>0원</td>
-						</tr>
-						<tr>
-							<th>3월</th>
-							<td>220,000원</td>
-							<th>9월</th>
-							<td>0원</td>
-						</tr>
-						<tr>
-							<th>4월</th>
-							<td>820,000원</td>
-							<th>10월</th>
-							<td>0원</td>
-						</tr>
-						<tr>
-							<th>5월</th>
-							<td>1,280,000원</td>
-							<th>11월</th>
-							<td>0원</td>
-						</tr>
-						<tr>
-							<th>6월</th>
-							<td>820,000원</td>
-							<th>12월</th>
-							<td>0원</td>
-						</tr>
+						<c:forEach var="i" begin="1" end="6">
+							<tr width="750px">
+								<th width="187px">${ i }월</th>
+								<td width="187px" class="month${ i }">${ list[i-1].loan }원</td>
+								<th width="187px">${ i + 6 }월</th>
+								<td width="187px" class="month${ i + 6 }">${ list[i+5].loan }원</td>
+							</tr>
+						</c:forEach>
 					</table>
 				</div>
 				<div id="chart_div"></div>
@@ -188,6 +156,69 @@
 			</div>
 			</div>
 
+			<c:forEach var="i" begin="1" end="12">
+				<script>
+					var loan = parseInt('${list[i-1].loan}');
+					$('.month${i}').text(loan.toLocaleString() + '원');					
+				</script>
+			</c:forEach>
+
+			<script>
+				function changeClass(){
+					var cno = $('#classSelect').val();
+
+					$('.stats-head').children('span').eq(2).text($('option[value=' + cno + ']').text());
+
+					$.ajax({
+						type: 'post',
+						url: 'ajaxSelectClassLoan.te',
+						data : {
+							classNo : cno
+						}, success : function(classLoan){
+							var changedData = [['month', '수입(원)']];
+							var Allcount = 0;
+
+							for(var i in classLoan) {
+								// 구글 차트 데이터 변경
+								changedData.push([classLoan[i].month + '월', Number(classLoan[i].loan)]);
+
+								// 표스타일 차트 데이터 변경
+								var loan = parseInt(classLoan[i]);
+								$('.month' + classLoan[i].month).text(classLoan[i].loan.toLocaleString() + '원');
+
+								// 한 클래스의 총 수익
+								Allcount += classLoan[i].loan;
+							}
+							// 총 수익 표시
+							$('.stats-head').children('span').eq(3).text('총 수익 : ' + Allcount.toLocaleString() + '원');
+							
+							console.log(Allcount);
+							google.charts.load('current', {packages: ['corechart', 'bar']});
+							google.charts.setOnLoadCallback(drawChart);
+							
+							function drawChart() {
+								/*저장 데이터*/
+								var data = google.visualization.arrayToDataTable(changedData);
+									/*표현 옵션*/
+									var options = {
+									width: 750,
+									height: 400,
+									bar: { groupWidth: '60%' },
+									isStacked: true,
+									chartArea: {left: 0, right:0}
+								  };
+							
+									var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+									chart.draw(data, options);
+								}
+							
+						}, error : function(){
+
+						}
+					});
+				}
+			</script>
+			
 			<script>
 				$(function(){
 					var $table = $('.table-style');
@@ -208,10 +239,7 @@
 					})
 					
 				})
-				
-
 			</script>
-
 			<jsp:include page="../common/footer.jsp" />
 		</body>
 

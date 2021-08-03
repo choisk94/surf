@@ -1,20 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TeacherMapper">
-
-<!-- resultMap에 type등록이 안되어있어서 서버 start가 안되길래 주석처리했습니다. 사용하실 때 주석 삭제해주세요.(최서경)
-
-	<resultMap type="" id="">
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
-		<result column="" property=""/>
+<!-- author 윤희락 -->
+<mapper namespace="teacherMapper">
+	<resultMap id="teacherResult" type="Teacher">
+		<result column="teacher_no" property="teacherNo"/>
+		<result column="profile_image" property="profileImage"/>
+		<result column="nickname" property="nickname"/>
+		<result column="phone" property="phone"/>
+		<result column="intro_content" property="introContent"/>
+		<result column="subcat_no" property="subCatNo"/>
+		<result column="status" property="status"/>
 	</resultMap>
-	<select id="">
 	
+	<resultMap id="lectureResult" type="Lecture">
+		<result column="class_no" property="classNo"/>
+		<result column="class_title" property="classTitle"/>
+	</resultMap>
+	
+	<resultMap id="surveyResult" type="Survey">
+		<result column="survey_no" property="surveyNo"/>
+		<result column="nickname" property="userNo"/>
+		<result column="score" property="score"/>
+		<result column="review" property="review"/>
+		<result column="create_date" property="createDate"/>
+		<result column="class_title" property="classTitle"/>
+	</resultMap>
+	
+	<resultMap id="monthlyStatsResult" type="MonthlyStats">
+		<id column="month" property="month"/>
+		<id column="loan" property="loan"/>
+	</resultMap>
+	
+	<!--
+		강사정보수정페이지 view 에 '강사정보노출'
+		@author HeeRak
+	-->
+	<select id="selectTeacher" resultMap="teacherResult">
+		select 
+			   teacher_no
+			 , profile_image
+			 , nickname
+			 , phone
+			 , intro_content
+			 , subcat_no
+			 , status
+		  from teacher
+		 where teacher_no = #{userNo}
+		   and status = 'Y'
 	</select>
- -->	
+	
+	<!--
+		강사정보수정페이지 '닉네임 중복확인결과'
+		@author HeeRak
+	-->
+	<select id="checkNickname" resultType="_int" parameterType="Teacher">
+		select count(*)
+		  from teacher
+		 where nickname = #{nickname}
+		   and teacher_no != #{teacherNo}
+	</select>
+	
+	<!--
+		강사정보수정페이지에서 입력된 강사정보로 '강사정보수정'
+		@author HeeRak
+	-->
+	<update id="updateTeacher">
+		update teacher
+		   set nickname = #{nickname}
+		     , phone = #{phone}
+		     , intro_content = #{introContent}
+		     <if test="profileImage != null">
+		     , profile_image = #{profileImage}
+		     </if>
+		 where teacher_no = #{teacherNo}
+		   and status = 'Y'
+	</update>
+	
+	<!-- 
+		@author: Woojoo Seo
+	-->
+	<select id="selectClassList" resultMap="lectureResult">
+		select
+			   class_no
+			 , class_title
+	      from lecture
+	     where status = 'O'
+	       and user_no = #{userNo}
+	     order 
+	        by class_no
+	</select>
+	
+	<!-- 
+		@author: Woojoo Seo
+	-->
+	<select id="selectReviewCount" resultType="_int">
+		select
+			   count(*)
+		  from survey
+		  <choose>
+		  	<when test="cno == 'all'">
+		 		where teacher_no = #{userNo}
+		  	</when>
+		  	<otherwise>
+		  		where class_no = #{cno}
+		  	</otherwise>
+		  </choose>
+	</select>
+	
+	<!-- 
+		@author: Woojoo Seo
+	-->
+	<select id="selectReviewList" resultMap="surveyResult">
+		select
+			   survey_no
+			 , nickname
+			 , score
+			 , replace(review, '&lt;br&gt;', ' ') review
+			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from survey
+		  join member using(user_no)
+		 <choose>
+		  	<when test="cno == 'all'">
+		 		where teacher_no = #{userNo}
+		  	</when>
+		  	<otherwise>
+		  		where class_no = #{cno}
+		  	</otherwise>
+		  </choose>
+		 order
+		    by survey_no desc
+	</select>
+	
+	<select id="selectReviewDetail" resultMap="surveyResult">
+		select
+			   class_title
+             , survey_no
+			 , nickname
+			 , score
+			 , review
+			 , to_char(s.create_date, 'YYYY-MM-DD') as create_date
+		  from survey s
+          join lecture l on s.class_no = l.class_no
+          join member m on s.user_no = m.user_no
+		 where survey_no = #{sno}
+	</select>
+	
+	<!--
+		월별집계 '전체클래스 수익조회' 
+		@author HeeRak
+	-->
+	<select id="monthlyStatsAll" resultType="MonthlyStats">
+		with dummy AS (
+					    <![CDATA[select extract(month from add_months(to_date('01/01/2021', 'MM/DD/YYYY'), level - 1)) month
+					      from dual
+					   connect by level <= 12]]>
+		    )
+		   , STATS AS (
+		   select extract(month from payment_date) as month
+		        , sum(price) loan 
+		     from payment
+		    where class_no in(
+		                        select class_no
+		                          from lecture
+		                         where user_no = #{userNo}
+		                        )
+		    and refund_status = 'N'
+		    and extract(year from payment_date) = 2021
+		  group
+		     by extract(month from payment_date)
+		  order
+		     by extract(month from payment_date)
+		   )
+		   SELECT month, NVL(LOAN, 0) LOAN
+		     FROM DUMMY 
+		     LEFT OUTER JOIN STATS USING(MONTH)
+		     ORDER BY MONTH
+	</select>
+	
+	<!--
+		월별집계 '한클래스 수익조회' 
+		@author HeeRak
+	-->
+	<select id="monthlyStatsLecture" resultType="MonthlyStats" parameterType="Lecture">
+		with dummy AS (
+					    <![CDATA[select extract(month from add_months(to_date('01/01/2021', 'MM/DD/YYYY'), level - 1)) month
+					      from dual
+					   connect by level <= 12]]>
+		    )
+		   , STATS AS (
+		   select extract(month from payment_date) as month
+		        , sum(price) loan 
+		     from payment
+		    where class_no in(
+		                        select class_no
+		                          from lecture
+		                         where class_no = #{classNo}
+		                        )
+		    and refund_status = 'N'
+		    and extract(year from payment_date) = 2021
+		  group
+		     by extract(month from payment_date)
+		  order
+		     by extract(month from payment_date)
+		   )
+		   SELECT month, NVL(LOAN, 0) LOAN
+		     FROM DUMMY 
+		     LEFT OUTER JOIN STATS USING(MONTH)
+		     ORDER BY MONTH
+	</select>
 </mapper>

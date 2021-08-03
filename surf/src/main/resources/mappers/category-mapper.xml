@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="categoryMapper">
+
+	<select id="selectCategory" resultType="string">
+		select
+		    maincat_name|| ',' || listagg(subcat_name, ',') within group (order by subcat_name) category
+		  from
+		    (
+		    select maincat_name, subcat_name
+		      from maincat
+		      join subcat using (maincat_no)
+		     order 
+		        by maincat_name
+		    )
+		 group
+		    by maincat_name
+	</select>
+	
+</mapper>
