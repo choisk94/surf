@@ -98,7 +98,7 @@
            <tbody>
                 	<c:forEach var="b" items="${list}">
 	                    <tr>
-	                    	<td><input name="RowCheck" type="checkbox" value="${ b.adNo }"/></td>
+	                    	<th><input name="RowCheck" type="checkbox" value="${ b.adNo }"/></th>
 	                        <td class="bno">${ b.adNo }</td>
 	                        <td>${ b.adTitle }</td>
 	                        <td>${ b.uploadDate }</td>
@@ -107,11 +107,18 @@
                    	</c:forEach>
                 </tbody>
         </table>
+        <script>
+    	$(function(){
+            $("#boardList>tbody>tr>td").click(function(){
+                location.href="detail.ad?bno=" + $(this).parent().children(".bno").text(); // $(this)가 원래 tr이었는데 td가 추가돼서 바꼈기때문에 다시 tr로 바꾸기 위해 parent 추가
+            })
+        })
+        </script>
+        <br>
              <div style="text-align: right;">
           <a type="button" class="btn btn-primary" href="adEnroll.ad">등록</a>
-          <a type="button" class="btn btn-success">수정</a>
-          <input type="button" value="선택삭제" class="btn btn-outline-info" onclick="motionValue(1);">
-          <input type="button" value="선택표시" class="btn btn-outline-info" onclick="motionValue(2);">
+          <input type="button" value="선택삭제" class="btn btn-danger" onclick="motionValue(1);">
+          <input type="button" value="선택표시" class="btn btn-warning" onclick="motionValue(2);">
         </div>
             <br>
 

@@ -54,5 +54,18 @@ public class AdminServiceImpl implements AdminService{
 	public Member selectAdmin(int userNo) {
 		return aDao.selectAdmin(userNo, sqlSession);
 	}
+	//광고 상세조회용
+	@Override
+	public int increaseCount(int adNo) {
+		return aDao.increaseCount(sqlSession, adNo);
+	}
+	@Override
+	public Ad selectAd(int adNo) {
+		return aDao.selectAd(sqlSession, adNo);
+	}
+	@Override
+	public int updateAd(Ad ad) {
+		return aDao.updateAd(sqlSession, ad);
+	}
 
 }

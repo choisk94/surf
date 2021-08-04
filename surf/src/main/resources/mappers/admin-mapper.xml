@@ -27,6 +27,15 @@
 		<result column="count" property="count"/>
 	</resultMap>
 	
+	<resultMap id="selectAd" type="Ad">
+		<result column="ad_no" property="adNo"/>
+		<result column="ad_title" property="adTitle"/>
+		<result column="ad_link" property="adLink"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		<result column="upload_date" property="uploadDate"/>
+	</resultMap>
+	
 	<select id="selectAdmin" resultMap="memberResult">
 		SELECT
             USER_NO,
@@ -86,6 +95,24 @@
 		 order
 		    by ad_no desc
 	</select>
+	<!-- 광고 상세조회 -->
+	<update id="increaseCount">
+		update
+		       ad
+		   set count = count+1
+		 where ad_no = #{adNo}
+	</update>
+	<select id="selectAd" resultMap="selectAd">
+		select
+				Ad_NO
+			,	AD_TITLE
+			,	AD_LINK
+			,	ORIGIN_NAME
+			,	CHANGE_NAME
+			,	UPLOAD_DATE
+		FROM 	AD
+		WHERE	AD_NO = #{adNo}
+	</select>
 	
 	<!-- 게시물 선택 삭제  -->
     <delete id="delete">
@@ -99,6 +126,17 @@
 		       ad
 		   set ad_status = 'Y'
 		 where ad_no = #{adNo}
+    </update>
+    
+    <!-- 광고 수정 -->
+    <update id="updateAd">
+    	update
+    			ad
+    		set	ad_title = #{adTitle}
+    		  ,	ad_link	= #{adLink}
+    		  , origin_name = #{originName}
+    		  , change_name = #{changeName}
+    	  where	ad_no = #{adNo}
     </update>
 	
 	
