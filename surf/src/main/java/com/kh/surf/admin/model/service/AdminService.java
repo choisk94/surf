@@ -9,19 +9,24 @@ import com.kh.surf.member.model.vo.Member;
 
 public interface AdminService {
 
-	//어드민 로그인용 서비스
+		//1.어드민 로그인용 서비스
 		Member loginAdmin(Member m);
-
 		int insertAd(Ad a);
-		
-		// 1. 게시판 리스트 페이지 조회용 (페이징)
+		//2. 게시판 리스트 페이지 조회용 (페이징)
 		int selectListCount();
 		ArrayList<Ad> selectList(PageInfo pi);
-		
-		//게시물 선택 삭제
+		//3.게시물 선택 삭제
 		void delete(String adNo);
-		//광고베너 표시
+		//4.광고베너 표시
 		void update(String adNo);
+		//5.관리자페이지 이동
+		Member selectAdmin(int userNo);
+		//6.광고 상세조회용
+		int increaseCount(int adNo);
+		Ad selectAd(int adNo);
+		//7.광고 수정용
+		int updateAd(Ad ad);
+		
 }
 		
 

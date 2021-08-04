@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.dao.LectureDao;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 
 @Service

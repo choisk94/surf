@@ -35,6 +35,22 @@
 		<result column="type" property="type"/>
 		<result column="scrap_date" property="scrapDate"/>
 	</resultMap>
+	
+	<resultMap id="classVideoResult" type="ClassVideo">
+		<result column="video_no" property="videoNo"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_order" property="chapOrder"/>
+		<result column="video_order" property="videoOrder"/>
+		<result column="sub_title" property="subTitle"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+	</resultMap>
+	
+	<resultMap id="chapterResult" type="Chapter">
+		<result column="chap_order" property="chapOrder"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_name" property="chapName"/>
+	</resultMap>
   	
   	<!-- 
   		@author HeeRak
@@ -110,5 +126,45 @@
 		 order
 		    by create_date desc
 	</select>
+	
+	<!-- 
+		한 클래스 '클래스 챕터 목록'
+		@author HeeRak
+	 -->
+	<select id="selectChapterList" resultMap="chapterResult">
+		select chap_order
+			 , class_no
+		     , chap_name
+		  from chapter
+		 where class_no = #{classNo}
+		 order
+		    by chap_order asc
+	</select>
   	
+  	
+  	<!-- 
+		한 클래스 '클래스 비디오 목록'
+		@author HeeRak
+	 -->
+  	<select id="ajaxSelectVideoList" resultMap="classVideoResult">
+		select 
+		       video_no
+		     , chap_order
+		     , sub_title
+		     , change_name
+		  from class_video
+		 where class_no = #{classNo}
+		 order
+    	    by video_no asc
+	</select>
+	
+	<!-- 
+		
+	 -->
+	<update id="ajaxUpdateClassStuding" parameterType="ClassStuding">
+		update class_studing
+		   set video_no = #{videoNo}
+		 where user_no = #{userNo}
+		   and class_no =  #{classNo}
+	</update>
 </mapper>

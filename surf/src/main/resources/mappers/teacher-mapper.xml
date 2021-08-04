@@ -10,6 +10,7 @@
 		<result column="intro_content" property="introContent"/>
 		<result column="subcat_no" property="subCatNo"/>
 		<result column="status" property="status"/>
+		<result column="class_title" property="classTitle"/>
 	</resultMap>
 	
 	<resultMap id="lectureResult" type="Lecture">
@@ -309,6 +310,21 @@
 		  </if>
 		 order
 		    by inquiry_no desc
+	</select>
+	
+	<!-- 
+		클래스 번호로 '강사 정보 조회'
+		@author HeeRak
+	-->
+	<select id="selectTeacherByClassNo" resultMap="teacherResult" parameterType="_int">
+		select 
+		       teacher_no
+		     , profile_image
+		     , nickname
+		     , class_title
+		  from teacher
+		  join lecture on(teacher_no = user_no)
+		 where class_no = #{class_no}
 	</select>
 	
 </mapper>

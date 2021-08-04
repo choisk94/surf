@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 
 @Repository
@@ -30,6 +31,5 @@ public class LectureDao {
 		
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectFundingList", null, rowBounds);
 	}
-	
 	
 }
