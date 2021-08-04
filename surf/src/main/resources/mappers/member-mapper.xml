@@ -83,7 +83,7 @@
 		update 
 		    member
 		   set password = #{password}
-		 where user_no = #{userNo}
+		 where email = #{email}
 	</update>	
 	
 	<update id="deleteMember">

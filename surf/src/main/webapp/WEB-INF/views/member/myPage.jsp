@@ -187,7 +187,7 @@
 									url:"updatePwd.do",
 									type:"post",
 									data:{
-										userNo:${loginUser.userNo},
+										email:'${loginUser.email}',
 										password:$("#newPwd").val()
 									}, success:function(result){
 										if(result == "YYY"){
