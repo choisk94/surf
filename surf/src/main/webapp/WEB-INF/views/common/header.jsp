@@ -246,7 +246,7 @@
 	                            </button>
     
                                 <button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
-                                <button type="button" onclick="location.href='findIdPwd.me';" class="btn btn-secondary loginButtons" style="width: 93%;">비밀번호  찾기</button>
+                                <button type="button" onclick="location.href='findPwdForm.me';" class="btn btn-secondary loginButtons" style="width: 93%;">비밀번호  찾기</button>
                             </form>
                         </div>
                     </div>

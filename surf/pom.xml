@@ -216,6 +216,13 @@
 		    <version>2.8.5</version>
 		</dependency>
 		
+		<!-- 비밀번호찾기 이메일 전송 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-email</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		
 	</dependencies>
 	
 	

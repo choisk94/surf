@@ -150,10 +150,10 @@ public class AdminController {
 		int result = aService.insertAd(a);
 		
 		if(result > 0) { // �꽦怨� => 寃뚯떆湲� 由ъ뒪�듃�럹�씠吏�
-			session.setAttribute("alertMsg", "�꽦怨듭쟻�쑝濡� 寃뚯떆湲��씠 �벑濡앸릺�뿀�뒿�땲�떎.");
+			session.setAttribute("alertMsg", ".");
 			return "redirect:list.bo";
 		}else { // �떎�뙣 => �뿉�윭�럹�씠吏�
-			model.addAttribute("errorMsg", "寃뚯떆湲� �벑濡� �떎�뙣");
+			model.addAttribute("errorMsg", "");
 			return "common/errorPage";
 		}
 		
@@ -169,7 +169,7 @@ public class AdminController {
 		
 		String changeName = currentTime + ranNum + ext;
 		
-		try {
+		try { 
 			upfile.transferTo(new File(savePath + changeName));
 		} catch (IllegalStateException e) {
 			e.printStackTrace();

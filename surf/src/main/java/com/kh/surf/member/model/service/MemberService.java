@@ -21,5 +21,6 @@ public interface MemberService {
 	
 	// 아이디 중복체크
 	int idCheck(String userId);
+	
 
 }

@@ -50,4 +50,5 @@ public class MemberDao {
 	public int deleteMember(SqlSessionTemplate sqlSession, int userNo) {
 		return sqlSession.update("memberMapper.deleteMember", userNo);
 	}
+	
 }
