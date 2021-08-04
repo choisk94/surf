@@ -1,6 +1,12 @@
 package com.kh.surf.member.model.service;
 
+import java.util.ArrayList;
+
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassStuding;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface MemberService {
 	
@@ -21,5 +27,17 @@ public interface MemberService {
 	
 	// 아이디 중복체크
 	int idCheck(String userId);
-
+	
+	// 클래스 번호로 '강사 정보' 가져오기
+	Teacher selectTeacherByClassNo(int classNo);
+	
+	// 클래스 번호로 '강의챕터목록' 가져오기
+	ArrayList<Chapter> selectChapterList(int classNo);
+	
+	// 클래스 번호로 '강의영상목록' 가져오기
+	ArrayList<ClassVideo> ajaxSelectVideoList(int classNo);
+	
+	// 마지막 비디오 시청 기록
+	int ajaxUpdateClassStuding(ClassStuding cs);
+	
 }

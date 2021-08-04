@@ -1,9 +1,15 @@
 package com.kh.surf.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassStuding;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
 public class MemberDao {
@@ -49,5 +55,37 @@ public class MemberDao {
 	 */
 	public int deleteMember(SqlSessionTemplate sqlSession, int userNo) {
 		return sqlSession.update("memberMapper.deleteMember", userNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 클래스 번호로 강사 정보 조회
+	 */
+	public Teacher selectTeacherByClassNo(int classNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("teacherMapper.selectTeacherByClassNo", classNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 클래스 번호로 강의챕터목록 조회
+	 */
+	public ArrayList<Chapter> selectChapterList(int classNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectChapterList", classNo);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 클래스 번호로 강의영상목록 조회
+	 */
+	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoList", classNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 마지막 영상 시청 기록
+	 */
+	public int ajaxUpdateClassStuding(ClassStuding cs, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.ajaxUpdateClassStuding", cs);
 	}
 }

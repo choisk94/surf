@@ -20,6 +20,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+<!--2. alertify CDN -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
 <style>
     /*Bookmark on, off*/
     .bookmark-on {background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxwYXRoIGQ9Ik00MjYuNjY3LDBIMTA3LjY2OUM0OC4yMTMsMCwwLDQ4LjIxMywwLDEwNy42Njl2MzgyLjk5N2MwLDguMzg0LDQuODg1LDE1Ljk1NywxMi41MjMsMTkuNDEzDQoJCQljNy41NzMsMy40NTYsMTYuNTMzLDIuMTU1LDIyLjg0OC0zLjM0OUwxOTIsMzY5LjY4NWwxNTYuNjI5LDEzNy4wNDVjMy45NDcsMy40NTYsOC45ODEsNS4yNjksMTQuMDM3LDUuMjY5DQoJCQljMi45ODcsMCw1Ljk5NS0wLjYxOSw4LjgxMS0xLjkyYzcuNjM3LTMuNDU2LDEyLjUyMy0xMS4wMjksMTIuNTIzLTE5LjQxM1YyNTZoMTA2LjY2N2MxMS43NzYsMCwyMS4zMzMtOS41NTcsMjEuMzMzLTIxLjMzMw0KCQkJVjg1LjMzM0M1MTIsMzguMjA4LDQ3My43OTIsMCw0MjYuNjY3LDB6IE00NjkuMzMzLDIxMy4zMzNIMzg0di0xMjhjMC0yMy41MzEsMTkuMTM2LTQyLjY2Nyw0Mi42NjctNDIuNjY3DQoJCQlzNDIuNjY3LDE5LjEzNiw0Mi42NjcsNDIuNjY3VjIxMy4zMzN6Ii8+DQoJPC9nPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=)}
@@ -48,18 +54,39 @@
         height: 80px;
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
     }
-    .head>div{
-        font-weight: 700px;
+    .lecture-list-btn, .home-btn, .degree{
         float: left;
-        text-align: center;
-        font-size: 18px;
         height: 40px;
-        color: white;
-        line-height: 40px;
         border-radius: 3px;
         margin-left: 20px;
         margin-top: 20px;
     }
+    .lecture-list-btn, .home-btn{
+        line-height: 40px;
+        font-weight: 700px;
+        text-align: center;
+        font-size: 18px;
+        color: white;
+    }
+
+    .degree{
+        font-size:12px;
+        font-weight: 900;
+        color: orange;
+        margin-left: 30px;
+        margin-right: 600px;
+    }
+    .progress{
+        width:170px;
+        height: 10px;
+    }
+    .progress-bar{
+        background:orangered;
+        height: 10px;
+    }
+    
+
+
     .home-btn{
         width: 80px;
         font-weight: 700;
@@ -116,6 +143,7 @@
         width: 750px;
         height: 400px;
         border: 1px solid rgb(32, 155, 212, 0.1);
+        border-radius: 5px;
     }
 
     .left-box>div:last-child{
@@ -193,12 +221,24 @@
         font-weight: 700;
         background: rgba(211, 211, 211, 0.1);
     }
+
+    .home-btn:hover, .lecture-list-btn:hover{
+        cursor: pointer;
+        opacity: 0.9;
+    }
 </style>
 </head>
 <body>
 	<div class="outer">
         <div class="head">
-            <div class="home-btn">SURF</div> <div class="lecture-list-btn">내 강의 목록</div>
+            <div class="home-btn">SURF</div> 
+            <div class="lecture-list-btn">내 강의 목록</div>
+            <div class="degree">
+                70% 시청완료
+                <div class="progress">
+                    <div class="progress-bar" style="width:70%"></div>
+                </div>
+            </div>
         </div>
         <div class="content-box">
             <div class="left-box">
@@ -214,7 +254,10 @@
                 </div>
                 <div align="center">
                     <div class="video-area">
-
+                        <video id="video" width="750" height="400" controls controlsList="nodownload">
+                            <source>
+                            <h2>이 브라우저에서는 지원하지 않습니다.</h2>
+                        </video>
                     </div>
                 </div>
                 <div align="center">
@@ -250,19 +293,53 @@
             </div>
         </div>
     </div>
+<script>
+    $(function(){
+    $('.home-btn').click(function(){
+        location.href="<%=request.getContextPath()%>";
+    })
+    $('.lecture-list-btn').click(function(){
+        //                                                                  ★강의목록 페이지 요청값 넣을것
+        location.href="";
+    })
 
-    <script>
-        $(function(){
-            $('.bookmark').click(function(){
-                    if($(this).hasClass('bookmark-off')){
-                        $(this).removeClass('bookmark-off').addClass('bookmark-on');
-                    }else{
-                        $(this).removeClass('bookmark-on').addClass('bookmark-off');
-                    }
-                })
-            
+    // video duration관련 (시청여부)
+    var videocontrol = document.getElementById("video");
+    var duration;
+    videocontrol.addEventListener("play", function(){
+        duration = this.duration;
+        
+        setTimeout(function(){
+            finishedWatching("${videoNo}");
+        }, duration*1000);
+    });
+
+    // 시청완료시 ajax 실행
+    function finishedWatching(videoNo){
+        $.ajax({
+            url:"JqAjaxfinishedWatching.le",
+            data:{'videoNo': videoNo},
+            success:function(result){
+                alertify.alert("시청완료");                                         // ajax 완성할것
+            },error:function(){
+                
+            }
         })
+    }
 
-    </script>
+    // bookmark css기능관련
+    $('.bookmark').click(function(){
+        if($(this).hasClass('bookmark-off')){
+            $(this).removeClass('bookmark-off').addClass('bookmark-on');
+        }else{
+            $(this).removeClass('bookmark-on').addClass('bookmark-off');
+        }
+    })
+
+    // bookmark ajax
+
+    })
+</script>
+
 </body>
 </html>

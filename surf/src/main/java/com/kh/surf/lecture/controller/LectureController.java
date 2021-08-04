@@ -2,6 +2,8 @@ package com.kh.surf.lecture.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.service.LectureService;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.member.model.vo.Member;
 
 @Controller
 public class LectureController {
@@ -37,5 +41,6 @@ public class LectureController {
 		return mv;
 		
 	}
+	
 	
 }

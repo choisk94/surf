@@ -3,6 +3,7 @@ package com.kh.surf.lecture.model.service;
 import java.util.ArrayList;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 
 public interface LectureService {
@@ -13,5 +14,6 @@ public interface LectureService {
 	 */
 	int selectFundingCount();
 	ArrayList<Lecture> selectFundingList(PageInfo pi);
-
+	
+	
 }

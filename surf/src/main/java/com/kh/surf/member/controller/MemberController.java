@@ -1,5 +1,7 @@
 package com.kh.surf.member.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.member.model.service.MemberService;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
 public class MemberController {
@@ -197,5 +201,29 @@ public class MemberController {
 		
 		return mv;
 		
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 학생 클래스비디오 목록 view
+	 */
+	@RequestMapping("lectureVideoList.le")
+	public ModelAndView selectLectureVideoList(HttpSession session,
+										 	   int classNo,
+										 	   ModelAndView mv) {
+		
+		
+		// 클래스 번호로 강사 정보 가져오기
+		Teacher t = mService.selectTeacherByClassNo(classNo);
+		
+		// 클래스번호 로 비디오목록 가져오기
+		ArrayList<Chapter> list = mService.selectChapterList(classNo);
+		
+		mv.addObject("t", t)
+		  .addObject("classNo", classNo)
+		  .addObject("list", list)
+		  .setViewName("lecture/lectureVideoList");
+		
+		return mv;
 	}
 }
