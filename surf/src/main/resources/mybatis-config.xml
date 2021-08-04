@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="Studing"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ScrapSupport" alias="ScrapSupport"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassInquiry" alias="ClassInquiry"/>
+		<typeAlias type="com.kh.surf.adminBoard.model.vo.AdminBoard" alias="AdminBoard"/>
 	</typeAliases>
 	
 	<mappers>
