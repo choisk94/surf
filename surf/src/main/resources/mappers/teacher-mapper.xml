@@ -281,7 +281,7 @@
 		  		where class_no = #{cno}
 		  	</otherwise>
 		  </choose>
-		  <if test="status != 'all'">
+		  <if test="condition != 'all'">
 		  	and ans_content is null
 		  </if>
 	</select>
@@ -304,7 +304,7 @@
 		  		where class_no = #{cno}
 		  	</otherwise>
 		  </choose>
-		  <if test="status != 'all'">
+		  <if test="condition != 'all'">
 		  	and ans_content is null
 		  </if>
 		 order

@@ -227,27 +227,24 @@ public class TeacherController {
 	public ModelAndView selectInquiryList(HttpSession session, ModelAndView mv, 
 			@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 			@RequestParam(value="cno", defaultValue="all") String cno,
-			@RequestParam(value="status", defaultValue="all") String status) {
+			@RequestParam(value="condition", defaultValue="all") String condition) {
 		
 		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
 
 		HashMap<String, String> map = new HashMap<>();
 		map.put("userNo", userNo);
 		map.put("cno", cno);
-		map.put("status", status);
+		map.put("condition", condition);
 			
 		ArrayList<Lecture> clist = tService.selectClassList(userNo);
 		
 		int inquiryCount = tService.selectInquiryCount(map);
 		
-		System.out.println(inquiryCount);
-			
 		PageInfo pi = Pagination.getPageInfo(inquiryCount, currentPage, 10, 12);
 		ArrayList<ClassInquiry> ilist = tService.selectInquiryList(pi, map);
-		
-		System.out.println(ilist);
-		
+
 		mv.addObject("cno", cno)
+		  .addObject("condition", condition)
 		  .addObject("clist", clist)
 		  .addObject("pi", pi)
 		  .addObject("ilist", ilist)

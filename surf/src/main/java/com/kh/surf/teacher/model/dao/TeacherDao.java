@@ -148,7 +148,10 @@ public class TeacherDao {
 
 	
 	public ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map , SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("teacherMapper.selectInquiryList", map);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectInquiryList", map, rowBounds);
 	}
 	
 }

@@ -85,7 +85,7 @@
 <body>
 
 	<jsp:include page="common/teacherPage.jsp" />
-	
+
 	<div id="content">
 		<div id="page-title">클래스 관리 > 문의 조회 및 답변</div>
 		<div id="select-wrap">
@@ -97,37 +97,48 @@
 				</c:forEach>
 			</select>
 		</div>
-		
+
 		<script>
 			$(function(){
 	    		$("#select-class").change(function(){
-	    			location.href="classInquiry.te?cno=" + $(this).val();
+	    			if("${ condition }" != "") {
+		    			location.href="classInquiry.te?cno=" + $(this).val() + "&condition=" + "<c:out value='${ condition }'/>";
+	    			}else{
+	    				location.href="classInquiry.te?cno=" + $(this).val();
+	    			}
+	    			
 	    		})
 	    		$("#select-class option[value=${cno}]").attr("selected", true);
 	    	})
 		</script>
-		
+
 		<div id="check-wrap">
 			<div class="form-check">
 				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input inquiry-check" name="status" value="noCM">
+					<input type="checkbox" class="form-check-input inquiry-check" name="condition" value="noCM">
 					대기 중인 문의만 조회
 				</label>
 			</div>
 		</div>
-		
+
+
 		<script>
 			$(function(){
 	    		$(".inquiry-check").change(function(){
 	    			if($(".inquiry-check").is(":checked") == true) {
-		    			location.href="classInquiry.te?status=" + $(this).val();
+		    			location.href="classInquiry.te?cno=" + "<c:out value='${ cno }'/>" + "&condition=" + $(this).val();
 	    			}else{
-	    				location.href="classInquiry.te?status=all";
+	    				location.href="classInquiry.te?cno=" + "<c:out value='${ cno }'/>" + "&condition=all";
 	    			}
 	    		})
+	    		
+	    		if("${ condition }" == "noCM") {
+	    			console.log("hi");
+		    		$(".inquiry-check").prop("checked", true);
+	    		}
 	    	})
 		</script>
-
+ 
 		<table class="table table-hover" id="class-list" align="center">
 			<thead class="thead-light">
 				<tr>
@@ -139,25 +150,48 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="text-center">${ ilist.inquiryNo }</td>
-					<td>${ ilist.inqContent }</td>
-					<td class="text-center">${ ilist.userNo }</td>
-					<td class="text-center">${ ilist.inqDate }</td>
-					<td class="text-center">
-						<c:choose>
-							<c:when test="${ empty ilist.ansContent }">대기</c:when>
-							<c:otherwise>완료</c:otherwise>
-						</c:choose>
-					</td>
-				</tr>
-				
+
+				<c:choose>
+					<c:when test="${ empty ilist }">
+						<tr>
+							<td colspan="5" class="text-center">해당되는 문의가 없습니다.</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+
+						<c:forEach var="i" items="${ ilist }">
+
+							<tr class="inquiry-line">
+								<td class="text-center ino">${ i.inquiryNo }</td>
+								<td>${ i.inqContent }</td>
+								<td class="text-center">${ i.userNo }</td>
+								<td class="text-center">${ i.inqDate }</td>
+								<td class="text-center">
+									<c:choose>
+										<c:when test="${ empty i.ansContent }">대기</c:when>
+										<c:otherwise>완료</c:otherwise>
+									</c:choose>
+								</td>
+							</tr>
+
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+
+				<script>
+		            	$(function(){
+		            		$(".inquiry-line").click(function(){
+		            			location.href="inquiryDetail.te?ino=" + $(this).children(".ino").text();
+		            		})
+		            	})
+		        </script>
+
 			</tbody>
 		</table>
-		
+
 		<div id="paging-wrap">
 			<div id="pagination">
-				<c:if test="${ !empty rlist }">
+				<c:if test="${ !empty ilist }">
 					<ul class="pagination">
 						<c:choose>
 							<c:when test="${ pi.currentPage eq 1 }">
@@ -176,8 +210,18 @@
 									<li class="page-item"><a class="page-link"><b>${ p }</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link"
-										href="classInquiry.te?currentPage=${ p }&cno=${ cno }">${ p }</a></li>
+								
+									<c:choose>
+										<c:when test="${ condition ne 'all' }">
+											<li class="page-item"><a class="page-link"
+											href="classInquiry.te?currentPage=${ p }&cno=${ cno }&condition=${ condition }">${ p }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link"
+											href="classInquiry.te?currentPage=${ p }&cno=${ cno }">${ p }</a></li>
+										</c:otherwise>
+									</c:choose>
+									
 								</c:otherwise>
 							</c:choose>
 
@@ -196,11 +240,12 @@
 				</c:if>
 			</div>
 		</div>
+		
 	</div>
 	</div>
 	</div>
-	
+
 	<jsp:include page="../common/footer.jsp" />
-	
+
 </body>
 </html>
