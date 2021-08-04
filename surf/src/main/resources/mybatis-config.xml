@@ -17,6 +17,11 @@
 		<typeAlias type="com.kh.surf.payment.model.vo.Payment" alias="Payment"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="Studing"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ScrapSupport" alias="ScrapSupport"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassInquiry" alias="ClassInquiry"/>
+		<typeAlias type="com.kh.surf.adminBoard.model.vo.AdminBoard" alias="AdminBoard"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassVideo" alias="ClassVideo"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.Chapter" alias="Chapter"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="ClassStuding"/>
 	</typeAliases>
 	
 	<mappers>

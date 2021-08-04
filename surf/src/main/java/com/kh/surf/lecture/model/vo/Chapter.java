@@ -13,7 +13,7 @@ import lombok.ToString;
 public class Chapter {
 	private int chapOrder;
 	private int classNo;
-	private int chapName;
+	private String chapName;
 	
 	// Has many 관계
 	private ArrayList<ClassVideo> classVideoList;

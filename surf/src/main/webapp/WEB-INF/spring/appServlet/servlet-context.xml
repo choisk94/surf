@@ -23,20 +23,22 @@
 	
 	<context:component-scan base-package="com.kh.surf" />
 	
-	
 	<interceptors>
-	<!-- 인터셉터 등록 (나중에 필요할 때 해주기)
 		<interceptor>
 			<mapping path="/myPage.me"/>
+			<!-- header에서 찜하기 | 내클래스 가는 url 다 추가해야됨!! 
 			<mapping path="/enrollForm.bo"/>
-			<beans:bean id="loginInterceptor" class="com.kh.spring.common.interceptor.LoginInterceptor"/>
+			 -->
+			<beans:bean id="loginInterceptor" class="com.kh.surf.common.interceptor.LoginInterceptor"/>
 		</interceptor>
-	-->
+		
 		<interceptor>
 			<mapping path="/updateForm.te"/>
 			<mapping path="/classReview.te"/>
 			<mapping path="/reviewDetail.te"/>
+			<mapping path="/classInquiry.te"/>
 			<mapping path="/monthlyStatsView.te"/>
+			<mapping path="/lectureList.te"/>
 			<beans:bean id="teacherInterceptor" class="com.kh.surf.common.interceptor.TeacherInterceptor"/>
 		</interceptor>
 	</interceptors>

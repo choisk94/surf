@@ -38,55 +38,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>59</td>
-              <td align="left">[공지] 개인정보 취급방침 개정 안내</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>58</td>
-              <td align="left">[공지] 개인정보 취급방침 개정 안내</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>57</td>
-              <td align="left">[이벤트] 하계이벤트!</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>56</td>
-              <td align="left">[공지] 네이버페이 추가</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>55</td>
-              <td align="left">[공지] 개인정보 취급방침 개정 안내</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>54</td>
-              <td align="left">[공지] 개인정보 취급방침 개정 안내</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <td>53</td>
-              <td align="left">[공지] 개인정보 취급방침 개정 안내</td>
-              <td>surf01</td>
-              <td>2021-07-10</td>
-              <td>100</td>
-            </tr>
+          	<c:forEach var="ab" items="${ list }">
+	            <tr>
+	              <td>${ ab.boardNo }</td>
+	              <td align="left">{ ab.boardTitle }</td>
+	              <td>${ ab.userNo }</td>
+	              <td>${ ab.createDate }</td>
+	              <td>${ ab.count }</td>
+	            </tr>
+      		</c:forEach>
           </tbody>
         </table>
         <br>
@@ -95,13 +55,27 @@
         </div>
         <!--여기서부터 페이지이동-->
         <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="#">이전</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">4</a></li>
-          <li class="page-item"><a class="page-link" href="#">5</a></li>
-          <li class="page-item"><a class="page-link" href="#">다음</a></li>
+        	<c:choose>	
+        		<c:when test="${ pi.currentPage eq 1 }">
+	          		<li class="page-item disabled"><a class="page-link">이전</a></li>
+	          	</c:when>
+	          	<c:otherwise>
+	          		<li class="page-item"><a class="page-link" href="noticeList.ad?currentPage=${ pi.currentPage-1 }">이전</a></li>
+           		</c:otherwise>
+            </c:choose>
+            
+            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.maxPage }">
+          		<li class="page-item"><a class="page-link" href="noticeList.ad?currentPage=${ p }">${ p }</a></li>
+          	</c:forEach>
+          	
+          	<c:choose>
+          		<c:when test="${ pi.currentPage eq pi.maxPage }">
+		          	<li class="page-item disabled"><a class="page-link">다음</a></li>
+		    	</c:when>
+		    	<c:otherwise>      	
+		          	<li class="page-item"><a class="page-link" href="noticeList.ad?currentPage=${ pi.currentPage+1 }">다음</a></li>
+          		</c:otherwise>
+          	</c:choose>
         </ul>
       </div>
 	 

@@ -17,6 +17,8 @@
   		<result column="price" property="price"/>
   		<result column="subcat_no" property="subcatNo"/>
   		<result column="user_no" property="userNo"/>
+		<result column="count" property="fundingCount"/>
+		<result column="nickname" property="teacherName"/>
   	</resultMap>
   	
   	<resultMap id="studingResult" type="Studing">
@@ -32,6 +34,22 @@
 		<result column="class_no" property="classNo"/>
 		<result column="type" property="type"/>
 		<result column="scrap_date" property="scrapDate"/>
+	</resultMap>
+	
+	<resultMap id="classVideoResult" type="ClassVideo">
+		<result column="video_no" property="videoNo"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_order" property="chapOrder"/>
+		<result column="video_order" property="videoOrder"/>
+		<result column="sub_title" property="subTitle"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+	</resultMap>
+	
+	<resultMap id="chapterResult" type="Chapter">
+		<result column="chap_order" property="chapOrder"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_name" property="chapName"/>
 	</resultMap>
   	
   	<!-- 
@@ -49,5 +67,104 @@
   		    by create_date asc
   	</select>
   	
+  	<!-- 
+		@author leeyeji
+		펀딩 클래스 페이징	
+	 -->
+	 <select id="selectFundingCount" resultType="_int">
+	 	select
+	 		   count(*)
+	 	  from class_funding 
+	 </select>
+	
+	<!-- 
+		@author leeyeji
+		펀딩 클래스 조회용
+	 -->
+	<select id="selectFundingList" resultMap="lectureResult">
+		select 
+               class_no
+             , thumbnail
+             , class_title
+             , create_date
+             , f.count
+             , t.nickname
+          from lecture l
+          join class_funding f using(class_no)
+          join teacher t on(l.user_no = t.teacher_no)
+         where l.status = 'F'
+         order 
+            by create_date desc
+	</select>
+	
+  	<!--
+		한 강사의 '클래스 목록 수' 
+		@author HeeRak
+	-->
+	<select id="selectLectureListCount" resultType="_int">
+		select count(*)
+		  from lecture
+		 where status != 'D'
+		   and user_no = #{userNo}
+	</select>
+	
+	<!--
+		한 강사의 '클래스 목록'
+		@author HeeRak
+	-->
+	<select id="selectLectureByTeacher" resultMap="lectureResult">
+		select 
+			   class_no
+			 , class_title
+			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+			 , thumbnail
+			 , status
+			 , subcat_no
+		  from lecture
+		 where status != 'D'
+		   and user_no = #{userNo}
+		 order
+		    by create_date desc
+	</select>
+	
+	<!-- 
+		한 클래스 '클래스 챕터 목록'
+		@author HeeRak
+	 -->
+	<select id="selectChapterList" resultMap="chapterResult">
+		select chap_order
+			 , class_no
+		     , chap_name
+		  from chapter
+		 where class_no = #{classNo}
+		 order
+		    by chap_order asc
+	</select>
   	
+  	
+  	<!-- 
+		한 클래스 '클래스 비디오 목록'
+		@author HeeRak
+	 -->
+  	<select id="ajaxSelectVideoList" resultMap="classVideoResult">
+		select 
+		       video_no
+		     , chap_order
+		     , sub_title
+		     , change_name
+		  from class_video
+		 where class_no = #{classNo}
+		 order
+    	    by video_no asc
+	</select>
+	
+	<!-- 
+		
+	 -->
+	<update id="ajaxUpdateClassStuding" parameterType="ClassStuding">
+		update class_studing
+		   set video_no = #{videoNo}
+		 where user_no = #{userNo}
+		   and class_no =  #{classNo}
+	</update>
 </mapper>

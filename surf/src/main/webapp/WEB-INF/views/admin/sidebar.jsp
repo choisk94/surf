@@ -71,7 +71,7 @@
               <li><a href="#">고객센터관리</a>
                 <ul class="sub">
                   <li><a href="#"> > FAQ</a></li>
-                  <li><a href="#"> > 공지사항</a></li>
+                  <li><a href="noticeList.ad"> > 공지사항</a></li>
                 </ul>
               </li>
               <li><a href="#">커뮤니티관리</a>

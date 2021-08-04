@@ -48,12 +48,12 @@
                     </div>
                 </div>
                 <div>
-                    <form action="" method="POST">
+                    <form action="delete.me" method="POST">
                         <!-- 아이디 -->
+                        <input type="hidden" name="userNo" value="${ loginUser.userNo }">
                         <div class="form-group">
                             <label for="userPwd" class="mt-4">현재 비밀번호</label>
-                            <input type="password" class="form-control" id="userPwd" name="userPwd" placeholder="비밀번호"
-                                required>
+                            <input type="password" class="form-control" id="userPwd" name="password" placeholder="비밀번호" required>
                         </div>
 
                         <!-- submit 버튼 -->

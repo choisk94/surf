@@ -1,14 +1,19 @@
 package com.kh.surf.lecture.model.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
-import com.kh.surf.lecture.model.dao.LectureDao;
+import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Lecture;
 
-@Service
-public class LectureService{
+public interface LectureService {
 	
-	@Autowired
-	private LectureDao lDao;
+	/**
+	 * @author leeyeji
+	 * 펀딩 클래스 조회용
+	 */
+	int selectFundingCount();
+	ArrayList<Lecture> selectFundingList(PageInfo pi);
+	
 	
 }

@@ -8,16 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.lecture.model.vo.Survey;
-import java.util.List;
-import java.util.Map;
-
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
-
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -106,6 +100,58 @@ public class TeacherDao {
 	 */
 	public Survey selectReviewDetail(int sno, SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("teacherMapper.selectReviewDetail", sno);
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return (한 강사의)클래스 목록 수
+	 */
+	public int selectLectureListCount(int userNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.selectLectureListCount", userNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * @return (한 강사의)클래스 목록
+	 */
+	public ArrayList<Lecture> selectLectureByTeacher(int userNo, PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureByTeacher", userNo, rowBounds);
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return 클래스 펀딩승인처리 결과
+	 */
+	public int startFunding(Lecture l, SqlSessionTemplate sqlSession) {
+		int result1 = sqlSession.insert("teacherMapper.insertFunding", l);
+		int result2 = sqlSession.update("teacherMapper.startFunding", l);
+		return result1 * result1;
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return 클래스 삭제요청처리 결과
+	 */
+	public int deleteLecture(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("teacherMapper.deleteLecture", l);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 조회할 문의의 총 개수
+	 */
+	public int selectInquiryCount(HashMap<String, String> map , SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("teacherMapper.selectInquiryCount", map);
+	}
+
+	
+	public ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map , SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectInquiryList", map, rowBounds);
 	}
 	
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.lecture.model.vo.Lecture;
@@ -62,7 +63,7 @@ public class TeacherServiceImpl implements TeacherService{
 	
 	/**
 	 * @author WooJoo
-	 * 후기 조회 가능한 클래스 목록 조회 
+	 * 조회 가능한 클래스 목록 조회 
 	 */
 	@Override
 	public ArrayList<Lecture> selectClassList(String userNo) {
@@ -125,5 +126,75 @@ public class TeacherServiceImpl implements TeacherService{
 	public ArrayList<MonthlyStats> monthlyStatsLecture(int classNo) {
 		return tDao.monthlyStatsLecture(classNo, sqlSession);
 	}
+
+	/**
+	 * @author HeeRak
+	 * 강사의 클래스 목록 수 조회
+	 */
+	@Override
+	public int selectLectureListCount(int userNo) {
+		return tDao.selectLectureListCount(userNo, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 강사의 클래스정보 목록 조회
+	 */
+	@Override
+	public ArrayList<Lecture> selectLectureByTeacher(int userNo, PageInfo pi) {
+		return tDao.selectLectureByTeacher(userNo, pi, sqlSession);
+	}
+
+
+	/**
+	 * @author HeeRak
+	 * 강사 클래스 펀딩 수락
+	 */
+	@Override
+	public int startFunding(Lecture l) {
+		return tDao.startFunding(l, sqlSession);
+	}
+
+
+	/**
+	 * @author HeeRak
+	 * 강사 클래스 삭제
+	 */
+	@Override
+	public int deleteLecture(Lecture l) {
+		return tDao.deleteLecture(l, sqlSession);
+	}
+
+
+	/**
+	 * @author WooJoo
+	 * 조회할 문의 개수 조회
+	 */
+	@Override
+	public int selectInquiryCount(HashMap<String, String> map) {
+		return tDao.selectInquiryCount(map, sqlSession);
+	}
+
+
+	/**
+	 * @author WooJoo
+	 * 문의 목록 조회
+	 */
+	@Override
+	public ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map) {
+		return tDao.selectInquiryList(pi, map, sqlSession);
+	}
+
+
+	/**
+	 * @author WooJoo
+	 * 문의 및 답변 상세 내용 조회
+	 */
+	@Override
+	public ClassInquiry selectInquiryDetail(int cno) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
