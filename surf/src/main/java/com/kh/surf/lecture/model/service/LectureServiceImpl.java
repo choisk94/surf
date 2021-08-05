@@ -36,5 +36,23 @@ public class LectureServiceImpl implements LectureService{
 	public ArrayList<Lecture> selectFundingList(PageInfo pi) {
 		return lDao.selectFundingList(sqlSession, pi);
 	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 페이징
+	 */
+	@Override
+	public int selectListCount(int sno) {
+		return lDao.selectListCount(sqlSession, sno);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 조회
+	 */
+	@Override
+	public ArrayList<Lecture> selectLectureList(PageInfo pi, int sno) {
+		return lDao.selectLectureList(sqlSession, pi, sno);
+	}
 
 }

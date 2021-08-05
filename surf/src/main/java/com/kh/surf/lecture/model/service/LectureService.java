@@ -15,5 +15,11 @@ public interface LectureService {
 	int selectFundingCount();
 	ArrayList<Lecture> selectFundingList(PageInfo pi);
 	
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 조회
+	 */
+	int selectListCount(int sno);
+	ArrayList<Lecture> selectLectureList(PageInfo pi, int sno);
 	
 }

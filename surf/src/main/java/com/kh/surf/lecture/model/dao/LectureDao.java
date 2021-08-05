@@ -32,4 +32,23 @@ public class LectureDao {
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectFundingList", null, rowBounds);
 	}
 	
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 페이징 처리용
+	 */
+	public int selectListCount(SqlSessionTemplate sqlSession, int sno) {
+		return sqlSession.selectOne("lectureMapper.selectListCount", sno);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 조회용
+	 */
+	public ArrayList<Lecture> selectLectureList(SqlSessionTemplate sqlSession, PageInfo pi, int sno){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureList", sno, rowBounds);
+	}
+	
 }

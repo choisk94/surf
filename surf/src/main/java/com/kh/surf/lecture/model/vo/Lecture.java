@@ -30,6 +30,9 @@ public class Lecture {
 	private int userNo;
 	private String teacherName; // 강사명
 	private int fundingCount; // 펀딩 응원수
+	private double star; // 평점
+	private int scrapCount; // 스크랩 수
+	private int students; // 수강생 수
 	
 	// Has a 관계
 	private ClassFunding cf;

@@ -137,6 +137,7 @@
     }
     .category{color: darkgray; font-size: 13px; margin-top: 10px;}
     .intro-content{margin-top: 5px; max-width: 300px;}
+    .fa-heart{color:red;}
 </style>
 </head>
 <body>
@@ -165,23 +166,23 @@
 
                 <!-- 클래스 -->
                 <div class="class-list">
-
-                    <div class="thumbnail" align="center">
-                        <input type="hidden" name="classNo" value="">
-                        <div id="class-thumb">
-                            <img src="" width="240" height="150" id="">
-                        </div>
-    
-                        <p style="margin-top: 10px;">
-                            <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                            <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> <br>
-                            <button type="button" class="btn support-btn" id="modal-open">응원하기</button>
-                        </p>
-                    </div>
-
+					<c:forEach var="f" items="${ fList }">
+	                    <div class="thumbnail" align="center">
+	                        <input type="hidden" name="classNo" value="">
+	                        <div id="class-thumb">
+	                            <img src="${ f.thumbnail }" width="240" height="150" id="">
+	                        </div>
+	    
+	                        <p style="margin-top: 10px;">
+	                            <b>${ f.classTitle }</b><br>
+	                            <span style="font-size:14px">${ f.teacherName }</span> <br>
+	                            <span style="font-size:14px">
+	                                <i class="fas fa-heart"></i> ${ f.fundingCount }
+	                            </span> <br>
+	                            <button type="button" class="btn support-btn" id="modal-open">응원하기</button>
+	                        </p>
+	                    </div>
+					</c:forEach>
                     
                     
 
@@ -189,14 +190,28 @@
                     <br><br><br>
                     <div id="pagingArea">
                         <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                        </ul>
+		                	<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+		                    		<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+			                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+			                    </c:when>
+			                    <c:otherwise>
+			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
+			                    </c:otherwise>
+			                </c:choose>
+		                </ul>
                     </div>
                     <br><br>
 
