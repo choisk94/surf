@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,7 @@
         width: 75%; 
         background: white;
         margin-left: 30px;
+        height:1200px;
     }
     .cate-item button{
         text-align: left;
@@ -98,134 +100,152 @@
 
             <!-- 카테고리 -->
             <div class="category">
-
-                <div class="cate-item">
-                    <button type="button" data-toggle="collapse1" data-target="#side-sub" class="btn main-cate">
-                        베이킹 · 디저트
-                    </button>
-                    <div id="sub-cate" class="collapse1">
-                        <a href="">쿠키류</a><br>
-                        <a href="">케이크</a>
-                    </div>
-                </div>
-                <div class="cate-item">
-                    <button type="button" data-toggle="collapse1" data-target="#side-sub" class="btn main-cate">
-                        베이킹
-                    </button>
-                    <div id="sub-cate" class="collapse1">
-                        <a href="">쿠키류</a><br>
-                        <a href="">케이크</a>
-                    </div>
-                </div>
-
+	                <div class="cate-item">
+	                    <button type="button" data-toggle="collapse1" data-target="#side-sub" class="btn main-cate">
+	                        
+	                    </button>
+	                    <div id="sub-cate" class="collapse1">
+	                        
+	                    </div>
+	                </div>
             </div>
+		
+		<script>
+		
+		$.ajax({
+			url:"cat.do",
+			success:function(resultArr){
+				//console.log(resultArr);
+				
+				var maxLength = 0;
+        		for(var i in resultArr){
+        			
+        			if(resultArr[i].length > maxLength){
+        				maxLength = resultArr[i].length;
+        			}
+        		}
+        		
+        		var value = "";
+        		for(var j in resultArr){
+        				
+        			value += "<div class='cate-item'>";
+        			
+        			for(var k=0; k<maxLength; k++){
+        				if(k == 0){
+                			value += "<button type='button' data-toggle='collapse1' data-target='#side-sub' class='btn main-cate'>" 
+                				   + resultArr[j][k] 
+                			       + "</button>"
+        				} else {
+                			value += "<div id='sub-cate' class='collapse1'><a href=''>"
+                            	   + resultArr[j][k] 
+                			 	   + '</div>'
+        				}
+        			}
+        			value += "</div>";
+        			
+        		}
+        		
+        		$(".category").html(value);
+				
+			}, error:function(){
+				console.log("통신실패");
+			}
+		})
+		
 
+        // 카테고리 효과
+        $(document).on('click', '.main-cate', function(){
+    
+            var $side = $(this).next("div");
+
+            if($side.css("display") == "none"){
+                $(this).siblings("div").show(200);
+                $(this).css("color", "rgb(32, 155, 212)");
+            }else{
+                $side.hide(200);
+                $(this).css("color", "black");
+            }
+            
+        })
+        
+            
+		</script>
+		
+		
             <!-- 클래스 목록 -->
             <div class="class-area">
 
                 <!-- select option-->
                 <div class="select-list">
-                    <select name="" class="selectpicker">
-                        <option value="">인기순</option>
-                        <option value="">별점순</option>
-                        <option value="">수강생순</option>
-                    </select>
+                	<form action="list.lec">
+                		<input type="hidden" name="currentPage" value="1">
+	                    <select name="" class="selectpicker" onchange="if(this.value) location.href=(this.value);">
+	                        <option value="list.lec?currentPage=1&&sno=1">인기순</option>
+	                        <option value="list.lec?currentPage=1&&sno=2">별점순</option>
+	                        <option value="list.lec?currentPage=1&&sno=3">수강생순</option>
+	                    </select>
+                    </form>
                 </div>
 
                 <!-- 클래스 -->
                 <div class="class-list">
-
-                    <div class="thumbnail" align="center">
-                        <input type="hidden" name="classNo" value="">
-                        <div class="class-thumb">
-                            <img src="../resource/img/dog.jpeg" width="240" height="150" id="">
-                            <div class="text">
-                                <i class="far fa-heart scrap-icon" onclick="scrapCompleted();"></i>
-                                <i class="fas fa-heart scrap-comple"></i>
-                            </div>
-                        </div>
-    
-                        <p style="margin-top: 5px;">
-                            <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                            <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <i class="fas fa-star"></i> (5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <i class="fas fa-heart"></i> 1,120
-                            </span> 
-                        </p>
-                    </div>
-                    <div class="thumbnail" align="center">
-                        <input type="hidden" value="">
-                        <div id="class-thumb">
-                            <img src="" width="240" height="150">
-                        </div>
-    
-                        <p style="margin-top: 5px;">
-                            <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                            <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt=""> (5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                        </p>
-                    </div>
-                    <div class="thumbnail" align="center">
-                        <input type="hidden" value="">
-                        <div id="class-thumb">
-                            <img src="" width="240" height="150">
-                        </div>
-    
-                        <p style="margin-top: 5px;">
-                            <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                            <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                        </p>
-                    </div>
-                    <div class="thumbnail" align="center">
-                        <input type="hidden" value="">
-                        <div id="class-thumb">
-                            <img src="" width="240" height="150">
-                        </div>
-    
-                        <p style="margin-top: 5px;">
-                            <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                            <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                        </p>
-                    </div>
-                    
+				
+					<c:forEach var="l" items="${ list }">
+	                    <div class="thumbnail" align="center">
+	                        <input type="hidden" name="classNo" value="">
+	                        <div class="class-thumb">
+	                            <img src="${ l.thumbnail }" width="240" height="150" id="">
+	                            <div class="text">
+	                                <i class="far fa-heart scrap-icon" onclick="scrapCompleted();"></i>
+	                                <input type="hidden" name="userNo" value="${ loginUser.userNo }">
+	                                <input type="hidden" name="classNo" value="${ l.classNo }">
+	                                <i class="fas fa-heart scrap-comple" style="display:none;"></i>
+	                            </div>
+	                        </div>
+	    
+	                        <p style="margin-top: 5px;">
+	                            <b style="height:40px;">${ l.classTitle }</b><br>
+	                            <span style="font-size:14px">${ l.teacherName }</span> <br>
+	                            <span style="font-size:14px">
+	                            	<b><fmt:formatNumber value="${ l.price }"/>원</b>
+	                            </span> <br>
+	                            <span style="font-size:14px">
+	                                <i class="fas fa-star"></i> (${ l.star }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                            </span> 
+	                            <span style="font-size:14px">
+	                                <i class="fas fa-heart"></i> ${ l.scrapCount }
+	                            </span> 
+	                        </p>
+	                    </div>
+                    </c:forEach>
                     
 
                     <!-- 페이징 -->
                     <br><br><br>
                     <div id="pagingArea">
                         <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                        </ul>
+		                	<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+		                    		<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+			                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+			                    </c:when>
+			                    <c:otherwise>
+			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
+			                    </c:otherwise>
+			                </c:choose>
+		                </ul>
                     </div>
                     <br><br>
 
@@ -237,34 +257,38 @@
 
         <script>
         
-            $(function(){
-                category();
-            })
-
-            // 카테고리 효과
-            function category(){
-                $(".main-cate").click(function(){
-    
-                var $side = $(this).next();
-
-                if($side.css("display") == "none"){
-                    $(this).siblings("div").show(200);
-                    $(this).css("color", "rgb(32, 155, 212)");
-                }else{
-                    $side.hide(200);
-                    $(this).css("color", "black");
-                }
-                })
-            }
+        var uno = $(".scrap-icon").siblings("input[name=userNo]").val();
+        var cno = $(".scrap-icon").siblings("input[name=classNo]").val();
+        
+        function scrapCompleted(){
+	     	
             
-            // 스크랩 아이콘 클릭
-            function scrapCompleted(){
-                if($(".scrap-comple").css("display") == "none") {
-                    $(".scrap-icon").hide();
-                    $(".scrap-comple").show();
-                } 
-            }
-    
+	     	// 스크랩 
+            $.ajax({
+            	url: "like.lec",
+            	type: "POST",
+            	data: {
+            		userNo : '5',
+            		classNo : 'cno'
+            	},
+            	success:function(result){
+            		
+            		console.log("성공");
+            		console.log(result);
+            		// 스크랩 아이콘 클릭
+            		/*
+                    if($(".scrap-comple").css("display") == "none") {
+                        $(".scrap-icon").hide();
+                        $(".scrap-comple").show();
+                    } */
+            		
+            	}, error:function(){
+            		console.log("실패");
+            	}
+            })
+        }
+
+            
         </script>
 
         <!-- footer -->
