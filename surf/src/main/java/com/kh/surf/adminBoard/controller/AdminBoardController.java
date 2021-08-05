@@ -19,7 +19,7 @@ public class AdminBoardController {
 	@Autowired
 	private AdminBoardService abService;
 	
-	@RequestMapping("NoticeList.ad")
+	@RequestMapping("noticeList.ad")
 	public String selectList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 
 		int listCount = abService.selectListCount();

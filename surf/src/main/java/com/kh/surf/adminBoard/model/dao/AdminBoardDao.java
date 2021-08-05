@@ -13,14 +13,14 @@ import com.kh.surf.common.model.vo.PageInfo;
 public class AdminBoardDao {
 	
 	public int selectListCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("adminBoardMapper.selectListCountNotice");
+		return sqlSession.selectOne("adminBoardMapper.selectListCount");
 	}
 	
 	public ArrayList<AdminBoard> selectList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("adminboardMapper.selectListNotice", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectList", null, rowBounds);
 	}
 	
 

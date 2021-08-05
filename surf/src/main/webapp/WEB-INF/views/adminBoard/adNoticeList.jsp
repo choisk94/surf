@@ -41,8 +41,8 @@
           	<c:forEach var="ab" items="${ list }">
 	            <tr>
 	              <td>${ ab.boardNo }</td>
-	              <td align="left">{ ab.boardTitle }</td>
-	              <td>${ ab.userNo }</td>
+	              <td align="left">${ ab.boardTitle }</td>
+	              <td>${ ab.nickname }</td>
 	              <td>${ ab.createDate }</td>
 	              <td>${ ab.count }</td>
 	            </tr>
