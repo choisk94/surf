@@ -11,7 +11,7 @@
 		<result column="board_type" property="boardType"/>
 	</resultMap>
 
-	<select id="selectListCount" resultType="_int">
+	<select id="selectNoticeCount" resultType="_int">
 		select
 		       count(*)
 		  from admin_board
@@ -19,7 +19,7 @@
 		   and status = 'Y'
 	</select>
 	
-	<select id="selectList" resultMap="adminBoardResult">
+	<select id="selectNoticeList" resultMap="adminBoardResult">
 		select
 		       board_no
 		     , board_title
@@ -34,7 +34,7 @@
 		    by board_no desc
 	</select>
 	
-	<select id="selectListCountFaq" resultType="_int">
+	<select id="selectFaqCount" resultType="_int">
 		select
 		       count(*)
 		  from admin_board
@@ -42,14 +42,17 @@
 		   and status = 'Y'
 	</select>
 	
-	<select id="selectListFaq" resultMap="adminBoardResult">
+	<select id="selectFaqList" resultMap="adminBoardResult">
 		select
 		       board_no
-		     , faq_category
 		     , board_title
-		  from admin_board
+		     , nickname
+		     , count
+		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from admin_board a
+          join member m on m.user_no = a.user_no
 		 where board_type = 'FAQ'
-		   and status = 'Y'
+		   and a.status = 'Y'
 		 order
 		    by board_no desc
 	</select>
