@@ -115,7 +115,7 @@
 		<div id="check-wrap">
 			<div class="form-check">
 				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input inquiry-check" name="condition" value="noCM">
+					<input type="checkbox" class="form-check-input inquiry-check" name="condition" value="noAnswer">
 					대기 중인 문의만 조회
 				</label>
 			</div>
@@ -132,7 +132,7 @@
 	    			}
 	    		})
 	    		
-	    		if("${ condition }" == "noCM") {
+	    		if("${ condition }" == "noAnswer") {
 	    			console.log("hi");
 		    		$(".inquiry-check").prop("checked", true);
 	    		}
@@ -154,7 +154,7 @@
 				<c:choose>
 					<c:when test="${ empty ilist }">
 						<tr>
-							<td colspan="5" class="text-center">해당되는 문의가 없습니다.</td>
+							<td colspan="5" class="text-center">조회할 문의가 없습니다.</td>
 						</tr>
 					</c:when>
 					<c:otherwise>

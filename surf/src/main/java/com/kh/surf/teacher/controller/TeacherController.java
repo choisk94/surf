@@ -219,6 +219,7 @@ public class TeacherController {
 		return mv;
 	}
 	
+	
 	/**
 	 * @author: Woojoo Seo
 	 * @MethodInfo: 문의 목록 조회 및 페이지 반환
@@ -254,4 +255,84 @@ public class TeacherController {
 		
 	}
 	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 문의 상세 조회 및 화면 반환
+	 */
+	@RequestMapping("inquiryDetail.te")
+	public ModelAndView selectInquiryDetail(ModelAndView mv, int ino) {
+		
+		ClassInquiry i = tService.selectInquiryDetail(ino);
+		mv.addObject("i", i).setViewName("teacher/inquiryDetailView");
+		
+		return mv;
+		
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 등록
+	 */
+	@RequestMapping("insertAnswer.te")
+	public String updateNewAnswer(ClassInquiry i, Model model) {
+		
+		int result = tService.updateNewAnswer(i);
+		
+		if(result > 0) {
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 작성을 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 수정 화면 반환
+	 */
+	@RequestMapping("updateAnsForm.te")
+	public String updateAnsForm(int ino, Model model) {
+		
+		model.addAttribute("i", tService.selectInquiryDetail(ino));
+		return "teacher/ansUpdateForm";
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 수정
+	 */
+	@RequestMapping("updateAnswer.te")
+	public String updateOldAnswer(ClassInquiry i, Model model) {
+
+		int result = tService.updateOldAnswer(i);
+		
+		if(result > 0) {
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 수정을 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 삭제
+	 */
+	@RequestMapping("deleteAnswer.te")
+	public String deleteAnswer(int ino, HttpSession session, Model model) {
+
+		int result = tService.deleteAnswer(ino);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "답변이 성공적으로 삭제되었습니다.");
+			return "redirect:inquiryDetail.te?ino=" + ino;
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 삭제를 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + ino;
+		}
+	}
+
 }

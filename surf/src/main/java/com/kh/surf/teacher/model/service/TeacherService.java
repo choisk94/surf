@@ -57,5 +57,10 @@ public interface TeacherService {
 	ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map);
 	
 	// 15. 클래스 문의 상세 조회
-	ClassInquiry selectInquiryDetail(int cno);
+	ClassInquiry selectInquiryDetail(int ino);
+	
+	// 16. 문의 답변 작성, 수정, 삭제
+	int updateNewAnswer(ClassInquiry i);
+	int updateOldAnswer(ClassInquiry i);
+	int deleteAnswer(int ino);
 }
