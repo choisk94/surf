@@ -18,7 +18,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-
+	/** 공지사항 **/
 	@Override
 	public int selectNoticeCount() {
 		return abDao.selectNoticeCount(sqlSession);
@@ -31,20 +31,17 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
 	@Override
 	public int insertAdminNotice(AdminBoard ab) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.insertAdminNotice(sqlSession, ab);
 	}
 
 	@Override
 	public int increaseCountNotice(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.increaseCountNotice(sqlSession, boardNo);
 	}
 
 	@Override
 	public AdminBoard selectAdminNotice(int boardNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return abDao.selectAdminNotice(sqlSession, boardNo);
 	}
 
 	@Override
@@ -61,7 +58,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
 	
 	
-	
+	/** FAQ **/
 	@Override
 	public int selectFaqCount() {
 		return abDao.selectFaqCount(sqlSession);

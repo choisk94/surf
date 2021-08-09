@@ -27,7 +27,7 @@
           </div>
         </div>
         <hr>
-        <table class="table">
+        <table class="table" id="adNoticeList">
           <thead>
             <tr style="background-color: rgb(224, 224, 224)">
               <td width="100">번호</td>
@@ -40,7 +40,7 @@
           <tbody>
           	<c:forEach var="ab" items="${ list }">
 	            <tr>
-	              <td>${ ab.boardNo }</td>
+	              <td class="bno">${ ab.boardNo }</td>
 	              <td align="left">${ ab.boardTitle }</td>
 	              <td>${ ab.nickname }</td>
 	              <td>${ ab.createDate }</td>
@@ -49,9 +49,18 @@
       		</c:forEach>
           </tbody>
         </table>
+        
+        <script>
+        	$(function(){
+        		$("#adNoticeList>tbody>tr").click(function(){
+        			location.href="detailNotice.ad?bno=" + $(this).children(".bno").text();
+        		})
+        	})
+        </script>
+        
         <br>
           <c:if test="${ !empty loginUser }">
-          	<a class="btn btn-secondary" style="float:right" href="">글쓰기</a>
+          	<a class="btn btn-secondary" style="float:right" href="enrollNotice.ad">글쓰기</a>
           </c:if>	
         <!--여기서부터 페이지이동-->
         <ul class="pagination justify-content-center">
