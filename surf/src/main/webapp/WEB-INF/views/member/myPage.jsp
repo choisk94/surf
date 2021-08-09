@@ -134,7 +134,8 @@
                     	})
                     </script>
 
-				<!--------------------------- 비밀번호 변경 -------------------------------->
+				<!--------------------------- 비밀번호 변경(local가입 회원만 보임) -------------------------------->
+				<c:if test="${ loginUser.enrollType eq 'L' }">
 					<!-- 현재 비밀번호 -->
 					<div class="form-group">
 						<label class="mt-2" for="userPwd">현재 비밀번호</label> 
@@ -204,6 +205,7 @@
 							}
 						})
 					</script>
+				</c:if>
 					
 					<div class="text-center">
 						<button type="button" class="btn btn-secondary mt-2" style="width: 50%;" onclick="location.href='deleteView.me';">회원 탈퇴</button>
