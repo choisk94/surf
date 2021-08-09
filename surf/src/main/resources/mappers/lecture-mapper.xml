@@ -19,7 +19,10 @@
   		<result column="user_no" property="userNo"/>
 		<result column="count" property="fundingCount"/>
 		<result column="nickname" property="teacherName"/>
-  	</resultMap>
+		<result column="scrap" property="scrapCount"/>
+		<result column="students" property="students"/>  	
+		<result column="star" property="star"/>
+	</resultMap>
   	
   	<resultMap id="studingResult" type="Studing">
 		<result column="user_no" property="userNo"/>
@@ -95,6 +98,64 @@
          where l.status = 'F'
          order 
             by create_date desc
+	</select>
+	
+	<!-- 
+		@author : yeji Lee
+		페이징 처리
+	 -->
+	<select id="selectListCount" resultType="_int">
+		select
+		 	   count(*)
+		  from lecture
+		 where status = 'O' 
+	</select>
+	
+	<!-- 
+		@author : yeji Lee
+		클래스 리스트 조회
+	 -->
+	<select id="selectLectureList" resultMap="lectureResult">
+		select
+		       l.class_no
+		     , l.class_title
+		     , l.create_date
+		     , l.thumbnail
+		     , l.price
+		     , (select 
+		               round(avg(score))
+		          from survey
+		         where class_no = l.class_no) star
+		     , (select
+		               count(*)
+		          from scrap_support
+		         where type = 'S'
+		           and class_no = l.class_no) scrap
+		     , (select
+		               count(*)
+		          from payment
+		         where class_no = l.class_no) students
+		     , t.nickname
+		  from lecture l
+		  left outer join (
+		                    select 
+		                           teacher_no, nickname
+		                      from teacher
+		                  ) t 
+		                  on l.user_no = t.teacher_no
+		 where l.status = 'O'
+		 order 
+		 <choose>
+		 	<when test="sno == 3">
+		    	by students desc
+		    </when>
+		    <when test="sno == 2">
+		    	by star desc
+		    </when>
+		    <otherwise>
+		    	by scrap desc
+		    </otherwise>
+		 </choose>
 	</select>
 	
   	<!--

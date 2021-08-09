@@ -25,6 +25,7 @@ public class LectureController {
 	
 	/**
 	 * @author leeyeji
+	 * 펀딩 클래스 페이징
 	 * 펀딩 클래스 목록 조회
 	 */
 	@RequestMapping("funding.lec")
@@ -42,5 +43,25 @@ public class LectureController {
 		
 	}
 	
+	/**
+	 * @author leeyeji
+	 * 클래스 목록 페이징
+	 * 클래스 목록 조회
+	 */
+	@RequestMapping("list.lec")
+	public ModelAndView selectLectureList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage
+										  , int sno) {
+		
+		int listCount = lService.selectListCount(sno);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 9);
+		ArrayList<Lecture> list = lService.selectLectureList(pi, sno);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("lecture/lectureList");
+		
+		return mv;
+	}
 	
 }

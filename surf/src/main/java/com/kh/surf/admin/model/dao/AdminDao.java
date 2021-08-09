@@ -1,6 +1,7 @@
 package com.kh.surf.admin.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,34 +14,36 @@ import com.kh.surf.member.model.vo.Member;
 @Repository
 public class AdminDao {
 
-public Member adminLogin(SqlSessionTemplate sqlSession, Member m) {
-		
+	public Member adminLogin(SqlSessionTemplate sqlSession, Member m) {
+
 		return sqlSession.selectOne("adminMapper.adminLogin", m);
 	}
 
 	public int insertAd(SqlSessionTemplate sqlSession, Ad a) {
-		
+
 		return sqlSession.insert("adminMapper.insertAd", a);
 	}
-	
+
 	public int selectListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectListCount");
 	}
-	
-	public ArrayList<Ad> selectList(SqlSessionTemplate sqlSession, PageInfo pi){
+
+	public ArrayList<Ad> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSession.selectList("adminMapper.selectList", null, rowBounds);
-		
+
+		return (ArrayList) sqlSession.selectList("adminMapper.selectList", null, rowBounds);
+
 	}
-	//게시물 선택 삭제
-	public void delete(SqlSessionTemplate sqlSession, String adNo){
-	    sqlSession.delete("adminMapper.delete", adNo); 
+
+	// 게시물 선택 삭제
+	public void delete(SqlSessionTemplate sqlSession, String adNo) {
+		sqlSession.delete("adminMapper.delete", adNo);
 	}
-	//광고베너 표시
-	public void update(SqlSessionTemplate sqlSession, String adNo){
-		    sqlSession.update("adminMapper.update", adNo); 
+
+	// 광고베너 표시
+	public void update(SqlSessionTemplate sqlSession, String adNo) {
+		sqlSession.update("adminMapper.update", adNo);
 	}
 
 	public Member selectAdmin(int userNo, SqlSessionTemplate sqlSession) {
@@ -60,8 +63,20 @@ public Member adminLogin(SqlSessionTemplate sqlSession, Member m) {
 	}
 
 	public int updateAd(SqlSessionTemplate sqlSession, Ad ad) {
-	
+
 		return sqlSession.update("adminMapper.updateAd", ad);
+	}
+
+	public ArrayList<Ad> selectSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminMapper.selectSearchList", map, rowBounds);
+
+	}
+
+	public int selectSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminMapper.selectSearchListCount", map);
 	}
 
 }

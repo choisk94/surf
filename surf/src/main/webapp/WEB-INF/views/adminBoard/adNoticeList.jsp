@@ -41,8 +41,8 @@
           	<c:forEach var="ab" items="${ list }">
 	            <tr>
 	              <td>${ ab.boardNo }</td>
-	              <td align="left">{ ab.boardTitle }</td>
-	              <td>${ ab.userNo }</td>
+	              <td align="left">${ ab.boardTitle }</td>
+	              <td>${ ab.nickname }</td>
 	              <td>${ ab.createDate }</td>
 	              <td>${ ab.count }</td>
 	            </tr>
@@ -50,9 +50,9 @@
           </tbody>
         </table>
         <br>
-        <div align="right">
-          <button type="button" class="btn btn-secondary" href="">글쓰기</button>
-        </div>
+          <c:if test="${ !empty loginUser }">
+          	<a class="btn btn-secondary" style="float:right" href="">글쓰기</a>
+          </c:if>	
         <!--여기서부터 페이지이동-->
         <ul class="pagination justify-content-center">
         	<c:choose>	

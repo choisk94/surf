@@ -21,5 +21,6 @@ public class AdminBoard {
 	private String faqCategory; // 회원문의,주문결제 등
 	private String boardType; // 공지사항orFAQ
 
-
+	// 작성자
+	private String nickname;
 }

@@ -138,6 +138,46 @@
     		  , change_name = #{changeName}
     	  where	ad_no = #{adNo}
     </update>
+    <!-- 광고베너관리 검색기능 -->
+	<select id="selectSearchListCount" resultType="_int">
+		select
+		       count(*)
+		  from ad
+		  where
+	 	<choose>
+	 		<when test="condition == 'title'">
+	 			ad_title
+	 		</when>
+	 		<otherwise>
+	 			ad_link
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
 	
+	<select id="selectSearchList" resultMap="adResult">
+		select
+		       ad_no
+		     , ad_title
+		     , ad_link
+		     , count
+		     , origin_name
+		     , modify_Date
+		     , ad_status
+		     , UPLOAD_DATE
+		  from ad
+		  where
+		 <choose>
+	 		<when test="condition == 'title'">
+	 			ad_title
+	 		</when>
+	 		<otherwise>
+	 			ad_link
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+		 order
+		    by ad_no desc
+	</select>
 	
 </mapper>

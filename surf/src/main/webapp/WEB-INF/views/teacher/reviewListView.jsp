@@ -122,7 +122,7 @@
 				<c:choose>
 					<c:when test="${ empty rlist }">
 						<tr>
-							<td colspan="5" class="text-center">아직 작성된 리뷰가 없습니다.</td>
+							<td colspan="5" class="text-center">조회할 수강 후기가 없습니다.</td>
 						</tr>
 					</c:when>
 					<c:otherwise>

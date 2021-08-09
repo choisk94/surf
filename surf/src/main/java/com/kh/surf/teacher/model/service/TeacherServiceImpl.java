@@ -175,7 +175,6 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.selectInquiryCount(map, sqlSession);
 	}
 
-
 	/**
 	 * @author WooJoo
 	 * 문의 목록 조회
@@ -185,15 +184,40 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.selectInquiryList(pi, map, sqlSession);
 	}
 
-
 	/**
 	 * @author WooJoo
 	 * 문의 및 답변 상세 내용 조회
 	 */
 	@Override
-	public ClassInquiry selectInquiryDetail(int cno) {
-		// TODO Auto-generated method stub
-		return null;
+	public ClassInquiry selectInquiryDetail(int ino) {
+		return tDao.selectInquiryDetail(ino, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 문의글 답변 작성
+	 */
+	@Override
+	public int updateNewAnswer(ClassInquiry i) {
+		return tDao.updateNewAnswer(i, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 문의글 답변 수정
+	 */
+	@Override
+	public int updateOldAnswer(ClassInquiry i) {
+		return tDao.updateOldAnswer(i, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 문의글 답변 삭제
+	 */
+	@Override
+	public int deleteAnswer(int ino) {
+		return tDao.deleteAnswer(ino, sqlSession);
 	}
 
 

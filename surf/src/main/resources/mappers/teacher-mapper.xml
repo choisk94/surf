@@ -40,6 +40,8 @@
 		<id column="ans_date" property="ansDate"/>
 		<id column="nickname" property="userNo"/>
 		<id column="class_title" property="classTitle"/>
+		<id column="t_nickname" property="teacherNo"/>
+		<id column="profile_image" property="teacherImage"/>
 	</resultMap>
 	
 	<!--
@@ -287,6 +289,10 @@
 		  </if>
 	</select>
 	
+	<!-- 
+		문의 조회 및 답변 '조건에 맞는 문의글 목록 조회'
+		@author WooJoo
+	-->
 	<select id="selectInquiryList" resultMap="inquiryResult">
 		select
 			   inquiry_no
@@ -327,4 +333,58 @@
 		 where class_no = #{class_no}
 	</select>
 	
+	<!-- 
+		문의 조회 및 답변 '문의글 상세 내용 조회'
+		@author WooJoo
+	-->
+	<select id="selectInquiryDetail" resultMap="inquiryResult">
+		select
+			   inquiry_no
+             , class_title
+             , m.nickname
+             , inq_content
+             , to_char(inq_date, 'YYYY-MM-DD') as inq_date
+             , ans_content
+             , to_char(ans_date, 'YYYY-MM-DD') as ans_date
+             , t.nickname as t_nickname
+             , profile_image
+		  from class_inquiry i
+		  join lecture l on i.class_no = l.class_no
+          join member m on i.user_no = m.user_no
+          join teacher t on i.teacher_no = t.teacher_no
+         where inquiry_no = #{ino}
+	</select>
+	
+	<!-- 
+		문의 조회 및 답변 '문의글 답변 작성'
+		@author WooJoo
+	-->
+	<update id="updateNewAnswer">
+		update class_inquiry
+		set ans_content = #{ansContent}
+		  , ans_date = sysdate
+		where inquiry_no = #{inquiryNo}
+	</update>
+	
+	<!-- 
+		문의 조회 및 답변 '문의글 답변 수정'
+		@author WooJoo
+	-->
+	<update id="updateOldAnswer">
+		update class_inquiry
+		set ans_content = #{ansContent}
+		where inquiry_no = #{inquiryNo}
+	</update>
+	
+	<!-- 
+		문의 조회 및 답변 '문의글 답변 삭제'
+		@author WooJoo
+	-->
+	<update id="deleteAnswer">
+		update class_inquiry
+		set ans_content = null
+		  , ans_date = null
+		where inquiry_no = #{inquiryNo}
+	</update>
+
 </mapper>

@@ -18,44 +18,89 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
+
 	@Override
-	public int selectListCount() {
-		return abDao.selectListCount(sqlSession);
+	public int selectNoticeCount() {
+		return abDao.selectNoticeCount(sqlSession);
 	}
 
 	@Override
-	public ArrayList<AdminBoard> selectList(PageInfo pi) {
-		return abDao.selectList(sqlSession, pi);
+	public ArrayList<AdminBoard> selectNoticeList(PageInfo pi) {
+		return abDao.selectNoticeList(sqlSession, pi);
 	}
 
 	@Override
-	public int insertAdminBoard(AdminBoard ab) {
+	public int insertAdminNotice(AdminBoard ab) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int increaseCount(int boardNo) {
+	public int increaseCountNotice(int boardNo) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public AdminBoard selectAdminBoard(int boardNo) {
+	public AdminBoard selectAdminNotice(int boardNo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int deleteAdminBoard(int boardNo) {
+	public int deleteAdminNotice(int boardNo) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateAdminBoard(AdminBoard ab) {
+	public int updateAdminNotice(AdminBoard ab) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
+	
+	
+	@Override
+	public int selectFaqCount() {
+		return abDao.selectFaqCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<AdminBoard> selectFaqList(PageInfo pi) {
+		return abDao.selectFaqList(sqlSession, pi);
+	}
+
+	@Override
+	public int insertAdminFaq(AdminBoard ab) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int increaseCountFaq(int boardNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public AdminBoard selectAdminFaq(int boardNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deleteAdminFaq(int boardNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateAdminFaq(AdminBoard ab) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

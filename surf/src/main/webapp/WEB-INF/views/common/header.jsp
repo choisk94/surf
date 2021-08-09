@@ -187,7 +187,7 @@
 							<a href="updateForm.te">강사페이지</a>
 						</c:when>
 						<c:otherwise>
-							<a href="">관리자페이지</a>
+							<a href="login.ad">관리자페이지</a>
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>

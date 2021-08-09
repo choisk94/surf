@@ -19,18 +19,32 @@ public class AdminBoardController {
 	@Autowired
 	private AdminBoardService abService;
 	
-	@RequestMapping("NoticeList.ad")
+	@RequestMapping("noticeList.ad")
 	public String selectList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 
-		int listCount = abService.selectListCount();
+		int listCount = abService.selectNoticeCount();
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<AdminBoard> list = abService.selectList(pi);
+		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
 		return "adminBoard/adNoticeList";
+	}
+	
+	@RequestMapping("faqList.ad")
+	public String selectListFaq(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+
+		int listCount = abService.selectFaqCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
+		return "adminBoard/adFaqList";
 	}
 
 }
