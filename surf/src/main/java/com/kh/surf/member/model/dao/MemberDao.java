@@ -35,6 +35,13 @@ public class MemberDao {
 	public int idCheck(SqlSessionTemplate sqlSession, String userId) {
 		return sqlSession.selectOne("memberMapper.idCheck", userId);
 	}
+	
+	/** @author 최서경
+	 * 상태 체크(SNS로그인에 필요)
+	 */
+	public String statusCheck(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("memberMapper.statusCheck", userId);
+	}
 
 	/** @author 최서경
 	 * 마이페이지 회원정보 수정

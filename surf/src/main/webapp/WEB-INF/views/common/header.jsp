@@ -232,35 +232,69 @@
 							</div>
 
 							<div>
-								<div class="hr-sect"
-									style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
+								<div id="unlink" class="hr-sect" style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
 							</div>
+							<!----------------------------------임시** 나중에 지우기!!***(카카오 연결 끊기 이벤트 부여)---------------------------------------->
+							<script>
+								$(function(){
+									$("#unlink").on("click", function(){
+										location.href='kunlink.do';
+									})
+								})
+							</script>
+							<!------------------------------------------------------------------------------------------------------------------>
 
-							<button type="button"
-								class="btn btn-warning loginButtons easyLogin"
-								style="background-color: #FFCD00;">
-								<img style="width: 42px; height: 30px;"
-									src="https://img.shields.io/badge/-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=black" />
+							<button id="kBtn" type="button" class="btn btn-warning loginButtons easyLogin" style="background-color: #FFCD00;">
+								<img style="width: 42px; height: 30px;"	src="https://img.shields.io/badge/-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=black" />
 								카카오
 							</button>
-							<button type="button"
-								class="btn btn-success loginButtons easyLogin"
-								style="background-color: #03C75A;">
-								<img style="width: 42px; height: 30px;"
-									src="https://img.shields.io/badge/-03C75A?style=flat-square&logo=Naver&logoColor=white" />
+							<button id="nBtn" onclick="" type="button" class="btn btn-success loginButtons easyLogin" style="background-color: #03C75A;">
+								<img style="width: 42px; height: 30px;"	src="https://img.shields.io/badge/-03C75A?style=flat-square&logo=Naver&logoColor=white" />
 								네이버
 							</button>
 
-							<button type="submit" class="btn btn-primary loginButtons"
-								style="width: 93%;">로그인</button>
-							<button type="button" onclick="location.href='findPwdForm.me';"
-								class="btn btn-secondary loginButtons" style="width: 93%;">비밀번호
-								찾기</button>
+							<button type="submit" class="btn btn-primary loginButtons" style="width: 93%;">로그인</button>
+							<button type="button" onclick="location.href='findPwdForm.me';"	class="btn btn-secondary loginButtons" style="width: 93%;">비밀번호 찾기</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		<script>
+			$(function(){
+				
+				// 카카오 인증 요청 url
+                $.ajax({
+                	url:"kauth.do",
+                	data:{type:"login"},
+                	success:function(kUrl){
+                		$("#kBtn").on("click", function(){
+                			location.href=kUrl;
+                		})
+                	}, error:function(){
+                		console.log("ajax실패");
+                	}
+                })
+                
+                // 네이버 인증 요청 url
+                /*
+                $.ajax({
+                	url:"nauth.do",
+                	success:function(nUrl){
+                		$("#nBtn").on("click", function(){
+                			location.href=nUrl;
+                		})
+                	}, error:function(){
+                		console.log("ajax실패");
+                	}
+                })
+                */
+                
+                
+                
+			})
+		</script>
 		<!----------------------------------------- 로그인 modal 끝 ------------------------------------>
 
 		<!---------------------- 메뉴바 하부(로고, 검색창 등) ----------------------------------------------->

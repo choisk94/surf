@@ -28,6 +28,9 @@ public interface MemberService {
 	// 아이디 중복체크
 	int idCheck(String userId);
 	
+	// status체크
+	String statusCheck(String userId);
+	
 
 	// 클래스 번호로 '강사 정보' 가져오기
 	Teacher selectTeacherByClassNo(int classNo);

@@ -59,13 +59,20 @@
 	            	, 'M'
 	            	, 'N'
 	            	, sysdate
-	            	, 'L'
+	            	, #{enrollType}
 	            	)
 	</insert>
 	
 	<select id="idCheck" resultType="_int">
 		select 
 				count(*)
+		  from member
+		 where email = #{userId}
+	</select>
+	
+	<select id="statusCheck" resultType="string">
+		select
+				status
 		  from member
 		 where email = #{userId}
 	</select>
