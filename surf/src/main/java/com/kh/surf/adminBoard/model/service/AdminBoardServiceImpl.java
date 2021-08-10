@@ -46,14 +46,12 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
 	@Override
 	public int deleteAdminNotice(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.deleteAdminNotice(sqlSession, boardNo);
 	}
 
 	@Override
 	public int updateAdminNotice(AdminBoard ab) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.updateAdminNotice(sqlSession, ab);
 	}
 
 	

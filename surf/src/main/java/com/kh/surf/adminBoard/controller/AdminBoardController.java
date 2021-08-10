@@ -89,6 +89,44 @@ public class AdminBoardController {
 		return mv;
 	}
 	
+	@RequestMapping("deleteNotice.ad")
+	public String deleteAdminNotice(int bno, Model model, HttpSession session) {
+		
+		int result = abService.deleteAdminNotice(bno);
+		
+		if(result > 0) { // 성공 => 리스트페이지
+			
+			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
+			return "redirect:noticeList.ad";
+			
+		}else { // 실패
+			model.addAttribute("errorMsg", "게시글 삭제 실패");
+			return "common/errorPage";
+		}
+	
+	}
+	
+	@RequestMapping("updateFormNotice.ad")
+	public String updateFormAdminNotice(int bno, Model model) {
+		
+		model.addAttribute("ab", abService.selectAdminNotice(bno));
+		return "adminBoard/adNoticeModify";
+		
+	}
+	
+	@RequestMapping("updateNotice.ad")
+	public String updateAdminNotice(AdminBoard ab, Model model, HttpSession session) {
+		int result = abService.updateAdminNotice(ab);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
+			return "redirect:detailNotice.ad?bno=" + ab.getBoardNo();
+		}else {
+			model.addAttribute("errorMsg", "게시글 수정 실패");
+			return "common/errorPage";
+		}
+	}
+	
 	
 	/**
 	 * @param 서정연
