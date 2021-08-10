@@ -230,19 +230,10 @@
 								<input type="password" class="form-control loginInputs"
 									placeholder="비밀번호" id="pwd" name="password">
 							</div>
-
+							<input type="hidden" name="enrollType" value="L">
 							<div>
 								<div id="unlink" class="hr-sect" style="font-size: 13px; color: rgb(94, 94, 94);">간편로그인</div>
 							</div>
-							<!----------------------------------임시** 나중에 지우기!!***(카카오 연결 끊기 이벤트 부여)---------------------------------------->
-							<script>
-								$(function(){
-									$("#unlink").on("click", function(){
-										location.href='kunlink.do';
-									})
-								})
-							</script>
-							<!------------------------------------------------------------------------------------------------------------------>
 
 							<button id="kBtn" type="button" class="btn btn-warning loginButtons easyLogin" style="background-color: #FFCD00;">
 								<img style="width: 42px; height: 30px;"	src="https://img.shields.io/badge/-FFCD00?style=flat-square&logo=KakaoTalk&logoColor=black" />
@@ -278,9 +269,9 @@
                 })
                 
                 // 네이버 인증 요청 url
-                /*
                 $.ajax({
                 	url:"nauth.do",
+                	data:{type:"login"},
                 	success:function(nUrl){
                 		$("#nBtn").on("click", function(){
                 			location.href=nUrl;
@@ -289,7 +280,6 @@
                 		console.log("ajax실패");
                 	}
                 })
-                */
                 
                 
                 
