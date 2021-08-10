@@ -7,8 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassInquiry;
+import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.Survey;
 
 @Repository
 public class LectureDao {
@@ -49,6 +52,65 @@ public class LectureDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureList", sno, rowBounds);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 상세 조회용
+	 */
+	public Lecture selectLecture(SqlSessionTemplate sqlSession, int classNo) {
+		return sqlSession.selectOne("lectureMapper.selectLecture", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 유저 찜한 클래스 페이징
+	 */
+	public int selectScrapCount(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("lectureMapper.selectScrapCount", userNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 유저 찜한 클래스 목록 조회
+	 */
+	public ArrayList<Lecture> selectScrapList(SqlSessionTemplate sqlSession, int userNo, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectScrapList", userNo, rowBounds);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 소개 조회
+	 */
+	public ArrayList<ClassIntro> selectLectureIntro(SqlSessionTemplate sqlSession, int classNo) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureIntro", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 챕터 조회
+	 */
+	public ArrayList<Chapter> selectLectureChapter(SqlSessionTemplate sqlSession, int classNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureChapter", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 리뷰 조회용
+	 */
+	public ArrayList<Survey> selectLectureReview(SqlSessionTemplate sqlSession, int classNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureReview", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 문의 조회용
+	 */
+	public ArrayList<ClassInquiry> selectLectureInquiry(SqlSessionTemplate sqlSession, int classNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureInquiry", classNo);
 	}
 	
 }

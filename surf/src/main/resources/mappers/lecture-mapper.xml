@@ -39,6 +39,13 @@
 		<result column="scrap_date" property="scrapDate"/>
 	</resultMap>
 	
+	<resultMap type="ClassIntro" id="introResult">
+		<result column="intro_order" property="introOrder"/>
+		<result column="Class_no" property="classNo"/>
+		<result column="intro_image" property="introImage"/>
+		<result column="intro_content" property="introContent"/>
+	</resultMap> 
+	
 	<resultMap id="classVideoResult" type="ClassVideo">
 		<result column="video_no" property="videoNo"/>
 		<result column="class_no" property="classNo"/>
@@ -53,6 +60,35 @@
 		<result column="chap_order" property="chapOrder"/>
 		<result column="class_no" property="classNo"/>
 		<result column="chap_name" property="chapName"/>
+		<collection column="class_no" property="classVideoList" javaType="java.util.ArrayList"
+			    	ofType="ClassVideo" select="selectLectureVideo"/>
+	</resultMap>
+	
+	<resultMap type="Survey" id="surveyResult">
+		<result column="survey_no" property="surveyNo"/>
+		<result column="nickname" property="userNo"/>
+		<result column="quality" property="quality"/>
+		<result column="satisfaction" property="satisfaction"/>
+		<result column="difficulty" property="difficulty"/>
+		<result column="price" property="price"/>
+		<result column="score" property="score"/>
+		<result column="review" property="review"/>
+		<result column="create_date" property="createDate"/>
+		<result column="class_no" property="classNo"/>
+		<result column="teacher_no" property="teacherNo"/>
+	</resultMap>
+	
+	<resultMap type="ClassInquiry" id="inquiryResult">
+		<result column="inquiry_no" property="inquiryNo"/>
+		<result column="inq_content" property="inqContent"/>
+		<result column="inq_date" property="inqDate"/>
+		<result column="ans_content" property="ansContent"/>
+		<result column="ans_date" property="ansDate"/>
+		<result column="class_no" property="classNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="teacher_no" property="teacherNo"/>
+		<result column="class_title" property="classTitle"/>
+		<result column="profile_image" property="teacherImage"/>
 	</resultMap>
   	
   	<!-- 
@@ -156,6 +192,142 @@
 		    	by scrap desc
 		    </otherwise>
 		 </choose>
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 상세 조회
+	 -->
+	<select id="selectLecture" resultMap="lectureResult">
+		select
+               l.class_no
+             , l.class_title
+             , l.pos_term
+             , l.price
+             , l.intro_file
+             , l.intro_title
+             , l.intro_content
+             , l.need
+             , l.note
+             , l.period
+             , (select 
+                       round(avg(score))
+                  from survey
+                 where class_no = l.class_no) star
+             , (select 
+                       count(*)
+                  from survey
+                 where class_no = l.class_no) survey
+             , (select
+                       count(*)
+                  from payment
+                 where class_no = l.class_no) students
+            , t.nickname nickname
+          from lecture l
+          join teacher t on(l.subcat_no = t.subcat_no)
+         where l.class_no = #{classNo}
+           and l.status = 'O'
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 소개 조회
+	 -->
+	<select id="selectLectureIntro" resultMap="introResult">
+		select
+               class_no
+             , intro_order
+             , intro_image
+             , intro_content
+          from class_intro 
+         where class_no = #{classNo}
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 챕터 조회
+	 -->
+	<select id="selectLectureChapter" resultMap="chapterResult">
+		select 
+               chap_order
+             , class_no
+             , chap_name
+          from chapter
+         where class_no = #{classNo}
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 챕터 조회(비디오)
+	 -->
+	<select id="selectLectureVideo" resultMap="classVideoResult">
+		select 
+               video_no
+             , chap_order
+             , video_order
+             , sub_title
+          from class_video
+         where class_no = #{classNo}
+         order
+            by video_no asc
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 후기 조회
+	 -->
+	<select id="selectLectureReview" resultMap="surveyResult">
+		select 
+               s.survey_no
+             , m.nickname
+             , s.satisfaction
+             , s.review
+          from survey s
+          join member m on(s.user_no = m.user_no)
+         where class_no = #{userNo}
+	</select>
+	
+	<!-- 
+		@author yeji lee
+		클래스 문의 조회
+	 -->
+	
+	
+	<!-- 
+		@author yeji lee
+		유저 스크랩 클래스 목록 조회
+	 -->
+	<select id="selectScrapCount" resultType="_int">
+		select
+		       count(*)
+		  from scrap_support
+         where user_no = #{userNo}
+           and type = 'S'
+	</select>
+	
+	<select id="selectScrapList" resultMap="lectureResult">
+		select
+	 		   l.class_no
+             , l.class_title
+             , t.nickname
+             , l.price
+             , l.create_date
+             , (select 
+                       round(avg(score), 1)
+                  from survey
+                 where class_no = l.class_no) star
+             , (select
+                       count(*)
+                  from scrap_support
+                 where type = 'S'
+                   and class_no = l.class_no) scrap
+         from lecture l
+         join teacher t on(l.user_no = t.teacher_no)
+         join scrap_support s on(l.class_no = s.class_no)
+        where l.user_no = #{userNo}
+          and s.type = 'S'
+        order
+           by scrap_date desc
 	</select>
 	
   	<!--

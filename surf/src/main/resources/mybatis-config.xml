@@ -22,6 +22,7 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassVideo" alias="ClassVideo"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.Chapter" alias="Chapter"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="ClassStuding"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 	</typeAliases>
 	
 	<mappers>
