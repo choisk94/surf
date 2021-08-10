@@ -2,6 +2,7 @@ package com.kh.surf.teacher.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +19,7 @@ import com.kh.surf.common.template.SaveFile;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.service.TeacherService;
+import com.kh.surf.teacher.model.vo.StatsData;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -113,4 +116,126 @@ public class AjaxTeacherController {
 		
 	}
 	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계, 신규 수강 건수 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxNewOrderStats.te", produces="application/json; charset=utf-8")
+	public String selectNewOrderStats(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno,
+			@RequestParam(value="condition", defaultValue="daily") String condition) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		map.put("condition", condition);
+		
+		ArrayList<StatsData> list1 = tService.selectNewOrderStats(map);
+		
+		return new Gson().toJson(list1);
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계, 완강 소요 일수 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxStudyDaysStats.te", produces="application/json; charset=utf-8")
+	public String selectStudyDaysStats(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<StatsData> list2 = tService.selectStudyDaysStats(map);
+		
+		return new Gson().toJson(list2);
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계, 수강생 성별 비율 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxGenderRateStats.te", produces="application/json; charset=utf-8")
+	public String selectGenderRateStats(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<StatsData> list3 = tService.selectGenderRateStats(map);
+		
+		return new Gson().toJson(list3);
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계, 수강생 연령대별 비율 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxAgeGroupRateStats.te", produces="application/json; charset=utf-8")
+	public String selectAgeGroupRateStats(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<StatsData> list4 = tService.selectAgeGroupRateStats(map);
+		
+		return new Gson().toJson(list4);
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 설문 조사 통계 정보 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxSurveyStats.te", produces="application/json; charset=utf-8")
+	public String selectSurveyStats(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<StatsData> list = tService.selectSurveyStats(map);
+		System.out.println(list);
+		
+		return new Gson().toJson(list);
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 설문 조사 응답수 조회
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxRespondentCount.te", produces="application/json; charset=utf-8")
+	public String selectRespondentCount(HttpSession session,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		int resCount = tService.selectRespondentCount(map);
+		
+		return new Gson().toJson(resCount);
+	}
 }

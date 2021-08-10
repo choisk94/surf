@@ -8,6 +8,7 @@ import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.teacher.model.vo.StatsData;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface TeacherService {
@@ -63,4 +64,15 @@ public interface TeacherService {
 	int updateNewAnswer(ClassInquiry i);
 	int updateOldAnswer(ClassInquiry i);
 	int deleteAnswer(int ino);
+	
+	// 17. 수강 통계
+	ArrayList<StatsData> selectNewOrderStats(HashMap<String, String> map);
+	ArrayList<StatsData> selectStudyDaysStats(HashMap<String, String> map);
+	ArrayList<StatsData> selectGenderRateStats(HashMap<String, String> map);
+	ArrayList<StatsData> selectAgeGroupRateStats(HashMap<String, String> map);
+	
+	// 18. 설문 조사 통계
+	int selectRespondentCount(HashMap<String, String> map);
+	ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map);
+	
 }

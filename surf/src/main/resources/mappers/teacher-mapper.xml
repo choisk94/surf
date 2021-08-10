@@ -44,6 +44,20 @@
 		<id column="profile_image" property="teacherImage"/>
 	</resultMap>
 	
+	<resultMap id="statsDataResult" type="StatsData">
+		<id column="payment_date" property="dataUnit"/>
+		<id column="days" property="dataUnit"/>
+		<id column="gender" property="dataUnit"/>
+		<id column="age_range" property="dataUnit"/>
+		<id column="count" property="count"/>
+		<id column="점수" property="dataUnit"/>
+		<id column="퀄리티" property="quality"/>
+		<id column="만족도" property="satisfaction"/>
+		<id column="난이도" property="difficulty"/>
+		<id column="가격" property="price"/>
+		<id column="평점" property="score"/>
+	</resultMap>
+	
 	<!--
 		강사정보수정페이지 view 에 '강사정보노출'
 		@author HeeRak
@@ -387,4 +401,256 @@
 		where inquiry_no = #{inquiryNo}
 	</update>
 
+	<!-- 
+		수강 통계 '신규 수강 건수 조회'
+		@author WooJoo
+	-->
+	<select id="selectNewOrderStats" resultMap="statsDataResult">
+		select 
+			   <choose>
+			   	<when test="condition == 'daily'">
+                	to_char(b.dt, 'MM/DD') as payment_date			   	
+			   	</when>
+			   	<otherwise>
+                	to_char(b.dt, 'FMMM')||'월' as payment_date               	
+			   	</otherwise>
+			   </choose>
+			 , nvl(sum(a.count), 0) as count
+		  from (select 
+			   		   payment_date
+                     , count(*) as count
+                  from (select 
+							   p.class_no
+						     , to_char(payment_date,'YYYY-MM-DD') as payment_date
+						     , p.status
+						     , p.refund_status
+						     , nvl((select l.user_no 
+						     		  from lecture l 
+						     	     where p.class_no = l.class_no), '0') as teacher_no
+						  from payment p)
+                 where status = 'Y'
+		   		   and refund_status = 'N'
+				 <choose>
+					<when test="cno == 'all'">
+						and teacher_no = #{userNo}
+					</when>
+					<otherwise>
+			           	and class_no = #{cno}
+					</otherwise>
+				  </choose>
+                group by payment_date) a, 
+                (select to_date('2020-01-01','YYYY-MM-DD') + LEVEL - 1 as dt
+            	   from dual
+         		<![CDATA[connect by LEVEL <= (sysdate - to_date('2020-01-01','YYYY-MM-DD') + 1)) b]]>
+         	 where b.dt = a.payment_date(+)
+         <choose>
+			<when test="condition == 'daily'">
+	           and b.dt > sysdate - 7
+	         group by b.dt
+	         order by b.dt
+			</when>
+			<otherwise>
+	           and b.dt > trunc(add_months(sysdate, -5), 'FMMM')
+	         group by to_char(b.dt, 'FMMM')
+	         order by to_char(b.dt, 'FMMM')
+			</otherwise>
+		  </choose>
+	</select>
+	
+	<!-- 
+		수강 통계 '완강 소요 일수 조회'
+		@author WooJoo
+	-->
+	<select id="selectStudyDaysStats" resultMap="statsDataResult">
+		select
+		       days
+		     , count(*) as count
+		  from (select l.user_no
+		     , s.class_no
+		     , TO_DATE(s.end_date,'YYYY-MM-DD') - TO_DATE(s.start_date, 'YYYY-MM-DD') + 1 as days
+		  from class_studing s
+		  join lecture l on(s.class_no = l.class_no)
+		 where end_date is not null)
+		 <choose>
+		  	<when test="cno == 'all'">
+			 	where user_no = #{userNo}
+			 </when>
+			 <otherwise>
+			 	where class_no = #{cno}
+			 </otherwise>
+		 </choose>
+		 group by days
+		 order by days
+	</select>
+	
+	<!-- 
+		수강 통계 '수강생 성별 비율 조회'
+		@author WooJoo
+	-->
+	<select id="selectGenderRateStats" resultMap="statsDataResult">
+		select case gender when 'M' then '남'
+		                   when 'F' then '여'
+		                   else '기타' end as gender
+		     , count(*) as count
+		  from(select p.class_no
+		     , l.user_no
+		     , m.gender
+		  from payment p
+		  join lecture l on(p.class_no = l.class_no)
+		  join member m on(p.user_no = m.user_no)
+		 where p.status = 'Y'
+		   and p.refund_status = 'N'
+		    <choose>
+				<when test="cno == 'all'">
+					and l.user_no = #{userNo})
+				</when>
+				<otherwise>
+					and p.class_no = #{cno})
+				</otherwise>
+			</choose>
+		   group by gender
+	</select>
+	
+	<!-- 
+		수강 통계 '수강생 연령대별 비율 조회'
+		@author WooJoo
+	-->
+	<select id="selectAgeGroupRateStats" resultMap="statsDataResult">
+		select age_range||'대' as age_range
+		     , count(*) count
+		  from (select p.class_no
+		             , l.user_no as teacher_no
+		             , m.age_range
+		          from payment p
+		          join lecture l on(p.class_no = l.class_no)
+		          join member m on(p.user_no = m.user_no)
+		         where p.status = 'Y'
+		           and p.refund_status = 'N'
+		           <choose>
+						<when test="cno == 'all'">
+							and l.user_no = #{userNo})
+						</when>
+						<otherwise>
+							and p.class_no = #{cno})
+						</otherwise>
+					</choose>
+		 group by age_range
+		 order by age_range
+	</select>
+	
+	<!-- 
+		설문 조사 통계 '설문 조사 데이터 조회'
+		@author WooJoo
+	-->
+	<select id="selectSurveyStats" resultMap="statsDataResult">
+		select a.lev||'점' as 점수 
+		     , b.count as 퀄리티
+		     , c.count as 만족도
+		     , d.count as 난이도
+		     , e.count as 가격
+		     , f.count as 평점
+		  from (select level as lev
+		          from dual
+		        <![CDATA[connect by level <=5]]>
+		          order by level desc) a,
+		          (select quality
+		                 , count(*) as count
+		              from (select quality
+		                         , class_no
+		                         , teacher_no
+		                      from survey
+		                     <choose>
+								<when test="cno == 'all'">
+		                     		where teacher_no = #{userNo})
+		                     	</when>
+		                     	<otherwise>
+		                     		where class_no = #{cno})
+		                     	</otherwise>
+		                     </choose>
+		             group by quality) b,
+		             (select satisfaction
+		                 , count(*) as count
+		              from (select satisfaction
+		                         , class_no
+		                         , teacher_no
+		                      from survey
+		                     <choose>
+								<when test="cno == 'all'">
+		                     		where teacher_no = #{userNo})
+		                     	</when>
+		                     	<otherwise>
+		                     		where class_no = #{cno})
+		                     	</otherwise>
+		                     </choose>)
+		             group by satisfaction) c,
+		             (select difficulty
+		                 , count(*) as count
+		              from (select difficulty
+		                         , class_no
+		                         , teacher_no
+		                      from survey
+		                     <choose>
+								<when test="cno == 'all'">
+		                     		where teacher_no = #{userNo})
+		                     	</when>
+		                     	<otherwise>
+		                     		where class_no = #{cno})
+		                     	</otherwise>
+		                     </choose>)
+		             group by difficulty) d,
+		             (select price
+		                 , count(*) as count
+		              from (select price
+		                         , class_no
+		                         , teacher_no
+		                      from survey
+		                     <choose>
+								<when test="cno == 'all'">
+		                     		where teacher_no = #{userNo})
+		                     	</when>
+		                     	<otherwise>
+		                     		where class_no = #{cno})
+		                     	</otherwise>
+		                     </choose>)
+		             group by price) e,
+		             (select score
+		                 , count(*) as count
+		              from (select score
+		                         , class_no
+		                         , teacher_no
+		                      from survey
+		                     <choose>
+								<when test="cno == 'all'">
+		                     		where teacher_no = #{userNo})
+		                     	</when>
+		                     	<otherwise>
+		                     		where class_no = #{cno})
+		                     	</otherwise>
+		                     </choose>)
+		             group by score) f
+		         where a.lev = b.quality(+)
+		           and a.lev = c.satisfaction(+)
+		           and a.lev = d.difficulty(+)
+		           and a.lev = e.price(+)
+		           and a.lev = f.score(+)
+		         order by a.lev desc
+	</select>
+	
+	<!-- 
+		설문 조사 통계  '설문 조사 응답수 조회'
+		@author WooJoo
+	-->
+	<select id="selectRespondentCount" resultType="_int">
+		select count(*) as count
+		  from survey s
+		  <choose>
+			<when test="cno == 'all'">
+		 		where teacher_no = #{userNo}
+		 	</when>
+		    <otherwise>
+		 		where class_no = #{cno}
+		 	</otherwise>
+		 </choose>
+	</select>
+	
 </mapper>

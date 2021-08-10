@@ -2,8 +2,6 @@ package com.kh.surf.teacher.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,10 @@ import org.springframework.stereotype.Service;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.lecture.model.vo.Survey;
-import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
+import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.teacher.model.dao.TeacherDao;
+import com.kh.surf.teacher.model.vo.StatsData;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 /**
@@ -218,6 +216,60 @@ public class TeacherServiceImpl implements TeacherService{
 	@Override
 	public int deleteAnswer(int ino) {
 		return tDao.deleteAnswer(ino, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 신규 수강 건수 데이터 조회
+	 */
+	@Override
+	public ArrayList<StatsData> selectNewOrderStats(HashMap<String, String> map) {
+		return tDao.selectNewOrderStats(map, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 완강 소요 일수 데이터 조회
+	 */
+	@Override
+	public ArrayList<StatsData> selectStudyDaysStats(HashMap<String, String> map) {
+		return tDao.selectStudyDaysStats(map, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 수강생 성별 비율 데이터 조회
+	 */
+	@Override
+	public ArrayList<StatsData> selectGenderRateStats(HashMap<String, String> map) {
+		return tDao.selectGenderRateStats(map, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 수강생 연령대별 비율 데이터 조회
+	 */
+	@Override
+	public ArrayList<StatsData> selectAgeGroupRateStats(HashMap<String, String> map) {
+		return tDao.selectAgeGroupRateStats(map, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 설문 조사 데이터 조회
+	 */
+	@Override
+	public ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map) {
+		return tDao.selectSurveyStats(map, sqlSession);
+	}
+
+	/**
+	 * @author WooJoo
+	 * 설문 조사 응답수 조회
+	 */
+	@Override
+	public int selectRespondentCount(HashMap<String, String> map) {
+		return tDao.selectRespondentCount(map, sqlSession);
 	}
 
 

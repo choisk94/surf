@@ -194,7 +194,7 @@
 						<c:otherwise>
 							<div id="answer" style="padding: 2px;">${ i.ansContent }</div>
 							<div id="ans-date">${ i.ansDate }</div>
-							<form id="ansForm2" action="${pageContext.request.contextPath}/updateAnsForm.te" method="post">
+							<form id="ansForm2" action="updateAnsForm.te" method="post">
 			            		<input type="hidden" name="ino" value="${ i.inquiryNo }">
 								<button type="submit" class="btn btn-dark btn-sm" id="m-btn">수정</button>
 			            	</form>
@@ -216,7 +216,7 @@
 							<div class="modal-body">답변을 삭제하시겠습니까?<br>삭제시 해당 문의글은 다시 답변 대기 상태로
 								변경됩니다.</div>
 							<div class="modal-footer">
-								<form id="ansForm3" action="${pageContext.request.contextPath}/deleteAnswer.te" method="post">
+								<form id="ansForm3" action="deleteAnswer.te" method="post">
 		            				<input type="hidden" name="ino" value="${ i.inquiryNo }">
 									<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 									<button type="submit" class="btn btn-primary">확인</button>

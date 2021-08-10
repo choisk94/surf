@@ -1,6 +1,7 @@
 package com.kh.surf.teacher.controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -333,6 +334,49 @@ public class TeacherController {
 			model.addAttribute("errorMsg", "답변 삭제를 실패했습니다.");
 			return "redirect:inquiryDetail.te?ino=" + ino;
 		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계 화면 반환
+	 */
+	@RequestMapping("studyStats.te")
+	public ModelAndView selectStudyStats(HttpSession session, ModelAndView mv) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd. HH:mm 기준");
+		String selectTime = format.format(System.currentTimeMillis());
+
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		ArrayList<Lecture> clist = tService.selectClassList(userNo);
+		
+		mv.addObject("selectTime", selectTime)
+		  .addObject("clist", clist)
+		  .setViewName("teacher/studyStatsView");
+
+		return mv;
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 설문 조사 통계 화면 반환
+	 */
+	@RequestMapping("surveyStats.te")
+	public ModelAndView selectSurveyStats(HttpSession session, ModelAndView mv,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<Lecture> clist = tService.selectClassList(userNo);
+		
+		mv.addObject("cno", cno)
+		  .addObject("clist", clist)
+		  .setViewName("teacher/surveyStatsView");
+
+		return mv;
 	}
 
 }
