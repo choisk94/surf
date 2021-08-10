@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
         /*display: flex; */
         width: 1200px; 
         /*background: gray;*/
-        height: 1000px;
+        /*height: 1000px;*/
         padding: 0px 0px 0px 0px;
     }
     .class-element{width: 100%; height: 300px; display: flex;}
@@ -90,24 +91,30 @@
 	<div class="class-chapter">
 		<div class="chap-title">
 			<b>
-				아이패드와 
-				프로크리에이터로 그리는 
-				여행 풍경 그리기
+				${ title }
 			</b> 
 		</div>
-		<div class="chap-count">총 10개의 클래스</div>
-
-		<div class="chap-content">
-			<div class="chap-name">강의소개</div>
-			<div class="sub-name">가나다라마바사</div>
-                    
-			<div class="chap-name">강의소개</div>
-			<div class="sub-name">가나다라마바사</div>
-		</div>
-
+		
+		<c:set var="chapLength" value="${fn:length(tList)}"/>
+		<div class="chap-count">총 <c:out value="${fn:length(tList)}"/>개의 챕터</div>
+			
+		<c:forEach var="t" items="${ tList }" begin="0" end="${fn:length(tList)}" varStatus="status" >
+		
+			<div class="chap-content">
+				<div class="chap-name">${ t.chapName }</div>
+				
+				<c:forEach var="c" items="${ t.classVideoList }">
+					<c:if test="${ t.chapOrder eq c.chapOrder }">
+						<div class="sub-name">${ c.subTitle }</div>
+					</c:if>
+				</c:forEach>
+				
+			</div>
+		</c:forEach>
+		
 	</div>
-
-
+	
+	
 
 </body>
 </html>

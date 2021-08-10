@@ -7,6 +7,7 @@ import com.kh.surf.common.model.vo.PageInfo;
 
 public interface AdminBoardService {
 	
+	   /** 공지사항 **/
 	   // 1. 공지사항 게시판 리스트 페이지 조회용 (페이징)
 	   int selectNoticeCount();
 	   ArrayList<AdminBoard> selectNoticeList(PageInfo pi);
@@ -25,7 +26,7 @@ public interface AdminBoardService {
 	   int updateAdminNotice(AdminBoard ab);
 	   
 	   
-	   
+	   /** FAQ **/
 	   // 1. FAQ 게시판 리스트 페이지 조회용 (페이징)
 	   int selectFaqCount();
 	   ArrayList<AdminBoard> selectFaqList(PageInfo pi);

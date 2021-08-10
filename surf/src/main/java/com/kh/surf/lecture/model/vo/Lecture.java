@@ -33,6 +33,7 @@ public class Lecture {
 	private double star; // 평점
 	private int scrapCount; // 스크랩 수
 	private int students; // 수강생 수
+	private int surveyCount; // 후기 개수
 	
 	// Has a 관계
 	private ClassFunding cf;

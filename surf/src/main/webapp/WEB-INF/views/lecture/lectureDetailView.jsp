@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,6 @@
         /*display: flex; */
         width: 1200px; 
         /*background: gray;*/
-        height: 1000px;
         padding: 0px 0px 0px 0px;
     }
     .class-element{width: 100%; height: 300px; display: flex;}
@@ -29,7 +29,12 @@
     }
     .class-main-info{margin-left: 40px; }
     .class-main-info>div{width: 400px; margin-bottom: 15px;}
-    #info-title{font-size: 23px; font-weight: bolder;}
+    #info-title{
+	    height:80px; 
+	    font-size: 23px; 
+	    font-weight: bolder;
+	    line-
+    }
     #info-price span{color: darkgray;}
     #info-star{font-size: 15px;}
     #info-btn *{border: 1px solid lightgray; width: 150px;}
@@ -53,7 +58,6 @@
     }
     .tab1{margin: 0px 10px 0px 30px;}
     .class-tab button:hover{font-weight: bold; color: rgb(32, 155, 212);}
-    .class-full-info{height:1000px;}
     .class-full-info *{margin-bottom: 30px}
     #class-representative{width: 60%; height: 100%; margin-left: 10px;}
     .fa-star{color: rgb(231, 217, 17)}
@@ -158,108 +162,97 @@
 		
 		<br><br>
         <div class="container">
-
-            <!-- 클래스 상세 상단 이미지+타이틀 등 정보 -->
-            <div class="class-element">
-                
-                <!-- 클래스 대표 사진(영상) -->
-                <div id="class-representative">
-                    <img src="" alt="">
-                </div>
-
-                <!-- 
-                    클래스 타이틀, 가격, 기간, 평점, 수강후기, 수강평, 강사명
-                    찜하기, 결제하기
-                -->
-                <div class="class-main-info">
-                    <div id="info-title">아이패드 하나로 끝내는 여행 드로잉 어쩌구 길게길게</div>
-                    <div id="info-price">
-                        <strong>월 50,000원</strong><br>
-                        <span>(2개월)</span>
-                    </div>
-                    <div id="info-star">
-                        <i class="fas fa-star"></i> (4.5)
-                        &nbsp;&nbsp;&nbsp;
-                        20개의 수강후기 | 수강생 120명
-                    </div>
-                    <div id="info-teacher">
-                        <img src="" style="width: 45px; height:45px; border-radius: 50px;"> &nbsp;
-                        <strong>그림쟁이쓰</strong> 
-                    </div>
-                    <div id="info-btn">
-                        <button type="button" class="btn">찜하기</button>
-                        <a href="" class="btn">결제하기</a>
-                    </div>
-                </div>
-                
-            </div>
-            
-            <!-- 클래스 상세 탭 -->
-            <div class="class-tab">
-                <div class="tab1"><button class="btn" onclick="history.go(0);">클래스 소개</button></div>
-                <div class="tab2"><button class="btn" onclick="acyncMovePage('chapter.lec');">커리큘럼</button></div>
-                <div class="tab3"><button class="btn" onclick="acyncMovePage('review.lec');">수강 후기</button></div>
-                <div class="tab4"><button class="btn" onclick="acyncMovePage('inquiry.lec');">수강 문의</button></div>
-            </div>
-
-            <!-- 클래스 소개 -->
-            <div class="class-full-info">
-                <div class="class-title">
-                    <b>
-                    아이패드와 
-                    프로크리에이터로 그리는 
-                    여행 풍경 그리기
-                    </b> 
-                </div>
-
-                <div class="class-content">
-                    <p>
-                        어릴적 나만의 그림 전시회를 꿈꿔보지 않았나요? 
-
-                        당신의 잃어린 꿈을 이뤄드립니다. 
-
-                        누구나 한명쯤 당연히 가지고있는 아이패드로 그림을 그려보아요.
-
-                        당신의 여행기를 그림으로 남겨놓는다면 훗날 풍경을 떠올렸을 때 더 깊은 추억에 잠길 수 있을거에요.
-                    </p>
-                </div>
-
-                <div class="class-slider">
-                	<div class="slider-area">
-                    <div id="slider">
-                        <button class="btn control_next">&gt;</button>
-                        <button class="btn control_prev">&lt;</button>
-                        <ul>
-                        <li><img src="../resource/img/dog.jpeg" alt=""></li>
-                        <li>SLIDE 2</li>
-                        <li>SLIDE 3</li>
-                        <li style="background: #aaa;">SLIDE 4</li>
-                        </ul>  
-                    </div> 
-                    <div class="intro-content">
-                        dfshgfhgjf
-                    </div>
-                </div>
-                </div>
-                
-                <br>
-
-                <div class="class-notice">
-                    <div class="notice-title">
-                        강의 정보
-                    </div>
-                    <div class="notice-content">
-                        <span><strong>강의 설명</strong></span>
-                        하하 <br>
-                        <span><strong>준비물</strong></span> 
-                        하하하 <br>
-                        <span><strong>유의사항</strong></span>
-                        하하하하
-                    </div>
-                </div>
-                <br>
-            </div>
-
+		
+			
+	            
+	            <div class="class-element">
+	                
+	                <div id="class-representative">
+	                    <img src="${ l.introFile }" alt=""> 
+	                </div>
+	
+	                <div class="class-main-info">
+	                    <div id="info-title">${ l.classTitle }</div>
+	                    <div id="info-price">
+	                        <strong><fmt:formatNumber value="${ l.price }"/>원</strong><br>
+	                        <span>(${ l.period })</span>
+	                    </div>
+	                    <div id="info-star">
+	                        <i class="fas fa-star"></i> (${ l.star })
+	                        &nbsp;&nbsp;&nbsp;
+	                        ${ l.surveyCount }개의 수강후기 | 수강생 ${ l.students }명
+	                    </div>
+	                    <div id="info-teacher">
+	                        <img src="" style="width: 45px; height:45px; border-radius: 50px;"> &nbsp;
+	                        <strong>${ l.teacherName }</strong> 
+	                    </div>
+	                    <div id="info-btn">
+	                        <button type="button" class="btn">찜하기</button>
+	                        <a href="" class="btn">결제하기</a>
+	                    </div>
+	                </div>
+	                
+	            </div>
+	            
+	            <div class="class-tab">
+	                <div class="tab1"><button class="btn" onclick="history.go(0);">클래스 소개</button></div>
+	                <div class="tab2"><button class="btn" onclick="acyncMovePage('chapter.lec?cno=${ l.classNo }&&cti=${ l.classTitle }');">커리큘럼</button></div>
+	                <div class="tab3"><button class="btn" onclick="acyncMovePage('review.lec?cno=${ l.classNo }');">수강 후기</button></div>
+	                <div class="tab4"><button class="btn" onclick="acyncMovePage('inquiry.lec?cno=${ l.classNo }');">수강 문의</button></div>
+	            </div>
+	            
+	            <div class="class-full-info">
+	                <div class="class-title">
+	                    <b>
+	                    ${ l.introTitle }
+	                    </b> 
+	                </div>
+	
+	                <div class="class-content">
+	                    <p>
+	                        ${ l.introContent }
+	                    </p>
+	                </div>
+	
+					<c:forEach var="c" items="${ cList }">
+		                <div class="class-slider">
+		                	<div class="slider-area">
+			                    <div id="slider">
+			                        <button class="btn control_next">&gt;</button>
+			                        <button class="btn control_prev">&lt;</button>
+			                        <ul>
+				                        <li><img src="${ c.introImage }" alt=""></li>
+				                        <!-- <li>SLIDE 2</li>
+				                        <li>SLIDE 3</li>
+				                        <li style="background: #aaa;">SLIDE 4</li> -->
+			                        </ul>  
+			                    </div> 
+			                    <div class="intro-content">
+			                        ${ c.introContent }
+			                    </div>
+			                </div>
+		                </div>
+	                </c:forEach>
+	                
+	                <br>
+	
+	                <div class="class-notice">
+	                    <div class="notice-title">
+	                        강의 정보
+	                    </div>
+	                    <div class="notice-content">
+	                        <span><strong>수강 가능 기간</strong></span>
+	                        ${ l.posTerm }개월 <br>
+	                        <span><strong>준비물</strong></span> 
+	                        ${ l.need } <br>
+	                        <span><strong>유의사항</strong></span>
+	                        ${ l.note }
+	                    </div>
+	                </div>
+	                <br>
+            	</div>
+            	
+			
             
             <script>
                 // 슬라이드 
@@ -317,6 +310,7 @@
         
             function acyncMovePage(url){
 
+            	
                 // ajax option
                 var ajaxOption = {
                 	url : url,

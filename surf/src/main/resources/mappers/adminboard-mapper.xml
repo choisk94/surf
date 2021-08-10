@@ -9,6 +9,9 @@
 		<result column="count" property="count"/>
 		<result column="create_date" property="createDate"/>
 		<result column="board_type" property="boardType"/>
+		<result column="faq_category" property="faqCategory"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="user_no" property="userNo"/>
 	</resultMap>
 
 	<select id="selectNoticeCount" resultType="_int">
@@ -34,6 +37,62 @@
 		    by board_no desc
 	</select>
 	
+	<insert id="insertAdminNotice">
+		insert
+		  into admin_board
+		  (
+		    board_no
+		  , board_title
+		  , user_no
+		  , board_content
+		  , board_type
+		  )
+		  values
+		  (
+		    seq_nno.nextval
+		  , #{boardTitle}
+		  , #{userNo}
+		  , #{boardContent}
+		  , '공지사항'
+		  )
+	</insert>
+	
+	<update id="increaseCountNotice">
+		update
+		       admin_board
+		   set count = count+1
+		 where board_no = #{boardNo}
+		   and board_type = '공지사항'
+		   and status = 'Y'
+	</update>
+	
+	<select id="selectAdminNotice" resultMap="adminBoardResult">
+		select
+		       board_no
+		     , board_title
+		     , nickname
+		     , board_content
+		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from admin_board a
+          join member m on m.user_no = a.user_no
+		 where board_no = #{boardNo}
+	</select>
+	
+	<update id="deleteAdminNotice">
+		update
+		       admin_board
+		   set status = 'N'
+		 where board_no = #{boardNo}       
+	</update>
+	
+	<update id="updateAdminNotice">
+		update
+			   admin_board
+		   set board_title = #{boardTitle}
+		     , board_content = #{boardContent}
+		 where board_no = #{boardNo}
+	</update>
+	
 	<select id="selectFaqCount" resultType="_int">
 		select
 		       count(*)
@@ -45,14 +104,12 @@
 	<select id="selectFaqList" resultMap="adminBoardResult">
 		select
 		       board_no
+             , faq_category  
 		     , board_title
-		     , nickname
-		     , count
-		     , to_char(create_date, 'YYYY-MM-DD') as create_date
-		  from admin_board a
-          join member m on m.user_no = a.user_no
+             , board_content
+		  from admin_board 
 		 where board_type = 'FAQ'
-		   and a.status = 'Y'
+		   and status = 'Y'
 		 order
 		    by board_no desc
 	</select>

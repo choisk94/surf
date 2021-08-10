@@ -1,5 +1,6 @@
 package com.kh.surf.member.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -8,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gson.Gson;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.member.model.service.MemberService;
@@ -91,7 +96,7 @@ public class MemberController {
 		
 		if(result > 0) {
 			session.setAttribute("alertMsg", "회원가입이 성공적으로 완료되었습니다.");
-			session.removeAttribute("kUser");
+			session.removeAttribute("snsUser");
 			mv.setViewName("member/memberEnrollSuccess");
 			
 		} else {
@@ -106,8 +111,8 @@ public class MemberController {
 	 */
 	@ResponseBody
 	@RequestMapping("idCheck.me")
-	public String idCheck(String userId) {
-		int result = mService.idCheck(userId);
+	public String idCheck(Member m) {
+		int result = mService.idCheck(m);
 		
 		return result > 0? "NN" : "YY";
 	}
@@ -212,8 +217,9 @@ public class MemberController {
 		}
 		return mv;
 	}
-	/************************** 비밀번호 찾기(이메일 전송) *******************************/
 	
+	
+	/************************** 비밀번호 찾기(이메일 전송) *******************************/
 	/** @author 최서경
 	 * 비밀번호 찾기
 	 */
@@ -233,19 +239,19 @@ public class MemberController {
 
 	//post방식
 	@RequestMapping(value="findPwd.me", method = RequestMethod.POST)
-	public void findPwdPOST(String userId, HttpServletResponse response) throws Exception{
-		findPwd(response, userId);
+	public void findPwdPOST(Member m, HttpServletResponse response) throws Exception{
+		findPwd(response, m);
 	}
 	
 	/** @author 최서경
 	 * 비밀번호 찾기 - 이메일 가입여부 확인 및 임시 비밀번호 생성
 	 */
-	public void findPwd(HttpServletResponse response, String userId) throws Exception {
+	public void findPwd(HttpServletResponse response, Member m) throws Exception {
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
 		//가입된 이메일이 없을 경우
-		if(mService.idCheck(userId) == 0) {
+		if(mService.idCheck(m) == 0) {
 			out.print("등록되지 않은 아이디입니다.");
 			out.close();
 			
@@ -256,8 +262,6 @@ public class MemberController {
 				pw += (char)((Math.random() * 26) + 97);
 			}
 			
-			Member m = new Member();
-			m.setEmail(userId);
 			m.setPassword(pw);
 			
 			// 비밀번호 변경 메일 발송
@@ -318,7 +322,7 @@ public class MemberController {
 		email.send();
 	}
 	
-	/******************************* 카카오 ***********************************/
+	/************************************** 카카오 ************************************************/
 	/** @author 최서경
 	 * 카카오계정으로 로그인
 	 * @param code
@@ -330,7 +334,6 @@ public class MemberController {
 		JsonNode accessToken = node.get("access_token");
 		String token = accessToken.toString();
 		session.setAttribute("token", token);
-		
 		// 사용자 정보
 		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
 		String kemail = null;
@@ -345,18 +348,13 @@ public class MemberController {
 		kgender = kakao_account.path("gender").asText();
 		kage = kakao_account.path("age_range").asText();
 		
-		System.out.println(kemail);
-		System.out.println(kgender);
-		System.out.println(kage);
-		
-		
 		//계정 Member에담기 
 		Member m = getKakaoMember(kemail, kgender, kage);
 		
 		// 조회한 이메일이 DB에 존재할 경우
-		if(mService.idCheck(kemail) > 0) {
+		if(mService.idCheck(m) > 0) {
 			// 그런데 탈퇴여부가 Y일 경우 => 사용불가
-			if(mService.statusCheck(kemail).equals("Y")) {
+			if(mService.statusCheck(m).equals("Y")) {
 				session.setAttribute("alertMsg", "탈퇴한 계정입니다. 다른 계정으로 회원가입 후 이용바랍니다.");
 				mv.setViewName("redirect:/");
 			// 탈퇴여부 N => 로그인	
@@ -369,7 +367,7 @@ public class MemberController {
 		
 		// 조회한 이메일이 DB에 존재하지 않을 경우 => 회원가입 페이지로 이동하여 가입 유도
 		} else {
-			mv.addObject("kUser", m);
+			mv.addObject("snsUser", m);
 			session.setAttribute("alertMsg", "가입되지 않은 계정입니다. 회원가입 페이지로 이동합니다.");
 			mv.setViewName("member/memberEnrollForm");
 		}
@@ -388,7 +386,6 @@ public class MemberController {
 		JsonNode accessToken = node.get("access_token");
 		String token = accessToken.toString();
 		session.setAttribute("token", token);
-
 		
 		// 사용자 정보
 		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
@@ -406,8 +403,8 @@ public class MemberController {
 		Boolean has_gender = kakao_account.path("has_gender").asBoolean();
 		
 		// 이미 가입된 아이디이면 로그인 후 메인화면
-		if(mService.idCheck(kemail) > 0) {
-			if(mService.statusCheck(kemail).equals("Y")) {
+		if(mService.idCheck(m) > 0) {
+			if(mService.statusCheck(m).equals("Y")) {
 				session.setAttribute("alertMsg", "탈퇴한 계정입니다. 다른 계정으로 회원가입 후 이용바랍니다.");
 				mv.setViewName("redirect:/");
 			} else {
@@ -425,23 +422,23 @@ public class MemberController {
 			} else {
 				// 누락된게 있으면 회원가입페이지에 정보 뿌리기
 				session.setAttribute("alertMsg", "필수입력 사항 중 누락된 항목이 있습니다. 해당 항목을 작성해주세요.");
-				mv.addObject("kUser", m);
+				mv.addObject("snsUser", m);
 				mv.setViewName("member/memberEnrollForm");
 			}
 		}
-		
 		return mv;
 	}
 	
 	
-	// 카카오에 등록된 정보를 Member객체의 필드타입와 일치시킴
+    /** @author 최서경
+     * 카카오 계정정보 가공하여 Member 객체에 담기
+     */
     public Member getKakaoMember(String kemail, String kgender, String kage) {
     	
     	String nickName = "";
     	if(kemail != "") {
     		nickName = kemail.substring(0, kemail.indexOf("@"));
     	}
-    	
     	
 		int kAgeRange = 0;
 		switch(kage) {
@@ -474,11 +471,180 @@ public class MemberController {
 		return m;
     }
     
+	
+	/************************************** 네이버 ************************************************/
+
+	@Autowired
+	private NaverController nc;
+	
+	/** @author 최서경
+	 * 인가코드 받기 url
+	 */
+	@ResponseBody
+	@RequestMapping(value = "nauth.do", method=RequestMethod.GET)
+	public String getNaverAuth(String type, HttpSession session) {
+		
+		String naverUrl = nc.getAuthorizationUrl(type, session);
+		return naverUrl;
+	}
+	
+	
+	/** @author 최서경
+	 * 네이버 아이디로 로그인
+	 */
+	@RequestMapping(value="nlogin.do", produces = "application/json; charset=utf-8", method= {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView naverLogin(String code, String state, HttpSession session, ModelAndView mv) throws IOException {
+		
+		OAuth2AccessToken oauthToken;
+		String apiResult = null;
+		
+		// 접근 토큰
+		oauthToken = nc.getAccessToken("login", session, code, state);
+		session.setAttribute("ntoken", oauthToken);
+		// 사용자 정보
+		apiResult = nc.getUserInfo("login", oauthToken);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = null;
+		
+		try {
+			obj = parser.parse(apiResult);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject jsonobj = (JSONObject)obj;
+		JSONObject response = (JSONObject)jsonobj.get("response");
+
+		String nemail = (String)response.get("email");
+		String ngender = (String)response.get("gender");
+		String nage = (String)response.get("age");
+
+		System.out.println("이메일 : " + nemail);
+		System.out.println("성별 : " + ngender);
+		System.out.println("나이 : " + nage);
+		
+		//계정 Member에담기 
+		Member m = getNaverMember(nemail, ngender, nage);
+		
+		// 조회한 이메일이 DB에 존재할 경우
+		if(mService.idCheck(m) > 0) {
+			// 그런데 탈퇴여부가 Y일 경우 => 사용불가
+			if(mService.statusCheck(m).equals("Y")) {
+				session.setAttribute("alertMsg", "탈퇴한 계정입니다. 다른 계정으로 회원가입 후 이용바랍니다.");
+				mv.setViewName("redirect:/");
+			// 탈퇴여부 N => 로그인	
+			} else {
+				Member loginUser = mService.loginMember(m);
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("alertMsg", loginUser.getNickname() + "님 환영합니다!");
+				mv.setViewName("redirect:/");
+			}
+		
+		// 조회한 이메일이 DB에 존재하지 않을 경우 => 회원가입 페이지로 이동하여 가입 유도
+		} else {
+			mv.addObject("snsUser", m);
+			session.setAttribute("alertMsg", "가입되지 않은 계정입니다. 회원가입 페이지로 이동합니다.");
+			mv.setViewName("member/memberEnrollForm");
+		}
+		return mv;
+	}
+	
     
-    
-    
-    
-    /*************************** 삭제예정 **********************************
+	/** @author 최서경
+	 * 네이버 아이디로 회원가입
+	 */
+	@RequestMapping(value="nenroll.do", produces = "application/json; charset=utf-8", method= {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView naverEnroll(String code, String state, HttpSession session, ModelAndView mv) throws IOException {
+		
+		OAuth2AccessToken oauthToken;
+		String apiResult = null;
+		
+		// 접근 토큰
+		oauthToken = nc.getAccessToken("enroll", session, code, state);
+		session.setAttribute("ntoken", oauthToken);
+		// 사용자 정보
+		apiResult = nc.getUserInfo("enroll", oauthToken);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = null;
+		
+		try {
+			obj = parser.parse(apiResult);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject jsonobj = (JSONObject)obj;
+		JSONObject response = (JSONObject)jsonobj.get("response");
+
+		String nemail = (String)response.get("email");
+		String ngender = (String)response.get("gender");
+		String nage = (String)response.get("age");
+
+		Member m = getNaverMember(nemail, ngender, nage);
+		
+		// 이미 가입된 아이디이면 로그인 후 메인화면
+		if(mService.idCheck(m) > 0) {
+			if(mService.statusCheck(m).equals("Y")) {
+				session.setAttribute("alertMsg", "탈퇴한 계정입니다. 다른 계정으로 회원가입 후 이용바랍니다.");
+				mv.setViewName("redirect:/");
+			} else {
+				Member loginUser = mService.loginMember(m);
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("alertMsg", loginUser.getNickname() + "님 환영합니다!");
+				mv.setViewName("redirect:/");
+			}
+		} else {
+			if(ngender != null ) {
+				// 네이버는 회원가입 시 성별만 '선택안함'으로 설정 가능. 이메일,나이는 필수 입력.
+				mService.insertMember(m);
+				session.setAttribute("alertMsg", "회원가입이 정상적으로 완료되었습니다. 로그인 후 이용해주세요.");
+				mv.setViewName("redirect:/");
+			} else {
+				// 성별이 누락되었을 경우
+				session.setAttribute("alertMsg", "필수입력 사항 중 누락된 항목이 있습니다. 해당 항목을 작성해주세요.");
+				mv.addObject("snsUser", m);
+				mv.setViewName("member/memberEnrollForm");
+			}
+		}
+		return mv;
+	}
+	
+	
+	/** @author 최서경
+	 * 네이버 계정정보 가공하여 Member객체에 담기
+	 */
+	public Member getNaverMember(String nemail, String ngender, String nage) {
+		
+		String nickName = "";
+		nickName = nemail.substring(0, nemail.indexOf("@"));
+		
+		
+		int nAgeRange = 0;
+		switch(nage) {
+		case "1-9" : nAgeRange = 0 ; break;
+		case "10-19" : nAgeRange = 10; break;
+		case "20-29" : nAgeRange = 20; break;
+		case "30-39" : nAgeRange = 30; break;
+		case "40-49" : nAgeRange = 40; break;
+		case "50-59" : nAgeRange = 50; break;
+		case "60-" : nAgeRange = 60; break;
+		}
+		
+		Member m = new Member();
+		m.setEmail(nemail);
+		m.setNickname(nickName);
+		m.setGender(ngender);
+		m.setAgeRange(nAgeRange);
+		m.setEnrollType("N");
+		
+		return m;
+	}
+	
+	
+	
+	/*************************** 테스트용으로 작성. 삭제예정. **********************************
 	@RequestMapping(value = "/klogout.do", produces = "application/json")
     public String Logout(HttpSession session) {
         //kakao restapi 객체 선언
@@ -490,20 +656,42 @@ public class MemberController {
         return "redirect:/";
     }  
 	
-     ****************************************************************************/
 	
+	// 토큰 삭제(카카오 또는 네이버 계정과 어플리케이션 연동 해제) 임시로 작성한 것. 나중에 삭제해야 함!
 	
 	@RequestMapping(value = "/kunlink.do", produces = "application/json")
-    public String unlink(HttpSession session) {
-        //kakao restapi 객체 선언
-       KakaoController kc = new KakaoController();
+	public String unlink(HttpSession session) {
+		//kakao restapi 객체 선언
+		KakaoController kc = new KakaoController();
+		
+		JsonNode node = kc.unlink(session.getAttribute("token").toString());
+		
+		session.invalidate();
+		//결과 값 출력
+		System.out.println("연결끊긴 아이디 : " + node.get("id"));
+		return "redirect:/";
+	}  
+	
+	@RequestMapping(value = "/nunlink.do", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
+    public String nunlink(HttpSession session) throws IOException {
        
-       JsonNode node = kc.unlink(session.getAttribute("token").toString());
-       
+		OAuth2AccessToken ntoken = ((OAuth2AccessToken)session.getAttribute("ntoken"));
+		
+		JsonNode node = nc.nunlink(ntoken);
+		
+		System.out.println("처리결과 : " + node.get("result"));
+		
         //결과 값 출력
-        System.out.println("연결끊긴 아이디 : " + node.get("id"));
         return "redirect:/";
-    }  
+    } 
+	 **********************************************************************/
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

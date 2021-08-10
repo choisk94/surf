@@ -32,11 +32,11 @@
 
           
           <c:choose>
-          	<c:when test="${ !empty kUser }">
-	          <input type="hidden" name="enrollType" value="K">
+          	<c:when test="${ !empty snsUser }">
+	          <input id="enrollType" type="hidden" name="enrollType" value="${ snsUser.enrollType }">
           	</c:when>
           	<c:otherwise>
-	          <input type="hidden" name="enrollType" value="L">
+	          <input id="enrollType" type="hidden" name="enrollType" value="L">
           	</c:otherwise>
           </c:choose>
           
@@ -44,18 +44,18 @@
           <div class="form-group" style="margin-bottom: 0;">
             <label for="userId">
             	이메일
-            	<c:if test="${kUser.email eq '' }">
+            	<c:if test="${snsUser.email eq '' }">
 	            	<b style="color: blue; font-size: 11px;">반드시 SNS에 등록된 이메일을 입력해주세요.</b>
             	</c:if>
             </label>
-            <input type="email" class="form-control" id="userId" name="email" placeholder="example@surf.com" value="${ kUser.email }" required>
+            <input type="email" class="form-control" id="userId" name="email" placeholder="example@surf.com" value="${ snsUser.email }" required>
           </div>
           <div id="checkResult" style="font-size:0.8em; height: 16px; padding-top:5px; visibility:hidden;"></div>
           
           <!-- 아이디 확인 -->
           <div class="form-group">
             <label class="mt-2" for="checkId">이메일 확인</label>
-            <input type="email" class="form-control" id="checkId" placeholder="example@surf.com" value="${ kUser.email }" required>
+            <input type="email" class="form-control" id="checkId" placeholder="example@surf.com" value="${ snsUser.email }" required>
           </div>
           
           <!-- 성별 -->
@@ -89,19 +89,19 @@
             </select>
           </div>
           
-		  	<c:if test="${!empty kUser and kUser.gender ne ''}">
+		  	<c:if test="${!empty snsUser and snsUser.gender ne ''}">
 			  <script>
 			  	$(function(){
-			  		$("input[value=${kUser.gender}]").attr("checked", true);
+			  		$("input[value=${snsUser.gender}]").attr("checked", true);
 			  	})
 			  </script>
 		  	</c:if>
 		  	
-		  	<c:if test="${!empty kUser and kUser.ageRange ne ''}">
+		  	<c:if test="${!empty snsUser and snsUser.ageRange ne ''}">
 			  <script>
 			  	$(function(){
 			  		$("option").each(function(){
-			  			if($(this).val() == '${kUser.ageRange}'){
+			  			if($(this).val() == '${snsUser.ageRange}'){
 			  				$(this).attr("selected", true);
 			  			}
 			  		})
@@ -110,7 +110,7 @@
 		  	</c:if>
 			
 		  <!-- SNS로 가입하는 경우 보여지지 않음 -->	
-		  <c:if test="${ empty kUser }">
+		  <c:if test="${ empty snsUser }">
 	          <!-- 비밀번호 -->
 	          <div class="form-group">
 	            <label class="mt-2" for="userPwd">비밀번호</label>
@@ -136,7 +136,7 @@
       <div class="hr-sect">간편회원가입</div>
       <div align="center">
         <a id="kJoinBtn" class="btn easyJoin" style="padding:0;"><img src="resources/images/kakao_login_large_narrow.png"></a>
-        <a href="" class="btn easyJoin" style="padding:0;"><img src="resources/images/StartWithNaverBtn.png"></a>
+        <a id="nJoinBtn" class="btn easyJoin" style="padding:0;"><img src="resources/images/StartWithNaverBtn.png"></a>
       </div>
       
       <script>
@@ -152,6 +152,18 @@
             		console.log("ajax실패");
             	}
             })
+            
+            $.ajax({
+            	url:"nauth.do",
+            	data:{type:"enroll"},
+            	success:function(nUrl){
+            		$("#nJoinBtn").on("click", function(){
+            			location.href=nUrl;
+            		})
+            	}, error:function(){
+            		console.log("ajax실패");
+            	}
+            })            
       	})
       </script>
       
@@ -178,9 +190,9 @@
 			if($userId.val().length > 5){
 				$.ajax({
 					url:"idCheck.me",
-					data:{userId:$userId.val()},
-					success:function(result){
-						
+					data:{email:$userId.val(),
+						  enrollType:$("#enrollType").val()
+					}, success:function(result){
 						if(result == "NN"){
 							// 아이디 사용불가
 							$("#checkResult").css("visibility", "visible");

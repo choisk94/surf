@@ -23,6 +23,7 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.Chapter" alias="Chapter"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="ClassStuding"/>
 		<typeAlias type="com.kh.surf.teacher.model.vo.StatsData" alias="StatsData"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 	</typeAliases>
 	
 	<mappers>
@@ -33,6 +34,7 @@
 		<mapper resource="/mappers/category-mapper.xml"/>
 		<mapper resource="/mappers/payment-mapper.xml"/>
 		<mapper resource="/mappers/lecture-mapper.xml"/>
+		<mapper resource="/mappers/studyboard-mapper.xml"/>
 	</mappers>
 	
 

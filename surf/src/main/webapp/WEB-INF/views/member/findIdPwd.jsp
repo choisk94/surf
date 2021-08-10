@@ -27,8 +27,11 @@
                 <h5><b style="text-align: center;">비밀번호를 잊어버리셨나요?</b></h5>
                 <br>
                 <div>
-                    회원가입 시 사용한 이메일을 정확히 입력해주세요. <br>
-                    임시 비밀번호를 보내드립니다.
+					회원가입 시 사용한 이메일을 정확히 입력해주세요. <br>
+					임시 비밀번호를 보내드립니다. <br>
+					<b style="font-size:12px; color:blue;">
+                    **SNS를 통해 가입하신 경우, 해당 사이트에 문의바랍니다.**
+                    </b>
                 </div>
             </div>
             <div>
@@ -56,7 +59,8 @@
     				url:"findPwd.me",
     				type:"post",
     				data:{
-    					userId:$("#userId").val()
+    					email:$("#userId").val(),
+    					enrollType:"L"
     				}, success:function(result){
     					alert(result);
     				}, error:function(){

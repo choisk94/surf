@@ -32,13 +32,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int idCheck(String userId) {
-		return mDao.idCheck(sqlSession, userId);
+	public int idCheck(Member m) {
+		return mDao.idCheck(sqlSession, m);
 	}
 
 	@Override
-	public String statusCheck(String userId) {
-		return mDao.statusCheck(sqlSession, userId);
+	public String statusCheck(Member m) {
+		return mDao.statusCheck(sqlSession, m);
 	}
 	
 	@Override

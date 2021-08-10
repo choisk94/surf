@@ -26,21 +26,22 @@
           <br>
         </div>
 
-        <form id="enrollForm" method="post" action="" enctype=""></form>
+        <form id="enrollForm" method="post" action="insertNotice.ad" enctype="">
+        <input type="hidden" name="userNo" value=${ loginUser.userNo }>
           <table align="center">
             <tr>
               <th><label for="title">제목</label></th>
-              <td><input type="text" id="title" class="form-control" name="" required></td>
+              <td><input type="text" id="title" class="form-control" name="boardTitle" required></td>
             </tr>
             <tr>
               <th><label for="writer">작성자</label></th>
-              <td><input type="text" id="writer" class="form-control" value="surf" name="" readonly></td>
+              <td><input type="text" id="writer" class="form-control" value="${ loginUser.nickname }" name="nickname" readonly></td>
             </tr>
               <tr>
                 <th colspan="2"><label for="content">내용</label></th>
             </tr>
             <tr>
-              <th colspan="2"><textarea class="form-control" required name="" id="content" rows="20" style="resize:none;"></textarea></th>
+              <th colspan="2"><textarea class="form-control" required name="boardContent" id="content" rows="20" style="resize:none;"></textarea></th>
           </tr>
           </table>
           <br>
@@ -52,6 +53,6 @@
         </form>
       </div>
       <br><br>
-  </div>
+  
 </body>
 </html>

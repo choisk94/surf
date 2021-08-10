@@ -75,15 +75,18 @@
         overflow: hidden;
         background: pink;
         margin-right: 10px;
+        margin-bottom: 0px;
     }
     .review-star{
         margin-bottom: 5px;
         font-size: 13px;
+        height:25px;
     }
     .review-content{
         margin-bottom: 40px;
         font-size: 13px;
     }
+    .fa-star{color: rgb(231, 217, 17)}
 </style>
 </head>
 <body>
@@ -91,27 +94,20 @@
 
 	<!-- 수강 후기 -->
 	<div class="class-review">
-                
-		<div class="review-area">
-			<div class="box">
-				<img src="">
-				<span style="font-size: 14px;">김철수</span>
-			</div>
-			<div class="review-star">평점</div>
-			<div class="review-content">
-				와우 정말 최고의 강의. 와우 정말 최고의 강의. 와우 정말 최고의 강의. 와우 정말 최고의 강의. 
-			</div>
+		<c:forEach var="s" items="${ sList }">
 			<div class="review-area">
 				<div class="box">
-					<img src="">
-					<span>김철수</span>
+					<img src="resources/images/user_icon3.png">
+					<span style="font-size: 14px;">${ s.userNo }</span>
 				</div>
-				<div class="review-star">평점</div>
+				<div class="review-star"> 
+					<i class="fas fa-star"></i> ${ s.satisfaction }
+				</div>
 				<div class="review-content">
-					와우 정말 최고의 강의.
+					${ s.review }
 				</div>
 			</div>
-		</div>
+		</c:forEach>
 	</div>
 
     

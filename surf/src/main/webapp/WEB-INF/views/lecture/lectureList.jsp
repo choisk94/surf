@@ -191,7 +191,7 @@
                 <div class="class-list">
 				
 					<c:forEach var="l" items="${ list }">
-	                    <div class="thumbnail" align="center">
+	                    <div class="thumbnail" align="center" onclick="location.href='/surf/detail.lec?cno=${l.classNo}'">
 	                        <input type="hidden" name="classNo" value="">
 	                        <div class="class-thumb">
 	                            <img src="${ l.thumbnail }" width="240" height="150" id="">
