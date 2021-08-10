@@ -32,6 +32,7 @@
 		<mapper resource="/mappers/category-mapper.xml"/>
 		<mapper resource="/mappers/payment-mapper.xml"/>
 		<mapper resource="/mappers/lecture-mapper.xml"/>
+		<mapper resource="/mappers/studyboard-mapper.xml"/>
 	</mappers>
 	
 
