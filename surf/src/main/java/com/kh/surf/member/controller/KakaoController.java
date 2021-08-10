@@ -28,6 +28,9 @@ import com.kh.surf.member.model.vo.Member;
 @Controller
 public class KakaoController {
 	
+	/** @author 최서경
+	 * 인가코드 받기 url
+	 */
 	@ResponseBody
 	@RequestMapping(value = "kauth.do", method =RequestMethod.GET )
 	public String getKakaoAuth(String type, HttpSession session, Model model) {
@@ -138,7 +141,7 @@ public class KakaoController {
 		
 	}
 	
-	
+	/************************ 밑에는 나중에 삭제 *******************************************************/
     /** 
      * @param autorize_code
      * @return 로그아웃된 아이디
@@ -175,7 +178,6 @@ public class KakaoController {
      * @param autorize_code
      * @return 연결 끊긴 아이디 
      * properties 삭제됨
-     */
     public JsonNode unlink(String access_token) {
     	
         final String RequestUrl = "https://kapi.kakao.com/v1/user/unlink";
@@ -203,6 +205,7 @@ public class KakaoController {
         }
         return returnNode;
     }
+     */
     
 
 
