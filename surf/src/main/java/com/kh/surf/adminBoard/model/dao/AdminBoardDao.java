@@ -61,6 +61,14 @@ public class AdminBoardDao {
 		return sqlSession.selectOne("adminBoardMapper.selectAdminNotice", boardNo);
 	}
 	
+	public int deleteAdminNotice(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("adminBoardMapper.deleteAdminNotice", boardNo);
+	}
+	
+	public int updateAdminNotice(SqlSessionTemplate sqlSession, AdminBoard ab) {
+		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
+	}
+	
 	
 	/** FAQ **/
 	

@@ -49,13 +49,30 @@
           </tr>
       </table>
         <br>
-        
+      
+      <c:if test="${ loginUser.userNo == 1 }">  
         <div align="center">
           <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-          <a class="btn btn-primary" href="">수정</a>&nbsp;&nbsp;&nbsp;
-          <a class="btn btn-danger" href="">삭제</a>
-      </div><br><br>
-
+          <a class="btn btn-primary" onclick="postFormSubmit(1);">수정</a>&nbsp;&nbsp;&nbsp;
+          <a class="btn btn-danger" onclick="postFormSubmit(2);">삭제</a>
+      	</div><br><br>
+      	
+      	<form id="postForm" action="" method="post">
+      		<input type="hidden" name="bno" value="${ ab.boardNo }">
+      	</form>
+      	
+      	<script>
+      		function postFormSubmit(num){
+      			if(num == 1){ // 수정하기 클릭시
+      				$("#postForm").attr("action", "updateFormNotice.ad").submit();
+      			}else{ // 삭제하기 클릭시
+      				$("#postForm").attr("action", "deleteNotice.ad").submit();
+      			}
+      		}
+      	</script>
+      	
+	  </c:if>
+	  
       </div>
       
 
