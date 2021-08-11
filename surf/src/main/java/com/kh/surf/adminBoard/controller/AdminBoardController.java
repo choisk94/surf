@@ -1,6 +1,7 @@
 package com.kh.surf.adminBoard.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
@@ -89,6 +91,12 @@ public class AdminBoardController {
 		return mv;
 	}
 	
+	/**
+	 * @param 서정연
+	 * @param 공지사항 글삭제
+	 * @param 
+	 * @return
+	 */
 	@RequestMapping("deleteNotice.ad")
 	public String deleteAdminNotice(int bno, Model model, HttpSession session) {
 		
@@ -114,6 +122,12 @@ public class AdminBoardController {
 		
 	}
 	
+	/**
+	 * @param 서정연
+	 * @param 공지사항 글수정
+	 * @param 
+	 * @return
+	 */
 	@RequestMapping("updateNotice.ad")
 	public String updateAdminNotice(AdminBoard ab, Model model, HttpSession session) {
 		int result = abService.updateAdminNotice(ab);
@@ -125,6 +139,28 @@ public class AdminBoardController {
 			model.addAttribute("errorMsg", "게시글 수정 실패");
 			return "common/errorPage";
 		}
+	}
+	
+	
+	@RequestMapping("searchNotice.ad")
+	public ModelAndView selectSearchNoticeList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = abService.selectSearchNoticeListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectSearchNoticeList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adNoticeList");
+
+		return mv;
+
 	}
 	
 	
@@ -145,6 +181,21 @@ public class AdminBoardController {
 		model.addAttribute("list", list);
 		
 		return "adminBoard/adFaqList";
+	}
+	
+	@RequestMapping("insertFaq.ad")
+	public String enrollFaq(AdminBoard ab, HttpSession session, Model model) {
+		
+        int result = abService.insertAdminFaq(ab);
+        
+        if(result > 0) { // 성공 => 게시글 리스트페이지
+           session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+           return "redirect:faqList.ad";
+        }else { // 실패 => 에러페이지
+           model.addAttribute("errorMsg", "게시글 등록 실패");
+           return "common/errorPage";
+        }
+		
 	}
 
 }

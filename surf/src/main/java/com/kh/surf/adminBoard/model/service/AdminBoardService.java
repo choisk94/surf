@@ -1,6 +1,7 @@
 package com.kh.surf.adminBoard.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
@@ -25,6 +26,11 @@ public interface AdminBoardService {
 	   // 5. 공지사항 게시글 수정용
 	   int updateAdminNotice(AdminBoard ab);
 	   
+	   // 6. 검색용
+	   int selectSearchNoticeListCount(HashMap<String, String> map);
+	   
+	   ArrayList<AdminBoard> selectSearchNoticeList(PageInfo pi, HashMap<String, String> map);
+	   
 	   
 	   /** FAQ **/
 	   // 1. FAQ 게시판 리스트 페이지 조회용 (페이징)
@@ -43,5 +49,10 @@ public interface AdminBoardService {
 	   
 	   // 5. 공지사항 게시글 수정용
 	   int updateAdminFaq(AdminBoard ab);
+	   
+	   // 6. 검색용
+	   int selectSearchFaqListCount(HashMap<String, String> map);
+	   
+	   ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map);
 	   
 }

@@ -1,11 +1,13 @@
 package com.kh.surf.adminBoard.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 
@@ -69,6 +71,17 @@ public class AdminBoardDao {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
 	
+	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
+	}
+	
+	public ArrayList<AdminBoard> selectSearchNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
+
+	}
 	
 	/** FAQ **/
 	
@@ -81,7 +94,11 @@ public class AdminBoardDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectFaqList", null, rowBounds);
-	}	
+	}
+	
+	public int insertAdminFaq(SqlSessionTemplate sqlSession, AdminBoard ab) {
+		return sqlSession.insert("adminBoardMapper.insertAdminFaq", ab);
+	}
 	
 
 }

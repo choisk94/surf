@@ -1,6 +1,7 @@
 package com.kh.surf.adminBoard.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,16 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public int updateAdminNotice(AdminBoard ab) {
 		return abDao.updateAdminNotice(sqlSession, ab);
 	}
+	
+	@Override
+	public int selectSearchNoticeListCount(HashMap<String, String> map) {
+		return abDao.selectSearchNoticeListCount(sqlSession, map);
+	}
 
+	@Override
+	public ArrayList<AdminBoard> selectSearchNoticeList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectSearchNoticeList(sqlSession, pi, map);
+	}
 	
 	
 	/** FAQ **/
@@ -69,8 +79,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
 	@Override
 	public int insertAdminFaq(AdminBoard ab) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.insertAdminFaq(sqlSession, ab);
 	}
 
 	@Override
@@ -95,6 +104,18 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public int updateAdminFaq(AdminBoard ab) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int selectSearchFaqListCount(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
