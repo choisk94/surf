@@ -31,6 +31,7 @@
 		  from member
 		 where status = 'N'
 		   and email = #{ email }
+		   and enroll_type = #{enrollType}
 	</select>
 	
 	<insert id="insertMember">
@@ -59,7 +60,7 @@
 	            	, 'M'
 	            	, 'N'
 	            	, sysdate
-	            	, 'L'
+	            	, #{enrollType}
 	            	)
 	</insert>
 	
@@ -67,7 +68,17 @@
 		select 
 				count(*)
 		  from member
-		 where email = #{userId}
+		 where email = #{email}
+		   and enroll_type = #{enrollType}
+	</select>
+	
+	<select id="statusCheck" resultType="string">
+		select
+				status
+		  from member
+		 where email = #{email}
+		   and enroll_type = #{enrollType}
+		 
 	</select>
 	
 	<update id="updateMemInfo">

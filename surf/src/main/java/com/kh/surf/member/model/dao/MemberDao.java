@@ -32,8 +32,15 @@ public class MemberDao {
 	/** @author 최서경
 	 * 회원가입 아이디 중복체크
 	 */
-	public int idCheck(SqlSessionTemplate sqlSession, String userId) {
-		return sqlSession.selectOne("memberMapper.idCheck", userId);
+	public int idCheck(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.idCheck", m);
+	}
+	
+	/** @author 최서경
+	 * 상태 체크(SNS로그인에 필요)
+	 */
+	public String statusCheck(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.statusCheck", m);
 	}
 
 	/** @author 최서경

@@ -275,8 +275,8 @@
                     </ul>
                     <ul>
                         클래스 통계
-                        <li><a href="">수강 통계</a></li>
-                        <li><a href="">설문 조사 통계</a></li>
+                        <li><a href="studyStats.te">수강 통계</a></li>
+                        <li><a href="surveyStats.te">설문 조사 통계</a></li>
                     </ul>
                     <ul>
                         정산 내역 관리

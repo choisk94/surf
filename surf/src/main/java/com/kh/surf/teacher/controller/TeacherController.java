@@ -1,6 +1,7 @@
 package com.kh.surf.teacher.controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -219,6 +220,7 @@ public class TeacherController {
 		return mv;
 	}
 	
+	
 	/**
 	 * @author: Woojoo Seo
 	 * @MethodInfo: 문의 목록 조회 및 페이지 반환
@@ -254,4 +256,127 @@ public class TeacherController {
 		
 	}
 	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 문의 상세 조회 및 화면 반환
+	 */
+	@RequestMapping("inquiryDetail.te")
+	public ModelAndView selectInquiryDetail(ModelAndView mv, int ino) {
+		
+		ClassInquiry i = tService.selectInquiryDetail(ino);
+		mv.addObject("i", i).setViewName("teacher/inquiryDetailView");
+		
+		return mv;
+		
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 등록
+	 */
+	@RequestMapping("insertAnswer.te")
+	public String updateNewAnswer(ClassInquiry i, Model model) {
+		
+		int result = tService.updateNewAnswer(i);
+		
+		if(result > 0) {
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 작성을 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 수정 화면 반환
+	 */
+	@RequestMapping("updateAnsForm.te")
+	public String updateAnsForm(int ino, Model model) {
+		
+		model.addAttribute("i", tService.selectInquiryDetail(ino));
+		return "teacher/ansUpdateForm";
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 수정
+	 */
+	@RequestMapping("updateAnswer.te")
+	public String updateOldAnswer(ClassInquiry i, Model model) {
+
+		int result = tService.updateOldAnswer(i);
+		
+		if(result > 0) {
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 수정을 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + i.getInquiryNo();
+		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 답변 삭제
+	 */
+	@RequestMapping("deleteAnswer.te")
+	public String deleteAnswer(int ino, HttpSession session, Model model) {
+
+		int result = tService.deleteAnswer(ino);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "답변이 성공적으로 삭제되었습니다.");
+			return "redirect:inquiryDetail.te?ino=" + ino;
+			
+		}else {
+			model.addAttribute("errorMsg", "답변 삭제를 실패했습니다.");
+			return "redirect:inquiryDetail.te?ino=" + ino;
+		}
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 수강 통계 화면 반환
+	 */
+	@RequestMapping("studyStats.te")
+	public ModelAndView selectStudyStats(HttpSession session, ModelAndView mv) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd. HH:mm 기준");
+		String selectTime = format.format(System.currentTimeMillis());
+
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		ArrayList<Lecture> clist = tService.selectClassList(userNo);
+		
+		mv.addObject("selectTime", selectTime)
+		  .addObject("clist", clist)
+		  .setViewName("teacher/studyStatsView");
+
+		return mv;
+	}
+	
+	/**
+	 * @author: Woojoo Seo
+	 * @MethodInfo: 설문 조사 통계 화면 반환
+	 */
+	@RequestMapping("surveyStats.te")
+	public ModelAndView selectSurveyStats(HttpSession session, ModelAndView mv,
+			@RequestParam(value="cno", defaultValue="all") String cno) {
+		
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("cno", cno);
+		
+		ArrayList<Lecture> clist = tService.selectClassList(userNo);
+		
+		mv.addObject("cno", cno)
+		  .addObject("clist", clist)
+		  .setViewName("teacher/surveyStatsView");
+
+		return mv;
+	}
+
 }

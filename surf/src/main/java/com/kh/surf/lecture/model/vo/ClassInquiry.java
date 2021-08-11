@@ -20,4 +20,5 @@ public class ClassInquiry {
 	private String teacherNo;
 
 	private String classTitle;
+	private String teacherImage;
 }

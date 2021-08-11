@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.dao.LectureDao;
-import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassInquiry;
+import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.Survey;
 
 @Service
 public class LectureServiceImpl implements LectureService{
@@ -54,5 +57,64 @@ public class LectureServiceImpl implements LectureService{
 	public ArrayList<Lecture> selectLectureList(PageInfo pi, int sno) {
 		return lDao.selectLectureList(sqlSession, pi, sno);
 	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 상세 조회
+	 */
+	@Override
+	public Lecture selectLecture(int classNo) {
+		return lDao.selectLecture(sqlSession, classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 소개 조회
+	 */
+	@Override
+	public ArrayList<ClassIntro> selectLectureIntro(int classNo) {
+		return lDao.selectLectureIntro(sqlSession, classNo);
+	}
 
+	/**
+	 * @author leeyeji
+	 * 클래스 챕터 조회
+	 */
+	@Override
+	public ArrayList<Chapter> selectLectureChapter(int classNo) {
+		return lDao.selectLectureChapter(sqlSession, classNo);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 클래스 리뷰 조회
+	 */
+	@Override
+	public ArrayList<Survey> selectLectureReview(int classNo) {
+		return lDao.selectLectureReview(sqlSession, classNo);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 클래스 문의 조회
+	 */
+	@Override
+	public ArrayList<ClassInquiry> selectLectureInquiry(int classNo) {
+		return lDao.selectLectureInquiry(sqlSession, classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 유저 스크랩 목록 조회
+	 */
+	@Override
+	public int selectScrapCount(int userNo) {
+		return lDao.selectScrapCount(sqlSession, userNo);
+	}
+	@Override
+	public ArrayList<Lecture> selectScrapList(int userNo, PageInfo pi) {
+		return lDao.selectScrapList(sqlSession, userNo, pi);
+	}
+	
+	
 }

@@ -48,19 +48,52 @@
                     </div>
                 </div>
                 <div>
-                    <form action="delete.me" method="POST">
-                        <!-- 아이디 -->
-                        <input type="hidden" name="userNo" value="${ loginUser.userNo }">
-                        <div class="form-group">
-                            <label for="userPwd" class="mt-4">현재 비밀번호</label>
-                            <input type="password" class="form-control" id="userPwd" name="password" placeholder="비밀번호" required>
-                        </div>
-
-                        <!-- submit 버튼 -->
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-secondary mt-2" style="width: 50%;">탈퇴하기</button>
-                        </div>
-                    </form>
+                <c:choose>
+					<c:when test="${ loginUser.enrollType ne 'L' }">
+	                    <!-- SNS계정 가입 탈퇴 버튼(DB에 비밀번호 없어서 따로 만듬) -->
+	                    <form action="delete.me" method="POST">
+	                        <!-- 아이디 -->
+	                        <input type="hidden" name="userNo" value="${ loginUser.userNo }">                        
+	                        <div class="form-group">
+	                            <label for="userPwd" class="mt-4">SNS계정으로 가입하신 경우, 안내문구를 숙지하신 후 아래에 <br>
+	                            		"<b style="color:blue;">회원탈퇴 약관에 동의합니다</b>"를 정확히 기입해주시기 바랍니다.</label>
+	                            <input type="text" class="form-control" id="agreement" placeholder="회원탈퇴 약관에 동의합니다" required>
+	                        </div>
+	                        <div class="text-center">
+	                            <button type="submit" class="btn btn-secondary mt-2" style="width: 50%;" disabled>탈퇴하기</button>
+	                        </div>
+	                    </form>                            
+						<script>
+							$(function(){
+								$("#agreement").keyup(function(){
+									if($(this).val() == "회원탈퇴 약관에 동의합니다"){
+										$("button[type=submit]").removeAttr("disabled");
+									} else {
+										$("button[type=submit]").attr("disabled", true);
+									}
+								})
+							})
+						</script>
+					</c:when>
+					
+					
+					<c:otherwise>
+	                    <form action="delete.me" method="POST">
+	                        <!-- 아이디 -->
+	                        <input type="hidden" name="userNo" value="${ loginUser.userNo }">
+	                        <div class="form-group">
+	                            <label for="userPwd" class="mt-4">현재 비밀번호</label>
+	                            <input type="password" class="form-control" id="userPwd" name="password" placeholder="비밀번호" required>
+	                        </div>
+	                        <!-- submit 버튼 -->
+	                        <div class="text-center">
+	                            <button type="submit" class="btn btn-secondary mt-2" style="width: 50%;">탈퇴하기</button>
+	                        </div>
+	                    </form>
+					</c:otherwise>                
+                </c:choose>
+                        
+                        
                 </div>
             </div>
             <br><br><br><br><br>

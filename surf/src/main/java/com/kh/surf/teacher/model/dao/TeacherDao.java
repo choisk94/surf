@@ -12,6 +12,7 @@ import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.teacher.model.vo.StatsData;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -146,12 +147,95 @@ public class TeacherDao {
 		return sqlSession.selectOne("teacherMapper.selectInquiryCount", map);
 	}
 
-	
+	/**
+	 * @author WooJoo
+	 * @return 문의글 목록
+	 */
 	public ArrayList<ClassInquiry> selectInquiryList(PageInfo pi, HashMap<String, String> map , SqlSessionTemplate sqlSession) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("teacherMapper.selectInquiryList", map, rowBounds);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 문의 상세 내용
+	 */
+	public ClassInquiry selectInquiryDetail(int ino, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("teacherMapper.selectInquiryDetail", ino);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 답변 작성 결과
+	 */
+	public int updateNewAnswer(ClassInquiry i, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("teacherMapper.updateNewAnswer", i);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 답변 수정 결과
+	 */
+	public int updateOldAnswer(ClassInquiry i, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("teacherMapper.updateOldAnswer", i);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 답변 삭제 결과
+	 */
+	public int deleteAnswer(int ino, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("teacherMapper.deleteAnswer", ino);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 신규 수강 건수 통계 데이터
+	 */
+	public ArrayList<StatsData> selectNewOrderStats(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectNewOrderStats", map);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 완강 소요 일수 통계 데이터
+	 */
+	public ArrayList<StatsData> selectStudyDaysStats(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectStudyDaysStats", map);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 수강생 성별 비율 데이터
+	 */
+	public ArrayList<StatsData> selectGenderRateStats(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectGenderRateStats", map);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 수강생 연령대별 비율 데이터
+	 */
+	public ArrayList<StatsData> selectAgeGroupRateStats(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectAgeGroupRateStats", map);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 설문 조사 통계 데이터
+	 */
+	public ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("teacherMapper.selectSurveyStats", map);
+	}
+	
+	/**
+	 * @author WooJoo
+	 * @return 설문 조사 응답수
+	 */
+	public int selectRespondentCount(HashMap<String, String> map, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("teacherMapper.selectRespondentCount", map);
 	}
 	
 }

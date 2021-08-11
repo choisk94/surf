@@ -137,7 +137,11 @@
 	width: 60px;
 }
 
-#m-btn, #w-btn, #d-btn {
+#m-btn {
+	margin-top: 80px;
+}
+
+#w-btn, #d-btn, #c-btn {
 	margin-top: 8px;
 }
 
@@ -181,49 +185,22 @@
 						</div>
 						<div id="teacher-name">${ i.teacherNo }</div>
 					</label>
-					
-					<c:choose>
-						<c:when test="${ empty i.ansContent }">
-							<form id="ansForm" action="insertAnswer.te" method="post">
-			            		<input type="hidden" name="inquiryNo" value="${ i.inquiryNo }">
-								<textarea class="form-control" rows="7" id="answer" name="ansContent" 
-									placeholder="답변 내용을 입력해주세요." required></textarea>
-	                    		<button type="submit" class="btn btn-primary btn-sm" id="w-btn">작성</button>
-                    		</form>
-						</c:when>
-						<c:otherwise>
-							<div id="answer" style="padding: 2px;">${ i.ansContent }</div>
-							<div id="ans-date">${ i.ansDate }</div>
-							<form id="ansForm2" action="updateAnsForm.te" method="post">
-			            		<input type="hidden" name="ino" value="${ i.inquiryNo }">
-								<button type="submit" class="btn btn-dark btn-sm" id="m-btn">수정</button>
-			            	</form>
-							<button type="button" class="btn btn-dark btn-sm" id="d-btn"
-								data-toggle="modal" data-target="#deleteAnswerModal">삭제</button>
-						</c:otherwise>
-					</c:choose>
-					
-				</div>
 
-				<!-- 답변 삭제 모달 -->
-				<div class="modal fade" id="deleteAnswerModal">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">삭제 확인</h5>
-								<button type="button" class="close" data-dismiss="modal">×</button>
-							</div>
-							<div class="modal-body">답변을 삭제하시겠습니까?<br>삭제시 해당 문의글은 다시 답변 대기 상태로
-								변경됩니다.</div>
-							<div class="modal-footer">
-								<form id="ansForm3" action="deleteAnswer.te" method="post">
-		            				<input type="hidden" name="ino" value="${ i.inquiryNo }">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-									<button type="submit" class="btn btn-primary">확인</button>
-								</form>
-							</div>
-						</div>
-					</div>
+					<form id="ansForm" action="updateAnswer.te" method="post">
+						<input type="hidden" name="inquiryNo" value="${ i.inquiryNo }">
+						<textarea class="form-control" rows="7" id="answer"
+							name="ansContent" placeholder="답변 내용을 입력해주세요." required>${ i.ansContent }</textarea>
+						<button type="submit" class="btn btn-primary btn-sm" id="w-btn">수정</button>
+					</form>
+					<button type="button" class="btn btn-secondary btn-sm" id="c-btn">취소</button>
+					<script>
+						var prePage = document.referrer;
+						$(function(){
+			           		$("#c-btn").click(function(){
+			           			window.location.href = prePage;
+			           		})
+			           	})
+					</script>
 				</div>
 
 				<div class="horizontal-line"></div>
@@ -235,8 +212,8 @@
 	</div>
 	</div>
 	</div>
-	
+
 	<jsp:include page="../common/footer.jsp" />
-	
+
 </body>
 </html>

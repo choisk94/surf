@@ -2,8 +2,6 @@ package com.kh.surf.lecture.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.service.LectureService;
-import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.Lecture;
-import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.lecture.model.vo.Survey;
 
 @Controller
 public class LectureController {
@@ -60,6 +59,62 @@ public class LectureController {
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .setViewName("lecture/lectureList");
+		
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 상세 조회
+	 */
+	@RequestMapping("detail.lec")
+	public ModelAndView selectLecture(ModelAndView mv, int cno) {
+		Lecture l = lService.selectLecture(cno);
+		ArrayList<ClassIntro> cList = lService.selectLectureIntro(cno);
+		mv.addObject("l", l)
+		  .addObject("c", cList)
+		  .setViewName("lecture/lectureDetailView");
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 챕터 조회
+	 */
+	@RequestMapping("chapter.lec")
+	public ModelAndView selectLectureChapter(ModelAndView mv, int cno, String cti) {
+		ArrayList<Chapter> tList = lService.selectLectureChapter(cno);
+		mv.addObject("tList", tList)
+		  .addObject("title", cti)
+		  .setViewName("lecture/detailChapter");
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 수강후기 조회
+	 */
+	@RequestMapping("review.lec")
+	public ModelAndView selectLectureReview(ModelAndView mv, int cno) {
+		ArrayList<Survey> sList = lService.selectLectureReview(cno);
+		mv.addObject("sList", sList).setViewName("lecture/detailReview");
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 유저 찜한 클래스 목록
+	 */
+	@RequestMapping("scrapList.lec")
+	public ModelAndView selectScrapList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
+		int listCount = lService.selectScrapCount(uno);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 4, 12);
+		ArrayList<Lecture> sList = lService.selectScrapList(uno, pi);
+		
+		mv.addObject("sList", sList)
+		  .addObject("pi", pi)
+		  .setViewName("member/scrapLectureList");
 		
 		return mv;
 	}

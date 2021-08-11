@@ -32,10 +32,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int idCheck(String userId) {
-		return mDao.idCheck(sqlSession, userId);
+	public int idCheck(Member m) {
+		return mDao.idCheck(sqlSession, m);
 	}
 
+	@Override
+	public String statusCheck(Member m) {
+		return mDao.statusCheck(sqlSession, m);
+	}
+	
 	@Override
 	public int updateMemInfo(Member m) {
 		return mDao.updateMemInfo(sqlSession, m);
@@ -86,5 +91,6 @@ public class MemberServiceImpl implements MemberService {
 	public int ajaxUpdateClassStuding(ClassStuding cs) {
 		return mDao.ajaxUpdateClassStuding(cs, sqlSession);
 	}
+
 
 }
