@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.admin.model.service.AdminService;
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.member.model.vo.Member;
@@ -30,21 +31,14 @@ public class AdminController {
 	@Autowired
 	private AdminService aService;
 
-//
-//	@RequestMapping("admin.ad")
-//	public String  adminLogin() {
-//		
-//		return "admin/adminLogin";
-//		
-//	}
+	//광고게시판 리스트조회
 	@RequestMapping("list.bo")
 	public ModelAndView selectList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
-		// System.out.println(currentPage);
 		int listCount = aService.selectListCount();
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Ad> list = aService.selectList(pi);
 
 		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/ad");
@@ -52,25 +46,36 @@ public class AdminController {
 		return mv;
 
 	}
+	//결제내역 리스트조회
+	@RequestMapping("pmList.ad")
+	public ModelAndView selectPmList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+		
+		int listCount = aService.selectPmListCount();
 
-	// 원래 어드민 로그인
-//	@RequestMapping("login.ad")
-//	public String adminLogin(Model model, Member m, HttpSession session) {
-//		
-//		Member adminLogin = aService.loginAdmin(m);
-//		
-//		if(adminLogin == null) {
-//			
-//			model.addAttribute("errorMsg", "로그인 오류");
-//			return "common/errorPage";
-//		}else {
-//			
-//			session.setAttribute("adminLogin", adminLogin);
-//			return "redirect:list.bo";
-//		}
-//		
-//		
-//	}
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<PaymentList> list = aService.selectPmList(pi);
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/paymentDetailsCheck");
+
+		return mv;
+
+	}
+	//회원관리 리스트조회
+		@RequestMapping("memList.ad")
+		public ModelAndView selectmemList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+			
+			int listCount = aService.selectMemListCount();
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<Member> list = aService.selectMemList(pi);
+
+			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/userManagement");
+
+			return mv;
+
+		}
 	// 관리자 페이지 이동
 	@RequestMapping("login.ad")
 	public String selectTeacher(HttpSession session, Model model) {
@@ -119,6 +124,17 @@ public class AdminController {
 		}
 		return "redirect:list.bo";
 	}
+	// 회원탈퇴용
+	@RequestMapping("userUpdate")
+	public String ajaxTest3(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.userUpdate(ajaxMsg[i]);
+		}
+		return "redirect:memList.ad";
+	}
 
 	// 광고 수정
 	@RequestMapping("updateForm.ad")
@@ -157,7 +173,7 @@ public class AdminController {
 
 	}
 
-	// 검색 기능용
+	// 광고게시판 검색 기능용
 	@RequestMapping("search.ad")
 	public ModelAndView selectSearchList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
@@ -169,7 +185,7 @@ public class AdminController {
 
 		int listCount = aService.selectSearchListCount(map);
 
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Ad> list = aService.selectSearchList(pi, map);
 
 		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
@@ -178,6 +194,55 @@ public class AdminController {
 		return mv;
 
 	}
+	// 결제내역 검색 기능용
+		@RequestMapping("paySearch.ad")
+		public ModelAndView selectSearchPayList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+				String keyword) {
+
+			HashMap<String, String> map = new HashMap<>();
+			map.put("condition", condition);
+			map.put("keyword", keyword);
+			
+
+			int listCount = aService.selectSearchPayListCount(map);
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<PaymentList> list = aService.selectSearchPayList(pi, map);
+			
+			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+					.setViewName("admin/paymentDetailsCheck");
+
+			return mv;
+
+	}
+	
+	  // 유저관리 검색 기능용
+	  
+	  @RequestMapping("userSearch.ad") 
+	  public ModelAndView selectSearchMemList(ModelAndView mv,
+	  
+	  @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+	  String condition, String keyword) {
+	  
+	  HashMap<String, String> map = new HashMap<>(); map.put("condition",
+	  condition); map.put("keyword", keyword);
+	  
+	  int listCount = aService.selectSearchMemListCount(map);
+	  
+	  PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+	  ArrayList<Member> list = aService.selectSearchMemList(pi, map);
+	  
+	  mv.addObject("pi", pi).addObject("list", list).addObject("condition",
+	  condition).addObject("keyword", keyword)
+	  .setViewName("admin/userManagement");
+	  
+	  return mv;
+	  
+	  }
+	 
+	 
+	
 
 	@RequestMapping("logout.ad")
 	public String logoutMember(HttpSession session) {

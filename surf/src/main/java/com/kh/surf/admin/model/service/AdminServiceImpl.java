@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.surf.admin.model.dao.AdminDao;
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
 
@@ -32,15 +33,6 @@ public class AdminServiceImpl implements AdminService {
 		return aDao.insertAd(sqlSession, a);
 	}
 
-	@Override
-	public int selectListCount() {
-		return aDao.selectListCount(sqlSession);
-	}
-
-	@Override
-	public ArrayList<Ad> selectList(PageInfo pi) {
-		return aDao.selectList(sqlSession, pi);
-	}
 
 	// 게시물 선택 삭제
 	@Override
@@ -54,6 +46,12 @@ public class AdminServiceImpl implements AdminService {
 	public void update(String adNo) {
 		aDao.update(sqlSession, adNo);
 
+	}
+	// 회원탈퇴용
+	@Override
+	public void userUpdate(String userNo) {
+		aDao.userUpdate(sqlSession, userNo);
+		
 	}
 
 	@Override
@@ -76,7 +74,50 @@ public class AdminServiceImpl implements AdminService {
 	public int updateAd(Ad ad) {
 		return aDao.updateAd(sqlSession, ad);
 	}
+	//광고 게시판 페이징
+	@Override
+	public int selectListCount() {
+		return aDao.selectListCount(sqlSession);
+	}
 
+	@Override
+	public ArrayList<Ad> selectList(PageInfo pi) {
+		return aDao.selectList(sqlSession, pi);
+	}
+	
+	//결제내역 게시판 페이징
+	@Override
+	public int selectPmListCount() {
+		return aDao.selectPmListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<PaymentList> selectPmList(PageInfo pi) {
+		return aDao.selectPmList(sqlSession, pi);
+		
+	}
+	
+	//회원관리 게시판 페이징
+	@Override
+	public int selectMemListCount() {
+		return aDao.selectMemListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> selectMemList(PageInfo pi) {
+		return aDao.selectMemList(sqlSession, pi);
+	}
+	//결제관리 검색용
+	@Override
+	public ArrayList<PaymentList> selectSearchPayList(PageInfo pi, HashMap<String, String> map) {
+		return aDao.selectSearchPayList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int selectSearchPayListCount(HashMap<String, String> map) {
+		return aDao.selectSearchPayListCount(sqlSession, map);
+	}
+	//광고관리 검색용
 	@Override
 	public ArrayList<Ad> selectSearchList(PageInfo pi, HashMap<String, String> map) {
 		return aDao.selectSearchList(sqlSession, pi, map);
@@ -86,5 +127,17 @@ public class AdminServiceImpl implements AdminService {
 	public int selectSearchListCount(HashMap<String, String> map) {
 		return aDao.selectSearchListCount(sqlSession, map);
 	}
+	//
+	@Override
+	public ArrayList<Member> selectSearchMemList(PageInfo pi, HashMap<String, String> map) {
+		return aDao.selectSearchMemList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int selectSearchMemListCount(HashMap<String, String> map) {
+		return aDao.selectSearchMemListCount(sqlSession, map);
+	}
+
+	
 
 }

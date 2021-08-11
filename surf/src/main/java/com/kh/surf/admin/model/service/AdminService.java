@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
 
@@ -14,10 +15,20 @@ public interface AdminService {
 
 	int insertAd(Ad a);
 
-	// 2. 게시판 리스트 페이지 조회용 (페이징)
+	// 2. 광고 게시판 리스트 페이지 조회용
 	int selectListCount();
 
 	ArrayList<Ad> selectList(PageInfo pi);
+	
+	//2-1. 결제내역 게시판 리스트 페이지 조회용
+	int selectPmListCount();
+
+	ArrayList<PaymentList> selectPmList(PageInfo pi);
+	
+	//2-2 회원관리 게시판 리스프 페이지 조회용
+	int selectMemListCount();
+
+	ArrayList<Member> selectMemList(PageInfo pi);
 
 	// 3.게시물 선택 삭제
 	void delete(String adNo);
@@ -36,9 +47,27 @@ public interface AdminService {
 	// 7.광고 수정용
 	int updateAd(Ad ad);
 
-	// 8.검색용
-	public ArrayList<Ad> selectSearchList(PageInfo pi, HashMap<String, String> map);
+	// 8.광고게시판 검색용
+	ArrayList<Ad> selectSearchList(PageInfo pi, HashMap<String, String> map);
 
-	public int selectSearchListCount(HashMap<String, String> map);
+	int selectSearchListCount(HashMap<String, String> map);
+
+	//8-1.결제내역 게시판 검색용
+	ArrayList<PaymentList> selectSearchPayList(PageInfo pi, HashMap<String, String> map);
+	
+	int selectSearchPayListCount(HashMap<String, String> map);
+	
+	//8-2.회원관리 게시판 검색용
+	ArrayList<Member> selectSearchMemList(PageInfo pi, HashMap<String, String> map);
+
+	int selectSearchMemListCount(HashMap<String, String> map);
+	
+	//9.회원탈퇴용
+	void userUpdate(String userNo);
+
+	
+	
+	
+	
 
 }

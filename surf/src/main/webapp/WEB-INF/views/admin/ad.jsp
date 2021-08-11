@@ -109,12 +109,6 @@
 		<br>
 		<br>
 		<br>
-		<!-- <div>
-          <h4>광고 베너 관리</h4>
-          <div align="right"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA;" placeholder="입력하라냥">
-            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
-              🔍</button></div>
-        </div> -->
 
 		<form id="searchForm" action="search.ad" method="Get">
 			<div class="select">
@@ -190,7 +184,7 @@
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="search.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+									href="search.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
@@ -206,7 +200,7 @@
 					<c:choose>
 						<c:when test="${ !empty condition }">
 							<li class="page-item"><a class="page-link"
-								href="search.bo?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+								href="search.ad?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
@@ -224,7 +218,7 @@
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="search.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+									href="search.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
