@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
@@ -197,5 +196,23 @@ public class AdminBoardController {
         }
 		
 	}
+	
+	@RequestMapping("deleteFaq.ad")
+	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
+		int result = abService.deleteAdminFaq(bno);
+		
+		if(result > 0) { // 성공 => 리스트페이지
+			
+			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
+			return "redirect:faqList.ad";
+			
+		}else { // 실패
+			model.addAttribute("errorMsg", "게시글 삭제 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	
 
 }

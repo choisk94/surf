@@ -50,7 +50,7 @@
           <thead>
             <tr style="background-color: rgb(224, 224, 224)">
               <td width="90">번호</td>
-              <td width="110">카테고리</td>
+              <td width="90">카테고리</td>
               <td width="500" >제목</td>
             </tr>
           </thead>
@@ -64,11 +64,31 @@
 	              </td>
 	            </tr>
 	            <tr class="faq2">
-	              <td colspan="2">A. </td>
-	              <td align="left">
+	              <td colspan="2" style="background:lightgray">A. </td>
+	              <td align="left" style="background:lightgray">
 	                <p>${ ab.boardContent }</p>
+	                <br>
+	                <div align="right">
+		                <a class="btn btn-primary" onclick="postFormSubmit(1);">수정</a>
+		                <a class="btn btn-danger" onclick="postFormSubmit(2);">삭제</a>
+		                	            
+		            <form id="postForm" action="" method="post">
+		            	<input type="hidden" name="bno" value="${ ab.boardNo }">
+		            </form>
+		            
+		            <script>
+		            	function postFormSubmit(num){
+		            		if(num == 1){ // 수정하기
+		            			$("#postForm").attr("action", "updateFaq.ad").submit();
+		            		}else{ // 삭제하기
+		            			$("#postForm").attr("action", "deleteFaq.ad").submit();
+		            		}
+		            	}
+		            </script>
+		                
+	                </div>
 	              </td>
-	            </tr>
+	            </tr>     
             </c:forEach>
           </tbody>
         </table>
@@ -92,6 +112,7 @@
           })
         </script>
         
+        <!-- 글작성 모달창 -->
         <div class="modal" id="enrollForm">
         	<div class="modal-dialog">
         		<div class="modal-content">

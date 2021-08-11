@@ -83,21 +83,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	}
 
 	@Override
-	public int increaseCountFaq(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public AdminBoard selectAdminFaq(int boardNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int deleteAdminFaq(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return abDao.deleteAdminFaq(sqlSession, boardNo);
 	}
 
 	@Override

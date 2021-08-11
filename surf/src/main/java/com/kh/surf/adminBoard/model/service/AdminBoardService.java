@@ -37,20 +37,16 @@ public interface AdminBoardService {
 	   int selectFaqCount();
 	   ArrayList<AdminBoard> selectFaqList(PageInfo pi);
 	   
-	   // 2. 공지사항 게시글 작성하기용
+	   // 2. FAQ 게시글 작성하기용
 	   int insertAdminFaq(AdminBoard ab);
 	   
-	   // 3. 공지사항 게시글 상세조회용
-	   int increaseCountFaq(int boardNo);
-	   AdminBoard selectAdminFaq(int boardNo);
-	   
-	   // 4. 공지사항 게시글 삭제용
+	   // 3. FAQ  게시글 삭제용
 	   int deleteAdminFaq(int boardNo);
 	   
-	   // 5. 공지사항 게시글 수정용
+	   // 4. FAQ  게시글 수정용
 	   int updateAdminFaq(AdminBoard ab);
 	   
-	   // 6. 검색용
+	   // 5. 검색용
 	   int selectSearchFaqListCount(HashMap<String, String> map);
 	   
 	   ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map);

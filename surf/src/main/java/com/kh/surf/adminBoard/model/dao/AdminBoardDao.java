@@ -16,19 +16,12 @@ public class AdminBoardDao {
 	
 	/** 공지사항 **/
 	
-	/**
-	 * @param 서정연 공지사항 리스트조회 카운트(관리자)
-	 * @return
-	 */
+	// 공지사항 리스트조회 카운트(관리자)
 	public int selectNoticeCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminBoardMapper.selectNoticeCount");
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 리스트조회(관리자)
-	 * @return
-	 */
+	// 공지사항 리스트조회(관리자)
 	public ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -36,40 +29,31 @@ public class AdminBoardDao {
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectNoticeList", null, rowBounds);
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 글등록(관리자)
-	 * @return
-	 */
+	// 공지사항 글작성(관리자)
 	public int insertAdminNotice(SqlSessionTemplate sqlSession, AdminBoard ab) {
 		return sqlSession.insert("adminBoardMapper.insertAdminNotice", ab);
 	}
-	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 상세조회 카운트(관리자)
-	 * @return
-	 */
+
+	// 공지사항 상세조회 카운트(관리자)
 	public int increaseCountNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.update("adminBoardMapper.increaseCountNotice", boardNo);
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 상세조회(관리자)
-	 * @return
-	 */
+	// 공지사항 상세조회(관리자)
 	public AdminBoard selectAdminNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("adminBoardMapper.selectAdminNotice", boardNo);
 	}
 	
+	// 공지사항 삭제(관리자)
 	public int deleteAdminNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.update("adminBoardMapper.deleteAdminNotice", boardNo);
 	}
 	
+	// 공지사항 수정(관리자)
 	public int updateAdminNotice(SqlSessionTemplate sqlSession, AdminBoard ab) {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
+	
 	
 	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
@@ -85,19 +69,27 @@ public class AdminBoardDao {
 	
 	/** FAQ **/
 	
+	// FAQ 리스트조회 카운트(관리자)
 	public int selectFaqCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminBoardMapper.selectFaqCount");
 	}
 	
+	// FAQ 리스트조회(관리자)
 	public ArrayList<AdminBoard> selectFaqList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectFaqList", null, rowBounds);
 	}
-	
+
+	// FAQ 글작성(관리자)
 	public int insertAdminFaq(SqlSessionTemplate sqlSession, AdminBoard ab) {
 		return sqlSession.insert("adminBoardMapper.insertAdminFaq", ab);
+	}
+	
+	// FAQ 글삭제(관리자)
+	public int deleteAdminFaq(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("adminBoardMapper.deleteAdminFaq", boardNo);
 	}
 	
 
