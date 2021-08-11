@@ -80,5 +80,35 @@
          order 
             by create_date desc
 	</select>
+	
+  	<!--
+		한 강사의 '클래스 목록 수' 
+		@author HeeRak
+	-->
+	<select id="selectLectureListCount" resultType="_int">
+		select count(*)
+		  from lecture
+		 where status != 'D'
+		   and user_no = #{userNo}
+	</select>
+	
+	<!--
+		한 강사의 '클래스 목록'
+		@author HeeRak
+	-->
+	<select id="selectLectureByTeacher" resultMap="lectureResult">
+		select 
+			   class_no
+			 , class_title
+			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+			 , thumbnail
+			 , status
+			 , subcat_no
+		  from lecture
+		 where status != 'D'
+		   and user_no = #{userNo}
+		 order
+		    by create_date desc
+	</select>
   	
 </mapper>

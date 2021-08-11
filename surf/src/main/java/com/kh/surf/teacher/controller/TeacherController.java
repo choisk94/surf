@@ -32,6 +32,10 @@ public class TeacherController {
 	@Autowired
 	private TeacherService tService;
 	
+	/**
+	 * 강사 수정입력 폼 view 페이지 반환
+	 * @author HeeRak
+	 */
 	@RequestMapping("updateForm.te")
 	public String selectTeacher(HttpSession session, Model model) {
 		
@@ -96,6 +100,7 @@ public class TeacherController {
 	@RequestMapping("monthlyStatsView.te")
 	public String monthlyStatsAll(HttpSession session, Model model) {
 		
+		// 2번 써서 따로 저장함
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		
 		ArrayList<MonthlyStats> list = tService.monthlyStatsAll(userNo);
@@ -112,5 +117,104 @@ public class TeacherController {
 		model.addAttribute("list", list);
 		model.addAttribute("clist", clist);
 		return "teacher/monthlySettlement";
+	}
+	
+	/**
+	 * 강사_ 클래스 목록 조회
+	 * @return 강사의 클래스 목록 페이지 정보
+	 */
+	@RequestMapping("lectureList.te")
+	public ModelAndView selectLectureByTeacher(HttpSession session,
+											   @RequestParam(value="currentPage", defaultValue="1")int currentPage,
+											   ModelAndView mv) {
+		
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		int listCount = tService.selectLectureListCount(userNo);
+		
+		PageInfo pi = new Pagination().getPageInfo(listCount, currentPage, 5, 4);
+		ArrayList<Lecture> list = tService.selectLectureByTeacher(userNo, pi);
+		
+		if(!list.isEmpty()) {
+			mv.addObject("list", list)
+			  .addObject("pi", pi)
+			  .addObject("listCount", listCount)
+			  .setViewName("teacher/teacherLectureList");		
+		}else {
+			mv.addObject("errorMsg", "클래스 목록조회 실패")
+			  .setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	/**
+	 * 클래스 삭제(강사)
+	 * @return 클래스 삭제요청결과
+	 */
+	@RequestMapping("deleteLecture.te")
+	public String deleteLecture(HttpSession session, int classNo, int currentPage) {
+		
+		Lecture l = new Lecture();
+		l.setClassNo(classNo);
+		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		int result = tService.deleteLecture(l);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "클래스 삭제 성공");
+		}else {
+			session.setAttribute("alertMsg", "클래스 삭제 실패");
+		}
+		
+		return "redirect:/lectureList.te?currentPage=" + currentPage;
+	}
+	
+	/**
+	 * 클래스 펀딩승인(강사)
+	 * @return 클래스 펀딩처리 결과
+	 */
+	@RequestMapping("startFunding.te")
+	public String startFunding(HttpSession session, int classNo, int currentPage) {
+		
+		Lecture l = new Lecture();
+		l.setClassNo(classNo);
+		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		int result = tService.startFunding(l);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "클래스 펀딩승인 성공");
+		}else {
+			session.setAttribute("alertMsg", "클래스 펀딩승인 실패");
+		}
+		
+		return "redirect:/lectureList.te?currentPage=" + currentPage;
+	}
+	
+	/**
+	 * LectureinputView
+	 * @return 페이지 및 클래스 정보
+	 */
+	@RequestMapping("lectureInput.le")
+	public ModelAndView inputLecture(HttpSession session, 
+									 @RequestParam(value="currentPage", defaultValue="1")int currentPage,
+									 @RequestParam(value="classNo", defaultValue="0") int classNo,
+									 ModelAndView mv) {
+		if(classNo == 0) { // 등록하기
+			
+			mv.setViewName("teacher/lectureInputForm0");
+			
+		}else { // 수정하기
+			
+			switch(currentPage){
+				case 0 : mv.setViewName("teacher/lectureInputForm0"); break;
+				case 1 : mv.setViewName("teacher/lectureInputForm1"); break;
+				case 2 : mv.setViewName("teacher/lectureInputForm2"); break;
+				case 3 : mv.setViewName("teacher/lectureInputForm3"); break;
+				case 4 : mv.setViewName("teacher/lectureInputForm4"); break;
+			}
+		}
+		
+		return mv;
 	}
 }

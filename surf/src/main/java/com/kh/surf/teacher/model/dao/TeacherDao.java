@@ -107,5 +107,42 @@ public class TeacherDao {
 	public Survey selectReviewDetail(int sno, SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("teacherMapper.selectReviewDetail", sno);
 	}
+
+	/**
+	 * @author HeeRak
+	 * @return (한 강사의)클래스 목록 수
+	 */
+	public int selectLectureListCount(int userNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.selectLectureListCount", userNo);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * @return (한 강사의)클래스 목록
+	 */
+	public ArrayList<Lecture> selectLectureByTeacher(int userNo, PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureByTeacher", userNo, rowBounds);
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return 클래스 펀딩승인처리 결과
+	 */
+	public int startFunding(Lecture l, SqlSessionTemplate sqlSession) {
+		int result1 = sqlSession.insert("teacherMapper.insertFunding", l);
+		int result2 = sqlSession.update("teacherMapper.startFunding", l);
+		return result1 * result1;
+	}
+
+	/**
+	 * @author HeeRak
+	 * @return 클래스 삭제요청처리 결과
+	 */
+	public int deleteLecture(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("teacherMapper.deleteLecture", l);
+	}
+
 	
 }

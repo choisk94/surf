@@ -208,4 +208,44 @@
 		     LEFT OUTER JOIN STATS USING(MONTH)
 		     ORDER BY MONTH
 	</select>
+	
+	<!--
+		클래스 펀딩승인 'status Q->F'
+		@author HeeRak
+	-->
+	<update id="startFunding" parameterType="Lecture">
+		update lecture
+		   set status = 'F'
+		 where status = 'Q'
+		   and class_no = #{classNo}
+		   and user_no = #{userNo} 
+	</update>
+	
+	<!--
+		클래스 펀딩승인 'status Q->F'
+		@author HeeRak
+	-->
+	<insert id="insertFunding" parameterType="Lecture">
+		insert
+		  into class_funding
+		 	 (
+		 	   class_no
+		 	 )
+		 values
+		 	 (
+		 	   #{classNo}
+		 	 )
+	</insert>
+	
+	<!--
+		클래스 삭제요청 'status ''->D'
+		@author HeeRak
+	-->
+	<update id="deleteLecture" parameterType="Lecture">
+		update lecture
+		   set status = 'D'
+		 where class_no = #{classNo}
+		   and user_no = #{userNo} 
+	</update>
+	
 </mapper>

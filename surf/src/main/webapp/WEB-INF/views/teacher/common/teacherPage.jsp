@@ -70,9 +70,17 @@
 	}
 	
 	#home,
-	#ins-home,
-	#user-icon {
+	#ins-home{
 	    float: left;
+	    height: 40px;
+	    text-align: center;
+	    margin-top: 25px;
+	    text-decoration: none;
+	}
+	#user-icon{
+		font-family: 'Nanum Gothic', sans-serif;
+		font-weight: 700;
+		float: left;
 	    height: 40px;
 	    text-align: center;
 	    margin-top: 30px;
@@ -145,7 +153,7 @@
 	
 	/* 강사 수정 페이지 가는 영역*/
 	#dropdown-ins {
-	    width: 165px;
+	    width: 180px;
 	    height: 130px;
 	}
 	
@@ -162,6 +170,14 @@
 	
 	.profile-img {
 	    width: 50px;
+		margin-left: 10px;
+	}
+	.update-page{
+		margin-left: 10px;
+	}
+
+	.update-page>span{
+		font-size: 14px;
 	}
 	
 	.update-page>a {
@@ -177,10 +193,11 @@
 	.logout-area>a {
 	    padding-left: 10px;
 	    text-decoration: none;
-	    color: black;
+	    color: gray;
 	}
 	
 	.logout-area {
+		line-height: 30px;
 	    margin-top: 10px;
 	}
 	
@@ -226,12 +243,12 @@
                     <a href="updateForm.te">강사페이지</a>
                 </div>
                 <div id="user-icon">
-                    <a data-toggle="dropdown"><img style="width:30px; height:30px;"
+                    <a data-toggle="dropdown"><img style="width:30px; height:30px; border-radius: 15px; border:1px solid lightgray"
                             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPHBhdGggZD0iTTI5OS4yOSwyNTUuNWgtODYuNThjLTg1LjE0LDAtMTU0LjQyLDY5LjI3LTE1NC40MiwxNTQuNDJWNTEyaDM5NS40MlY0MDkuOTJDNDUzLjcxLDMyNC43NywzODQuNDMsMjU1LjUsMjk5LjI5LDI1NS41eiAgICAgTTg4LjI5LDQ4MnYtNzIuMDhjMC02OC42MSw1NS44Mi0xMjQuNDIsMTI0LjQyLTEyNC40Mmg4Ni41OGM2OC42LDAsMTI0LjQyLDU1LjgxLDEyNC40MiwxMjQuNDJWNDgySDg4LjI5eiIgZmlsbD0iIzg1ODU4NSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8cGF0aCBkPSJNMjU2LDBjLTY1Ljg0LDAtMTE5LjQxLDUzLjU3LTExOS40MSwxMTkuNDFTMTkwLjE2LDIzOC44MiwyNTYsMjM4LjgyczExOS40MS01My41NywxMTkuNDEtMTE5LjQxUzMyMS44NCwwLDI1NiwweiAgICAgTTI1NiwyMDguODJjLTQ5LjMsMC04OS40MS00MC4xMS04OS40MS04OS40MUMxNjYuNTksNzAuMTEsMjA2LjcsMzAsMjU2LDMwczg5LjQxLDQwLjExLDg5LjQxLDg5LjQxICAgIEMzNDUuNDEsMTY4LjcxLDMwNS4zLDIwOC44MiwyNTYsMjA4LjgyeiIgZmlsbD0iIzg1ODU4NSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjwvZz48L3N2Zz4=" /></a>
                     <div class="dropdown-menu" id="dropdown-ins">
                         <div class="profile">
                             <div class="profile-img">
-                                <img src="" width="50px">
+                                <img width="50px" height="50px" style="border-radius: 25px;">
                             </div>
                             <div class="update-page">
                                 <span>닉네임</span><br>
@@ -249,7 +266,7 @@
         <div id="content-box">
             <div id="menubar-area">
                 <div id="menubar">
-                    <ul><a href="mainPage.te">내 클래스</a>
+                    <ul><a href="lectureList.te">내 클래스</a>
                     </ul>
                     <ul>
                         클래스 관리

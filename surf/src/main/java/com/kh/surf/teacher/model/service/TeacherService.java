@@ -40,7 +40,9 @@ public interface TeacherService {
 	
 	// 9. 클래스 등록 페이지 완성도 조회
 	
-	// 10. 강사에 대한 클래스 목록 가져오기 페이지
+	// 10. 강사에 대한 클래스 수, 목록 가져오기 
+	int selectLectureListCount(int userNo); 
+	ArrayList<Lecture> selectLectureByTeacher(int userNo, PageInfo pi);
 	
 	// 11. 강사 클래스 전체 수익 월별 집계 데이터 가져오기(Servlet) 및 클래스 번호 및 클래스이름 | 강사의 모든 클래스  번호 가져오기
 	ArrayList<MonthlyStats> monthlyStatsAll(int userNo);
@@ -48,5 +50,9 @@ public interface TeacherService {
 	
 	// 12. 강사 클래스 한 클래스 수익 월별 집계 데이터 가져오기(Ajax)
 	ArrayList<MonthlyStats> monthlyStatsLecture(int classNo);
+	
+	// 13. 강사 클래스 펀딩수락, 클래스 삭제
+	int deleteLecture(Lecture l);
+	int startFunding(Lecture l);
 	
 }
