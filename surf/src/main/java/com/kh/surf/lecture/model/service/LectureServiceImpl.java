@@ -1,6 +1,7 @@
 package com.kh.surf.lecture.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,24 @@ public class LectureServiceImpl implements LectureService{
 	@Override
 	public ArrayList<Lecture> selectFundingList(PageInfo pi) {
 		return lDao.selectFundingList(sqlSession, pi);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 상세 조회
+	 */
+	@Override
+	public Lecture selectFundingDetail(int classNo) {
+		return lDao.selectFundingDetail(sqlSession, classNo);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 펀딩 클래스 응원하기
+	 */
+	@Override
+	public int ajaxSupportLecture(HashMap<String, Integer> map) {
+		return lDao.ajaxSupportLecture(sqlSession, map);
 	}
 	
 	/**
@@ -105,6 +124,15 @@ public class LectureServiceImpl implements LectureService{
 	
 	/**
 	 * @author leeyeji
+	 * 클래스 문의 등록하기
+	 */
+	@Override
+	public int ajaxEnrollInquiry(ClassInquiry i) {
+		return lDao.ajaxEnrollInquiry(sqlSession, i);
+	}
+	
+	/**
+	 * @author leeyeji
 	 * 유저 스크랩 목록 조회
 	 */
 	@Override
@@ -114,6 +142,24 @@ public class LectureServiceImpl implements LectureService{
 	@Override
 	public ArrayList<Lecture> selectScrapList(int userNo, PageInfo pi) {
 		return lDao.selectScrapList(sqlSession, userNo, pi);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 찜하기 기능
+	 */
+	@Override
+	public int ajaxScrapLecture(HashMap<String, Integer> map) {
+		return lDao.ajaxScrapLecture(sqlSession, map);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 찜하기 중복 체크
+	 */
+	@Override
+	public int scrapCheck(HashMap<String, Object> map) {
+		return lDao.scrapCheck(sqlSession, map);
 	}
 	
 	

@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail</title>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <style>
     .outer{
         width: 1200px;
@@ -187,8 +188,9 @@
 	                        <strong>${ l.teacherName }</strong> 
 	                    </div>
 	                    <div id="info-btn">
-	                        <button type="button" class="btn">찜하기</button>
-	                        <a href="" class="btn">결제하기</a>
+	                        <button type="button" class="btn" onclick="scrapCheck();">찜하기</button>
+	                        <input type="hidden" name="classNo" value="${ l.classNo }">
+	                        <a href="#" class="btn payIamport">결제하기</a>
 	                    </div>
 	                </div>
 	                
@@ -252,9 +254,139 @@
 	                <br>
             	</div>
             	
-			
+			<script>
+				// 결제 관련
+				/*
+				var c_price = ${ l.price };
+				var c_no = ${ l.classNo };
+				var user_no = 10;
+				var c_name = '${ l.classTitle }';
+				var payNo = Math.floor(Math.random() * 100) + new Date().getTime();
+				var now = new Date();
+				var pay_method = 1;
+				
+				$('.payIamport').click(function (){
+					IMP.init('imp08801453');
+					IMP.request_pay({
+						pg : 'kakaopay',
+					    pay_method : 'card',
+					    merchant_uid : 'merchant_' + new Date().getTime(),
+					    name : c_name,
+					    amount : c_price,
+					    buyer_email : 'iamport@siot.do',
+					    buyer_name : '구매자이름',
+					    buyer_tel : '010-1234-5678',
+					    buyer_addr : '서울특별시 강남구 삼성동',
+					    buyer_postcode : '123-456'
+					}, function(rsp) {
+					    if ( rsp.success ) {
+					    	console.log("결제성공");
+					    	jQuery.ajax({
+					    		url: "/payments/complete", 
+					    		type: 'POST',
+					    		dataType: 'json',
+					    		data: {
+						    		imp_uid : rsp.imp_uid
+					    		}
+					    	}).done(function(data) {
+					    		if ( everythings_fine ) {
+					    			var msg = '결제가 완료되었습니다.';
+					    			msg += '\n고유ID : ' + rsp.imp_uid;
+					    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+					    			msg += '\결제 금액 : ' + rsp.paid_amount;
+					    			msg += '카드 승인번호 : ' + rsp.apply_num;
+					    			
+					    			$.ajax({
+					    				url: "/success.pay", 
+							    		type: 'POST',
+							    		dataType: 'json',
+							    		data: {
+								    		imp_uid : rsp.imp_uid,
+								    		orderNo : payNo,
+								    		price : c_price,
+								    		classTitle : c_name,
+								    		paymentDate : now,
+								    		payMethod : pay_method,
+								    		status : 'Y',
+								    		userNo : user_no
+							    		}, success:function(result){
+							    			if(result == 'y'){
+							    				console.log("INSERT 성공")
+							    			}else{
+							    				console.log("insert 실패.")
+							    			}
+							    		}
+					    			})
+					    			alert(msg);
+					    		} else {
+					    		}
+					    	});
+					        var msg = '결제에 실패하였습니다.';
+					        msg += '에러내용 : ' + rsp.error_msg;
+					        
+					        alert(msg);
+					    }
+					});
+				})*/
+			</script>
             
             <script>
+            	
+            	var cno = $('input[name=classNo]').val();
+		        var uno = ${loginUser.userNo};
+		        
+		        // 찜하기 중복확인
+		        function scrapCheck(){
+
+		        	$.ajax({
+		        		url: "scrapCheck.lec",
+		        		data : {
+		        			classNo : cno,
+		        			userNo : uno
+		        		}, success: function(result){
+		        			console.log(result);
+		        			if(result == 1){
+		        				alert("이미 찜한 클래스입니다.");
+		        			}else {
+		        				scrapLecture();
+		        			}
+		        			
+		        		}, error:function(){
+		        			console.log("찜하기 중복 ajax 실패");
+		        		}
+		        	})
+		        	
+		        }
+		        
+		        // 찜하기 
+		        function scrapLecture(){
+			     	
+		            $.ajax({
+		            	url: "scrap.lec",
+		            	type: "GET",
+		            	data: {
+		            		classNo : cno,
+		            		userNo : uno
+		            	},
+		            	success:function(result){
+		            		
+		            		if(result == 1){
+		            			
+			            		alert("클래스를 찜했습니다!");
+			            		
+		            		}else{
+		            			alert("찜하기에 실패하였습니다.");
+		            		}
+		            		
+		            	}, error:function(){
+		            		console.log("찜하기 ajax 실패");
+		            	}
+		            })
+		            
+		        }
+		        
+		        
+            
                 // 슬라이드 
                 jQuery(document).ready(function ($) {
 
@@ -310,15 +442,14 @@
         
             function acyncMovePage(url){
 
-            	
-                // ajax option
+                // 탭메뉴 클릭
                 var ajaxOption = {
                 	url : url,
                     async : true,
                     type : "POST",
                     dataType : "html",
                     cache : false,
-                    success: console.log("성공")
+                    success: console.log("탭메뉴성공")
                 };
                 
                 $.ajax(ajaxOption).done(function(data){
