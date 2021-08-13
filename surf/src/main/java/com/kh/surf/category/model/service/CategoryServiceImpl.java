@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.surf.category.model.dao.CategoryDao;
+import com.kh.surf.category.model.vo.SubCategory;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -20,5 +21,5 @@ public class CategoryServiceImpl implements CategoryService {
 		ArrayList<String> arrCat = cDao.selectCategory(sqlSession);
 		return arrCat;
 	}
-
+	
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.surf.category.model.vo.SubCategory;
+
 @Repository	
 public class CategoryDao {
 	
