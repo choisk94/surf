@@ -599,4 +599,30 @@
 		 </choose>
 	</select>
 	
+	<!-- 
+		@author leeyeji
+		강사 신청
+	 -->
+	<insert id="applyTeacher">
+		insert
+		  into teacher
+		  (
+		  	teacher_no
+		  , profile_image
+		  , nickname
+		  , phone
+		  , intro_content
+		  , subcat_no
+		  )
+		  values
+		  (
+		  	2
+		  , #{profileImage}
+          , #{nickname}
+          , #{phone}
+          , #{introContent}
+          , #{subcatNo}
+		  )
+	</insert>
+	
 </mapper>

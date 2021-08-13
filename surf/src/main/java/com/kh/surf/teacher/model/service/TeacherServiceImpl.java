@@ -272,5 +272,15 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.selectRespondentCount(map, sqlSession);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 강사 신청
+	 */
+	/*
+	@Override
+	public int applyTeacher(Teacher t) {
+		return tDao.applyTeacher(sqlSession, t);
+	}
+	*/
 
 }
