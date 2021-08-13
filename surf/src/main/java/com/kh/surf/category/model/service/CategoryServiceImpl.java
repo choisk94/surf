@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.surf.category.model.dao.CategoryDao;
+import com.kh.surf.category.model.vo.Maincat;
+import com.kh.surf.category.model.vo.Subcat;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -19,6 +21,18 @@ public class CategoryServiceImpl implements CategoryService {
 	public ArrayList<String> selectCategory(){
 		ArrayList<String> arrCat = cDao.selectCategory(sqlSession);
 		return arrCat;
+	}
+
+	/**
+	 * 메인카테고리 서브카테고리 조회
+	 */
+	@Override
+	public ArrayList<Maincat> AjaxSelectMaincatList() {
+		return cDao.AjaxSelectMaincatList(sqlSession);
+	}
+	@Override
+	public ArrayList<Subcat> AjaxSelectSubcatList(int maincatNo) {
+		return cDao.AjaxSelectSubcatList(maincatNo, sqlSession);
 	}
 
 }
