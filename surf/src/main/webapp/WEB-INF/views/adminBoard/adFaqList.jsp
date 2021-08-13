@@ -69,23 +69,9 @@
 	                <p>${ ab.boardContent }</p>
 	                <br>
 	                <div align="right">
-		                <a class="btn btn-primary" onclick="postFormSubmit(1);">수정</a>
-		                <a class="btn btn-danger" onclick="postFormSubmit(2);">삭제</a>
-		                	            
-		            <form id="postForm" action="" method="post">
-		            	<input type="hidden" name="bno" value="${ ab.boardNo }">
-		            </form>
-		            
-		            <script>
-		            	function postFormSubmit(num){
-		            		if(num == 1){ // 수정하기
-		            			$("#postForm").attr("action", "updateFaq.ad").submit();
-		            		}else{ // 삭제하기
-		            			$("#postForm").attr("action", "deleteFaq.ad").submit();
-		            		}
-		            	}
-		            </script>
-		                
+		                <button type="submit" class="btn btn-primary" onclick="postFormSubmit(1);" data-toggle="modal" data-target="#updateForm">수정</button>
+		                <button type="button" class="btn btn-danger" onclick="postFormSubmit(2);">삭제</button>
+
 	                </div>
 	              </td>
 	            </tr>     
@@ -93,7 +79,23 @@
           </tbody>
         </table>
 
-        <script>
+
+		<form id="postForm" action="" method="post">
+			<input type="hidden" name="bno" value="${ ab.boardNo }">
+		</form>
+		<script>
+			function postFormSubmit(num) {
+				if (num == 1) { // 수정하기
+					$("#postForm").attr("action", "updateFaq.ad").submit();
+				} else { // 삭제하기
+					$("#postForm").attr("action", "deleteFaq.ad").submit();
+				}
+			}
+		</script>
+
+
+
+		<script>
           $(function(){
               $(".faq1").click(function(){
 
@@ -158,6 +160,52 @@
         	</div>
         </div>
         <br>
+
+    <!-- 글수정 모달창 -->
+        <div class="modal" id="updateForm">
+        	<div class="modal-dialog">
+        		<div class="modal-content">
+        			<form action="updateFaq.ad" method="post">
+	        			<div class="modal-header">
+	        			<h4 class="modal-title">글 수정</h4>
+	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        			</div>
+	        			
+	        			<div class="modal-body" align="center">
+	        			<input type="hidden" name="userNo" value="${ loginUser.userNo }">
+		        				<table class="table">
+		        					<tr>
+		        						<td>질문</td>
+		        						<td><input type="text" class="form-control" id="question" name="boardTitle" value="${ ab.boardTitle }" required></td>
+		        					</tr>
+		        					<tr>
+		        						<td>카테고리</td>
+		        						<td>
+		        							<select style="width:100%;" name="faqCategory" value="${ ab.faqCategory }">
+									              <option value="사이트이용">사이트이용</option>
+									              <option value="계정">계정</option>
+									              <option value="결제/환불">결제/환불</option>
+									              <option value="강사">강사</option>
+									              <option value="클래스">클래스</option>
+									              <option value="기타">기타</option>
+									              <option selected>카테고리</option>
+								            </select>
+		        						</td>
+		        					</tr>
+		        					<tr>
+		        						<td>답변</td>
+		        						<td><textarea class="form-control" id="answer" name="boardContent" rows="10" required>${ ab.boardContent }</textarea></td>
+		        					</tr>
+		        				</table>
+	        			</div>
+	        			<div class="modal-footer">
+	        				<button type="submit" class="btn btn-primary">수정</button>
+	        				<button type="button" class="btn btn-secondary">취소</button>
+	        			</div>
+        			</form>
+        		</div>
+        	</div>
+        </div>
 
         <!--여기서부터 페이지이동-->
         <ul class="pagination justify-content-center">

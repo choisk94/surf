@@ -14,6 +14,19 @@
 		<result column="user_no" property="userNo"/>
 	</resultMap>
 
+	<resultMap id="adminTeacherResult" type="Teacher">
+		<result column="teacher_no" property="teacherNo"/>
+		<result column="profile_image" property="profileImage"/>
+		<result column="nickname" property="nickname"/>
+		<result column="phone" property="phone"/>
+		<result column="intro_content" property="introContent"/>
+		<result column="subcat_no" property="subCatNo"/>
+		<result column="maincat_no" property="mainCatNo"/>		
+		<result column="status" property="status"/>
+	</resultMap>
+
+
+	<!-- 공지사항  -->
 	<select id="selectNoticeCount" resultType="_int">
 		select
 		       count(*)
@@ -141,6 +154,8 @@
 		     by board_no desc
 	</select>
 	
+	
+	<!-- FAQ -->	
 	<select id="selectFaqCount" resultType="_int">
 		select
 		       count(*)
@@ -190,5 +205,37 @@
 		   set status = 'N'
 		 where board_no = #{boardNo}
 	</update>
+	
+	<update id="updateAdminFaq">
+		update
+			   admin_board
+		   set board_title = #{boardTitle}
+		     , board_content = #{boardContent}
+		     , faq_category = #{faqCategory}
+		 where board_no = #{boardNo}
+	</update>	
+
+
+	<!-- 강사신청  -->
+	<select id="selectTeacherCount" resultType="_int">
+		select
+		       count(*)
+		  from teacher
+		 where status = 'Y'      
+	</select>
+	
+	<select id="selectTeacherList" resultMap="adminTeacherResult">
+		select
+			   teacher_no
+			 , nickname
+			 , phone
+			 , subcat_no
+			 , maincat_no
+		  from teacher
+		  join subcat using(subcat_no)
+		 where status = 'Y'
+	</select>
+	
+	<!-- 신고관리  -->
 
 </mapper>
