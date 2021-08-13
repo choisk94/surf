@@ -51,17 +51,13 @@
 </head>
 <body>
 	<jsp:include page="common/lectureEnrollForm.jsp"/>
-    <script>
-        $(function(){
-            $('.menubar').css('height', '800px');
-            $('.outer').css('height', '800px');
-        })
-    </script>
 <div class="content">
 
     <div class="main-content">
         <div class="left-area">
-            <form action="">
+            <form id="inputForm" action="updateLecture0.te" method="POST">
+            <input type="hidden" name="classNo" value="${ l.classNo }">
+            <input type="hidden" name="currentPage" value="${currentPage}">
                 <label class="guide">간단하게 어떤 클래스인지 알려주세요</label>
                 <label class="note">
                     언젠가 이런 걸 가르쳐봐야지 생각해본 적이 있으신가요?<br>
@@ -73,13 +69,12 @@
                     
                 </div>
                 <label for="mainCat" class="subGuide">카테고리</label>
-                <select name="mainCat" id="mainCat" class="form-control select-form">
-                    <option>베이킹</option>
+                <select name="maincatNo" id="maincatNo" class="form-control select-form" onchange="loadSubCatInfo($(this).val());">
                 </select>
-                <select name="" id="" class="form-control select-form">
-                    <option value="">디저트</option>
-                    <option value="">쿠키</option>
-                    <option value="">케잌</option>
+                <select name="subcatNo" id="subcatNo" class="form-control select-form">
+                    <option value="11">뜨개 · 자수</option>
+                    <option value="12">가죽 공예</option>
+                    <option value="13">플라워</option>
                 </select>
                 <br>
                 <br>
@@ -91,16 +86,16 @@
                 <br><br>
                 <table>
                     <tr>
-                        <th width="100px;">강의기간</th>
-                        <td width="400px;"><input type="text" class="form-control" placeholder="강의 기간을 입력해주세요"></td>
+                        <th width="100px;">강의기간 *</th>
+                        <td width="400px;"><input type="text" class="form-control" placeholder="강의 기간을 입력해주세요. ex)30일, 60일" name="period" value="${ l.period }" maxlength="4"></td>
                     </tr>
                     <tr>
-                        <th>준비물</th>
-                        <td><input type="text" class="form-control" placeholder="수강생이 강의에 필요한 필수 준비물을 입력해주세요"></td>
+                        <th>준비물 *</th>
+                        <td><input type="text" class="form-control" placeholder="수강생이 강의에 필요한 필수 준비물을 입력해주세요" name="need" value="${ l.need }"></td>
                     </tr>
                     <tr>
                         <th>유의사항</th>
-                        <td><input type="text" class="form-control" placeholder="기타 유의 사항을 입력해주세요"></td>
+                        <td><input type="text" class="form-control" placeholder="기타 유의 사항을 입력해주세요" name="note" value="${ l.note }"></td>
                     </tr>
                 </table>
             </form>
@@ -115,6 +110,85 @@
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        var $period = $('input[name=period]');
+        var $need = $('input[name=need]');
+
+        if($period.val().length > 2 && $need.val().length > 1){
+            onLoadCheckSuccess();
+        }
+
+        $('input[name=period], input[name=need]').keyup(function () {
+            
+            if($period.val().length > 2 && $need.val().length > 1){
+                $('#save-btn').removeAttr('disabled');
+            }else{
+                $('#save-btn').attr('disabled', true);
+            }
+
+        })
+        $('#subcatNo').on('change', function(){
+            if($period.val().length > 2 && $need.val().length > 1){
+                $('#save-btn').removeAttr('disabled');
+            }else{
+                $('#save-btn').attr('disabled', true);
+            }
+        })
+
+
+        $('.menubar').css('height', '800px');
+        $('.outer').css('height', '800px');
+        
+        // 메인 카테고리 조회
+        $.ajax({
+            url : "JqAjaxMainCat.te",
+            type : "post"
+            , success : function(maincat){
+                for(var i in maincat){
+                    $('select[name=maincatNo]').append('<option value=' + maincat[i].maincatNo +'>' + maincat[i].maincatName + '</option>');
+                }
+                // 등록하기로 들어온 경우가 아닌경우
+                <c:if test="${l.subcatNo ne 0}">
+                    loadSelectedSubcat();
+                </c:if>
+            }, error : function(){
+                console.log("서브 카테고리 조회 실패");
+            }
+        })
+        
+        
+    })
+    
+    // 메인카테고리 값 변경시 해당 서브카테고리 출력
+    function loadSubCatInfo(maincatNo, subcatNo){ 
+        $.ajax({
+            url : "JqAjaxSubcat.te",
+            type : "post",
+            data : {
+                'maincatNo' : maincatNo
+            }, success : function(subcat){
+                $('select[name=subcatNo]').html("");
+                for(var i in subcat){
+                    $('select[name=subcatNo]').append('<option value=' + subcat[i].subcatNo +'>' + subcat[i].subcatName + '</option>');
+                }
+                
+                $('option[value=' + subcatNo + ']').attr('selected', true);
+            }, error : function(){
+                console.log("서브 카테고리 조회 실패");
+            }
+        })
+    }
+
+    // 저장된 카테고리 select 하기
+    function loadSelectedSubcat(){
+        var maincatNo = Math.floor(${l.subcatNo} / 10) * 10;
+        var subcatNo = ${l.subcatNo};
+
+        $('option[value=' + maincatNo + ']').prop('selected', true);
+        loadSubCatInfo(maincatNo, subcatNo);
+    }
+</script>
 <jsp:include page="common/lectureEnrollFormFooter.jsp"/>
 </div>
 </body>
