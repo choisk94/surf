@@ -76,7 +76,7 @@
 	<resultMap type="Survey" id="surveyResult">
 		<result column="survey_no" property="surveyNo"/>
 		<result column="nickname" property="userNo"/>
-		<result column="quality" property="quality"/
+		<result column="quality" property="quality"/>
 		<result column="satisfaction" property="satisfaction"/>
 		<result column="difficulty" property="difficulty"/>
 		<result column="price" property="price"/>
