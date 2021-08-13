@@ -259,7 +259,6 @@ public class AdminBoardController {
 	@RequestMapping("deleteFaq.ad")
 	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
 		int result = abService.deleteAdminFaq(bno);
-		System.out.println(bno);
 		if(result > 0) { // 성공 => 리스트페이지
 			
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");

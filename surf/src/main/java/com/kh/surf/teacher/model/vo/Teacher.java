@@ -22,5 +22,6 @@ public class Teacher {
 	// 1:1
 	private String classTitle;
 	
-	private String mainCatName;	
+	private String mainCatName;
+	private String subCatName;
 }

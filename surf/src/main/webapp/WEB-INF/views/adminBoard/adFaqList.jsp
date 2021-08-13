@@ -46,53 +46,55 @@
         </div>
         <br>
         <hr>
-        <table class="table" id="faqList">
-          <thead>
+      <table class="table" id="faqList">
+         <thead>
             <tr style="background-color: rgb(224, 224, 224)">
-              <td width="90">번호</td>
-              <td width="90">카테고리</td>
-              <td width="500" >제목</td>
+               <td width="90">번호</td>
+               <td width="90">카테고리</td>
+               <td width="500">제목</td>
             </tr>
-          </thead>
-          <tbody>
-          	<c:forEach var="ab" items="${ list }">
-	            <tr class="faq1">
-	              <td>${ ab.boardNo }</td>
-	              <td>${ ab.faqCategory }</td>
-	              <td align="left">
-	                <div>${ ab.boardTitle }</div>
-	              </td>
-	            </tr>
-	            <tr class="faq2">
-	              <td colspan="2" style="background:lightgray">A. </td>
-	              <td align="left" style="background:lightgray">
-	                <p>${ ab.boardContent }</p>
-	                <br>
-	                <div align="right">
-		                <button type="submit" class="btn btn-primary" onclick="postFormSubmit(1);" data-toggle="modal" data-target="#updateForm">수정</button>
-		                <button type="button" class="btn btn-danger" onclick="postFormSubmit(2);">삭제</button>
-
-	                </div>
-	              </td>
-	            </tr>     
+         </thead>
+         <tbody>
+            <c:forEach var="ab" items="${ list }">
+               <tr class="faq1">
+                  <td>${ ab.boardNo }</td>
+                  <td>${ ab.faqCategory }</td>
+                  <td align="left">
+                     <div>${ ab.boardTitle }</div>
+                  </td>
+               </tr>
+               <tr class="faq2">
+                  <td colspan="2" style="background: lightgray">A.</td>
+                  <td align="left" style="background: lightgray">
+                     <p>${ ab.boardContent }</p> <br>
+                     <div align="right">
+                        <a class="btn btn-primary" onclick="postFormSubmit(1, ${ab.boardNo});">수정</a> 
+                        <a class="btn btn-danger" onclick="postFormSubmit(2, ${ab.boardNo});">삭제</a>
+                        <input type="hidden" id="" value="">
+                        
+                     </div>
+                  </td>
+               </tr>
             </c:forEach>
-          </tbody>
-        </table>
-
-
-		<form id="postForm" action="" method="post">
-			<input type="hidden" name="bno" value="${ ab.boardNo }">
-		</form>
-		<script>
-			function postFormSubmit(num) {
-				if (num == 1) { // 수정하기
-					$("#postForm").attr("action", "updateFaq.ad").submit();
-				} else { // 삭제하기
-					$("#postForm").attr("action", "deleteFaq.ad").submit();
-				}
-			}
-		</script>
-
+         </tbody>
+      </table>
+      
+      <form id="postForm" action="" method="post">
+         <input id="bno" type="hidden" name="bno" value="">
+      </form>
+      
+      
+      <script>
+         function postFormSubmit(num, bno) {
+            if (num == 1) { // 수정하기
+               $("#bno").val(bno);
+               $("#postForm").attr("action", "updateFaq.ad").submit();
+            } else { // 삭제하기
+               $("#bno").val(bno);
+               $("#postForm").attr("action", "deleteFaq.ad").submit();
+            }
+         }
+      </script>
 
 
 		<script>

@@ -112,7 +112,7 @@ public class AdminBoardDao {
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectTeacherList", null, rowBounds);
 	}
 	
-	/** 신고관리  **/	
+	/** 신고관리  **/
 	
 
 }

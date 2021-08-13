@@ -20,8 +20,8 @@
 		<result column="nickname" property="nickname"/>
 		<result column="phone" property="phone"/>
 		<result column="intro_content" property="introContent"/>
-		<result column="subcat_no" property="subCatNo"/>
-		<result column="maincat_no" property="mainCatNo"/>		
+		<result column="subcat_name" property="subCatName"/>
+		<result column="maincat_name" property="mainCatName"/>		
 		<result column="status" property="status"/>
 	</resultMap>
 
@@ -227,13 +227,17 @@
 	<select id="selectTeacherList" resultMap="adminTeacherResult">
 		select
 			   teacher_no
-			 , nickname
+			 , t.nickname
 			 , phone
-			 , subcat_no
-			 , maincat_no
-		  from teacher
-		  join subcat using(subcat_no)
-		 where status = 'Y'
+         	 , s.subcat_name
+			 , c.maincat_name
+             , t.status
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+         order
+		    by teacher_no desc
 	</select>
 	
 	<!-- 신고관리  -->
