@@ -63,6 +63,12 @@
 		<result column="chap_order" property="chapOrder"/>
 		<result column="class_no" property="classNo"/>
 		<result column="chap_name" property="chapName"/>
+	</resultMap>
+	
+	<resultMap id="chapterResult2" type="Chapter">
+		<result column="chap_order" property="chapOrder"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_name" property="chapName"/>
 		<collection column="class_no" property="classVideoList" javaType="java.util.ArrayList"
 			    	ofType="ClassVideo" select="selectLectureVideo"/>
 	</resultMap>
@@ -70,7 +76,7 @@
 	<resultMap type="Survey" id="surveyResult">
 		<result column="survey_no" property="surveyNo"/>
 		<result column="nickname" property="userNo"/>
-		<result column="quality" property="quality"/>
+		<result column="quality" property="quality"/
 		<result column="satisfaction" property="satisfaction"/>
 		<result column="difficulty" property="difficulty"/>
 		<result column="price" property="price"/>
@@ -322,7 +328,7 @@
 		@author yeji lee
 		클래스 챕터 조회
 	 -->
-	<select id="selectLectureChapter" resultMap="chapterResult">
+	<select id="selectLectureChapter" resultMap="chapterResult2">
 		select 
                chap_order
              , class_no
