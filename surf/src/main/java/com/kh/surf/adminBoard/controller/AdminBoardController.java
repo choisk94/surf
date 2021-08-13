@@ -146,5 +146,51 @@ public class AdminBoardController {
 		
 		return "adminBoard/adFaqList";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**********************************************************************************/
+	
+	@RequestMapping("list.no")
+	public ModelAndView selectNoticeList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+
+		int listCount = abService.selectNoticeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("adminBoard/noticeBoardList");
+		
+		return mv;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
