@@ -86,87 +86,38 @@
 			<!-- 게시글 목록 -->
 			<div>
 				<table id="noticeList">
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.
-								&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.
-								&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.
-								&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.
-								&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.
-								&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
-					<tr>
-						<td width="650">
-							<div class="noticeTitle">[이벤트] 하계이벤트 공지</div>
-							<div class="writerInfo">작성자 : 강보람 &nbsp; 작성일 : 21. 06. 21.	&nbsp;</div>
-						</td>
-						<td width="150" align="center" style="font-size: 13px;">
-							<div class="noticeCount">1000</div>
-							<div style="font-size: 12px;">조회수</div>
-						</td>
-					</tr>
+				
+					<c:forEach var="n" items="${ list }">
+						<tr>
+							<input class="boardNo" type="hidden" value="${ n.boardNo }">
+							<td width="650">
+								<div class="noticeTitle">${ n.boardTitle }</div>
+								<div class="writerInfo">작성자 : ${ n.nickname } &nbsp; 작성일 : ${ n.createDate }
+									&nbsp;</div>
+							</td>
+							<td width="150" align="center" style="font-size: 13px;">
+								<div class="noticeCount">${ n.count }</div>
+								<div style="font-size: 12px;">조회수</div>
+							</td>
+						</tr>
+					</c:forEach>
 				</table>
 			</div>
-			<br>
-			<br>
+			<script>
+				$(function(){
+					$("#noticeList").on("click", "tr", function(){
+						location.href='detail.no?nno=' + $(this).children(".boardNo").val();
+					})
+				})
+			</script>			
+			<br><br>
 			<!--더보기 버튼-->
 			<div class="text-center">
 				<button class="btn btn-secondary"
 					style="width: 200px; border-radius: 10px;">더보기</button>
 			</div>
-
 		</div>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
+		<br><br><br><br><br>
 	</div>
 
 	<script>

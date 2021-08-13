@@ -2,7 +2,211 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="studyboardMapper">
 
+	<resultMap type="Study" id="resultStudy">
+		<result column="study_no" property="studyNo"/>
+		<result column="study_title" property="studyTitle"/>
+		<result column="study_content" property="studyContent"/>
+		<result column="user_no" property="userNo"/>
+		<result column="nickname" property="writer"/>
+		<result column="recruit" property="recruit"/>
+		<result column="status" property="status"/>
+		<result column="count" property="count"/>
+		<result column="create_date" property="createDate"/>
+		<result column="modify_date" property="modifyDate"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="resultReply">
+		<result column="reply_no" property="replyNo"/>
+		<result column="study_no" property="studyNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="nickname" property="replyWriter"/>
+		<result column="reply_content" property="replyContent"/>
+		<result column="status" property="status"/>
+		<result column="create_date" property="createDate"/>
+		<result column="modify_date" property="modifyDate"/>
+	</resultMap>
+
+	<select id="selectListCount" resultType="_int">
+		select count(*)
+		  from study
+		 where status = 'Y'
+		 <if test='recruit == "YY"'>
+		 	and recruit = 'Y'
+		 </if>		   
+		 <if test='recruit == "NN"'>
+			 and recruit = 'N'
+		 </if>	
+	</select>
 
 
+	<select id="selectList" resultMap="resultStudy">
+		select
+			  study_no
+			, study_title
+			, study_content
+			, nickname
+			, recruit
+			, s.status
+			, count
+			, to_char(create_date, 'YY. mm. dd.') "create_date"
+			, to_char(modify_date, 'YY. mm. dd.') "modify_date"
+		  from study s
+		  join member using(user_no)
+	 left join (select * from report where ref_type = '게시글') p on(ref_no = study_no)
+		 where s.status = 'Y'
+		    and (p.status is null or p.status = 'R')
+		 <if test='recruit == "YY"'>
+		 	and recruit = 'Y'
+		 </if>		   
+		 <if test='recruit == "NN"'>
+			 and recruit = 'N'
+		 </if>			
+		 <if test="keyword != ''">
+		  	 and (study_title like '%'||#{keyword}||'%' or study_content like '%'||#{keyword}||'%')
+		 </if>
+		 order
+		    by study_no desc
+	</select>
+	
+	<update id="increaseCount">
+		update
+			study
+		   set count = count + 1
+		 where study_no = #{studyNo}
+	</update>
+	
+	<select id="selectStudy" resultMap="resultStudy">
+		select
+			  study_no	
+			, study_title
+			, study_content
+			, user_no
+			, nickname
+			, recruit
+			, count
+			, to_char(create_date, 'YY. mm. dd.') "create_date"
+		  from study s
+		  join member using(user_no)
+		 where study_no = #{studyNo}
+	</select>
+	
+	<insert id="insertStudy">
+		insert
+		  into study
+		  (
+		    study_no
+		  , study_title
+		  , study_content
+		  , user_no
+		  , recruit
+		  , create_date
+		  )
+		  values
+		  (
+		    seq_sno.nextval
+		  , #{studyTitle}
+		  , #{studyContent}
+		  , #{userNo}
+		  , 'Y'
+		  , sysdate
+		  )
+	</insert>
+	
+	<update id="updateStudy">
+		update
+			study
+		   set study_title = #{studyTitle}
+		  	 , study_content = #{studyContent}
+		     , recruit = #{recruit}
+		     , modify_date = #{modifyDate}
+		 where study_no = #{studyNo}
+	</update>
+	
+	<update id="deleteStudy">
+		update
+			study
+		   set status = 'N'
+		 where study_no = #{studyNo}
+	</update>
+	
+	<select id="selectReplyList" resultMap="resultReply">
+		select
+		      reply_no
+		    , user_no
+		    , nickname
+		    , reply_content
+		    , to_char(create_date, 'YY. mm. dd.') "create_date"
+		  from reply r
+		  join member using(user_no)
+	 left join 
+	          (select * 
+	             from report 
+	            where ref_type = '댓글') p 
+	        on(reply_no = ref_no)
+		 where study_no = #{studyNo}
+		   and r.status = 'Y'
+		   and (p.status is null or p.status = 'R')		    
+		 order
+		    by reply_no desc
+				    
+	</select>
+	
+	<insert id="insertReply">
+		insert 
+		  into reply
+		  (
+		    reply_no
+		  , study_no
+		  , user_no
+		  , reply_content
+		  , create_date
+		  ) 
+		  values 
+		  (
+		    seq_rno.nextval
+		  , #{studyNo}
+		  , #{replyWriter}
+		  , #{replyContent}
+		  , sysdate
+		  )
+	</insert>
+	
+	<insert id="insertReport">
+		insert
+		  into report
+		  (
+		    report_no
+		  , reporter
+		  , reported
+		  , ref_type
+		  , ref_no
+		  , report_content
+		  , report_date
+		  , status
+		  )
+		  values
+		  (
+		    seq_pno.nextval
+		  , #{reporter}
+		  , #{reported}
+		  , #{refType}
+		  , #{refNo}
+		  , #{reportContent}
+		  , sysdate
+		  , 'N'
+		  )
+	</insert>
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+

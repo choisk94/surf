@@ -12,14 +12,15 @@ import lombok.ToString;
 @ToString
 public class Study {
 	
-	private int studyNo;
-	private String studyTitle;
-	private String studyContent;
-	private int userNo;
-	private String current;	// 모집여부
-	private String status;	// 활성화 여부(삭제 시 N)
-	private int count;
-	private Date createDate;
-	private Date modifyDate;
+	private int studyNo;			// 고유번호
+	private String studyTitle;		// 제목
+	private String studyContent;	// 내용
+	private int userNo;				// 작성자 번호
+	private String writer;			// 작성자 닉네임
+	private String recruit;			// 모집여부(모집 중 Y)
+	private String status;			// 활성화 여부(삭제 시 N)
+	private int count;				// 조회수
+	private String createDate;		// 작성일
+	private String modifyDate;		// 수정일
 	
 }

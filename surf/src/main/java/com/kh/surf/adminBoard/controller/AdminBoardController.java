@@ -184,12 +184,57 @@ public class AdminBoardController {
 		return "adminBoard/adFaqList";
 	}
 	
+
 	/**
 	 * @param 서정연
 	 * @param FAQ 글작성 (관리자)
 	 * @param 
 	 * @return
 	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**********************************************************************************/
+	
+	@RequestMapping("list.no")
+	public ModelAndView selectNoticeList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+
+		int listCount = abService.selectNoticeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("adminBoard/noticeBoardList");
+		
+		return mv;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	@RequestMapping("insertFaq.ad")
 	public String enrollFaq(AdminBoard ab, HttpSession session, Model model) {
 		
@@ -226,6 +271,7 @@ public class AdminBoardController {
 		}
 		
 	}
+
 	
 	/**
 	 * @param 서정연
@@ -261,5 +307,6 @@ public class AdminBoardController {
 		return mv;
 	}	
 	
+
 
 }
