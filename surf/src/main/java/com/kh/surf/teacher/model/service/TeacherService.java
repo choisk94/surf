@@ -2,9 +2,13 @@ package com.kh.surf.teacher.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
@@ -32,11 +36,27 @@ public interface TeacherService {
 	// 6. 클래스 후기 상세 조회
 	Survey selectReviewDetail(int sno);
 	
-	// 7. 클래스 등록 페이지 정보 가져오기(등록, 수정)
-		
-	// 8. 클래스 등록 페이지 input 등록하기
+	// 7. 클래스 등록 페이지 input 등록하기
+	int insertLecture(Lecture l);	
 	
-	// 9. 클래스 등록 페이지 완성도 조회
+	// 8. 클래스 수정 페이지 0-4 정보 가져오기
+	Lecture selectLectureInput(Lecture l);
+	ArrayList<ClassIntro> selectIntroList2(Lecture l);
+	ArrayList<Chapter> selectChapterList(int classNo);
+	ArrayList<ClassVideo> ajaxSelectVideoList(int classNo);
+	
+	// 9. 클래스 입력페이지 정보 저장(0-4)
+	int updateLecture0(Lecture l);
+	int updateLecture1(Lecture l);
+	int updateLecture2(Lecture l);
+	
+	int updateClassIntro2(ArrayList<ClassIntro> classIntroList);
+	int deleteClassIntro2(Lecture introInfo);
+	
+	int updateChapterList(ArrayList<Chapter> chList);
+	int updateVideoList(ArrayList<ClassVideo> cvList);
+	
+	int updateLecture4(Lecture l);
 	
 	// 10. 강사에 대한 클래스 수, 목록 가져오기 
 	int selectLectureListCount(int userNo); 
@@ -74,6 +94,12 @@ public interface TeacherService {
 	// 18. 설문 조사 통계
 	int selectRespondentCount(HashMap<String, String> map);
 	ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map);
+
+
+
+	// 19. 클래스 등록 페이지 완성도 조회
+
+
 	
 	// 19. 강사 신청
 	/*

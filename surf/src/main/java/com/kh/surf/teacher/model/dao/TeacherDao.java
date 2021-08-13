@@ -8,7 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
@@ -247,4 +250,70 @@ public class TeacherDao {
 		return sqlSession.insert("teacherMapper.applyTeacher", t);
 	}
 	*/
+	
+	/**
+	 * @author HeeRak
+	 * 클래스 등록하기
+	 */
+	public int insertLecture(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.insertLecture", l);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 클래스 input 페이지 0-4 데이터 Lecture 가져오기
+	 */
+	public Lecture selectLectureInput(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.selectLectureInput", l);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 클래스 input 페이지 2 데이터 가져오기  ClassIntro List
+	 */
+	public ArrayList<ClassIntro> selectIntroList2(Lecture l, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectIntroList2", l);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 클래스 input 페이지 3 데이터 가져오기 Chapter, ClassVideo List
+	 */
+	public ArrayList<Chapter> selectChapterList(int classNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectChapterList", classNo);
+	}
+	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoList", classNo);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 0-4번 등록|수정페이지  update
+	 */
+	public int updateLecture0(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.updateLecture0", l);
+	}
+	public int updateLecture1(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.updateLecture1", l);
+	}
+	public int updateLecture2(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.updateLecture2", l);
+	}
+	public int updateClassIntro2(ArrayList<ClassIntro> list, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.updateClassIntro2", list);
+	}
+	public int deleteClassIntro2(Lecture introInfo, SqlSessionTemplate sqlSession) {
+		return sqlSession.delete("lectureMapper.deleteClassIntro2", introInfo);
+	}
+	public int updateChapterList(ArrayList<Chapter> chList, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.updateChapterList", chList);
+	}
+	public int updateVideoList(ArrayList<ClassVideo> cvList, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.updateVideoList", cvList);
+	}
+	public int updateLecture4(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.updateLecture4", l);
+	}
+
+	
 }
