@@ -75,4 +75,8 @@ public interface TeacherService {
 	int selectRespondentCount(HashMap<String, String> map);
 	ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map);
 	
+	// 19. 강사 신청
+	/*
+	int applyTeacher(Teacher t);
+	*/
 }

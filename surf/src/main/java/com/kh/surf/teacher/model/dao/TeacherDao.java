@@ -238,4 +238,13 @@ public class TeacherDao {
 		return sqlSession.selectOne("teacherMapper.selectRespondentCount", map);
 	}
 	
+	/**
+	 * @author leeyeji
+	 * 강사 신청
+	 */
+	/*
+	public int applyTeacher(SqlSessionTemplate sqlSession, Teacher t) {
+		return sqlSession.insert("teacherMapper.applyTeacher", t);
+	}
+	*/
 }

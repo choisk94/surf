@@ -1,8 +1,11 @@
 package com.kh.surf.teacher.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.common.model.vo.PageInfo;
@@ -378,5 +382,50 @@ public class TeacherController {
 
 		return mv;
 	}
+	
+	/**
+	 * @author leeyeji
+	 * 강사 신청
+	 */
+	/*
+	@RequestMapping("enrollTeacher.tea")
+	public String enrollTeacher() {
+		return "member/applyTeacherForm";
+	}
+	@RequestMapping("apply.tea")
+	public String applyTeacher(Teacher t, MultipartFile upfile, HttpSession session, Model model) {
+		
+		if(!upfile.getOriginalFilename().contentEquals("")) { // 첨부파일이 있을 경우!
+			
+			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/profile_image/");
+			String originName = upfile.getOriginalFilename();
+			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			int ranNum = (int)(Math.random() * 90000 + 10000);
+			String ext = originName.substring(originName.lastIndexOf(".")); // .의 인덱스를 알아내서 확장자 뽑아넣기
+						
+			String changeName = currentTime + ranNum + ext; // 하나로 합치기
+						
+			try {
+				upfile.transferTo(new File(savePath + changeName));// 어떤 경로에 어떤 이름으로 업로드 시키는지 transferTo 메소드로 제시
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			t.setProfileImage("resources/uploadFiles/profile_image/" + changeName); // "resources/uploadFiles/2021070217013612342.jpg"
+			
+		}
+		
+		int result = tService.applyTeacher(t);
+		System.out.print(t);
+		
+		if(result > 0) { // 성공 => 게시글 리스트 페이지
+			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+			return "redirect:enrollTeacher.tea";
+		}else { // 실패 => 에러페이지
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/errorPage";
+		}
+	}*/
+		
 
 }
