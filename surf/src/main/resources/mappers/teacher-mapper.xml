@@ -50,12 +50,12 @@
 		<id column="gender" property="dataUnit"/>
 		<id column="age_range" property="dataUnit"/>
 		<id column="count" property="count"/>
-		<id column="점수" property="dataUnit"/>
-		<id column="퀄리티" property="quality"/>
-		<id column="만족도" property="satisfaction"/>
-		<id column="난이도" property="difficulty"/>
-		<id column="가격" property="price"/>
-		<id column="평점" property="score"/>
+		<id column="data" property="dataUnit"/>
+		<id column="5점" property="score5"/>
+		<id column="4점" property="score4"/>
+		<id column="3점" property="score3"/>
+		<id column="2점" property="score2"/>
+		<id column="1점" property="score1"/>
 	</resultMap>
 	
 	<!--
@@ -543,97 +543,43 @@
 		@author WooJoo
 	-->
 	<select id="selectSurveyStats" resultMap="statsDataResult">
-		select a.lev||'점' as 점수 
-		     , b.count as 퀄리티
-		     , c.count as 만족도
-		     , d.count as 난이도
-		     , e.count as 가격
-		     , f.count as 평점
-		  from (select level as lev
-		          from dual
-		        <![CDATA[connect by level <=5]]>
-		          order by level desc) a,
-		          (select quality
-		                 , count(*) as count
-		              from (select quality
-		                         , class_no
-		                         , teacher_no
-		                      from survey
-		                     <choose>
-								<when test="cno == 'all'">
-		                     		where teacher_no = #{userNo})
-		                     	</when>
-		                     	<otherwise>
-		                     		where class_no = #{cno})
-		                     	</otherwise>
-		                     </choose>
-		             group by quality) b,
-		             (select satisfaction
-		                 , count(*) as count
-		              from (select satisfaction
-		                         , class_no
-		                         , teacher_no
-		                      from survey
-		                     <choose>
-								<when test="cno == 'all'">
-		                     		where teacher_no = #{userNo})
-		                     	</when>
-		                     	<otherwise>
-		                     		where class_no = #{cno})
-		                     	</otherwise>
-		                     </choose>)
-		             group by satisfaction) c,
-		             (select difficulty
-		                 , count(*) as count
-		              from (select difficulty
-		                         , class_no
-		                         , teacher_no
-		                      from survey
-		                     <choose>
-								<when test="cno == 'all'">
-		                     		where teacher_no = #{userNo})
-		                     	</when>
-		                     	<otherwise>
-		                     		where class_no = #{cno})
-		                     	</otherwise>
-		                     </choose>)
-		             group by difficulty) d,
-		             (select price
-		                 , count(*) as count
-		              from (select price
-		                         , class_no
-		                         , teacher_no
-		                      from survey
-		                     <choose>
-								<when test="cno == 'all'">
-		                     		where teacher_no = #{userNo})
-		                     	</when>
-		                     	<otherwise>
-		                     		where class_no = #{cno})
-		                     	</otherwise>
-		                     </choose>)
-		             group by price) e,
-		             (select score
-		                 , count(*) as count
-		              from (select score
-		                         , class_no
-		                         , teacher_no
-		                      from survey
-		                     <choose>
-								<when test="cno == 'all'">
-		                     		where teacher_no = #{userNo})
-		                     	</when>
-		                     	<otherwise>
-		                     		where class_no = #{cno})
-		                     	</otherwise>
-		                     </choose>)
-		             group by score) f
-		         where a.lev = b.quality(+)
-		           and a.lev = c.satisfaction(+)
-		           and a.lev = d.difficulty(+)
-		           and a.lev = e.price(+)
-		           and a.lev = f.score(+)
-		         order by a.lev desc
+		select *
+		  from (
+				select data
+					 , a 
+				  from (
+						select 
+						       quality as 퀄리티
+						     , satisfaction as 만족도
+						     , difficulty as 난이도
+						     , price as 가격
+						     , score as 평점
+						  from survey
+						 <choose>
+							<when test="cno == 'all'">
+						 		where teacher_no = #{userNo})
+						 	</when>
+						 	<otherwise>
+						 		where class_no = #{cno})
+						 	</otherwise>
+						 </choose>
+				unpivot (a 
+						 for data 
+						 in (
+				                              퀄리티
+				             , 만족도
+				             , 난이도
+				             , 가격
+				             , 평점)))
+		pivot (count(a) 
+			   for a 
+			   in (
+			   		'5' as "5점"
+			   	  , '4' as "4점"
+			   	  , '3' as "3점"
+			   	  , '2' as "2점"
+			   	  , '1' as "1점"))
+		order by data
 	</select>
 	
 	<!-- 

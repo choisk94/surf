@@ -1,6 +1,7 @@
 package com.kh.surf.lecture.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,6 +34,22 @@ public class LectureDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectFundingList", null, rowBounds);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 상세 조회
+	 */
+	public Lecture selectFundingDetail(SqlSessionTemplate sqlSession, int classNo) {
+		return sqlSession.selectOne("lectureMapper.selectFundingDetail", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 클래스 응원하기
+	 */
+	public int ajaxSupportLecture(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.insert("lectureMapper.ajaxSupportLecture", map);
 	}
 	
 	/**
@@ -111,6 +128,30 @@ public class LectureDao {
 	 */
 	public ArrayList<ClassInquiry> selectLectureInquiry(SqlSessionTemplate sqlSession, int classNo){
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureInquiry", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 문의 등록하기
+	 */
+	public int ajaxEnrollInquiry(SqlSessionTemplate sqlSession, ClassInquiry i) {
+		return sqlSession.insert("lectureMapper.ajaxEnrollInquiry", i);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 찜하기 중복 체크
+	 */
+	public int scrapCheck(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("lectureMapper.scrapCheck", map);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 찜하기 기능
+	 */
+	public int ajaxScrapLecture(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("lectureMapper.ajaxScrapLecture", map);
 	}
 	
 }

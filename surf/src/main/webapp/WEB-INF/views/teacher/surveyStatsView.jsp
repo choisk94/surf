@@ -159,7 +159,7 @@
 						data:{"cno":$("#select-class").val()},
 						success:function(list){
 							$.each(list, function(i, obj){
-								var a = [obj.dataUnit, obj.count];//어떻게 받아올건지 정해져야
+								var a = [obj.dataUnit, obj.score5, obj.score4, obj.score3, obj.score2, obj.score1];
 								arr.push(a);
 							})
 							drawStacked(arr);
@@ -171,14 +171,6 @@
 
                 function drawStacked(dataArr) {
                     var data = google.visualization.arrayToDataTable(dataArr);
-                    /*
-                        ['점수', '5점', '4점', '3점', '2점', '1점'],
-                        ['퀄리티', 15, 15, 10, 5, 5, ''],
-                        ['만족도', 25, 15, 5, 5, 0, ''],
-                        ['난이도', 25, 15, 10, 0, 0, ''],
-                        ['가격', 20, 15, 5, 5, 5, ''],
-                        ['평점', 20, 20, 10, 0, 0, '']
-					*/
                     
                     var options = {
                         isStacked: 'percent',

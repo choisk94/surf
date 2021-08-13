@@ -22,10 +22,17 @@
         <div>
           <h5>고객센터 관리 > 공지사항 목록</h5>
           <div align="right">
-            <input type="text" placeholder="키워드를 입력하세요">
-            <button type="button" class="btn btn-default" id="search_btn">검색</button>
+            <form action="searchNotice.ad">
+              <input type="hidden" name="currentPage" value="1">
+              <select name="condition">
+                <option value="writer">작성자</option>
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+              </select>
+              <input type="text" placeholder="키워드를 입력하세요" name="keyword">
+              <button type="button" class="btn btn-default" id="search_btn">검색</button>
+            </form>
           </div>
-        </div>
         <hr>
         <table class="table" id="adNoticeList">
           <thead>
@@ -87,6 +94,6 @@
           	</c:choose>
         </ul>
       </div>
-	 
+	 </div>
 </body>
 </html>

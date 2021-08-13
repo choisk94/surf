@@ -19,9 +19,12 @@
   		<result column="user_no" property="userNo"/>
 		<result column="count" property="fundingCount"/>
 		<result column="nickname" property="teacherName"/>
+		<result column="subcat_name" property="subCat"/>
+		<result column="maincat_name" property="mainCat"/>
 		<result column="scrap" property="scrapCount"/>
 		<result column="students" property="students"/>  	
 		<result column="star" property="star"/>
+		<result column="surveyCount" property="surveyCount"/>
 	</resultMap>
   	
   	<resultMap id="studingResult" type="Studing">
@@ -87,6 +90,7 @@
 		<result column="class_no" property="classNo"/>
 		<result column="user_no" property="userNo"/>
 		<result column="teacher_no" property="teacherNo"/>
+		<result column="tea_no" property="teaNo"/>
 		<result column="class_title" property="classTitle"/>
 		<result column="profile_image" property="teacherImage"/>
 	</resultMap>
@@ -105,6 +109,39 @@
   		 order
   		    by create_date asc
   	</select>
+  	
+  	<!-- 
+		@author yeji lee
+		찜하기 중복 체크
+	 -->
+	<select id="scrapCheck" parameterType="map" resultType="_int">
+		select
+			   count(*)
+		  from scrap_support
+		 where 
+		 	   user_no = #{userNo}
+		   and 
+		       class_no = #{classNo}
+		   and 
+		       type = 'S'
+	</select>
+	
+	<!-- 
+		@author: yeji lee
+		찜하기 
+	 -->
+	<insert id="ajaxScrapLecture" parameterType="map">
+		insert
+		  into 
+		  	   scrap_support
+		values 
+			   (
+				 ${userNo}
+			   , ${classNo}
+			   , 'S'
+			   , SYSDATE
+			   )
+	</insert>
   	
   	<!-- 
 		@author leeyeji
@@ -135,6 +172,44 @@
          order 
             by create_date desc
 	</select>
+	
+	<!-- 
+		@author leeyeji
+		펀딩 클래스 상세 조회용
+	 -->
+	 <select id="selectFundingDetail" resultMap="lectureResult">
+	 	select
+               class_no
+             , class_title
+             , intro_file
+             , intro_content
+             , count
+             , subcat_name
+             , maincat_name
+          from lecture 
+          join class_funding using(class_no)
+          join subcat using(subcat_no)
+          join maincat using(maincat_no)
+         where status = 'F'
+           and class_no = #{classNo}
+	 </select> 
+	  
+	 <!-- 
+	 	@author leeyeji
+	 	펀딩 클래스 응원하기
+	  -->
+	 <insert id="ajaxSupportLecture" parameterType="map">
+	 	insert
+		  into 
+		  	   scrap_support
+		values 
+			   (
+				 ${userNo}
+			   , ${classNo}
+			   , 'C'
+			   , SYSDATE
+			   )
+	 </insert>
 	
 	<!-- 
 		@author : yeji Lee
@@ -291,7 +366,54 @@
 		@author yeji lee
 		클래스 문의 조회
 	 -->
+	<select id="selectLectureInquiry" resultMap="inquiryResult">
+		select 
+               i.inquiry_no
+             , i.inq_content
+             , TO_CHAR(i.inq_date, 'YYYY-MM-DD HH24:MI') inq_date
+             , i.ans_content
+             , TO_CHAR(i.ans_date, 'YYYY-MM-DD HH24:MI') ans_date
+             , m.nickname user_no
+             , t.nickname teacher_no
+             , t.teacher_no tea_no
+             , t.profile_image
+             , i.class_no
+          from class_inquiry i
+          left outer join (
+                            select 
+                                   teacher_no
+                                 , nickname
+                                 , profile_image
+                              from teacher
+                          ) t 
+                         on i.teacher_no = t.teacher_no
+          join member m on(m.user_no = i.user_no)
+         where i.class_no = #{classNo}
+	</select>
 	
+	<!-- 
+		@author yeji lee
+		클래스 문의 등록
+	 -->
+	<insert id="ajaxEnrollInquiry">
+		insert 
+		  into class_inquiry
+		  (
+		    inquiry_no
+		  , inq_content
+		  , class_no
+          , user_no
+          , teacher_no
+		  )
+		  values
+		  (
+		    SEQ_INO.nextval
+		  , #{inqContent}
+		  , #{classNo}
+		  , #{userNo}
+          , #{teacherNo}
+		  )
+	</insert>
 	
 	<!-- 
 		@author yeji lee

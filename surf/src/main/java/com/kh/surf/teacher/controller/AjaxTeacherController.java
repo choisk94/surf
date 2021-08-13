@@ -214,7 +214,6 @@ public class AjaxTeacherController {
 		map.put("cno", cno);
 		
 		ArrayList<StatsData> list = tService.selectSurveyStats(map);
-		System.out.println(list);
 		
 		return new Gson().toJson(list);
 	}

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +50,14 @@
     .class-thumb{position: relative;}
     .scrap-icon img{position:absolute;top: 20px;}
     #pagingArea{width:fit-content;margin:auto;}
-
+	.fa-heart{color: red; margin-right: 2px;}
+	.fa-star{color: rgb(231, 217, 17); margin-right: 2px;}
+	p>.title{
+		width:200px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>
 </head>
 <body>
@@ -81,96 +89,56 @@
                     <!-- 클래스 -->
                     <div class="class-list">
 
-                        
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                            </p>
-                        </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                            </p>
-                        </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                            </p>
-                        </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <span style="font-size:14px">그림쟁이</span> <br>
-                            <span style="font-size:14px"><b>월 30,000원</b></span> <br>
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/star.png" alt="">(5.0) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </span> 
-                            <span style="font-size:14px">
-                                <img width="25px" src="../resource/img/heart.png" alt=""> 1,120
-                            </span> 
-                            </p>
-                        </div>
-                        
-                        
-                        
+                        <c:forEach var="s" items="${ sList }">
+	                        <div class="thumbnail" align="center" onclick="location.href='/surf/detail.lec?cno=${s.classNo}'">
+	                            <input type="hidden" value="">
+	                            <div id="class-thumb">
+	                                <img src="${ s.thumbnail }" width="240" height="150" id="">
+	                            </div>
+	        
+	                            <p style="margin-top: 5px;">
+	                                <b class="title">${ s.classTitle }</b><br>
+	                                <span style="font-size:14px">${ s.teacherName }</span> <br>
+	                            <span style="font-size:14px"><b>
+	                            	<fmt:formatNumber value="${ s.price }"/>원
+	                            </b></span> <br>
+	                            <span style="font-size:14px">
+	                                <i class="fas fa-star"></i> (${ s.star }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                            </span> 
+	                            <span style="font-size:14px">
+	                                <i class="fas fa-heart"></i> ${ s.scrapCount }
+	                            </span> 
+	                            </p>
+                        	</div>
+                        </c:forEach>
                         
 
                         <!-- 페이징 -->
                         <br><br><br>
                         <div id="pagingArea">
                             <ul class="pagination">
-                                <li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                            </ul>
+		                	<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+		                    		<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+			                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+			                    </c:when>
+			                    <c:otherwise>
+			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
+			                    </c:otherwise>
+			                </c:choose>
+		                </ul>
                         </div>
                         <br><br>
 

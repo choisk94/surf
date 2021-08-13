@@ -82,7 +82,7 @@
 		update
 		       admin_board
 		   set status = 'N'
-		 where board_no = #{boardNo}       
+		 where board_no = #{boardNo}
 	</update>
 	
 	<update id="updateAdminNotice">
@@ -92,6 +92,54 @@
 		     , board_content = #{boardContent}
 		 where board_no = #{boardNo}
 	</update>
+	
+	<select id="selectSearchNoticeListCount" resultType="_int">
+		select
+		       count(*)
+		  from admin_board a
+          join member m on m.user_no = a.user_no
+		 where board_type = '공지사항'
+		   and a.status = 'Y'
+		   <choose>
+			   <when test="condition == 'writer'">
+			   		and nickname
+			   </when>
+			   <when test="condition == 'title'">
+			   		and board_title
+			   </when>
+			   <otherwise>
+			   		and board_content
+			   </otherwise>
+		   </choose>
+					like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectSearchNoticeList" resultMap="adminBoardResult">
+		select
+		       board_no
+		     , board_title
+		     , nickname
+		     , count
+		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		  from admin_board a
+          join member m on m.user_no = a.user_no
+         where board_type = '공지사항'
+		   and a.status = 'Y'
+		 <choose>
+		   		<when test="condition == 'writer">
+		   			and nickname
+		   		</when>
+		   		<when test="condition == 'title'">
+		   			and board_title 
+		   		</when>
+		   		<otherwise>
+		   			and board_content
+		   		</otherwise>
+		   </choose>
+		   			like '%' || #{keyword} || '%'
+		  order
+		     by board_no desc
+	</select>
 	
 	<select id="selectFaqCount" resultType="_int">
 		select
@@ -104,14 +152,43 @@
 	<select id="selectFaqList" resultMap="adminBoardResult">
 		select
 		       board_no
-             , faq_category  
+             , faq_category
 		     , board_title
              , board_content
-		  from admin_board 
+		  from admin_board
 		 where board_type = 'FAQ'
 		   and status = 'Y'
 		 order
 		    by board_no desc
 	</select>
+	
+	<insert id="insertAdminFaq">
+		insert
+		  into admin_board
+		  (
+		    board_no
+		  , board_title
+		  , user_no
+		  , board_content
+		  , board_type
+		  , faq_category
+		  )
+		  values
+		  (
+		    seq_nno.nextval
+		  , #{boardTitle}
+		  , #{userNo}
+		  , #{boardContent}
+		  , 'FAQ'
+		  , #{faqCategory}
+		  )
+	</insert>
+	
+	<update id="deleteAdminFaq">
+		update
+		       admin_board
+		   set status = 'N'
+		 where board_no = #{boardNo}
+	</update>
 
 </mapper>

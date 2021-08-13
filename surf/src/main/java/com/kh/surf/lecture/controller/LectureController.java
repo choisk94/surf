@@ -1,17 +1,20 @@
 package com.kh.surf.lecture.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.service.LectureService;
 import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
@@ -40,6 +43,31 @@ public class LectureController {
 		  .setViewName("lecture/fundingLectureList");
 		return mv;
 		
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 상세 조회
+	 */
+	@ResponseBody
+	@RequestMapping("fundingDetail.lec")
+	public Lecture selectFundingDetail(int cno) {
+		Lecture f = lService.selectFundingDetail(cno);
+		return f;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 클래스 응원하기
+	 */
+	@ResponseBody
+	@RequestMapping("support.lec")
+	public int ajaxSupportLecture(int cno, int userNo) {
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("classNo", cno);
+		map.put("userNo", userNo);
+		int result = lService.ajaxSupportLecture(map);
+		return result;
 	}
 	
 	/**
@@ -103,6 +131,29 @@ public class LectureController {
 	
 	/**
 	 * @author leeyeji
+	 * 클래스 수강문의 조회 
+	 */
+	@RequestMapping("inquiry.lec")
+	public ModelAndView selectLectureInquiry(ModelAndView mv, int cno) {
+		ArrayList<ClassInquiry> iList = lService.selectLectureInquiry(cno);
+		mv.addObject("iList", iList).setViewName("lecture/detailInquiry");
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 수강 문의 등록
+	 */
+	@ResponseBody
+	@RequestMapping("enrollInquiry.lec")
+	public String ajaxEnrollInquiry(ClassInquiry i) {
+		System.out.print(i);
+		int result = lService.ajaxEnrollInquiry(i);
+		return result>0?"success":"fail";
+	}
+	
+	/**
+	 * @author leeyeji
 	 * 유저 찜한 클래스 목록
 	 */
 	@RequestMapping("scrapList.lec")
@@ -117,6 +168,35 @@ public class LectureController {
 		  .setViewName("member/scrapLectureList");
 		
 		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 찜하기 중복 확인 
+	 */
+	@ResponseBody
+	@RequestMapping("scrapCheck.lec")
+	public int scrapCheck(int classNo, int userNo) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("classNo", classNo);
+		map.put("classNo", classNo);
+		int result = lService.scrapCheck(map);
+		System.out.print(result);
+		return result;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 클래스 찜하기 
+	 */
+	@ResponseBody
+	@RequestMapping(value="scrap.lec")
+	public int ajaxScrapLecture(int userNo, int classNo) {
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("classNo", classNo);
+		map.put("userNo", userNo);		
+		int result = lService.ajaxScrapLecture(map);
+		return result;
 	}
 	
 }

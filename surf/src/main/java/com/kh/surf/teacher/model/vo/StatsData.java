@@ -12,10 +12,10 @@ public class StatsData {
 
 	public String dataUnit;
 	public int count;
-	public int quality;
-	public int satisfaction;
-	public int difficulty;
-	public int price;
-	public int score;
+	public int score5;
+	public int score4;
+	public int score3;
+	public int score2;
+	public int score1;
 	
 }
