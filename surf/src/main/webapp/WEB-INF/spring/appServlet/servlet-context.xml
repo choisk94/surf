@@ -30,7 +30,8 @@
 			<mapping path="/delete.me"/>
 			<mapping path="/updateInfo.do"/>
 			<mapping path="/updatePwd.do"/>
-			
+			<mapping path="/report.sb"/>
+			<mapping path="/enrollForm.sb"/>
 			<!-- header에서 찜하기 | 내클래스 가는 url 다 추가해야됨!! 
 			<mapping path="/enrollForm.bo"/>
 			 -->
