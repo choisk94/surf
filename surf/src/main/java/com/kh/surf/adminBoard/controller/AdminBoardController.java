@@ -304,7 +304,9 @@ public class AdminBoardController {
 		  .setViewName("adminBoard/adTeacherList");
 		
 		return mv;
-	}	
+	}
+	
+
 	
 
 

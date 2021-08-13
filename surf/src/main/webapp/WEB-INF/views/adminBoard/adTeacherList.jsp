@@ -52,7 +52,17 @@
 	              <td>${ t.mainCatName }</td>
 	              <td>${ t.subCatName }</td>
 	              <td>${ t.phone }</td>
-	              <td>${ t.status }</td>
+	            <c:choose> 
+	           	  <c:when test="${ t.status == 'Y' }">
+	              	<td style="color:green">승인</td>
+	              </c:when>
+	           	  <c:when test="${ t.status == 'N' }">
+	              	<td style="color:red">반려</td>
+	              </c:when>
+	              <c:otherwise>
+	              	<td>대기</td>
+	              </c:otherwise>
+	            </c:choose>  
 	            </tr>
             </c:forEach>
           </tbody>
