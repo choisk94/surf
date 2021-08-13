@@ -115,7 +115,7 @@ input[name=whyReport] {
 		</div>
 
 		<!--뒤로가기 버튼-->
-		<button id="goBackBtn">
+		<button id="goBackBtn" onclick="location.href='list.sb';">
 			<i class="fa fa-mail-reply"></i>
 		</button>
 
@@ -124,119 +124,144 @@ input[name=whyReport] {
 			<div id="studyDetailTop">
 
 				<div
-					style="font-size: 17px; font-weight: 600; float: left; margin-right: 20px;">스프링
-					스터디 모집합니다!! 같이 공부하자!</div>
+					style="font-size: 17px; font-weight: 600; float: left; margin-right: 20px;">${ s.studyTitle }</div>
 				<div style="width: 100px; float: left;">
-					<!--
-                    <img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />
-                    -->
-
-					<img style="width: 45px; margin-right: 10px;"
-						src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />
-
-					<img class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 13px;">
+					
+					<c:choose>
+						<c:when test="${ s.recruit eq 'Y' }">
+							<img style="width: 45px; margin-right: 10px;" src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />
+						</c:when>
+						<c:otherwise>
+		                    <img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />
+						</c:otherwise>
+					</c:choose>
+					
+					<!-- 신고하기 버튼 -->
+					<input class="reported" type="hidden" value="${ s.userNo }">
+					<input class="sno" type="hidden" value="${ s.studyNo }">
+					<img class="report" data-toggle="modal" data-target="#bReportModal"	data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg" style="width: 13px;">
 				</div>
 
 			</div>
 			<div id="writerArea" style="width: 100%; clear: both;">
-				<label>작성자 : orange23</label> <label>작성일 : 2021. 06. 08</label> <label>조회수
-					: 10000</label>
+				<label>작성자 : ${ s.writer }</label> <label>작성일 : ${ s.createDate }</label> <label>조회수 : ${ s.count }</label>
 			</div>
 
-			<div
-				style="height: 700px; overflow: auto; clear: both; font-size: 12px;">
-				<br> <b>▶ 주제</b><br> : Spring Framework <br> <br>
-				<b>▶ 목표</b><br> : 가이드 분석하여 사용법 익히기 <br> <br> <b>▶
-					일정(횟수)</b><br> : 주 2회 (수, 토) <br> <br> <b>▶
-					커리큘럼(간략하게)</b>
-				<ul>
-					<li>개발환경 구축</li>
-					<li>bean등록법</li>
-					<li>...</li>
-				</ul>
-				<br> <br> <b>▶ 모집인원</b><br> : 3~5 명 <br> <br>
-				<b>▶ 소개 / 개설 이유</b><br> : 혼자 독학하려니 너무 힘들어요ㅠㅠ 같이 질문도 하고 으쌰으쌰하실
-				분들 모집합니다! <br> <br> <b>▶ 주의사항</b><br> : 중간에 그만두실 분들은
-				죄송합니다. <br> <br> <b>▶ 지원방법</b><br> : 오픈카톡방 들어오와주세요!
-				링크↓
-
+			<div style="height: 700px; overflow: auto; clear: both; font-size: 12px;">
+				${ s.studyContent }
 			</div>
+			
+			<!-- 글 수정하기 / 삭제하기 버튼 -->
+			<c:if test="${ loginUser.userNo eq s.userNo }">
+				<div align="right">
+					<form id="udForm" action="" method="POST">
+						<input type="hidden" name="studyNo" value="${ s.studyNo }">
+						<a id="updateBtn" onclick="updateDelete(1);" class="btn btn-success btn-sm"> 수정하기 <i class="fas fa-pencil-alt"></i></a>
+						<a id="deleteBtn" onclick="updateDelete(2);" class="btn btn-secondary btn-sm" style="margin-left:10px; background-color:rgb(0, 96, 155);"> 삭제하기 <i class="far fa-trash-alt"></i></a>
+					</form>
+				</div>
+				
+				<script>
+					function updateDelete(num){
+						if(num == 1){
+							$("#udForm").attr("action", "updateForm.sb").submit();
+						} else {
+							if(confirm("스터디 글을 삭제하시겠습니까?")){
+								$("#udForm").attr("action", "delete.sb").submit();
+							}
+						}
+					}
+				</script>
+			</c:if>
 
 
 			<!--댓글시작-->
 			<hr style="height: 1px; background-color: lightgray;">
-			<h5>
-				<b>댓글(5)</b>
-			</h5>
-			<form id="newReply">
-				<textarea class="form-control" name="replyContent" id="replyEnroll"
-					maxlength="80" rows="3"></textarea>
-				<button class="btn btn-sm btn-warning"
-					style="height: 45px; margin-left: 20px; margin-top: 10px; font-size: 12px;"
-					type="submit">등록하기</button>
-			</form>
+			<h5><b id="rCount"></b></h5>
+			
+			<!-- 새로운 댓글 작성 -->
+			<textarea class="form-control" name="replyContent" id="replyEnroll"	maxlength="80" rows="3"></textarea>
+			<button id="replyBtn" class="btn btn-sm btn-warning" style="height: 45px; margin-left: 20px; margin-top: 10px; 
+				font-size: 12px;" type="button" onclick="insertReply();">등록하기</button>
 
 			<!--댓글 목록 -->
-			<div style="clear: both; margin-top: 30px;" align="center">
-
-				<div style="width: 100%; margin-bottom: 30px;" align="left">
-					<i class="fas fa-fish replyMark"></i> <span class="replyWriter">user0101</span>
-					<span class="replyTime"> 2021. 07. 05 11:03:30 <img
-						class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 11px; margin-left: 10px;">
-					</span> <br>
-					<div class="replyContent">친구랑 같이 신청하고 싶은데 인원수 초과할 거같기도
-						한데..흠....</div>
-				</div>
-				<div style="width: 100%; margin-bottom: 30px;" align="left">
-					<i class="fas fa-fish replyMark"></i> <span class="replyWriter">user0101</span>
-					<span class="replyTime"> 2021. 07. 05 11:03:30 <img
-						class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 11px; margin-left: 10px;">
-					</span> <br>
-					<div class="replyContent">친구랑 같이 신청하고 싶은데 인원수 초과할 거같기도
-						한데..흠....</div>
-				</div>
-				<div style="width: 100%; margin-bottom: 30px;" align="left">
-					<i class="fas fa-fish replyMark"></i> <span class="replyWriter">user0101</span>
-					<span class="replyTime"> 2021. 07. 05 11:03:30 <img
-						class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 11px; margin-left: 10px;">
-					</span> <br>
-					<div class="replyContent">친구랑 같이 신청하고 싶은데 인원수 초과할 거같기도
-						한데..흠....</div>
-				</div>
-				<div style="width: 100%; margin-bottom: 30px;" align="left">
-					<i class="fas fa-fish replyMark"></i> <span class="replyWriter">user0101</span>
-					<span class="replyTime"> 2021. 07. 05 11:03:30 <img
-						class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 11px; margin-left: 10px;">
-					</span> <br>
-					<div class="replyContent">친구랑 같이 신청하고 싶은데 인원수 초과할 거같기도
-						한데..흠....</div>
-				</div>
-				<div style="width: 100%; margin-bottom: 30px;" align="left">
-					<i class="fas fa-fish replyMark"></i> <span class="replyWriter">user0101</span>
-					<span class="replyTime"> 2021. 07. 05 11:03:30 <img
-						class="report" data-toggle="modal" data-target="#reportModal"
-						data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg"
-						style="width: 11px; margin-left: 10px;">
-					</span> <br>
-					<div class="replyContent">친구랑 같이 신청하고 싶은데 인원수 초과할 거같기도
-						한데..흠....</div>
-				</div>
+			<div id="replyArea" style="clear: both; margin-top: 30px;" align="center">
 			</div>
-
-			<br> <br> <br> <br> <br>
-
+			
+			<c:if test="${empty loginUser }">
+				<script>
+					$(function(){
+						$("#replyEnroll").attr("readonly", true).val("로그인 후 이용바랍니다.");
+						$("#replyBtn").attr("disabled", true);
+					})
+				</script>
+			</c:if>
+			<br><br><br><br><br>
 		</div>
 	</div>
+	
+	<script>
+		$(function(){
+			selectReplyList();
+		})
+			
+		// 댓글 작성
+		function insertReply(){
+			$.ajax({
+				url:"rinsert.sb",
+				data:{
+					studyNo:${s.studyNo},
+					replyWriter:'${loginUser.userNo}',
+					replyContent:$("#replyEnroll").val()
+				}, success:function(result){
+					if(result == "success"){
+						$("#replyEnroll").val("");
+						selectReplyList();
+					}
+				}, error:function(){
+					console.log("댓글작성 ajax통신 실패");
+				}
+			})
+		}
+		
+		// 댓글 조회
+		function selectReplyList(){
+			$.ajax({
+				url:"rlist.sb",
+				data:{sno:${ s.studyNo }},
+				success:function(rlist){
+					
+					$("#rCount").html("댓글(" + rlist.length + ")");
+					
+					var result = "";
+					if(rlist == ""){
+						result = '<div style="width: 100%; margin-bottom: 30px;" align="center"> 등록된 댓글이 없습니다. </div>'						
+					} else {
+						for( var i in rlist){
+							result += '<div style="width: 100%; margin-bottom: 30px;" align="left">'
+										+ '<i class="fas fa-fish replyMark"></i>' 
+										+ '<span class="replyWriter">' + rlist[i].replyWriter + '</span>'
+								        + '<span class="replyTime">'
+									        + rlist[i].createDate 
+										  	+ '<input class="sno" type="hidden" value="' + rlist[i].replyNo + '">'
+										  	+ '<input class="reported" type="hidden" value="' + rlist[i].userNo + '">'
+										  	+ '<img class="report" data-toggle="modal" data-target="#bReportModal" data-toggle="tooltip" title="신고하기" src="resources/images/report.jpg" style="width: 11px; margin-left: 10px;">'
+									  	+ '</span>'
+									  	+ '<br>'
+										+ '<div class="replyContent">' + rlist[i].replyContent + '</div>'
+									+ '</div>'
+						}
+					}
+					$("#replyArea").html(result);
+					
+				}, error:function(){
+					console.log("댓글조회 ajax통신 실패");
+					
+				}
+			})
+		}
+	</script>
+
 
     <!-- 게시글 신고하기 Modal -->
     <div class="modal" id="bReportModal">
@@ -252,31 +277,31 @@ input[name=whyReport] {
                     <!-- Modal body -->
                     <div class="modal-body">
                         <br>
-                        <form action="">
-                            <input type="hidden" name="reportContent" value="board">
+                        <form action="report.sb" method="POST">
+                        	<input type="hidden" id="rtype" name="refType">
+                        	<input type="hidden" id="num" name="refNo">
+                        	<input type="hidden" name="reporter" value="${ loginUser.userNo }">
+                        	<input type="hidden" id="reported" name="reported">
+                        	<input type="hidden" id="rsno" name="" value="">
                             <div class="form-check">
-                                <label class="form-check-label" for="illegalAd" class="">
-                                    <input type="radio" class="form-check-input" id="illegalAd" name="whyReport"
-                                        value="부적절한 홍보 게시물">부적절한 홍보 게시물
+                                <label class="form-check-label" for="illegalAd">
+                                    <input type="radio" class="form-check-input" name="reportContent" value="부적절한 홍보 게시물">부적절한 홍보 게시물
                                 </label>
                             </div>
                             <br>
                             <div class="form-check">
                                 <label class="form-check-label" for="infringement">
-                                    <input type="radio" class="form-check-input" id="infringement" name="whyReport"
-                                        value="명예훼손/사생활 침해 등">명예훼손/사생활 침해 등
+                                    <input type="radio" class="form-check-input" name="reportContent" value="명예훼손/사생활 침해 등" required>명예훼손/사생활 침해 등
                                 </label>
                             </div>
                             <br>
                             <div class="form-check">
                                 <label class="form-check-label" for="abuse">
-                                    <input type="radio" class="form-check-input" id="abuse" name="whyReport"
-                                        value="욕설 및 비방 글">욕설 및 비방 글
+                                    <input type="radio" class="form-check-input" name="reportContent" value="욕설 및 비방 글">욕설 및 비방 글
                                 </label>
                             </div>
                             <br>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-sm btn-danger">신고하기</button>
+                            <div class="modal-footer"> <button type="submit" class="btn btn-sm btn-danger">신고하기</button>
                             </div>
                         </form>
                     </div>
@@ -285,64 +310,26 @@ input[name=whyReport] {
         </div>
     </div>
 
-    <!-- 댓글 신고하기 Modal -->
-    <div class="modal" id="rReportModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h6 class="modal-title"><b>신고 사유를 선택해주세요.</b></h6>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
+	<script>
+		$(function(){
+			$(".report").on("click", function(){
+				$("#rtype").val("게시글");
+				$("#num").val($(this).siblings(".sno").val());
+				$("#reported").val($(this).siblings(".reported").val());
+			})
+			
+			$("#replyArea").on("click", ".report", function(){
+				$("#rtype").val("댓글");
+				$("#num").val($(this).siblings(".sno").val());
+				$("#reported").val($(this).siblings(".reported").val());
+				$("#rsno").attr("name", "rsno").val(${ s.studyNo });
+			})
+			
+	        $(".report").tooltip();
 
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <br>
-                        <form action="">
-                            <input type="hidden" name="reportContent" value="reply">
-                            <div class="form-check">
-                                <label class="form-check-label" for="illegalAd" class="">
-                                    <input type="radio" class="form-check-input" id="illegalAd" name="whyReport"
-                                        value="부적절한 홍보 게시물">부적절한 홍보 게시물
-                                </label>
-                            </div>
-                            <br>
-                            <div class="form-check">
-                                <label class="form-check-label" for="infringement">
-                                    <input type="radio" class="form-check-input" id="infringement" name="whyReport"
-                                        value="명예훼손/사생활 침해 등">명예훼손/사생활 침해 등
-                                </label>
-                            </div>
-                            <br>
-                            <div class="form-check">
-                                <label class="form-check-label" for="abuse">
-                                    <input type="radio" class="form-check-input" id="abuse" name="whyReport"
-                                        value="욕설 및 비방 글">욕설 및 비방 글
-                                </label>
-                            </div>
-                            <br>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-sm btn-danger">신고하기</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-	
+		})
+	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
-
-
-<script>
-
-    $(function () {
-
-        $(".report").tooltip();
-    })
-
-</script>
 
 </html>

@@ -192,7 +192,7 @@
 					</c:choose>
 				</c:otherwise>
 			</c:choose>
-			<a href="">고객센터</a>
+			<a href="list.no">고객센터</a>
 		</div>
 
 
@@ -452,7 +452,7 @@
                 		}
                 			value += "<ul>"
                 				   		+ "<li>커뮤니티</li>"
-                				   		+ "<li><a>스터디게시판</a></li>"
+                				   		+ "<li><a href='list.sb'>스터디게시판</a></li>"
                 				   + "</ul>";
                 		
                 		$("#cat-detail").html(value);
