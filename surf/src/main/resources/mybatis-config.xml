@@ -10,6 +10,7 @@
 	<typeAliases>
 		<typeAlias type="com.kh.surf.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.surf.admin.model.vo.Ad" alias="Ad"/>
+		<typeAlias type="com.kh.surf.admin.model.vo.LectureList" alias="LectureList"/>
 		<typeAlias type="com.kh.surf.teacher.model.vo.Teacher" alias="Teacher"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.Survey" alias="Survey"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.MonthlyStats" alias="MonthlyStats"/>
@@ -23,6 +24,7 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.Chapter" alias="Chapter"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="ClassStuding"/>
+		<typeAlias type="com.kh.surf.admin.model.vo.PaymentList" alias="PaymentList"/>
 		<typeAlias type="com.kh.surf.teacher.model.vo.StatsData" alias="StatsData"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Study" alias="Study"/>

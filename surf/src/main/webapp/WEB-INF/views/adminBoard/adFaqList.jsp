@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +8,36 @@
 <title>FAQ 관리</title>
 </head>
 <style>
-	.innerOuter{width:80%; margin:auto;}
-	#faqList tbody :hover{background:lightgray; cursor:pointer;}
-  	#search_btn{background:deepskyblue;}
-  	#search_btn:hover{background:rgb(52, 152, 219);}
-  	.faq1{cursor:pointer;}
-  	.faq2{display:none;}
-  	.left, .right{width:50%; float:left;}
+.innerOuter {
+	width: 80%;
+	margin: auto;
+}
+
+#faqList tbody :hover {
+	background: lightgray;
+	cursor: pointer;
+}
+
+#search_btn {
+	background: deepskyblue;
+}
+
+#search_btn:hover {
+	background: rgb(52, 152, 219);
+}
+
+.faq1 {
+	cursor: pointer;
+}
+
+.faq2 {
+	display: none;
+}
+
+.left, .right {
+	width: 50%;
+	float: left;
+}
 </style>
 <body>
 	<jsp:include page="../admin/sidebar.jsp"/>
@@ -82,7 +105,6 @@
       <form id="postForm" action="" method="post">
          <input id="bno" type="hidden" name="bno" value="">
       </form>
-      
       
       <script>
          function postFormSubmit(num, bno) {
@@ -235,6 +257,5 @@
         </ul>
       </div>
       
-
 </body>
 </html>

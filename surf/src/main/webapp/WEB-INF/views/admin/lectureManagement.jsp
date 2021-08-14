@@ -6,6 +6,104 @@
 <head>
 <meta charset="UTF-8">
 <title>광고 베너 관리</title>
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript">
+		$(function(){
+			var chkObj = document.getElementsByName("RowCheck");
+			var rowCnt = chkObj.length;
+			
+			$("input[name='allCheck']").click(function(){
+				var chk_listArr = $("input[name='RowCheck']");
+				for (var i=0; i<chk_listArr.length; i++){
+					chk_listArr[i].checked = this.checked;
+				}
+			});
+			$("input[name='RowCheck']").click(function(){
+				if($("input[name='RowCheck']:checked").length == rowCnt){
+					$("input[name='allCheck']")[0].checked = true;
+				}
+				else{
+					$("input[name='allCheck']")[0].checked = false;
+				}
+			});
+		});
+		function motionValue(num){
+			
+			var url = "";
+				
+			if( num == 1){
+				url = "lecApproval.ad";    // Controller로 보내고자 하는 URL
+			}else if(num == 2){
+				url = "lecCompanion.ad";    // Controller로 보내고자 하는 URL
+			}else if(num == 3){
+				url = "lecDelete.ad";
+			}else {
+				url = "lecFunding.ad";
+			}
+			var valueArr = new Array();
+		    var list = $("input[name='RowCheck']");
+		    for(var i = 0; i < list.length; i++){
+		        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+		            valueArr.push(list[i].value);
+		        }
+		    }
+		    if (valueArr.length == 0){
+		    	alert("선택된 글이 없습니다.");
+		    }else{
+				var chk = confirm("실행하시겠습니까?");				 
+				$.ajax({
+				    url : url,                    // 전송 URL
+				    type : 'POST',                // GET or POST 방식
+				    traditional : true,
+				    data : {
+				    	valueArr : valueArr        // 보내고자 하는 data 변수 설정
+				    },
+	                success: function(jdata){
+	                    if(jdata = 1) {
+	                        alert("성공");
+	                        location.replace("lectureList.ad")
+	                    }
+	                    else{
+	                        alert("실패");
+	                    }
+	                }
+				});
+			}
+		}
+	</script>
+<style>
+#searchForm {
+	width: 80%;
+	margin-left: 600px;
+}
+
+#searchForm>* {
+	float: left;
+	margin: 5px;
+}
+
+.select {
+	width: 13%;
+}
+
+.text {
+	width: 25%;
+	border: 0;
+	outline: 0;
+	background-color: #F8F9FA;
+}
+
+.searchBtn {
+	Width: 5%;
+}
+</style>
+</head>
+<style>
+#pagingArea {
+	width: fit-content;
+	margin: auto;
+}
+</style>
 </head>
 <style>
 .clbtn{text-decoration: none; color: black; font-weight: bold;}
@@ -14,125 +112,120 @@
 <jsp:include page="sidebar.jsp"/>
       <br>
       <div class="ml-4" style="width:950px">
-        <br><br><br>
         <div>
           <h4>클래스 등록관리</h4>
             
-          <div align="right" style="float: right; width: 28%;"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA; " placeholder="입력하라냥">
-            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
-              🔍</button></div>
-            <div id="filter" style=" float: right; width: 72%;">
-              <select id="qna-filter" style="width:140px; height: 30px; font-size:14px;">
-                  <option value="">전체 조회</option>
-                  <option value="승인">승인</option>
-                  <option value="반려">반려</option>
-                  <option value="펀딩중">펀딩중</option>
-
-              </select>
-              </div>
-        </div>
-        <br>
+          <form id="searchForm" action="lecSearch.ad" method="Get">
+			<div class="select">
+				<select class="custom-select" name="condition">
+					<option value="title">제목</option>
+					<option value="id">아이디</option>
+				</select>
+			</div>
+			<div class="text">
+				<input type="text" class="form-control" name="keyword"
+					value="${ keyword }">
+			</div>
+			<button type="submit" class="searchBtn btn btn-secondary"
+				style="background-color: #3AB6F7; border: 0; outline: 0; border-radius: 10px;">🔍</button>
+		</form>
+		<br>
+		<script>
+            	$(function(){
+            		if("${condition}" != ""){
+            			$("option[value=${condition}]").attr("selected", true);
+            		}
+            	})
+          </script>
         <hr>
         <table class="table">
           <tr style="background-color: rgb(224, 224, 224)">
-            <td width="70">관리</td>
+            <td width="70"><input id="allCheck" type="checkbox"
+						name="allCheck" /></td>
             <td width="130">아이디</td>
-            <td width="130">강사 이름</td>
-            <td width="140">카테고리</td>
-            <td width="200">클래스명 및 소개</td>
-            <td width="140">등록일</td>
-            <td width="100">상태</td>
+            <td width="100">강사 이름</td>
+            <td width="110">카테고리</td>
+            <td width="290">클래스명 및 소개</td>
+            <td width="130">등록일</td>
+            <td width="80">상태</td>
           </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>sdfsdf@naver.com</td>
-            <td>강보람</td>
-            <td>글쓰기</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-20</td>
-            <td>승인</td>
-          </tr>
+          <c:forEach var="l" items="${list}">
+					<tr>
+						<th><input name="RowCheck" type="checkbox"
+							value="${ l.classNo }" /></th>
+						<td>${ l.email }</td>
+						<td>${ l.nickname }</td>
+						<td>${ l.maincatName }</td>
+						<td>${ l.introTitle }</td>
+						<td>${ l.createDate }</td>
+						<td>${ l.status }</td>
+					</tr>
+		  </c:forEach>
+          
 
         </table>
         <div style="text-align: right;">
-          <button type="button" class="btn btn-primary">승인</button>
-          <button type="button" class="btn btn-danger">삭제</button>
-          <button type="button" class="btn btn-warning" style="color: white;">펀딩</button>
+          <a type="button" class="btn btn-primary" onclick="motionValue(1);">승인</a>
+          <a type="button" class="btn btn-danger" onclick="motionValue(2);">반려</a>
+          <a type="button" class="btn btn-danger" onclick="motionValue(3);">삭제</a>
+          <a type="button" class="btn btn-warning" onclick="motionValue(4);" style="color: white;" >펀딩</a>
         </div>
         <!--여기서부터 페이지이동-->
-        <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="#">이전</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">다음</a></li>
-        </ul>
-      </div>
-      
-      </div>
+        <div id="pagingArea">
+			<ul class="pagination">
+				<c:choose>
+					<c:when test="${ pi.currentPage eq 1 }">
+						<li class="page-item disabled"><a class="page-link">Previous</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="lectureList.ad?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+
+
+
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:choose>
+						<c:when test="${ !empty condition }">
+							<li class="page-item"><a class="page-link"
+								href="?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="lectureList.ad?currentPage=${ p }">${ p }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+
+				<c:choose>
+					<c:when test="${ pi.currentPage eq pi.maxPage }">
+						<li class="page-item disabled"><a class="page-link">Next</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="lectureList.ad?currentPage=${ pi.currentPage+1 }">Next</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
       
       </div>
       

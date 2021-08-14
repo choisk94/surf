@@ -75,6 +75,7 @@ public class LectureController {
 	 * 클래스 목록 페이징
 	 * 클래스 목록 조회
 	 */
+	// 이친구를 고쳐야 한다
 	@RequestMapping("list.lec")
 	public ModelAndView selectLectureList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage
 										  , int sno) {

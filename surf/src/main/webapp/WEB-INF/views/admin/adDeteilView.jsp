@@ -18,7 +18,7 @@
         </div>
         <hr>
         <div align="center">
-                <table>
+                <table class="table table-hover" style="width: 500px;">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td>${ Ad.adTitle }</td>
@@ -28,10 +28,8 @@
                         <td>${ Ad.originName }</td>
                     </tr>
                     <tr>
-                        <th colspan="2"><label for="content">링크</label></th>
-                    </tr>
-                    <tr>
-                        <th colspan="2">${ Ad.adLink }</th>
+                        <th ><label for="content">링크</label></th>
+                        <td >${ Ad.adLink }</td>
                     </tr>
                   </table>
               <br>
