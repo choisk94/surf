@@ -15,8 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
@@ -212,6 +214,9 @@ public class AdminBoardController {
 	
 	/**********************************************************************************/
 	
+	/** @author 최서경
+	 * 사용자 공지사항 목록 조회
+	 */
 	@RequestMapping("list.no")
 	public ModelAndView selectNoticeList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 
@@ -227,7 +232,53 @@ public class AdminBoardController {
 		return mv;
 	}
 	
+	/** @author 최서경
+	 * 사용자 공지사항 상세 조회
+	 */
+	@RequestMapping("detail.no")
+	public ModelAndView detailNotice(ModelAndView mv, int nno) {
+		
+		int result = abService.increaseCountNotice(nno);
+		
+		if(result > 0) {
+			AdminBoard notice = abService.selectAdminNotice(nno);
+			mv.addObject("notice", notice).setViewName("adminBoard/noticeBoardDetail");
+		} else {
+			mv.addObject("errorMsg", "공지사항 조회 실패ㅠ").setViewName("common/errorPage");
+		}
+		return mv;
+	}
 	
+	/** @author 최서경
+	 * 사용자 공지사항 더보기
+	 */
+	@ResponseBody
+	@RequestMapping(value="more.no", produces="application/json; charset=utf-8")
+	public String moreNotice(int currentPage) {
+		
+		int listCount = abService.selectNoticeCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
+		
+		return new Gson().toJson(list);
+	}
+	
+	/** @author 최서경
+	 * 사용자 FAQ 목록 조회
+	 */
+	@RequestMapping("list.faq")
+	public ModelAndView selectFaqList(ModelAndView mv) {
+		int listCount = abService.selectFaqCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, 1, 100, 100);
+		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
+		
+		mv.addObject("list", list).setViewName("adminBoard/faqBoard");
+		
+		return mv;
+	}
+	
+	/*******************************************************************************************************/
 	
 	
 	
@@ -265,6 +316,7 @@ public class AdminBoardController {
 	 */
 	@RequestMapping("deleteFaq.ad")
 	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
+		System.out.println(bno);
 		int result = abService.deleteAdminFaq(bno);
 		if(result > 0) { // 성공 => 리스트페이지
 			
