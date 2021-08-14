@@ -86,6 +86,11 @@
 	.inputFile{
 		display:none;
 	}
+
+	.close-btn:hover{
+		cursor: pointer;
+		opacity: 0.8;
+	}
 </style>
 </head>
 <body>
@@ -128,11 +133,13 @@
 					<input type="hidden" name="classIntroList[0].classNo" value="${ l.classNo }">
 					<input type="hidden" name="classIntroList[0].introImage" value="${ introList[0].introImage }">
 					<div class="addImage">
-						<img id="introImg2" width="400px" height="200px" src="${ introList[0].introImage }">
+						<img id="introImg1" width="400px" height="200px" <c:if test="${introList[0].introImage ne null}">src="${ introList[0].introImage }"</c:if>">
 					</div>
-					<input type="file" id="inputFile1" class="inputFile" name="upfile" onchange="loadImg(this);">
+					<input id="inputFile1" type="file" class="inputFile" name="upfile" onchange="loadImg(this);">
 					<div>
-						<textarea name="classIntroList[0].introContent" id="introContent" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[0].introContent }</textarea>
+						<textarea name="classIntroList[0].introContent" id="introContent1" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[0].introContent }</textarea>
+					</div>
+					<div class="close-btn" style="width: 30px; height: 30px;">
 					</div>
 				</div>
 				<div class="introBox intro2">
@@ -140,36 +147,32 @@
 					<input type="hidden" name="classIntroList[1].classNo" value="${ l.classNo }">
 					<input type="hidden" name="classIntroList[1].introImage" value="${ introList[1].introImage }">
 					<div class="addImage">
-						<img id="introImg2" width="400px" height="200px" src="${ introList[1].introImage }">
+						<img id="introImg2" width="400px" height="200px" <c:if test="${introList[1].introImage ne null}">src="${ introList[1].introImage }"</c:if>>
 					</div>
-					<input type="file" id="inputFile2" class="inputFile" name="upfile" onchange="loadImg(this);">
+					<input id="inputFile2" type="file" class="inputFile" name="upfile" onchange="loadImg(this);">
 					<div>
-						<textarea name="classIntroList[1].introContent" id="introContent" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[1].introContent }</textarea>
+						<textarea name="classIntroList[1].introContent" id="introContent2" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[1].introContent }</textarea>
 					</div>
 					<div class="close-btn" style="width: 30px; height: 30px;">
 					</div>
 				</div>
 			
-			
 				<c:forEach var="intro" begin="3" end="${fn:length(introList)}">
-					<div class="introBox intro${ intro }">
+					<div class="introBox intro${intro}">
 						<input type="hidden" name="classIntroList[${intro-1}].introOrder" value="${intro}">
 						<input type="hidden" name="classIntroList[${intro-1}].classNo" value="${ l.classNo }">
 						<input type="hidden" name="classIntroList[${intro-1}].introImage" value="${ introList[intro-1].introImage }">
 						<div class="addImage">
-							<img id="introImg2" width="400px" height="200px" src="${introList[intro-1].introImage}">
+							<img id="introImg${intro}" width="400px" height="200px" src="${introList[intro-1].introImage}">
 						</div>
 						<input type="file" id="inputFile${intro}" class="inputFile" name="upfile" onchange="loadImg(this);">
 						<div>
-							<textarea name="classIntroList[${intro-1}].introContent" id="introContent" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[intro-1].introContent }</textarea>
+							<textarea name="classIntroList[${intro-1}].introContent" id="introContent${intro}" class="form-control" style="width: 300px; height: 200px; resize:none;" placeholder="클래스 설명 이미지에 맞는 클래스 설명을 적어주세요.">${ introList[intro-1].introContent }</textarea>
 						</div>
 						<div class="close-btn" style="width: 30px; height: 30px;">
 						</div>
 					</div>
 				</c:forEach>
-			
-				
-				
 			</div>
 			<div align="center">
 				<button type="button" id="clone-btn" class="btn btn-info">+ 클래스 설명 추가</button><br>
@@ -182,8 +185,8 @@
 <script>
 	$(function(){	// 클래스 설명 요소 추가, 제거버튼 hover, 제거
 		var introCount = 2;
-		
-		<c:if test="${ introList ne null }">
+
+		<c:if test="${introList[0] ne null}">
 			introCount = ${fn:length(introList)};
 		</c:if>
 
@@ -191,18 +194,20 @@
 		$('#clone-btn').click(function(){
 			if(introCount < 6){
 				var $clone = $('#clone-area>div:last-child').clone(true);
+
+				$clone.addClass('intro' + (introCount + 1)).removeClass('intro' + introCount);
 				
-				$clone.removeClass('intro'+ introCount).addClass('intro' + (introCount + 1));
 				$clone.children('input').eq(0).attr('name', 'classIntroList[' + (introCount) + '].introOrder').val(introCount + 1);
 				$clone.children('input').eq(1).attr('name', 'classIntroList[' + (introCount) + '].classNo').val(${l.classNo});
-				$clone.children('input').eq(2).attr('name', 'classIntroList[' + (introCount) + '].introImage').val("");
-				$clone.children('input').eq(3).attr('id', 'inputFile' + (introCount+1)).val("");
-				$clone.find('img').removeAttr('src');
-				$clone.find('textarea').attr('name', 'classIntroList[' + (introCount) + '].introContent').text("").val("");
+				$clone.children('input').eq(2).attr('name', 'classIntroList[' + (introCount) + '].introImage').removeAttr('value');
+				$clone.find('input[type=file]').attr('id', 'inputFile' + (introCount + 1)).removeAttr('src').val(null).removeAttr('value');
+				$clone.find('textarea').attr('name', 'classIntroList[' + (introCount) + '].introContent').text("").val("").attr('id', 'introContent' + (introCount + 1));
+				$clone.find('img').attr('src', null).removeAttr('src').attr('id', 'introImg' + (introCount + 1));
 				
 				$('#clone-area').append($clone);
-				// class 이름 바꾸기
+				
 				++introCount;
+
 				operationCheck();
 			}
 		});
@@ -210,10 +215,10 @@
 		// 박스 제거 버튼 노출
 		$('.introBox')
 		.on('mouseover', function(){
-			if(introCount > 2) {
-				$('#clone-area').children('div').last().children('.close-btn').show();
+			if(introCount> 2){
+				$(this).find('.close-btn').show();
 			}
-			$('.intro2').children('.close-btn').hide();
+			$('.intro').children('.close-btn').hide();
 		})
 		.on("mouseout", function(){
 			$(this).children('.close-btn').hide();
@@ -221,8 +226,21 @@
 		
 		// 박스제거 버튼 기능
 		$('.close-btn').on('click', function(){
+
 			$(this).parent('.introBox').remove();
 			--introCount;
+
+			for(var i=0; i<introCount; i++){
+
+				$('#clone-area').children('div').eq(i).addClass('intro' + (i+1));
+				$('#clone-area').children('div').eq(i).children('input[type=file]').attr('id', 'inputFile' + (i+1)).removeAttr('src');
+				$('#clone-area').children('div').eq(i).children('input').eq(0).attr('name', 'classIntroList[' + i + '].introOrder').val(i + 1);
+				$('#clone-area').children('div').eq(i).children('input').eq(1).attr('name', 'classIntroList[' + i + '].classNo');
+				$('#clone-area').children('div').eq(i).children('input').eq(2).attr('name', 'classIntroList[' + i + '].introImage');
+				$('#clone-area').children('div').eq(i).find('textarea').attr('name', 'classIntroList[' + i + '].introContent').attr('id', 'introContent' + (i + 1));
+				$('#clone-area').children('div').eq(i).find('img').attr('id', 'introImg' +(i+1));
+			}
+
 			operationCheck();
 		});
 		
@@ -264,11 +282,11 @@
 		for(var i=1; i<=num; i++){
 
 			// 클래스 설명 이미지 유무체크
-			if(isEmpty($('.intro' + i).find('img').attr('src'))){
+			if(isEmpty($('#introImg' + i).attr('src'))){
 				return false;
 			}
 			// 클래스 설명 길이체크
-			if($('.intro' + i).find('textarea').val().length < 6){
+			if($('#introContent' + i).val().length < 6){
 				return false;
 			}
 
@@ -279,6 +297,7 @@
 
 	// 작성중 조건검사
 	function operationCheck(){
+		$('#save-btn').attr('disabled', true);
 
 		$('#next-btn').attr("disabled", true);
 
@@ -292,22 +311,25 @@
 			return false;
 		}
 		
-		// 클래스 설명
+		// '클래스 설명' 이미지
 		for(var i=1; i<=$('#clone-area>div').last().children('input').eq(0).val(); i++){
-			
-			if(document.getElementById('inputFile' + i).files.length != 1 && isEmpty($('.intro' + i).find('img').attr('src'))){
+
+			if(document.getElementById('inputFile' + i).files.length != 1 && isEmpty($('#introImg' + i).attr('src'))){
 				return false;
 			}
 
 		}
 
+		// '클래스 설명' text
 		for(var i=1; i<=$('#clone-area>div').last().children('input').eq(0).val(); i++){	
-			if($('.intro' + i).find('textarea').val().length < 6){
+
+			if($('#introContent' + i).val().length < 6){
 				return false;
 			}
 		}	
 
 		checkSuccess();
+
 	}
 
 	// 이미지 추가 박스 클릭시 동작

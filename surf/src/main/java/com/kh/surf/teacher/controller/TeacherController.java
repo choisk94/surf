@@ -484,6 +484,7 @@ public class TeacherController {
 									   ModelAndView mv) {
 		
 		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		l.setPeriod(l.getPeriod() + "일");
 		
 		int result = tService.updateLecture0(l);
 		String alertMsg = "";
@@ -601,7 +602,7 @@ public class TeacherController {
 		
 		int result;
 		String alertMsg = "";
-		
+		System.out.println(intro.getClassIntroList());
 		// 1. Lecture 관련 부분 업데이트
 		result = tService.updateLecture2(l);
 		
@@ -665,6 +666,8 @@ public class TeacherController {
 
 	l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
 	
+	System.out.println(chapter.getChList());
+	System.out.println(classVideo.getCvList());
 	
 	String alertMsg = "";
 	
@@ -704,6 +707,22 @@ public class TeacherController {
 	.setViewName("redirect:/lectureInput.te");
 	session.setAttribute("alertMsg", alertMsg);
 	return mv;
+	}
+	
+	@RequestMapping("updateStatus.te")
+	public String updateStatus(HttpSession session,
+							   Lecture l) {
+		
+		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		int result = tService.updateStatus(l);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "오픈 신청 성공");
+		}else {
+			session.setAttribute("alertMsg", "오픈 신청 실패");
+		}
+		
+		return "redirect:/lectureList.te?currentPage=1";
 	}
 	
 	/**

@@ -315,5 +315,21 @@ public class TeacherDao {
 		return sqlSession.update("lectureMapper.updateLecture4", l);
 	}
 
+	/**
+	 * 강의 등록|수정 페이지 완성도
+	 * @author HeeRak
+	 */
+	public int ajaxLoadDegree(int classNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.ajaxLoadDegree", classNo);
+	}
+
+	/**
+	 * 강의 오픈 신청하기
+	 * @author HeeRak
+	 */
+	public int updateStatus(Lecture l, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.updateStatus", l);
+	}
+
 	
 }

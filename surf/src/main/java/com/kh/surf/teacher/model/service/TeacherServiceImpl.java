@@ -388,5 +388,24 @@ public class TeacherServiceImpl implements TeacherService{
 		return tDao.updateVideoList(cvList, sqlSession);
 	}
 
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '완성도'
+	 */
+	@Override
+	public int ajaxLoadDegree(int classNo) {
+		return tDao.ajaxLoadDegree(classNo, sqlSession);
+	}
+
+
+	/**
+	 * @author HeeRak
+	 * 강의 오픈 신청 
+	 */
+	@Override
+	public int updateStatus(Lecture l) {
+		return tDao.updateStatus(l, sqlSession);
+	}
+
 
 }

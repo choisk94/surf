@@ -95,9 +95,11 @@ public interface TeacherService {
 	int selectRespondentCount(HashMap<String, String> map);
 	ArrayList<StatsData> selectSurveyStats(HashMap<String, String> map);
 
-
-
 	// 19. 클래스 등록 페이지 완성도 조회
+	int ajaxLoadDegree(int classNo);
+	
+	// 20. 강사 강의 오픈 신청
+	int updateStatus(Lecture l);
 
 
 	

@@ -194,7 +194,6 @@
 	<c:remove var="alertMsg" scope="session"/>
 </c:if>
 
-
 <div class="outer">
     <div class="header">
         <div class="head-box">
@@ -205,7 +204,7 @@
                 강의 <span></span>하기
             </div>
             <div class="degree">
-                0% 완료
+                <label id="degreeStr">0% 완료</label>
                 <div class="progress">
                     <div class="progress-bar" style="width:0%"></div>
                 </div>
@@ -235,7 +234,7 @@
         if('${ l.status}' == 'W'){
             $('.head-title>span').text('등록');
         }else{
-            $('.head-title>span').text('수정');
+            $('.head-title>span').text('재등록');
         }
     })
 

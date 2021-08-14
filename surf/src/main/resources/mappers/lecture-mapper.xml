@@ -778,4 +778,39 @@
 	 	 where class_no = #{classNo}
 	 	   and user_no = #{userNo}
 	 </update>
+	 
+	 <!-- 
+	 	강사 강의 등록|수정 완성도
+	 	@author HeeRak
+	  -->
+	 <select id="ajaxLoadDegree" resultType="_int" parameterType="_int">
+	 	select decode(count(need), 0, 0, 1)
+		     + decode(count(class_title), 0, 0, 1)
+		     + decode(count(price), 0, 0, 1)
+		     + decode(count(chap_order), 0, 0, 1)
+		     + decode(count(intro_order), 0, 0, 1) as degree
+		  from lecture
+		  left join class_intro using(class_no)
+		  left join chapter using(class_no)
+		 where class_no = #{classNo}
+	 </select>
+	 
+	 <!-- 
+	 	강사 강의 등록|수정 완성도
+	 	@author HeeRak
+	  -->
+	  <update id="updateStatus">
+	  	update lecture
+	  		<choose>
+	  		<when test=' "W".equals(status) '>
+	  	   set status = 'I'
+	  		</when>
+	  		<otherwise>
+	  	   set status = 'A'	  		
+	  		</otherwise>
+	  		</choose>
+	  	 where class_no = #{classNo}
+	  	   and user_no = #{userNo}
+	  
+	  </update>
 </mapper>

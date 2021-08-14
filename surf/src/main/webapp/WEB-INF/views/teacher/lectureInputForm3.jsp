@@ -47,7 +47,6 @@
 		margin-left: 485px;
 		background-repeat: no-repeat;
 		background-size: 25px;
-		display: none;
 		background-image: url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjM2NXB0IiB2aWV3Qm94PSIwIDAgMzY1LjcxNzMzIDM2NSIgd2lkdGg9IjM2NXB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiNmNDQzMzYiPjxwYXRoIGQ9Im0zNTYuMzM5ODQ0IDI5Ni4zNDc2NTYtMjg2LjYxMzI4Mi0yODYuNjEzMjgxYy0xMi41LTEyLjUtMzIuNzY1NjI0LTEyLjUtNDUuMjQ2MDkzIDBsLTE1LjEwNTQ2OSAxNS4wODIwMzFjLTEyLjUgMTIuNTAzOTA2LTEyLjUgMzIuNzY5NTMyIDAgNDUuMjVsMjg2LjYxMzI4MSAyODYuNjEzMjgyYzEyLjUwMzkwNyAxMi41IDMyLjc2OTUzMSAxMi41IDQ1LjI1IDBsMTUuMDgyMDMxLTE1LjA4MjAzMmMxMi41MjM0MzgtMTIuNDgwNDY4IDEyLjUyMzQzOC0zMi43NS4wMTk1MzItNDUuMjV6bTAgMCIvPjxwYXRoIGQ9Im0yOTUuOTg4MjgxIDkuNzM0Mzc1LTI4Ni42MTMyODEgMjg2LjYxMzI4MWMtMTIuNSAxMi41LTEyLjUgMzIuNzY5NTMyIDAgNDUuMjVsMTUuMDgyMDMxIDE1LjA4MjAzMmMxMi41MDM5MDcgMTIuNSAzMi43Njk1MzEgMTIuNSA0NS4yNSAwbDI4Ni42MzI4MTMtMjg2LjU5Mzc1YzEyLjUwMzkwNi0xMi41IDEyLjUwMzkwNi0zMi43NjU2MjYgMC00NS4yNDYwOTRsLTE1LjA4MjAzMi0xNS4wODIwMzJjLTEyLjUtMTIuNTIzNDM3LTMyLjc2NTYyNC0xMi41MjM0MzctNDUuMjY5NTMxLS4wMjM0Mzd6bTAgMCIvPjwvZz48L3N2Zz4=)
 	}
 	.close-img:hover{
@@ -217,7 +216,7 @@
 			var info = [[1, 1]];
 			var cno = 1;
 			var vno = 1;
-			
+			// 1. -제목 제거버튼
 			$(document).on('click', '.minus-img', function(){
 				var subTitleNo = $(this).siblings('.subTitle').text().substr(2, 1);
 				var chapNo = $(this).siblings('.subTitle').text().substr(0, 1) - 1;
@@ -232,8 +231,8 @@
 
 					var sum = 1;
 					for(var i=0; i<cno; i++){
-						
-						var $chap = $('.chap' + (i+1)).children('.subTitle-box');
+						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+						//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
 						for(var j=sum; j<=sum+info[i][1]; j++){
 							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
@@ -246,6 +245,8 @@
 						sum += info[i][1];
 					}
 				}
+
+				afterCheck(cno, vno);
 			})
 			
 			// 2. + 제목추가 버튼(메소드)
@@ -273,8 +274,8 @@
 					$(this).siblings(".curriculum-box").append($clone);
 					
 					for(var i=0; i<cno; i++){
-						
-						var $chap = $('.chap' + (i+1)).children('.subTitle-box');
+						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+						//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
 						for(var j=sum; j<=sum+info[i][1]; j++){
 							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
@@ -289,17 +290,18 @@
 					}
 					
 				}
+				afterCheck(cno, vno);
 				
 			})
 
 			// 3. +챕터추가 버튼
 			$('#insertChapter-btn').on('click', function(){
-				$('.curriculum').last().find('.close-img').css('display', 'none');
+				
 				// info 배열 추가
 				++cno;
 				++vno;
 				info.push([cno, 1]);
-				
+				console.log(vno);
 				var $clone = $('.clone-box').clone(true);
 				$clone.css('display', 'block').removeClass('clone-box');
 				$clone.find('.chap-head').text('챕터' + cno);
@@ -315,26 +317,59 @@
 				$clone.find('input[type=file]').attr('name', 'upfile');
 				$clone.find('input[type=file]').siblings('.video-img').css('background-size', '20px').text('추가').css('padding-left', 20).css('width', '50px');
 				// input text 값 제거하고 name 값 변경
-				$clone.find('input[type=text]').last().attr('name', 'cvList[' + vno + '].subTitle').attr('id', 'subTitle' + vno);
+				$clone.find('input[type=text]').last().attr('name', 'cvList[' + (vno-1) + '].subTitle').attr('id', 'subTitle' + vno);
 				// input hidden 5개 name 값 변경
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(0).attr('name', 'cvList[' + vno + '].videoNo').val(0);
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(1).attr('name', 'cvList[' + vno + '].classNo').val(${l.classNo});
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(2).attr('name', 'cvList[' + vno + '].chapOrder').val(info[cno-1][0]);
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(3).attr('name', 'cvList[' + vno + '].videoOrder').val(info[cno-1][1]);
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + vno + '].changeName').val("");
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (vno-1) + '].videoNo').val(0);
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (vno-1) + '].classNo').val(${l.classNo});
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (vno-1) + '].chapOrder').val(info[cno-1][0]);
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (vno-1) + '].videoOrder').val(info[cno-1][1]);
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].changeName').val("");
 				
 
 				// subTitle 숫자 변경 
 				$clone.find('.subTitle').text(info[cno-1][0] + '.' + info[cno-1][1]);
-				
-				$('.curriculum').last().find('.close-img').css('display', 'inline-block');
-			})
 
+				console.log(info);
+
+				afterCheck(cno, vno);
+			})
+			
 			// 4. 챕터 제거 버튼
 			$('.close-img').click(function(){
-				//--cno;
-				//vno = vno - 
-				console.log($(this).siblings('.subTitle-box').last().children('input').eq(3).val());
+
+				vno = vno - info[cno-1][1];
+				info.splice(cno-1, 1);
+				--cno;
+
+				$(this).parents('.curriculum').remove();
+				
+				// 챕터 소제목 정렬
+				var sum = 1;
+				for(var i=0; i<cno; i++){
+					//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
+
+						$('#input-box').children('div').eq(i).find('.chap-head').text('챕터' + (i+1));
+						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(0).attr('name', 'chList[' + i + '].chapOrder').val(i + 1);
+						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(1).attr('name', 'chList[' + i + '].classNo');
+						$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
+
+						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+
+						for(var j=sum; j<=sum+info[i][1]; j++){
+							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
+							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
+							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].changeName');
+							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
+							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
+							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
+						}
+						sum += info[i][1];
+					}
+
+				afterCheck(cno, vno);
+				
 			})
 
 			// classVideo List 화면에 뿌리기
@@ -376,9 +411,6 @@
 				.css('padding-left', 0)
 				.css('width', '130px')
 				.css('text-overflow', 'ellipsis');
-				
-				// 마지막 박스 x 버튼 보이게 하기
-				$('.curriculum').last().find('.close-img').css('display', 'inline-block');
 				
 				// 처음 조건 검사
 				cno = info.length;
@@ -453,6 +485,7 @@
 
 		// 7. 작성 중 조건검사
 		function afterCheck(cno, vno){
+			$('#save-btn').attr('disabled', true);
 			//console.log('aa');
 			
 			// 챕터명 길이 검사
@@ -473,17 +506,14 @@
 			for(var i=1; i<=vno; i++){
 				
 				var subTitle = $('#subTitle' + i).val();
-				console.log(subTitle);
 				if(isEmpty(subTitle)){
 					return false;
 				}
-				console.log($('#subTitle' + i).siblings('.video-img').text().length);
 				if($('#subTitle' + i).siblings('.video-img').text().length < 3 || subTitle.length < 3){
 					return false
 				}
 
 			}
-			console.log('cc');
 
 			checkSuccess();
 		}

@@ -38,8 +38,30 @@
             </c:choose>
         </div>
     </div>
-
+    <form id="openLectureForm" action="updateStatus.te" method="post">
+        <input type="hidden" name="classNo" value="${l.classNo}">
+        <input type="hidden" name="status" value="${l.status}">
+    </form>
     <script>
+        $.ajax({ // 강의 등록 진행도
+            url : "JqAjaxLoadDegree.te",
+            type : "post",
+            data : {
+                classNo : ${l.classNo}
+            }, success : function(compNo){
+    
+                $('#degreeStr').text(compNo + '% 완료');
+    
+                $('.progress-bar').css('width', compNo + '%');
+    
+                if(comNo = 100){
+                    $('#open-btn').removeAttr('disabled');
+                }
+    
+            }, error : function(){
+                console.log('강의 등록 진행도');
+            }
+        })
         // 처음 조건성립 시 '다음버튼' 활성화 
         function onLoadCheckSuccess(){
             $('#next-btn').removeAttr('disabled');
@@ -49,12 +71,14 @@
         function checkSuccess(){
             $('#save-btn').removeAttr('disabled');
             $('#next-btn').attr('disabled', true);
+            $('#open-btn').attr('disabled', true);
         }
 
         // input 데이터 조작 후 조건검사 성공 시 '저장버튼' 비활성화
         function checkFail(){
             $('#save-btn').attr('disabled', true);
             $('#next-btn').attr('disabled', true);
+            $('#open-btn').attr('disabled', true);
         }
 
         $('#save-btn').click(function(){
@@ -69,6 +93,10 @@
 
             $('#loadPage').submit();
         }
+
+        $('#open-btn').click(function(){ // 오픈하기
+            $('#openLectureForm').submit();
+        })
     </script>
 </body>
 </html>

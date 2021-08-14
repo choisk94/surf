@@ -256,6 +256,19 @@ public class AjaxTeacherController {
 	}
 	
 	/**
+	 * 강의 등록|수정 진행도
+	 * @author HeeRak
+	 */
+	@ResponseBody
+	@RequestMapping(value="JqAjaxLoadDegree.te", produces="application/json; charset=utf-8")
+	public String ajaxLoadDegree(int classNo) {
+		
+		int degree = tService.ajaxLoadDegree(classNo) * 20;
+		
+		return new Gson().toJson(degree);
+	}
+	
+	/**
 	 * saveFile
 	 * @author HeeRak
 	 */

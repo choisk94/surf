@@ -47,6 +47,13 @@
     .right-area{
         padding: 4px 8px;
     }
+
+    #period{width: 300px; display: inline-block; appearance: none;}
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button{
+        -webkit-appearance: none;
+    }
 </style>
 </head>
 <body>
@@ -87,15 +94,17 @@
                 <table>
                     <tr>
                         <th width="100px;">강의기간 *</th>
-                        <td width="400px;"><input type="text" class="form-control" placeholder="강의 기간을 입력해주세요. ex)30일, 60일" name="period" value="${ l.period }" maxlength="4"></td>
+                        <td width="400px;">
+                            <input id="period" type="number" class="form-control" placeholder="강의 기간을 숫자로 입력해주세요" name="period" min="0"> <b>일</b>
+                        </td>
                     </tr>
                     <tr>
                         <th>준비물 *</th>
-                        <td><input type="text" class="form-control" placeholder="수강생이 강의에 필요한 필수 준비물을 입력해주세요" name="need" value="${ l.need }"></td>
+                        <td><input type="text" class="form-control" placeholder="수강생이 강의에 필요한 필수 준비물을 입력해주세요" name="need" value="${ l.need }" maxlength="40"></td>
                     </tr>
                     <tr>
                         <th>유의사항</th>
-                        <td><input type="text" class="form-control" placeholder="기타 유의 사항을 입력해주세요" name="note" value="${ l.note }"></td>
+                        <td><input type="text" class="form-control" placeholder="기타 유의 사항을 입력해주세요" name="note" value="${ l.note }" maxlength="40"></td>
                     </tr>
                 </table>
             </form>
@@ -113,19 +122,25 @@
 <script>
     $(function(){
         var $period = $('input[name=period]');
+        $period.val('${ l.period }'.substr(0, '${l.period}'.length - 1));
+
         var $need = $('input[name=need]');
 
-        if($period.val().length > 2 && $need.val().length > 1){
+        if($period.val().length > 1 && $need.val().length > 1){
             onLoadCheckSuccess();
         }
 
-        $('input[name=period], input[name=need]').keyup(function () {
+        $('input[name=period], input[name=need], input[name=note]').keyup(function () {
             
-            if($period.val().length > 2 && $need.val().length > 1){
+            if($period.val() < 0){
+                $period.val("");
+            }
+
+            if($period.val().length > 0 && $need.val().length > 1){
                 $('#save-btn').removeAttr('disabled');
             }else{
                 $('#save-btn').attr('disabled', true);
-            }
+            }    
 
         })
         $('#subcatNo').on('change', function(){

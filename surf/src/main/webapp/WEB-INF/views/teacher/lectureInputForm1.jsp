@@ -127,7 +127,16 @@
 				<div>
 					<label class="subGuide">클래스 썸네일 이미지</label>
 					<div class="addImage">
-						<img id="classThumbnail" src="${ l.thumbnail }">
+						<c:choose>
+							<c:when test="${ l.thumbnail ne null}">
+								<img id="classThumbnail" src="${ l.thumbnail }">
+							</c:when>
+							<c:otherwise>
+								<img id="classThumbnail">
+							</c:otherwise>
+
+						</c:choose>
+						
 					</div>
 					<input id="thumbnail" type="file" name="upfile" class="inputFile" onchange="loadThumbnail(this);">
 				</div>
@@ -151,7 +160,7 @@
 					<label class="subGuide">클래스 대표 이미지 or 소개 동영상</label>
 					<div id="file-area" class="addRepImg">
 						<div id="video-info" class="intro-file">동영상 등록</div>
-						<img id="intro-img" class="intro-file" src="">
+						<img id="intro-img" class="intro-file" onerror="this.src='resources/uploadFiles/lec_upfiles/writing.png'">
 					</div>
 					<input id="introFile" type="file" name="upfile" class="inputFile" onchange="loadIntroFile(this);">
 				</div>
@@ -211,7 +220,7 @@
 				// 2. DB 데이터 조회 시 이미지 | 비디오 판별 '${l.introFile}'
 				var fileName = '${l.introFile}';
 				var extension = '${l.introFile}'.split('.').reverse()[0].toLowerCase();
-				var checkExtension = ['bmp', 'jpeg', 'jpg', 'gif', 'png', 'tiff'];
+				var checkExtension = ['bmp', 'jpeg', 'jpg', 'gif', 'png', 'tiff', 'webp'];
 				var checkPoint = 0;
 
 				for(var i in checkExtension){
@@ -219,13 +228,18 @@
 						++checkPoint;
 					}
 				}
+				
+				if(checkPoint > 0 || fileName == ""){ // 이미지 확장자 가진 파일
 
-				if(checkPoint > 0){ // 이미지 확장자 가진 파일
-
-					$image.trigger('click');
-					$('#file-area>img').attr('src', fileName);
+					if(fileName == ""){
+						$image.trigger('click');
+					}else{
+						$image.trigger('click');
+						$('#file-area>img').attr('src', fileName);
+					}
 
 				}else{ // 이미지 확장자 x 파일인 경우
+
 					$video.trigger('click');
 					$('#video-info').text('동영상', fileName.split('/').reverse()[0].toLowerCase());
 				}
@@ -284,7 +298,7 @@
 			}
 			
 			// video or img 미리보기
-			function loadIntroFile(inputFile){console.log(document.getElementById('introFile').files.length);
+			function loadIntroFile(inputFile){
 
 				var status = document.getElementById('file-area').className;
 
@@ -309,7 +323,6 @@
 						$(inputFile).siblings('div').children('img').attr("src", null);
 						$(inputFile).siblings('div').children('div').text("동영상 등록");
 					}else{ // 이미지
-						console.log('aa');
 						$(inputFile).attr("src", null);
 						$('.intro-file').removeAttr("src");
 					}
