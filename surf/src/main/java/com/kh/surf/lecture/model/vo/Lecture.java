@@ -34,12 +34,9 @@ public class Lecture {
 	private int scrapCount; // 스크랩 수
 	private int students; // 수강생 수
 	private int surveyCount; // 후기 개수
-	
-	// Has a 관계
+	private String subCat;
+	private String mainCat;
+	private int introLength;
 	private ClassFunding cf;
-	
-	// Has many관계
-	private ArrayList<Chapter> chapList;
-	private ArrayList<ClassIntro> classIntroList;
 	
 }

@@ -1,11 +1,17 @@
 package com.kh.surf.adminBoard.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface AdminBoardService {
+	
+		/*
+		 *  관리자 (공지사항 / FAQ / 강사신청 / 신고 관리) : 서정연
+		 */
 	
 	   /** 공지사항 **/
 	   // 1. 공지사항 게시판 리스트 페이지 조회용 (페이징)
@@ -25,23 +31,50 @@ public interface AdminBoardService {
 	   // 5. 공지사항 게시글 수정용
 	   int updateAdminNotice(AdminBoard ab);
 	   
+	   // 6. 검색용
+	   int selectSearchNoticeListCount(HashMap<String, String> map);
+	   
+	   ArrayList<AdminBoard> selectSearchNoticeList(PageInfo pi, HashMap<String, String> map);
+	   
 	   
 	   /** FAQ **/
 	   // 1. FAQ 게시판 리스트 페이지 조회용 (페이징)
 	   int selectFaqCount();
 	   ArrayList<AdminBoard> selectFaqList(PageInfo pi);
 	   
-	   // 2. 공지사항 게시글 작성하기용
+	   // 2. FAQ 게시글 작성하기용
 	   int insertAdminFaq(AdminBoard ab);
 	   
-	   // 3. 공지사항 게시글 상세조회용
-	   int increaseCountFaq(int boardNo);
-	   AdminBoard selectAdminFaq(int boardNo);
-	   
-	   // 4. 공지사항 게시글 삭제용
+	   // 3. FAQ  게시글 삭제용
 	   int deleteAdminFaq(int boardNo);
 	   
-	   // 5. 공지사항 게시글 수정용
+	   // 4. FAQ  게시글 수정용
 	   int updateAdminFaq(AdminBoard ab);
+	   
+	   // 5. 검색용
+	   int selectSearchFaqListCount(HashMap<String, String> map);
+	   
+	   ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map);
+	   
+	   
+	   
+	   /** 강사신청 관리 **/
+	   // 1. 게시판 리스트 페이지 조회용 (페이징)
+	   int selectTeacherCount();
+	   ArrayList<Teacher> selectTeacherList(PageInfo pi);
+	   
+	   // 2. 게시글 상세조회용
+	   int increaseCount(int teacherNo);
+	   Teacher selectTeacher(int teacherNo);
+	   
+	   // 3. 게시글 승인,반려
+	   int updateTeacher(int teaherNo);
+	   
+
+	   
+	   /** 신고관리 **/
+	   // 1. 신고 게시판 리스트 페이지 조회용 (페이징)
+	   
+	   // 2. 신고글 블라인드,기각
 	   
 }

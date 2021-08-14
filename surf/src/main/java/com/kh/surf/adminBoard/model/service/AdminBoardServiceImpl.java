@@ -1,6 +1,7 @@
 package com.kh.surf.adminBoard.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.surf.adminBoard.model.dao.AdminBoardDao;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Service
 public class AdminBoardServiceImpl implements AdminBoardService {
@@ -53,7 +55,16 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public int updateAdminNotice(AdminBoard ab) {
 		return abDao.updateAdminNotice(sqlSession, ab);
 	}
+	
+	@Override
+	public int selectSearchNoticeListCount(HashMap<String, String> map) {
+		return abDao.selectSearchNoticeListCount(sqlSession, map);
+	}
 
+	@Override
+	public ArrayList<AdminBoard> selectSearchNoticeList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectSearchNoticeList(sqlSession, pi, map);
+	}
 	
 	
 	/** FAQ **/
@@ -69,30 +80,58 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
 	@Override
 	public int insertAdminFaq(AdminBoard ab) {
+		return abDao.insertAdminFaq(sqlSession, ab);
+	}
+
+	@Override
+	public int deleteAdminFaq(int boardNo) {
+		return abDao.deleteAdminFaq(sqlSession, boardNo);
+	}
+
+	@Override
+	public int updateAdminFaq(AdminBoard ab) {
+		return abDao.updateAdminFaq(sqlSession, ab);
+	}
+	
+	
+	@Override
+	public int selectSearchFaqListCount(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int increaseCountFaq(int boardNo) {
+	public ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	/** 강사신청 **/
+	@Override
+	public int selectTeacherCount() {
+		return abDao.selectTeacherCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Teacher> selectTeacherList(PageInfo pi) {
+		return abDao.selectTeacherList(sqlSession, pi);
+	}
+
+	@Override
+	public int increaseCount(int teacherNo) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public AdminBoard selectAdminFaq(int boardNo) {
+	public Teacher selectTeacher(int teacherNo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int deleteAdminFaq(int boardNo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateAdminFaq(AdminBoard ab) {
+	public int updateTeacher(int teaherNo) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -85,7 +85,7 @@
         line-height:25px;
     }
 
-    .writing{ /* 작성중 W | 검토중 I | 재검토중 A */
+    .waiting{ /* 작성중 W | 검토중 I | 재검토중 A */
         color: rgb(100, 100, 100);
         background: lightgray;
     }
@@ -143,12 +143,21 @@
 	                    <div class="img-area">
 	                        <div class="img">
 	                        	<input type="hidden" name="classNo" value="${ c.classNo }">
-	                            <img src="${ c.thumbnail }">
+	                            <img src="${ c.thumbnail }" width="100%" height="100%">
 	                        </div>
 	                    </div>
 	                    <div class="class-info">
 	                        <div>
-	                            <label class="class-title">${ c.classTitle }</label><br><br>
+	                            <label class="class-title">
+                                    <c:choose>
+	                                    <c:when test="${ c.classTitle eq null}">
+	                                    	클래스명을 작성 해 주세요.
+    	                                </c:when>
+        	                            <c:otherwise>
+	        	                            ${ c.classTitle }
+                	                    </c:otherwise>
+                    	                </c:choose>
+                                </label><br><br>
 	                             <c:choose>
 					            	<c:when test="${ c.status eq 'W' }">
 					            		<div class="tag waiting">작성중</div>
@@ -228,7 +237,7 @@
         
                 <!-- Modal body -->
                 <div class="modal-body" style="padding: 36px;">
-                    <span style="font-weight: 700;">클래스명dddddddddddddddddddddd</span>
+                    <span style="font-weight: 700;">클래스명</span>
                     <br>
                     <span style="display:inline-block; margin-top: 20px; font-size:12px; color:gray;">
                         펀딩 버튼을 누르면 해당 날짜 기준으로 1주일 동안 펀딩을 받아 기준치를 달성하면 강의를 오픈할 수 있습니다.
@@ -281,6 +290,9 @@
             </div>
             </div>
         </div>
+        <form action="lectureInput.te" method="post" id="lectureInput">
+            <input type="hidden" name="classNo" value="0">
+        </form>
     </div>
     </div>
     </div>
@@ -306,9 +318,10 @@
         // 수정, 등록하기 기능
         function classInputPage(num){
             if(num == null){
-                location.href='lectureInput.le';
+                $('#lectureInput').submit();
             }else{
-                location.href='lectureInput.le?classNo=' + num;
+                $('#lectureInput').children('input[name=classNo]').val(num);
+                $('#lectureInput').submit();
             }
         }
         // 삭제, 펀딩승인 모달창 수정

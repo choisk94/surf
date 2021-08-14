@@ -1,6 +1,7 @@
 package com.kh.surf.adminBoard.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,25 +9,19 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
 public class AdminBoardDao {
 	
 	/** 공지사항 **/
 	
-	/**
-	 * @param 서정연 공지사항 리스트조회 카운트(관리자)
-	 * @return
-	 */
+	// 공지사항 리스트조회 카운트(관리자)
 	public int selectNoticeCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminBoardMapper.selectNoticeCount");
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 리스트조회(관리자)
-	 * @return
-	 */
+	// 공지사항 리스트조회(관리자)
 	public ArrayList<AdminBoard> selectNoticeList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
@@ -34,54 +29,90 @@ public class AdminBoardDao {
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectNoticeList", null, rowBounds);
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 글등록(관리자)
-	 * @return
-	 */
+	// 공지사항 글작성(관리자)
 	public int insertAdminNotice(SqlSessionTemplate sqlSession, AdminBoard ab) {
 		return sqlSession.insert("adminBoardMapper.insertAdminNotice", ab);
 	}
-	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 상세조회 카운트(관리자)
-	 * @return
-	 */
+
+	// 공지사항 상세조회 카운트(관리자)
 	public int increaseCountNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.update("adminBoardMapper.increaseCountNotice", boardNo);
 	}
 	
-	/**
-	 * @param 서정연
-	 * @param 공지사항 상세조회(관리자)
-	 * @return
-	 */
+	// 공지사항 상세조회(관리자)
 	public AdminBoard selectAdminNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("adminBoardMapper.selectAdminNotice", boardNo);
 	}
 	
+	// 공지사항 삭제(관리자)
 	public int deleteAdminNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.update("adminBoardMapper.deleteAdminNotice", boardNo);
 	}
 	
+	// 공지사항 수정(관리자)
 	public int updateAdminNotice(SqlSessionTemplate sqlSession, AdminBoard ab) {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
 	
+
+	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
+	}
+	
+	public ArrayList<AdminBoard> selectSearchNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
+
+	}
 	
 	/** FAQ **/
 	
+	// FAQ 리스트조회 카운트(관리자)
 	public int selectFaqCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminBoardMapper.selectFaqCount");
 	}
 	
+	// FAQ 리스트조회(관리자)
 	public ArrayList<AdminBoard> selectFaqList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectFaqList", null, rowBounds);
-	}	
+	}
+
+	// FAQ 글작성(관리자)
+	public int insertAdminFaq(SqlSessionTemplate sqlSession, AdminBoard ab) {
+		return sqlSession.insert("adminBoardMapper.insertAdminFaq", ab);
+	}
+	
+	// FAQ 글삭제(관리자)
+	public int deleteAdminFaq(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("adminBoardMapper.deleteAdminFaq", boardNo);
+	}
+	
+	// FAQ 글수정(관리자)
+	public int updateAdminFaq(SqlSessionTemplate sqlSession, AdminBoard ab) {
+		return sqlSession.update("adminBoardMapper.updateAdminFaq", ab);
+	}
+	
+	
+	/** 강사신청  **/
+	// 강사신청 리스트조회 카운트(관리자)
+	public int selectTeacherCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminBoardMapper.selectTeacherCount");
+	}
+	
+	// 강사신청 리스트조회(관리자)	
+	public ArrayList<Teacher> selectTeacherList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectTeacherList", null, rowBounds);
+	}
+	
+	/** 신고관리  **/
 	
 
 }

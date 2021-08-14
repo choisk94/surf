@@ -192,7 +192,7 @@
 					</c:choose>
 				</c:otherwise>
 			</c:choose>
-			<a href="">고객센터</a>
+			<a href="list.no">고객센터</a>
 		</div>
 
 
@@ -292,13 +292,11 @@
 			<!-- 로고 -->
 			<div style="width: 20%;">
 				<div style="width: 60%; float: left;">
-					<span id="logo"
-						style="font-size: 50px; font-weight: bold; color: rgb(32, 155, 212);"
-						onclick="location.href='${pageContext.request.contextPath}';">SURF</span>
+					<img id="logo" src="resources/images/logo.png" style="width:140px;"
+					onclick="location.href='${pageContext.request.contextPath}';">
 				</div>
 				<div style="width: 40%; height: 100%; float: left;">
-					<img id="redHair" src="resources/images/redhair.png"
-						style="height: 100%;"
+					<img id="redHair" src="resources/images/redhair.png" style="height: 100%;"
 						onclick="location.href='${pageContext.request.contextPath}';">
 				</div>
 			</div>
@@ -349,7 +347,6 @@
                          	if(${empty loginUser}){
                          		alert("로그인 후 이용가능한 서비스입니다.");
                          	} else {
-
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
@@ -444,7 +441,7 @@
                 				if(k == 0){
                         			value += "<li>" + resultArr[j][k] + "</li>"
                 				} else {
-	                    			value += "<li><a>" + resultArr[j][k] + "</a></li>"
+	                    			value += "<li><a href=''>" + resultArr[j][k] + "</a></li>"
                 				}
                 			}
                 			value += "</ul>";
@@ -452,7 +449,7 @@
                 		}
                 			value += "<ul>"
                 				   		+ "<li>커뮤니티</li>"
-                				   		+ "<li><a>스터디게시판</a></li>"
+                				   		+ "<li><a href='list.sb'>스터디게시판</a></li>"
                 				   + "</ul>";
                 		
                 		$("#cat-detail").html(value);

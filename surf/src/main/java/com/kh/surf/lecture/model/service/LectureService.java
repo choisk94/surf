@@ -1,6 +1,7 @@
 package com.kh.surf.lecture.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Chapter;
@@ -17,6 +18,18 @@ public interface LectureService {
 	 */
 	int selectFundingCount();
 	ArrayList<Lecture> selectFundingList(PageInfo pi);
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 상세 조회용
+	 */
+	Lecture selectFundingDetail(int classNo);
+	
+	/**
+	 * @author leeyeji
+	 * 펀딩 클래스 응원하기
+	 */
+	int ajaxSupportLecture(HashMap<String, Integer> map);
 	
 	/**
 	 * @author leeyeji
@@ -56,11 +69,27 @@ public interface LectureService {
 	
 	/**
 	 * @author leeyeji
+	 * 클래스 문의 등록용
+	 */
+	int ajaxEnrollInquiry(ClassInquiry i);
+	
+	/**
+	 * @author leeyeji
 	 * 유저 스크랩 목록 조회용
 	 */
 	int selectScrapCount(int userNo);
 	ArrayList<Lecture> selectScrapList(int userNo, PageInfo pi);
 	
+	/**
+	 * @author leeyeji
+	 * 찜한 클래스 중복체크용
+	 */
+	int scrapCheck(HashMap<String, Object> map);
 	
+	/**
+	 * @author leeyeji
+	 * 클래스 찜하기용
+	 */
+	int ajaxScrapLecture(HashMap<String, Integer> map);
 	
 }

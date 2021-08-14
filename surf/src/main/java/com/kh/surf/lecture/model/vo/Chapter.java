@@ -11,10 +11,11 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class Chapter {
+	
 	private int chapOrder;
 	private int classNo;
 	private String chapName;
 	
-	// Has many 관계
+	private ArrayList<Chapter> chList;
 	private ArrayList<ClassVideo> classVideoList;
 }

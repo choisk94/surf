@@ -232,7 +232,7 @@
                 data : {
                     classNo : ${ classNo }
                 }, success : function(videoList){
-                    
+                    console.log(videoList);
                     for(var i in videoList){
                         $('.chapter' + videoList[i].chapOrder)
                             .append('<div class="step"' + 
