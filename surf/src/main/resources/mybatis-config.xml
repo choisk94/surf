@@ -21,11 +21,14 @@
 		<typeAlias type="com.kh.surf.adminBoard.model.vo.AdminBoard" alias="AdminBoard"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassVideo" alias="ClassVideo"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.Chapter" alias="Chapter"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassStuding" alias="ClassStuding"/>
 		<typeAlias type="com.kh.surf.teacher.model.vo.StatsData" alias="StatsData"/>
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Study" alias="Study"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.surf.category.model.vo.Maincat" alias="Maincat"/>
+		<typeAlias type="com.kh.surf.category.model.vo.Subcat" alias="Subcat"/>	
 	</typeAliases>
 	
 	<mappers>

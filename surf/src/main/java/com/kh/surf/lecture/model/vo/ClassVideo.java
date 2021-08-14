@@ -1,5 +1,7 @@
 package com.kh.surf.lecture.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,4 +18,6 @@ public class ClassVideo {
 	private String subTitle;
 	private String originName;
 	private String changeName;
+	
+	private ArrayList<ClassVideo> cvList;
 }

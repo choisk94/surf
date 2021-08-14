@@ -1,5 +1,7 @@
 package com.kh.surf.lecture.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,4 +15,6 @@ public class ClassIntro {
 	private int classNo;
 	private String introImage; 
 	private String introContent;
+	
+	private ArrayList<ClassIntro> classIntroList;
 }
