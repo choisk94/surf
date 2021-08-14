@@ -7,9 +7,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
 public class AdminBoardDao {
@@ -54,7 +54,7 @@ public class AdminBoardDao {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
 	
-	
+
 	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
 	}
@@ -91,6 +91,28 @@ public class AdminBoardDao {
 	public int deleteAdminFaq(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.update("adminBoardMapper.deleteAdminFaq", boardNo);
 	}
+	
+	// FAQ 글수정(관리자)
+	public int updateAdminFaq(SqlSessionTemplate sqlSession, AdminBoard ab) {
+		return sqlSession.update("adminBoardMapper.updateAdminFaq", ab);
+	}
+	
+	
+	/** 강사신청  **/
+	// 강사신청 리스트조회 카운트(관리자)
+	public int selectTeacherCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminBoardMapper.selectTeacherCount");
+	}
+	
+	// 강사신청 리스트조회(관리자)	
+	public ArrayList<Teacher> selectTeacherList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectTeacherList", null, rowBounds);
+	}
+	
+	/** 신고관리  **/
 	
 
 }

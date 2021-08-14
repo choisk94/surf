@@ -221,7 +221,10 @@
 </c:if>
 <script>
 	// 강사 이미지, 닉네임 load
-	$.ajax({
+	loadTeacherImage();
+
+	function loadTeacherImage(){
+		$.ajax({
 		type: "post",
 		url : "ajaxLoadInfo.te"
 		, success : function(teacher){
@@ -231,6 +234,7 @@
 
 		}
 	});
+	}
 </script>
 
     <div id="outer">

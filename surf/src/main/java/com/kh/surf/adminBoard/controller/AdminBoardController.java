@@ -18,6 +18,8 @@ import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
+import com.kh.surf.teacher.model.vo.Teacher;
+
 
 @Controller
 public class AdminBoardController {
@@ -184,6 +186,13 @@ public class AdminBoardController {
 		return "adminBoard/adFaqList";
 	}
 	
+
+	/**
+	 * @param 서정연
+	 * @param FAQ 글작성 (관리자)
+	 * @param 
+	 * @return
+	 */
 	
 	
 	
@@ -276,6 +285,7 @@ public class AdminBoardController {
 	
 	
 	
+
 	@RequestMapping("insertFaq.ad")
 	public String enrollFaq(AdminBoard ab, HttpSession session, Model model) {
 		
@@ -291,11 +301,16 @@ public class AdminBoardController {
 		
 	}
 	
+	/**
+	 * @param 서정연
+	 * @param FAQ 글삭제 (관리자)
+	 * @param 
+	 * @return
+	 */
 	@RequestMapping("deleteFaq.ad")
 	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
 		System.out.println(bno);
 		int result = abService.deleteAdminFaq(bno);
-		
 		if(result > 0) { // 성공 => 리스트페이지
 			
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
@@ -307,5 +322,44 @@ public class AdminBoardController {
 		}
 		
 	}
+
+	
+	/**
+	 * @param 서정연
+	 * @param FAQ 글수정 (관리자)
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("updateFaq.ad")
+	public String updateAdminFaq(AdminBoard ab, Model model, HttpSession session) {
+		int result = abService.updateAdminFaq(ab);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
+			return "redirect:faqList.ad?bno=" + ab.getBoardNo();
+		}else {
+			model.addAttribute("errorMsg", "게시글 수정 실패");
+			return "common/errorPage";
+		}
+	}
+
+	
+	@RequestMapping("teacherList.ad")
+	public ModelAndView selectTeacherList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = abService.selectTeacherCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Teacher> list = abService.selectTeacherList(pi);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("adminBoard/adTeacherList");
+		
+		return mv;
+	}
+	
+
+	
+
 
 }

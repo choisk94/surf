@@ -63,6 +63,12 @@
 		<result column="chap_order" property="chapOrder"/>
 		<result column="class_no" property="classNo"/>
 		<result column="chap_name" property="chapName"/>
+	</resultMap>
+	
+	<resultMap id="chapterResult2" type="Chapter">
+		<result column="chap_order" property="chapOrder"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_name" property="chapName"/>
 		<collection column="class_no" property="classVideoList" javaType="java.util.ArrayList"
 			    	ofType="ClassVideo" select="selectLectureVideo"/>
 	</resultMap>
@@ -322,7 +328,7 @@
 		@author yeji lee
 		클래스 챕터 조회
 	 -->
-	<select id="selectLectureChapter" resultMap="chapterResult">
+	<select id="selectLectureChapter" resultMap="chapterResult2">
 		select 
                chap_order
              , class_no
@@ -471,7 +477,7 @@
 		select 
 			   class_no
 			 , class_title
-			 , to_char(create_date, 'YYYY-MM-DD') as create_date
+			 , create_date
 			 , thumbnail
 			 , status
 			 , subcat_no
@@ -495,23 +501,24 @@
 		 order
 		    by chap_order asc
 	</select>
-  	
-  	
-  	<!-- 
-		한 클래스 '클래스 비디오 목록'
+	 <!-- 
+		클래스 3 페이지 ClassVideo List 가져오기
 		@author HeeRak
 	 -->
-  	<select id="ajaxSelectVideoList" resultMap="classVideoResult">
-		select 
-		       video_no
-		     , chap_order
-		     , sub_title
-		     , change_name
+	 <select id="ajaxSelectVideoList" resultMap="classVideoResult">
+	 	select video_no
+			 , class_no
+			 , chap_order
+			 , video_order
+			 , sub_title
+			 , origin_name
+			 , change_name
 		  from class_video
 		 where class_no = #{classNo}
 		 order
-    	    by video_no asc
-	</select>
+		    by chap_order asc
+		     , video_order asc
+	 </select>
 	
 	<!-- 
 		
@@ -522,4 +529,253 @@
 		 where user_no = #{userNo}
 		   and class_no =  #{classNo}
 	</update>
+	
+	<!-- 
+		클래스 펀딩승인처리 결과
+		@author HeeRak
+	 -->
+	 <insert id="insertFunding" parameterType="Lecture">
+	 	insert
+	 	  into
+	 	     (
+	 	       class_no
+	 	     )
+	 	  values
+	 	     (
+	 	       #{classNo}
+	 	     )
+	 </insert>
+	 <update id="startFunding" parameterType="Lecture">
+	 	update lecture
+	 	   set status = 'F'
+	 	 where class_no = {classNo}
+	 	   and user_no = {userNo}
+	 </update>
+	 
+	 <!-- 
+		클래스 삭제 결과
+		@author HeeRak
+	 -->
+	 <update id="deleteLecture" parameterType="Lecture">
+	 	update lecture
+	 	   set status = 'D'
+	 	 where class_no = {classNo}
+	 	   and user_no = {userNo}
+	 </update>
+	 
+	 <!-- 
+		클래스 등록하기
+		@author HeeRak
+	 -->
+	 <insert id="insertLecture" parameterType="Lecture">
+	 	<selectKey keyProperty="classNo" resultType="_int" order="AFTER">
+	 		select seq_lno.currval from dual
+	 	</selectKey>
+	 	insert
+	 	  into lecture
+	 	   	 (
+	 	   	   class_no
+	 	   	 , user_no
+	 	   	 )
+	 	 values
+	 	     (
+	 	       seq_lno.nextval
+	 	     , #{userNo}
+	 	     )
+	 </insert>
+	 
+	 <!-- 
+		클래스 0-4 페이지 lecture 가져오기
+		@author HeeRak
+	 -->
+	 <select id="selectLectureInput" parameterType="Lecture" resultMap="lectureResult">
+	 	select class_no
+			 , class_title
+			 , create_date
+			 , thumbnail
+			 , intro_file
+			 , intro_title
+			 , intro_content
+			 , status
+			 , period
+			 , need
+			 , note
+			 , pos_term
+			 , price
+			 , subcat_no
+		  from lecture
+		 where user_no = #{userNo}
+		   and class_no = #{classNo}
+		   and status != 'D'
+	 </select>
+	 
+	<!-- 
+		클래스 2 페이지 ClassIntro List 가져오기
+		@author HeeRak
+	 -->
+	 <select id="selectIntroList2" parameterType="Lecture" resultMap="introResult">
+	 	select intro_order
+			 , class_no
+			 , intro_image
+			 , intro_content
+		  from class_intro
+		 where class_no = #{classNo}
+	 </select>
+	 
+	 <!-- 
+		클래스 input 0-4페이지 등록|수정|삭제
+		@author HeeRak
+	 -->
+	 <update id="updateLecture0" parameterType="Lecture">
+		 update lecture
+		    set period = #{period}
+		      , need = #{need}
+		      <if test="note != null">
+		      , note = #{note}
+		      </if>
+		      , subcat_no = #{subcatNo}
+		  where user_no = #{userNo}
+		    and class_no = #{classNo}
+	 </update>
+	 <update id="updateLecture1">
+	 	update lecture
+	 	   set class_title = #{classTitle}
+			 , thumbnail = #{thumbnail}
+			 , intro_file = #{introFile}
+		 where user_no = #{userNo}
+	       and class_no = #{classNo}
+	 </update>
+	 <update id="updateLecture2">
+	 	update lecture
+	 	   set intro_title = #{introTitle}
+			 , intro_content = #{introContent}
+		 where user_no = #{userNo}
+	       and class_no = #{classNo}
+	 </update>
+	 <insert id="updateClassIntro2" parameterType="java.util.List">
+	 	merge into class_intro ci
+	 	     using (
+	 	     		<foreach collection="list" item="intro" open="" close="" separator="union">
+	 	     			select #{intro.introOrder} as intro_order
+	 	     			     , #{intro.classNo} as class_no
+	 	     			     , #{intro.introImage} as intro_image
+	 	     			     , #{intro.introContent} as intro_content
+	 	     			  from dual
+	 	     		</foreach>
+	 	     		) d
+	 	     	on (
+	 	     		 ci.intro_order = d.intro_order
+	 	     	 and ci.class_no = d.class_no
+	 	     	 	)
+	 	     	 	when matched then
+	 	     	 		 update
+	 	     	 		 <set>
+	 	     	 		 	ci.intro_image = d.intro_image,
+	 	     	 		 	ci.intro_content = d.intro_content
+	 	     	 		 </set>
+	 	     	 	when not matched then
+	 	     	 		 insert
+	 	     	 		 <trim prefix="(" suffix=")" suffixOverrides=",">
+	 	     	 		 		intro_order
+	 	     	 		 	  , class_no
+	 	     	 		 	  , intro_image
+	 	     	 		 	  , intro_content	
+	 	     	 		 </trim>
+	 	     	 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+	 	     	 		 	    d.intro_order
+	 	     	 		 	  , d.class_no
+	 	     	 		 	  , d.intro_image
+	 	     	 		 	  , d.intro_content
+	 	     	 		 </trim>
+	 </insert>
+	 <delete id="deleteClassIntro2">
+	 	delete 
+	 	  from class_intro
+	 	 where intro_order > #{introLength}
+	 	   and class_no = #{classNo}
+	 </delete>
+	 <insert id="updateChapterList" parameterType="java.util.List">
+	 	merge into chapter ch
+	 	     using (
+	 	     		<foreach collection="list" item="ch" open="" close="" separator="union">
+	 	     			select #{ch.chapOrder} as chap_order
+	 	     			     , #{ch.classNo} as class_no
+	 	     			     , #{ch.chapName} as chap_name
+	 	     			  from dual
+	 	     		</foreach>
+	 	     		) d
+	 	     	on (
+	 	     		 ch.chap_order = d.chap_order
+	 	     	 and ch.class_no = d.class_no
+	 	     	 	)
+	 	     	 	when matched then
+	 	     	 		 update
+	 	     	 		 <set>
+	 	     	 		 	ch.chap_name = d.chap_name
+	 	     	 		 </set>
+	 	     	 	when not matched then
+	 	     	 		 insert
+	 	     	 		 <trim prefix="(" suffix=")" suffixOverrides=",">
+	 	     	 		 		chap_order
+	 	     	 		 	  , class_no
+	 	     	 		 	  , chap_name
+	 	     	 		 </trim>
+	 	     	 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+	 	     	 		 	    d.chap_order
+	 	     	 		 	  , d.class_no
+	 	     	 		 	  , d.chap_name
+	 	     	 		 </trim>
+	 </insert>
+	 <insert id="updateVideoList" parameterType="java.util.List">
+	 	merge into class_video cv
+	 	     using (
+	 	     		<foreach collection="list" item="cv" open="" close="" separator="union">
+	 	     			select #{cv.videoNo} as video_no
+	 	     			     , #{cv.classNo} as class_no
+	 	     			     , #{cv.chapOrder} as chap_order
+	 	     			     , #{cv.videoOrder} as video_order
+	 	     			     , #{cv.subTitle} as sub_title
+	 	     			     , #{cv.originName} as origin_name
+	 	     			     , #{cv.changeName} as change_name
+	 	     			  from dual
+	 	     		</foreach>
+	 	     		) d
+	 	     	on (
+	 	     		 cv.video_no = d.video_no
+	 	     	 	)
+	 	     	 	when matched then
+	 	     	 		 update
+	 	     	 		 <set>
+	 	     	 		 	cv.sub_title = d.sub_title,
+	 	     	 		 	cv.origin_name = d.origin_name,
+	 	     	 		 	cv.change_name = d.change_name
+	 	     	 		 </set>
+	 	     	 	when not matched then
+	 	     	 		 insert
+	 	     	 		 <trim prefix="(" suffix=")" suffixOverrides=",">
+	 	     	 		 		video_no
+	 	     	 		 	  , class_no
+	 	     	 		 	  , chap_order
+	 	     	 		 	  , video_order
+	 	     	 		 	  , sub_title
+	 	     	 		 	  , origin_name
+	 	     	 		 	  , change_name
+	 	     	 		 </trim>
+	 	     	 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+	 	     	 		 	    seq_vno.nextval
+	 	     	 		 	  , d.class_no
+	 	     	 		 	  , d.chap_order
+	 	     	 		 	  , d.video_order
+	 	     	 		 	  , d.sub_title
+	 	     	 		 	  , d.origin_name
+	 	     	 		 	  , d.change_name
+	 	     	 		 </trim>
+	 </insert>
+	 <update id="updateLecture4">
+	 	update lecture
+	 	   set pos_term = #{posTerm}
+	 	     , price = #{price}
+	 	 where class_no = #{classNo}
+	 	   and user_no = #{userNo}
+	 </update>
 </mapper>

@@ -1,7 +1,10 @@
 package com.kh.surf.teacher.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -15,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
-import com.kh.surf.common.template.SaveFile;
+import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.service.TeacherService;
@@ -79,7 +83,7 @@ public class AjaxTeacherController {
 			}
 			
 			// 새로운 파일 업로드(template 사용)
-			String changeName = SaveFile.saveFile(session, file, "/"+savePath);
+			String changeName = saveFile(session, file, "/"+savePath);
 			t.setProfileImage(savePath + changeName);
 		}
 						
@@ -236,5 +240,45 @@ public class AjaxTeacherController {
 		int resCount = tService.selectRespondentCount(map);
 		
 		return new Gson().toJson(resCount);
+	}
+	
+	
+	/**
+	 * 강의 입력페이지3 조회
+	 * @author HeeRak
+	 */
+	@ResponseBody
+	@RequestMapping(value="ajaxVideoList.te", produces="application/json; charset=utf-8")
+	public String ajaxSelectVideoList(int classNo) {
+		ArrayList<ClassVideo> cvList = tService.ajaxSelectVideoList(classNo);
+		
+		return new Gson().toJson(cvList);
+	}
+	
+	/**
+	 * saveFile
+	 * @author HeeRak
+	 */
+	public String saveFile(HttpSession session, MultipartFile upfile, String path) {
+		
+		String savePath = session.getServletContext().getRealPath(path);
+		
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // java.util.Date
+		int ranNum = (int)(Math.random() * 90000 + 10000); //  * 개수 + 시작수
+		String ext = originName.substring(originName.lastIndexOf(".")); // 뒤에서부터 . 찾아서 인덱스
+		
+		String changeName = currentTime + ranNum + ext; // 숫자 + 문자열 => 문자열
+		
+		// 서버에 파일 업로드(파일이름 바꾸면서)
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
 	}
 }

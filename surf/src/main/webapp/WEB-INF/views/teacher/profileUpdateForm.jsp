@@ -6,7 +6,6 @@
 	<meta charset="UTF-8">
 	<title>강사 정보 수정</title>
 	<style>
-		
 		.title {
 			font-size: 24px;
 			font-weight: 600;
@@ -19,25 +18,37 @@
 
 		.update-form-area {
 			padding-top: 10px;
-			width: 630px;
+			width: 580px;
 			height: 540px;
 			border: 1px solid lightgray;
 			border-radius: 3px;
 			box-shadow: 3px 3px 3px rgba(184, 184, 184, 0.3);
 		}
 
-		.update-form-area div {
-			float: left;
-			height: 100%;
+		.update-form-area>div{
+			width: 100%;
 		}
 
 		.update-form-area>div:first-child {
+			margin-top: 20px;
+			margin-left: 20px;
+			width: 100%;
+			height: 200px;
+		}
+		.update-form-area>div:first-child div{
+			float: left;
+			height: 100%;
+		}
+		.update-form-area>div:first-child>div:first-child{
 			width: 220px;
+		}
+		.update-form-area>div:first-child>div:last-child{
+			width: 300px;
 		}
 
 		.update-form-area>div:last-child {
-			width: 405px;
-			padding-top: 20px;
+			width: 100%;
+			padding-left: 40px;
 		}
 
 		.profile-imgArea {
@@ -83,32 +94,30 @@
 					<div class="profile-imgArea">
 						<img src="${t.profileImage}">
 					</div>
-					<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">
-				</div>
-				<div>
-					<input type="hidden" name="teacherNo" value="${t.teacherNo}">
-					<span class="input-title">닉네임</span><br>
-					<input type="text" class="form-control" name="nickname"
+					<div>
+						<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">
+						<input type="hidden" name="teacherNo" value="${t.teacherNo}">
+						<span class="input-title">닉네임</span><br>
+						<input type="text" class="form-control" name="nickname"
 						style="width:300px; height: 40px; margin: 10px 0px 0px 0px;" value="${t.nickname}"
 						placeholder="2-8글자 입력해주세요" maxlength="10" minlength="2">
-					<span class="validityCheck nicknameCheck">message</span>
-					<br>
-					<span class="input-title">핸드폰 번호</span><br>
-					<input type="text" class="form-control" name="phone"
+						<span class="validityCheck nicknameCheck">message</span>
+						<br>
+						<span class="input-title">핸드폰 번호</span><br>
+						<input type="text" class="form-control" name="phone"
 						style="width:300px; height: 40px; margin: 10px 0px 0px 0px;" value="${t.phone}"
 						placeholder="- 제외하고 입력해주세요" maxlength="11">
-					<span class="validityCheck phoneCheck">message</span>
+						<span class="validityCheck phoneCheck">message</span>
+					</div>
+				</div>
+				<div>
 					<br>
-
 					<span class="input-title">강사님을 소개해주세요</span><br>
 					<textarea class="form-control" name="introContent" placeholder="5글자 이상 입력해주세요"
-						style="width:370px; height: 150px; margin: 10px 0px 10px 0px; resize: none;"
+						style="width:500px; height: 150px; margin: 10px 0px 10px 0px; resize: none;"
 						minlength="5" maxlength="100">${t.introContent}</textarea>
 					<br>
-
-					<!--<button type="reset" class="btn btn-secondary btn-sm"
-				style="margin-left:250px;">초기화</button>&nbsp;-->
-					<button type="button" id="submitBtn" class="btn btn-info" style="margin-left:310px;"
+					<button type="button" id="submitBtn" class="btn btn-info" style="margin-left:440px;"
 						onclick="return submitAjax();">저장</button>
 				</div>
 			</div>
@@ -139,9 +148,9 @@
 			if (inputFile.files.length == 1) {    //선택한 파일이 존재하는 경우
 				var reader = new FileReader();
 				reader.readAsDataURL(inputFile.files[0]);
-				reader.onload = function (e) { $(inputFile).siblings('div').children('img').attr("src", e.target.result); }
+				reader.onload = function (e) { $(inputFile).parents('.update-form-area').find('img').attr("src", e.target.result); }
 			} else {
-				$(inputFile).siblings('div').children('img').attr("src", "resources/uploadFiles/profile_image/commonSample.png");
+				$(inputFile).parents('.update-form-area').find('img').attr("src", "resources/uploadFiles/profile_image/commonSample.png");
 			}
 		}
 
@@ -233,14 +242,9 @@
 				processData: false,
 				contentType: false,
 				cache: false
-				//data :
-				//file : formData//,
-				//teacherNo : $('input[name=teacherNo]').val(),
-				//nickname : $('input[name=nickname]').val(),
-				//phone : $('input[name=phone]').val(),
-				//introContent : $('input[name=introContent]').val()
 				, success: function () {
 					alertify.alert("회원 정보가 정상적으로 저장되었습니다.");
+					loadTeacherImage();
 				}, error: function () {
 
 				}

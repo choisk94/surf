@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.MonthlyStats;
 import com.kh.surf.lecture.model.vo.Survey;
@@ -270,6 +273,119 @@ public class TeacherServiceImpl implements TeacherService{
 	@Override
 	public int selectRespondentCount(HashMap<String, String> map) {
 		return tDao.selectRespondentCount(map, sqlSession);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 강사 신청
+	 */
+	/*
+	@Override
+	public int applyTeacher(Teacher t) {
+		return tDao.applyTeacher(sqlSession, t);
+	}
+	*/
+	
+	
+	/**
+	 * @author HeeRak
+	 * 강의 등록하기 0
+	 */
+	@Override
+	public int insertLecture(Lecture l) {
+		return tDao.insertLecture(l, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 강의 입력페이지 조회 '강의'
+	 */
+	@Override
+	public Lecture selectLectureInput(Lecture l) {
+		return tDao.selectLectureInput(l, sqlSession);
+	}
+	/**
+	 * @author HeeRak
+	 * 강의 입력페이지 조회 '강의소개'
+	 */
+	@Override
+	public ArrayList<ClassIntro> selectIntroList2(Lecture l) {
+		return tDao.selectIntroList2(l, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 페이지 조회 '챕터'
+	 */
+	@Override
+	public ArrayList<Chapter> selectChapterList(int classNo) {
+		return tDao.selectChapterList(classNo, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 페이지 조회 '비디오 목록'
+	 */
+	@Override
+	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo) {
+		return tDao.ajaxSelectVideoList(classNo, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 수정|등록 '강의' 0, 1, 2, 4
+	 */
+	@Override
+	public int updateLecture0(Lecture l) {
+		return tDao.updateLecture0(l, sqlSession);
+	}
+	@Override
+	public int updateLecture1(Lecture l) {
+		return tDao.updateLecture1(l, sqlSession);
+	}
+	@Override
+	public int updateLecture2(Lecture l) {
+		return tDao.updateLecture2(l, sqlSession);
+	}
+	@Override
+	public int updateLecture4(Lecture l) {
+		return tDao.updateLecture4(l, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '강의 소개'
+	 */
+	@Override
+	public int updateClassIntro2(ArrayList<ClassIntro> classIntroList) {
+		return tDao.updateClassIntro2(classIntroList, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 삭제 '강의 소개'
+	 */
+	@Override
+	public int deleteClassIntro2(Lecture introInfo) {
+		return tDao.deleteClassIntro2(introInfo, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '챕터'
+	 */
+	@Override
+	public int updateChapterList(ArrayList<Chapter> chList) {
+		return tDao.updateChapterList(chList, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '비디오 목록'
+	 */
+	@Override
+	public int updateVideoList(ArrayList<ClassVideo> cvList) {
+		return tDao.updateVideoList(cvList, sqlSession);
 	}
 
 

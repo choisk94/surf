@@ -5,8 +5,13 @@ import java.util.HashMap;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface AdminBoardService {
+	
+		/*
+		 *  관리자 (공지사항 / FAQ / 강사신청 / 신고 관리) : 서정연
+		 */
 	
 	   /** 공지사항 **/
 	   // 1. 공지사항 게시판 리스트 페이지 조회용 (페이징)
@@ -50,5 +55,26 @@ public interface AdminBoardService {
 	   int selectSearchFaqListCount(HashMap<String, String> map);
 	   
 	   ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map);
+	   
+	   
+	   
+	   /** 강사신청 관리 **/
+	   // 1. 게시판 리스트 페이지 조회용 (페이징)
+	   int selectTeacherCount();
+	   ArrayList<Teacher> selectTeacherList(PageInfo pi);
+	   
+	   // 2. 게시글 상세조회용
+	   int increaseCount(int teacherNo);
+	   Teacher selectTeacher(int teacherNo);
+	   
+	   // 3. 게시글 승인,반려
+	   int updateTeacher(int teaherNo);
+	   
+
+	   
+	   /** 신고관리 **/
+	   // 1. 신고 게시판 리스트 페이지 조회용 (페이징)
+	   
+	   // 2. 신고글 블라인드,기각
 	   
 }
