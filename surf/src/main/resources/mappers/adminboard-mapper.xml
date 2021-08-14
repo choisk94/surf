@@ -73,6 +73,7 @@
 		     , nickname
 		     , board_content
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		     , count
 		  from admin_board a
           join member m on m.user_no = a.user_no
 		 where board_no = #{boardNo}
