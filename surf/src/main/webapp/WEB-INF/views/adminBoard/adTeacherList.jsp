@@ -33,7 +33,7 @@
           </div>
         </div>
         <hr>
-        <table class="table">
+        <table id="adTeacherList" class="table" align="center">
           <thead>
             <tr style="background-color: rgb(224, 224, 224)">
               <td width="70">강사번호</td>

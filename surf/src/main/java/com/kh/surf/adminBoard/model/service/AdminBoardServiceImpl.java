@@ -118,16 +118,10 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		return abDao.selectTeacherList(sqlSession, pi);
 	}
 
-	@Override
-	public int increaseCount(int teacherNo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
-	public Teacher selectTeacher(int teacherNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Teacher selectTeacher(int tno) {
+		return abDao.selectTeacher(sqlSession, tno);
 	}
 
 	@Override

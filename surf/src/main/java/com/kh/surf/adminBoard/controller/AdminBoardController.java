@@ -1,6 +1,10 @@
 package com.kh.surf.adminBoard.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -10,12 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
+import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 
@@ -292,6 +299,9 @@ public class AdminBoardController {
 	}
 
 	
+	/**********************************************************************************/
+	
+	
 	@RequestMapping("teacherList.ad")
 	public ModelAndView selectTeacherList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		int listCount = abService.selectTeacherCount();
@@ -306,7 +316,41 @@ public class AdminBoardController {
 		return mv;
 	}
 	
+	@RequestMapping("detailTeacher.ad")
+	public ModelAndView selectTeacher(int tno, ModelAndView mv) {
 
+		Teacher t = abService.selectTeacher(tno);
+		mv.addObject("t", t).setViewName("adminBoard/adTeacherDetail");
+		
+		return mv;
+		
+
+	}
+	
+
+	
+	public String saveFile(HttpSession session, MultipartFile upfile, String path) {
+		
+		String savePath = session.getServletContext().getRealPath(path);
+		
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // java.util.Date
+		int ranNum = (int)(Math.random() * 90000 + 10000); //  * 개수 + 시작수
+		String ext = originName.substring(originName.lastIndexOf(".")); // 뒤에서부터 . 찾아서 인덱스
+		
+		String changeName = currentTime + ranNum + ext; // 숫자 + 문자열 => 문자열
+		
+		// 서버에 파일 업로드(파일이름 바꾸면서)
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+	}
 	
 
 

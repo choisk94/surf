@@ -112,6 +112,10 @@ public class AdminBoardDao {
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectTeacherList", null, rowBounds);
 	}
 	
+	public Teacher selectTeacher(SqlSessionTemplate sqlSession, int tno) {
+		return sqlSession.selectOne("adminBoardMapper.selectTeacher", tno);
+	}
+	
 	/** 신고관리  **/
 	
 

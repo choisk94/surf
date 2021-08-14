@@ -24,4 +24,6 @@ public class Teacher {
 	
 	private String mainCatName;
 	private String subCatName;
+	
+	private String email;
 }
