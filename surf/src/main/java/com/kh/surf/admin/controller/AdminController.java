@@ -20,10 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.surf.admin.model.service.AdminService;
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
 public class AdminController {
@@ -75,7 +77,37 @@ public class AdminController {
 
 			return mv;
 
-		}
+	}
+	//클래스 등록관리 리스트조회
+		@RequestMapping("lectureList.ad")
+		public ModelAndView selectLectureList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+			
+			int listCount = aService.selectLectureListCount();
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<Teacher> list = aService.selectLectureList(pi);
+
+			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/lectureManagement");
+
+			return mv;
+
+	}
+	//펀딩클래스 리스트조회
+		@RequestMapping("fundingList.ad")
+		public ModelAndView selectFunList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+			
+			int listCount = aService.selectFunListCount();
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<LectureList> list = aService.selectFunList(pi);
+
+			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/classFundingManagement");
+
+			return mv;
+
+	}
 	// 관리자 페이지 이동
 	@RequestMapping("login.ad")
 	public String selectTeacher(HttpSession session, Model model) {
@@ -143,6 +175,62 @@ public class AdminController {
 		model.addAttribute("Ad", aService.selectAd(bno));
 		return "admin/adUpdateForm";
 	}
+	// 클래스 승인
+	@RequestMapping("lecApproval.ad")
+	public String lecture1(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.approvalUpdate(ajaxMsg[i]);
+		}
+		return "redirect:lectureList.ad";
+	}
+	// 클래스 반려
+	@RequestMapping("lecCompanion.ad")
+	public String lecture2(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.companionUpdate(ajaxMsg[i]);
+		}
+		return "redirect:lectureList.ad";
+	}
+	// 클래스 삭제
+	@RequestMapping("lecDelete.ad")
+	public String lecture3(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.DeleteUpdate(ajaxMsg[i]);
+		}
+		return "redirect:lectureList.ad";
+	}
+	// 클래스 삭제
+	@RequestMapping("funDelete.ad")
+	public String funture(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.funUpdate(ajaxMsg[i]);
+		}
+		return "redirect:fundingList.ad";
+	}
+	// 클래스 펀딩
+	@RequestMapping("lecFunding.ad")
+	public String lecture4(HttpServletRequest request) throws Exception {
+
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		for (int i = 0; i < size; i++) {
+			aService.fundingUpdate(ajaxMsg[i]);
+		}
+		return "redirect:lectureList.ad";
+	}
+	
 
 	@RequestMapping("adUpdate.ad")
 	public String updateAd(Ad ad, MultipartFile reupfile, HttpSession session, Model model) {
@@ -194,6 +282,27 @@ public class AdminController {
 		return mv;
 
 	}
+	// 광고게시판 검색 기능용
+		@RequestMapping("lecSearch.ad")
+		public ModelAndView selectLecSearchList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+				String keyword) {
+
+			HashMap<String, String> map = new HashMap<>();
+			map.put("condition", condition);
+			map.put("keyword", keyword);
+
+			int listCount = aService.selectLecSearchListCount(map);
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<LectureList> list = aService.selectLecSearchList(pi, map);
+
+			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+					.setViewName("admin/lectureManagement");
+
+			return mv;
+
+		}
 	// 결제내역 검색 기능용
 		@RequestMapping("paySearch.ad")
 		public ModelAndView selectSearchPayList(ModelAndView mv,
@@ -216,6 +325,27 @@ public class AdminController {
 			return mv;
 
 	}
+		// 광고게시판 검색 기능용
+		@RequestMapping("funSearch.ad")
+		public ModelAndView selectFunSearchList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+				String keyword) {
+
+			HashMap<String, String> map = new HashMap<>();
+			map.put("condition", condition);
+			map.put("keyword", keyword);
+
+			int listCount = aService.selectFunSearchListCount(map);
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<LectureList> list = aService.selectFunSearchList(pi, map);
+
+			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+					.setViewName("admin/classFundingManagement");
+
+			return mv;
+
+		}
 	
 	  // 유저관리 검색 기능용
 	  

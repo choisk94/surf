@@ -5,23 +5,120 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>광고 베너 관리</title>
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript">
+		$(function(){
+			var chkObj = document.getElementsByName("RowCheck");
+			var rowCnt = chkObj.length;
+			
+			$("input[name='allCheck']").click(function(){
+				var chk_listArr = $("input[name='RowCheck']");
+				for (var i=0; i<chk_listArr.length; i++){
+					chk_listArr[i].checked = this.checked;
+				}
+			});
+			$("input[name='RowCheck']").click(function(){
+				if($("input[name='RowCheck']:checked").length == rowCnt){
+					$("input[name='allCheck']")[0].checked = true;
+				}
+				else{
+					$("input[name='allCheck']")[0].checked = false;
+				}
+			});
+		});
+		function motionValue(){
+			
+			var url = "funDelete.ad";
+			var valueArr = new Array();
+		    var list = $("input[name='RowCheck']");
+		    for(var i = 0; i < list.length; i++){
+		        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+		            valueArr.push(list[i].value);
+		        }
+		    }
+		    if (valueArr.length == 0){
+		    	alert("선택된 글이 없습니다.");
+		    }else{
+				var chk = confirm("실행하시겠습니까?");				 
+				$.ajax({
+				    url : url,                    // 전송 URL
+				    type : 'POST',                // GET or POST 방식
+				    traditional : true,
+				    data : {
+				    	valueArr : valueArr        // 보내고자 하는 data 변수 설정
+				    },
+	                success: function(jdata){
+	                    if(jdata = 1) {
+	                        alert("성공");
+	                        location.replace("fundingList.ad")
+	                    }
+	                    else{
+	                        alert("실패");
+	                    }
+	                }
+				});
+			}
+		}
+	</script>
+<style>
+#searchForm {
+	width: 80%;
+	margin-left: 600px;
+}
+
+#searchForm>* {
+	float: left;
+	margin: 5px;
+}
+
+.select {
+	width: 13%;
+}
+
+.text {
+	width: 25%;
+	border: 0;
+	outline: 0;
+	background-color: #F8F9FA;
+}
+
+.searchBtn {
+	Width: 5%;
+}
+</style>
 </head>
 <style>
-    .clbtn{text-decoration: none; color: black; font-weight: bold;}
+#pagingArea {
+	width: fit-content;
+	margin: auto;
+}
+</style>
+</head>
+<style>
+.clbtn{text-decoration: none; color: black; font-weight: bold;}
 </style>
 <body>
 <jsp:include page="sidebar.jsp"/>
-    <br>
+      <br>
       <div class="ml-4" style="width:950px">
-        <br><br><br>
         <div>
-          <h4>클래스 관리 > 클래스 펀딩 관리</h4>
+          <h4>클래스관리 > 클래스 펀딩관리</h4>
             
-          <div align="right" style="float: right; width: 28%;"><input type="text" style=" border: 0; outline: 0; background-color: #F8F9FA; " placeholder="입력하라냥">
-            <button type="button" style="background-color: #3AB6F7; border: 0; outline: 0;  border-radius:10px;">	
-              🔍</button></div>
-            <div id="filter" style=" float: right; width: 72%;">
+          <form id="searchForm" action="funSearch.ad" method="Get">
+			<div class="select">
+				<select class="custom-select" name="condition">
+					<option value="title">제목</option>
+				</select>
+			</div>
+			<div class="text">
+				<input type="text" class="form-control" name="keyword"
+					value="${ keyword }">
+			</div>
+			<button type="submit" class="searchBtn btn btn-secondary"
+				style="background-color: #3AB6F7; border: 0; outline: 0; border-radius: 10px;">🔍</button>
+		 </form>
+		<div id="filter" style=" float: right; width: 100%;">
               <select id="qna-filter" style="width:140px; height: 30px; font-size:14px;">
                   <option value="">전체 조회</option>
                   <option value="승인">승인</option>
@@ -30,93 +127,100 @@
 
               </select>
               </div>
-        </div>
-        <br>
+		<br>
+		<script>
+            	$(function(){
+            		if("${condition}" != ""){
+            			$("option[value=${condition}]").attr("selected", true);
+            		}
+            	})
+          </script>
         <hr>
         <table class="table">
           <tr style="background-color: rgb(224, 224, 224)">
-            <td width="70">관리</td>
-            <td width="130">승인여부</td>
-            <td width="130">달성률</td>
-            <td width="400">클래스명</td>
-            <td width="200">펀딩만료일</td>
+            <td width="70"><input id="allCheck" type="checkbox"
+						name="allCheck" /></td>
+                        <td width="130">승인여부</td>
+                        <td width="70">목표율</td>
+                        <td width="70">달성률</td>
+                        <td width="400">클래스명</td>
+                        <td width="200">펀딩만료일</td>
           </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">유학 없이도 유창한 영어 회화 독학법!</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do"> 집에서 만드는 초간단 요리 7가지</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">초보도 가능한 오일파스텔 풍경화 일러스트</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">박하늘쌤과 함께 기초체력을 기르자 </a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do"> 이제 내 방도 댄스교실이 될 수 있다!</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-30</td>
-          </tr>
-          <tr>
-            <td><input type="checkbox"></td>
-            <td>N</td>
-            <td>50/200</td>
-            <td><a class="clbtn" href="classDetailedInquiry.do">야 너두 글쓸수 있옹</a></td>
-            <td>2021-07-30</td>
-          </tr>
-         
+          <c:forEach var="f" items="${list}">
+					<tr>
+						<th><input name="RowCheck" type="checkbox"
+							value="${ f.classNo }" /></th>
+						<td>${ f.status }</td>
+						<td>${ f.standard }</td>
+						<td>${ f.count }</td>
+						<td>${ f.introTitle }</td>
+						<td>${ f.startDate }</td>
+					</tr>
+		  </c:forEach>
+          
 
         </table>
         <div style="text-align: right;">
-          <button type="button" class="btn btn-primary">승인</button>
-          <button type="button" class="btn btn-danger">삭제</button></div>
+          <a type="button" class="btn btn-danger" onclick="motionValue();">삭제</a>
+        </div>
         <!--여기서부터 페이지이동-->
-        <ul class="pagination justify-content-center">
-          <li class="page-item"><a class="page-link" href="#">이전</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">다음</a></li>
-        </ul>
-      </div>
-      
-      </div>
-      
-      </div>
-      
+        <div id="pagingArea">
+			<ul class="pagination">
+				<c:choose>
+					<c:when test="${ pi.currentPage eq 1 }">
+						<li class="page-item disabled"><a class="page-link">Previous</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="funSearch.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="fundingList.ad?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
 
+
+
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:choose>
+						<c:when test="${ !empty condition }">
+							<li class="page-item"><a class="page-link"
+								href="funSearch.ad?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="fundingList.ad?currentPage=${ p }">${ p }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+
+				<c:choose>
+					<c:when test="${ pi.currentPage eq pi.maxPage }">
+						<li class="page-item disabled"><a class="page-link">Next</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="funSearch.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="fundingList.ad?currentPage=${ pi.currentPage+1 }">Next</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
+      
+      </div>
+      
 </body>
 </html>

@@ -8,9 +8,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
 public class AdminDao {
@@ -89,6 +91,18 @@ public class AdminDao {
 		return (ArrayList) sqlSession.selectList("adminMapper.selectPmList", null, rowBounds);
 
 	}
+	//펀딩클래스 게시판 페이징
+	public ArrayList<LectureList> selectFunList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminMapper.selectFunList", null, rowBounds);
+
+	}
+
+	public int selectFunListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectFunListCount");
+	}
 	//회원관리 게시판 페이징
 	public int selectMemListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectMemListCount");
@@ -101,6 +115,19 @@ public class AdminDao {
 		return (ArrayList) sqlSession.selectList("adminMapper.selectMemList", null, rowBounds);
 
 	}
+	//클래스등록관리 페이징
+	public int selectLectureListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectLectureListCount");
+	}
+	
+	public ArrayList<Teacher> selectLectureList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminMapper.selectLectureList", null, rowBounds);
+
+	}
+	
 	/** @author kim
 	 * 결제내역 검색
 	 */
@@ -135,8 +162,57 @@ public class AdminDao {
 		
 		return (ArrayList) sqlSession.selectList("adminMapper.selectSearchMemList", map, rowBounds);
 	}
+	//클래스등록관리 승인/반려/삭제/펀딩
+	public void approvalUpdate(SqlSessionTemplate sqlSession, String classNo) {
+		sqlSession.update("adminMapper.approvalUpdate", classNo);
+	}
+
+	public void companionUpdate(SqlSessionTemplate sqlSession, String classNo) {
+		sqlSession.update("adminMapper.companionUpdate", classNo);
+	}
+
+	public void DeleteUpdate(SqlSessionTemplate sqlSession, String classNo) {
+		sqlSession.update("adminMapper.DeleteUpdate", classNo);
+	}
+
+	public void fundingUpdate(SqlSessionTemplate sqlSession, String classNo) {
+		sqlSession.update("adminMapper.fundingUpdate", classNo);
+	}
+	//펀딩클래스 삭제
+	public void funUpdate(SqlSessionTemplate sqlSession, String classNo) {
+		sqlSession.update("adminMapper.DeleteUpdate", classNo);
+	}
+
+	public ArrayList<LectureList> selectLecSearchList(SqlSessionTemplate sqlSession, PageInfo pi,
+		HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	
+		return (ArrayList) sqlSession.selectList("adminMapper.selectLecSearchList", map, rowBounds);
+	}
+
+	public int selectLecSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminMapper.selectLecSearchListCount", map);
+	}
+
+	public ArrayList<LectureList> selectFunSearchList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+	
+		return (ArrayList) sqlSession.selectList("adminMapper.selectFunSearchList", map, rowBounds);
+	}
+
+	public int selectFunSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminMapper.selectFunSearchListCount", map);
+	}
+
+	
+
+	
+}
+	
 
 
 	
 
-}

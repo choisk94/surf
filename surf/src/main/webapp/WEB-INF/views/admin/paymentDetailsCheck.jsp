@@ -19,7 +19,7 @@
 }
 
 .select {
-	width: 10%;
+	width: 13%;
 }
 
 .text {
@@ -41,7 +41,6 @@
 <jsp:include page="sidebar.jsp"/>
 <br>
       <div class="ml-4" style="width:950px">
-        <br><br><br>
         <div>
           <h4>결제내역관리>고객 결제내역 조회</h4>
           <form id="searchForm" action="paySearch.ad" method="Get">

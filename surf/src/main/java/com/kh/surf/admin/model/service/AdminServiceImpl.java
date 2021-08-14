@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.surf.admin.model.dao.AdminDao;
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -102,10 +104,30 @@ public class AdminServiceImpl implements AdminService {
 	public int selectMemListCount() {
 		return aDao.selectMemListCount(sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<Member> selectMemList(PageInfo pi) {
 		return aDao.selectMemList(sqlSession, pi);
+	}
+	//클래스등록관리 페이징
+	@Override
+	public int selectLectureListCount() {
+		return aDao.selectLectureListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Teacher> selectLectureList(PageInfo pi) {
+		return aDao.selectLectureList(sqlSession, pi);
+	}
+	//펀딩클래스관리 페이징
+	@Override
+	public int selectFunListCount() {
+		return aDao.selectFunListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<LectureList> selectFunList(PageInfo pi) {
+		return aDao.selectFunList(sqlSession, pi);
 	}
 	//결제관리 검색용
 	@Override
@@ -137,6 +159,58 @@ public class AdminServiceImpl implements AdminService {
 	public int selectSearchMemListCount(HashMap<String, String> map) {
 		return aDao.selectSearchMemListCount(sqlSession, map);
 	}
+
+	//클래스등록관리 승인/반려/삭제/펀딩
+	@Override
+	public void approvalUpdate(String classNo) {
+		aDao.approvalUpdate(sqlSession, classNo);
+	}
+
+	@Override
+	public void companionUpdate(String classNo) {
+		aDao.companionUpdate(sqlSession, classNo);
+	}
+
+	@Override
+	public void DeleteUpdate(String classNo) {
+		aDao.DeleteUpdate(sqlSession, classNo);
+	}
+
+	@Override
+	public void fundingUpdate(String classNo) {
+		aDao.fundingUpdate(sqlSession, classNo);
+	}
+	//클래스펀딩관리 삭제
+	@Override
+	public void funUpdate(String classNo) {
+		aDao.funUpdate(sqlSession, classNo);
+	}
+
+	@Override
+	public ArrayList<LectureList> selectLecSearchList(PageInfo pi, HashMap<String, String> map) {
+		return aDao.selectLecSearchList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int selectLecSearchListCount(HashMap<String, String> map) {
+		return aDao.selectLecSearchListCount(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<LectureList> selectFunSearchList(PageInfo pi, HashMap<String, String> map) {
+		return aDao.selectFunSearchList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int selectFunSearchListCount(HashMap<String, String> map) {
+		return aDao.selectFunSearchListCount(sqlSession, map);
+	}
+
+	
+
+	
+
+	
 
 	
 

@@ -52,7 +52,21 @@
 		<result column="NICKNAME" property="nickname"/>
 	</resultMap>
 	
-	
+	<resultMap id="rectureResult" type="LectureList">
+		<result column="teacher_no" property="teacherNo"/>
+		<result column="email" property="email"/>
+		<result column="nickname" property="nickname"/>
+		<result column="maincat_name" property="maincatName"/>
+		<result column="create_date" property="createDate"/>
+		<result column="status" property="status"/>
+		<result column="class_no" property="classNo"/>
+		<result column="subcat_no" property="subcatNo"/>
+		<result column="maincat_no" property="maincatNo"/>
+		<result column="INTRO_TITLE" property="introTitle"/>
+		<result column="STANDARD" property="standard"/>
+		<result column="COUNT" property="count"/>
+		<result column="START_DATE" property="startDate"/>
+	</resultMap>
 	
 	<select id="selectAdmin" resultMap="memberResult">
 		SELECT
@@ -71,6 +85,53 @@
       AND   status = 'N'
       AND	user_code = 'A'
 	</select>
+	
+	<select id="selectLectureListCount" resultType="_int">
+		select
+		       count(*)
+		  from (SELECT
+		        EMAIL
+		    ,   TEACHER_NO
+		    ,   T.NICKNAME
+		    ,   MAINCAT_NAME
+		    ,   CREATE_DATE
+		    ,   L.STATUS
+		    ,	CLASS_NO
+		    ,	INTRO_TITLE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    WHERE T.STATUS = 'Y')
+	</select>
+	
+	<!-- 클래스등록관리 페이징 -->
+	<select id="selectLectureList" resultMap="rectureResult">
+	SELECT
+		        EMAIL
+		    ,   TEACHER_NO
+		    ,   T.NICKNAME
+		    ,   MAINCAT_NAME
+		    ,   CREATE_DATE
+		    ,   L.STATUS
+		    ,	CLASS_NO
+		    ,	INTRO_TITLE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    WHERE T.STATUS = 'Y'
+    </select>
 	
 	<insert id="insertAd">
 		insert
@@ -206,6 +267,32 @@
 		       member
 		   set status = 'Y'
 		 where user_no = #{userNo}
+    </update>
+    
+    <!-- 클래스등록관리 -->
+    <update id="approvalUpdate">
+        update
+		       lecture
+		   set status = 'O'
+		 where class_no = #{classNo}
+    </update>
+    <update id="companionUpdate">
+        update
+		       lecture
+		   set status = 'R'
+		 where class_no = #{classNo}
+    </update>
+    <update id="DeleteUpdate">
+        update
+		       lecture
+		   set status = 'D'
+		  where class_no = #{classNo}
+    </update>
+    <update id="fundingUpdate">
+        update
+		       lecture
+		   set status = 'Q'
+		  where class_no = #{classNo}
     </update>
     
     <!-- 광고 수정 -->
@@ -349,6 +436,196 @@
 	 			nickname
 	 		</otherwise>
 	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
+	
+	<!-- 결제내역관리 검색기능 -->
+	<select id="selectLecSearchListCount" resultType="_int">
+		select
+		       	   count(*)
+		      FROM 
+		      (select
+		        
+		        EMAIL
+		    ,   TEACHER_NO
+		    ,   T.NICKNAME
+		    ,   MAINCAT_NAME
+		    ,   CREATE_DATE
+		    ,   L.STATUS
+		    ,	CLASS_NO
+		    ,	INTRO_TITLE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    WHERE T.STATUS = 'Y')
+		      where
+	 		<choose>
+	 		<when test="condition == 'title'">
+	 			intro_title
+	 		</when>
+	 		<when test="condition == 'id'">
+	 			email
+	 		</when>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	 		
+	</select>
+	<!-- 클래스등록관리 검색기능 -->
+	<select id="selectLecSearchList" resultMap="rectureResult">
+		select
+		        
+		        EMAIL
+		    ,   TEACHER_NO
+		    ,   T.NICKNAME
+		    ,   MAINCAT_NAME
+		    ,   CREATE_DATE
+		    ,   L.STATUS
+		    ,	CLASS_NO
+		    ,	INTRO_TITLE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    JOIN CLASS_FUNDING F
+		    ON L.CLASS_NO = F.CLASS_NO
+		    WHERE T.STATUS = 'Y'
+		 <choose>
+	 		<when test="condition == 'title'">
+	 			and intro_title
+	 		</when>
+	 		<when test="condition == 'id'">
+	 			and email
+	 		</when>
+	 		</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="selectFunList" resultMap="rectureResult">
+		select
+		        
+		        TEACHER_NO
+		    ,   L.STATUS
+		    ,	F.CLASS_NO
+		    ,	INTRO_TITLE
+            ,   STANDARD
+            ,   COUNT
+            ,   START_DATE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    JOIN CLASS_FUNDING F
+		    ON L.CLASS_NO = F.CLASS_NO
+		    WHERE T.STATUS = 'Y'
+		    and L.STATUS = 'F'
+	
+	</select>
+	<select id="selectFunListCount" resultType="_int">
+		select
+		       COUNT(*)
+		  from (select
+		        TEACHER_NO
+		    ,   L.STATUS
+		    ,	F.CLASS_NO
+		    ,	INTRO_TITLE
+            ,   STANDARD
+            ,   COUNT
+            ,   START_DATE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    JOIN CLASS_FUNDING F
+		    ON L.CLASS_NO = F.CLASS_NO
+		    WHERE T.STATUS = 'Y'
+		    and L.STATUS = 'F')
+	</select>
+	
+	<!-- 결제내역관리 검색기능 -->
+	<select id="selectFunSearchListCount" resultType="_int">
+		select
+		       	   count(*)
+		      FROM 
+		      (select
+		        
+		        TEACHER_NO
+		    ,   L.STATUS
+		    ,	F.CLASS_NO
+		    ,	INTRO_TITLE
+            ,   STANDARD
+            ,   COUNT
+            ,   START_DATE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    JOIN CLASS_FUNDING F
+		    ON L.CLASS_NO = F.CLASS_NO
+		    WHERE T.STATUS = 'Y'
+		    and L.STATUS = 'F')
+		      where
+	 		<choose>
+	 		<when test="condition == 'title'">
+	 			intro_title
+	 		</when>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	 		
+	</select>
+	<select id="selectFunSearchList" resultMap="rectureResult">
+		select
+		        
+		        TEACHER_NO
+		    ,   L.STATUS
+		    ,	F.CLASS_NO
+		    ,	INTRO_TITLE
+            ,   STANDARD
+            ,   COUNT
+            ,   START_DATE
+		    FROM TEACHER T
+		    JOIN MEMBER M
+		    ON T.TEACHER_NO = USER_NO
+		    JOIN LECTURE L
+		    ON T.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN SUBCAT S
+		    ON S.SUBCAT_NO = L.SUBCAT_NO
+		    JOIN MAINCAT A
+		    ON S.MAINCAT_NO = A.MAINCAT_NO
+		    JOIN CLASS_FUNDING F
+		    ON L.CLASS_NO = F.CLASS_NO
+		    WHERE T.STATUS = 'Y'
+		    and L.STATUS = 'F'
+		 <choose>
+	 		<when test="condition == 'title'">
+	 			and intro_title
+	 		</when>
+	 		</choose>
 	 		like '%' || #{keyword} || '%'
 	</select>
 </mapper>

@@ -106,10 +106,7 @@
 	<br>
 	<div class="ml-4" style="width: 950px">
 
-		<br>
-		<br>
-		<br>
-
+		<h4>결제내역관리>고객 결제내역 조회</h4>
 		<form id="searchForm" action="search.ad" method="Get">
 			<div class="select">
 				<select class="custom-select" name="condition">
@@ -134,7 +131,7 @@
             	})
             </script>
 		<hr>
-		<table id="boardList" class="table">
+		<table id="boardList" class="table table-hover">
 			<thead>
 				<tr style="background-color: rgb(224, 224, 224)">
 					<td width="70"><input id="allCheck" type="checkbox"

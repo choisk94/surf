@@ -74,7 +74,7 @@
 }
 
 .select {
-	width: 10%;
+	width: 13%;
 }
 
 .text {
@@ -96,9 +96,6 @@
 	<jsp:include page="sidebar.jsp" />
 	<br>
 	<div class="ml-4" style="width: 950px">
-		<br>
-		<br>
-		<br>
 		<div>
 			<h4>회원 관리</h4>
 			<form id="searchForm" action="userSearch.ad" method="Get">

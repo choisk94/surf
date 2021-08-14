@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface AdminService {
 
@@ -20,21 +22,34 @@ public interface AdminService {
 
 	ArrayList<Ad> selectList(PageInfo pi);
 	
-	//2-1. 결제내역 게시판 리스트 페이지 조회용
+	//2-1 결제내역 게시판 리스트 페이지 조회용
 	int selectPmListCount();
 
 	ArrayList<PaymentList> selectPmList(PageInfo pi);
 	
-	//2-2 회원관리 게시판 리스프 페이지 조회용
+	//2-2 회원관리 게시판 리스트 페이지 조회용
 	int selectMemListCount();
 
 	ArrayList<Member> selectMemList(PageInfo pi);
+	
+	//2-3 클래스등록관리  리스트 페이지 조회용
+	int selectLectureListCount();
 
+	ArrayList<Teacher> selectLectureList(PageInfo pi);
+	
+	//2-4 펀딩클래스관리 리스트 페이지 조회용
+	int selectFunListCount();
+
+	ArrayList<LectureList> selectFunList(PageInfo pi);
 	// 3.게시물 선택 삭제
 	void delete(String adNo);
+	// 3-1.펀딩클래스 선택 삭제
+	void funUpdate(String classNo);
 
 	// 4.광고베너 표시
 	void update(String adNo);
+	
+	
 
 	// 5.관리자페이지 이동
 	Member selectAdmin(int userNo);
@@ -64,6 +79,30 @@ public interface AdminService {
 	
 	//9.회원탈퇴용
 	void userUpdate(String userNo);
+	
+	//10.클래스등록관리 승인/반려/삭제/펀딩
+	void approvalUpdate(String classNo);
+
+	void companionUpdate(String classNo);
+
+	void DeleteUpdate(String classNo);
+
+	void fundingUpdate(String classNo);
+
+	//11.클래스등록관리 검색용
+	ArrayList<LectureList> selectLecSearchList(PageInfo pi, HashMap<String, String> map);
+	
+	int selectLecSearchListCount(HashMap<String, String> map);
+	
+	//12.펀딩클래스관리 검색용
+	ArrayList<LectureList> selectFunSearchList(PageInfo pi, HashMap<String, String> map);
+	
+	int selectFunSearchListCount(HashMap<String, String> map);
+	
+	
+	
+	
+	
 
 	
 	
