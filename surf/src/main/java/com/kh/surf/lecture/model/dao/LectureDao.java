@@ -154,4 +154,8 @@ public class LectureDao {
 		return sqlSession.update("lectureMapper.ajaxScrapLecture", map);
 	}
 	
+	public int selectTeacherNo(SqlSessionTemplate sqlSession, int classNo) {
+		return sqlSession.selectOne("lectureMapper.selectTeacherNo", classNo);
+	}
+	
 }

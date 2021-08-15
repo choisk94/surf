@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
 import com.kh.surf.lecture.model.service.LectureService;
@@ -53,6 +54,7 @@ public class LectureController {
 	@RequestMapping("fundingDetail.lec")
 	public Lecture selectFundingDetail(int cno) {
 		Lecture f = lService.selectFundingDetail(cno);
+		//System.out.print(f);
 		return f;
 	}
 	
@@ -136,9 +138,21 @@ public class LectureController {
 	@RequestMapping("inquiry.lec")
 	public ModelAndView selectLectureInquiry(ModelAndView mv, int cno) {
 		ArrayList<ClassInquiry> iList = lService.selectLectureInquiry(cno);
-		mv.addObject("iList", iList).setViewName("lecture/detailInquiry");
+		int teacherNo = lService.selectTeacherNo(cno);
+		mv.addObject("iList", iList)
+		  .addObject("classNo", cno)
+		  .addObject("teacherNo", teacherNo)
+		  .setViewName("lecture/detailInquiry");
 		return mv;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="inquiCheck.lec", produces="application/json; charset=utf-8")
+	public String ajaxSelectInquiry(int classNo) {
+		ArrayList<ClassInquiry> list = lService.selectLectureInquiry(classNo);
+		return new Gson().toJson(list);
+	}
+	
 	
 	/**
 	 * @author leeyeji
@@ -147,7 +161,7 @@ public class LectureController {
 	@ResponseBody
 	@RequestMapping("enrollInquiry.lec")
 	public String ajaxEnrollInquiry(ClassInquiry i) {
-		System.out.print(i);
+		//System.out.print(i);
 		int result = lService.ajaxEnrollInquiry(i);
 		return result>0?"success":"fail";
 	}
@@ -181,7 +195,7 @@ public class LectureController {
 		map.put("classNo", classNo);
 		map.put("classNo", classNo);
 		int result = lService.scrapCheck(map);
-		System.out.print(result);
+		//System.out.print(result);
 		return result;
 	}
 	

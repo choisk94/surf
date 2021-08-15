@@ -117,3 +117,5 @@ buildNumber.properties
 .properties
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,java,eclipse
+surf/src/main/java/com/kh/.DS_Store
+surf/src/main/java/com/kh/surf/lecture/.DS_Store

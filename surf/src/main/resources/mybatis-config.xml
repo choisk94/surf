@@ -26,6 +26,7 @@
 		<typeAlias type="com.kh.surf.lecture.model.vo.ClassIntro" alias="ClassIntro"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Study" alias="Study"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.surf.category.model.vo.SubCategory" alias="subCat"/>
 	</typeAliases>
 	
 	<mappers>

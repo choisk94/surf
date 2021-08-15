@@ -18,7 +18,7 @@
         /*display: flex; */
         width: 1200px; 
         /*background: gray;*/
-        height: 1000px;
+        /*height: 1000px;*/
         padding: 0px 0px 0px 0px;
     }
     .class-element{width: 100%; height: 300px; display: flex;}
@@ -54,15 +54,16 @@
     .tab1{margin: 0px 10px 0px 30px;}
     .class-tab button:hover{font-weight: bold; color: rgb(32, 155, 212);}
     /*.class-full-info{width: 100%;}*/
-    .class-chapter *{margin-bottom: 30px; }
+    .class-full-info * {
+    	margin-bottom: 0px; 
+	}
     #class-representative{width: 60%; height: 100%; margin-left: 10px;}
 
     /*수강 후기*/
     .class-inquiry{
-        margin-left: 50px;
-        margin-top: 40px;
-        margin: 40px 40px 20px;
-        width: 700px;
+        margin: 40px 0px 20px 50px;
+        padding-bottom: 30px;
+        width: 800px;
     }
     .box{
         font-weight: bolder;
@@ -82,8 +83,12 @@
     .review-content{
         margin-bottom: 40px;
     }
-    .inquiry-btn{padding-left: 5px;}
-    .input{
+    .inquiry-btn{
+    	padding-left: 5px; 
+    	height:20px;
+    	m
+    }
+    .inqContent{
         width: 600px;
         height: 30px;
         border-top: none;
@@ -91,6 +96,16 @@
         border-right: none;
         border-bottom: 1px solid gray;
     }
+    .inquiry-input img{
+    	width: 40px; 
+        height: 40px;
+        border-radius: 70%;
+        overflow: hidden;
+        background: pink;
+        margin-right: 10px;
+        margin-bottom: 0px;
+    }
+    .date{margin-bottom:0px;}
 </style>
 </head>
 <body>
@@ -98,48 +113,174 @@
 	<!-- 수강 후기 -->
 	<div class="class-inquiry">
                 
-		<form action="" method="POST">
+		<!-- <form action="/surf/lecInquiry.lec" method="POST"> -->
 			<div class="inquiry-input">
-				<img src="../resource/img/star.png" > &nbsp;
-				<input type="text" placeholder="문의 내용을 입력해주세요." class="input">
-				<button type="submit" class="btn inquiry-btn">➕</button>
+				<input type="hidden" name="teacherNo" value="${ teacherNo }"/>
+				<input type="hidden" name="classNo" value="${ classNo }"/>
+				<img src="resources/images/user_icon1.png" > &nbsp;
+				<input type="text" placeholder="문의 내용을 입력해주세요." class="inqContent" value="">
+				<button type="button" class="btn inquiry-btn" onclick="addInquiry();">
+					<i class="fas fa-plus"></i>
+				</button>
 			</div>
-		</form>
+		<!-- </form> -->
 		<br><br>
-
-                <ul class="comments">
-                    <li class="comment">
-                        <div class="photo">
-                            <img src="../resource/img/heart.png" >
-                        </div>
-                        <div class="meta">김철수</div>
-                        <div class="comment-body">
-                            안녕하세요
-                            그림에 대한 기초가 없던 사람이었는데 이 강의를 듣고 실력이 많이 늘었어요!
-                            그런데 원근감에 대해 잘 이해가 안가요 
-                            좀 더 상세하게 설명해주시면 좋을거같습니다!
-                        </div>
-                        <div class="date">
-                            2012.07.24 14:58
-                        </div>
-                    </li>
-                    <li class="comment level-2">
-                        <div class="photo">
-                            <img src="" >
-                        </div>
-                        <div class="meta">그림쟁이</div>
-                        <div class="comment-body">
-                            안녕하세요
-                            그림에 대한 기초가 없던 사람이었는데 이 강의를 듣고 실력이 많이 늘었어요!
-                            그런데 원근감에 대해 잘 이해가 안가요 
-                            좀 더 상세하게 설명해주시면 좋을거같습니다!
-                        </div>
-                        <div class="date">
-                            2012.07.24 14:58
-                        </div>
-                    </li>
-                </ul>
-            </div>
+			
+			<div class="inquiry-list">
+				<c:forEach var="i" items="${ iList }">
+					<input type="hidden" name="classNo" value="${ i.classNo }"/>
+	                <ul class="comments">
+	                    <li class="comment">
+	                        <div class="photo">
+	                            <img src="resources/images/user_icon3.png" >
+	                        </div>
+	                        <div class="meta">${ i.userNo }</div>
+	                        <div class="comment-body">
+	                            ${ i.inqContent }
+	                        </div>
+	                        <div class="date">
+	                            ${ i.inqDate }
+	                        </div>
+	                    </li>
+	                    <li class="comment level-2">
+	                        <c:choose>
+	                        
+		                        <c:when test="${ !empty i.ansContent  }">
+			                        <div class="photo">
+			                            <img src="" >
+			                        </div>
+			                        <div class="meta">${ i.teacherNo }</div>
+			                        
+			                        <div class="comment-body">
+			                            ${ i.ansContent }
+			                        </div>
+			                        <div class="date">
+			                            ${ i.ansDate }
+			                        </div>
+			                        
+		                        </c:when>
+		                        <c:otherwise>
+		                        	
+			                        <div class="meta"></div>
+		                        
+		                        	<div class="comment-body">
+			                            문의 답변이 없습니다!
+			                        </div>
+			                        <div class="date">
+			                            
+			                        </div>
+		                        	
+		                        </c:otherwise>
+							</c:choose>
+	                    </li>
+	                </ul>
+	                <br>
+				</c:forEach>
+			</div>
+	</div>
+	
+	<script>
+	
+		var cno = $('input[name=classNo]').val();
+		var uno = ${ loginUser.userNo };
+		var tno = $('input[name=teacherNo]').val();
+	
+		
+	// 문의 등록
+	function addInquiry(){
+		
+		if($('.inqContent').val().trim().lenght != 0){
+			
+			$.ajax({
+	        	url: "enrollInquiry.lec",
+	        	data: {
+	        		classNo : cno,
+	        		userNo : uno,
+	        		inqContent : $('.inqContent').val(),
+	        		teaNo : tno
+	        	},success:function(result){
+	        		
+	        		console.log(result);
+	        		
+	        		if(result == "success" ){
+	        			
+	            		alert("문의가 등록되었습니다!");
+	            		
+	            		$('.inqContent').val("");
+	            		
+	            		selectInquiry();
+	            		
+	        		}else{
+	        			alert("문의 등록에 실패하였습니다.");
+	        		}
+	        		
+	        	}, error:function(request,status,error){
+	        		//console.log("ajax 실패");
+	        		alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+	        	}
+	        })
+	        
+		} else{
+			alert("문의 내용");
+		}
+		
+	}
+	
+	function selectInquiry(){
+		
+		$.ajax({
+			url:"inquiCheck.lec",
+			data:{classNo:cno}, 
+			success:function(list){
+				console.log(list);
+				
+				var value = "";
+				for(var i in list){
+					value += '<ul class="comments">'
+                    	  		+ '<li class="comment">'
+	                    			+ '<div class="photo">'
+	                        			+ '<img src="resources/images/user_icon3.png" >'
+	                    			+ '</div>'
+	                   				+ '<div class="meta">' + list[i].userNo + '</div>'
+	                    			+ '<div class="comment-body">'
+	                        			+ list[i].inqContent
+	                    			+ '</div>'
+	                    			+ '<div class="date">'
+	                        			+ list[i].inqDate
+	                    			+ '</div>'
+                				+ '</li>'
+                				+ '<li class="comment level-2">';
+                    				if(list[i].ansContent != null){
+                       					value += '<div class="photo">'
+		                            				+ '<img src="" >'
+		                        				+ '</div>'
+		                        				+ '<div class="meta">' + list[i].teacherNo + '</div>'
+		                        				+ '<div class="comment-body">'
+		                            				+ list[i].ansContent
+		                        				+ '</div>'
+		                        				+ '<div class="date">'
+						                            + list[i].ansDate
+						                        + '</div>';
+                    				} else {
+		                        		 value += '<div class="meta"></div>'
+					                        	+ '<div class="comment-body">'
+						                            + '문의 답변이 없습니다!'
+						                        + '</div>'
+						                        + '<div class="date"></div>' ;
+                    				}
+				               value += '</li>'
+				            + '</ul>';
+				}
+				
+				$(".inquiry-list").html(value);
+				
+			}, error:function() {
+				console.log("댓글 리스트 조회용 AJAX 통신 실패");
+			}
+		})
+	}
+	
+	</script>
     
 </body>
 <style>

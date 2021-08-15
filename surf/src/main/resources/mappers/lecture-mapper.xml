@@ -380,22 +380,35 @@
              , i.ans_content
              , TO_CHAR(i.ans_date, 'YYYY-MM-DD HH24:MI') ans_date
              , m.nickname user_no
-             , t.nickname teacher_no
-             , t.teacher_no tea_no
+             , t.teacher_no teaNo
+             , t.nickname teacher_nick
              , t.profile_image
-             , i.class_no
-          from class_inquiry i
+             , l.class_no
+          from lecture l
+          join class_inquiry i on(i.class_no = l.class_no)
           left outer join (
                             select 
                                    teacher_no
                                  , nickname
                                  , profile_image
+                                 , subcat_no
                               from teacher
                           ) t 
-                         on i.teacher_no = t.teacher_no
+                  on l.subcat_no = t.subcat_no
           join member m on(m.user_no = i.user_no)
-         where i.class_no = #{classNo}
+         where l.class_no = #{classNo}
 	</select>
+	
+	<!-- 
+		선생님 번호 조회
+	 -->
+	 <select id="selectTeacherNo" resultType="_int">
+	 	select
+		       t.teacher_no
+		  from teacher t
+		  join lecture l on (l.subcat_no = t.subcat_no)
+		 where l.class_no = #{classNo}
+	 </select>
 	
 	<!-- 
 		@author yeji lee
@@ -417,7 +430,7 @@
 		  , #{inqContent}
 		  , #{classNo}
 		  , #{userNo}
-          , #{teacherNo}
+          , #{teaNo}
 		  )
 	</insert>
 	

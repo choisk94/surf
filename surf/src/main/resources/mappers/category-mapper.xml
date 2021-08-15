@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="categoryMapper">
 
+	<resultMap type="subCat" id="subCatResult">
+		<result column="subcat_no" property="subCatNo"/>
+		<result column="subcat_name" property="subCatName"/>
+		<result column="maincat_no" property="mainCatNo"/>
+	</resultMap>
+
 	<select id="selectCategory" resultType="string">
 		select
 		    maincat_name|| ',' || listagg(subcat_name, ',') within group (order by subcat_name) category
@@ -17,4 +23,10 @@
 		    by maincat_name
 	</select>
 	
+	<select id="selectSubCat" resultMap="subCatResult">
+		select
+		       subcat_no
+		     , subcat_name
+		  from subcat
+	</select>
 </mapper>

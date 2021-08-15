@@ -161,6 +161,11 @@ public class LectureServiceImpl implements LectureService{
 	public int scrapCheck(HashMap<String, Object> map) {
 		return lDao.scrapCheck(sqlSession, map);
 	}
+
+	@Override
+	public int selectTeacherNo(int classNo) {
+		return lDao.selectTeacherNo(sqlSession, classNo);
+	}
 	
 	
 }

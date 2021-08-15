@@ -192,12 +192,10 @@
 				
 					<c:forEach var="l" items="${ list }">
 	                    <div class="thumbnail" align="center" onclick="location.href='/surf/detail.lec?cno=${l.classNo}'">
-	                        <input type="hidden" name="classNo" value="">
 	                        <div class="class-thumb">
 	                            <img src="${ l.thumbnail }" width="240" height="150" id="">
-	                            <div class="text">
-	                                <i class="far fa-heart scrap-icon" onclick="scrapCompleted();"></i>
-	                                <input type="hidden" name="userNo" value="${ loginUser.userNo }">
+	                            <div class="text" onclick="scrapLecture();">
+	                                <i class="far fa-heart scrap-icon"></i>
 	                                <input type="hidden" name="classNo" value="${ l.classNo }">
 	                                <i class="fas fa-heart scrap-comple" style="display:none;"></i>
 	                            </div>
@@ -257,37 +255,46 @@
 
         <script>
         
-        var uno = $(".scrap-icon").siblings("input[name=userNo]").val();
-        var cno = $(".scrap-icon").siblings("input[name=classNo]").val();
+        var cno = $('input[name=classNo]').val();
+        var uno = ${loginUser.userNo};
         
-        function scrapCompleted(){
+        // 찜하기 
+        $(document).ready(function(){
+        	scrapLecture();
+        })
+        
+        function scrapLecture(){
 	     	
-            
-	     	// 스크랩 
             $.ajax({
-            	url: "like.lec",
-            	type: "POST",
+            	url: "like.lec?cno=" + cno,
+            	type: "GET",
             	data: {
-            		userNo : '5',
-            		classNo : 'cno'
+            		userNo : uno
             	},
             	success:function(result){
             		
-            		console.log("성공");
-            		console.log(result);
-            		// 스크랩 아이콘 클릭
-            		/*
-                    if($(".scrap-comple").css("display") == "none") {
-                        $(".scrap-icon").hide();
-                        $(".scrap-comple").show();
-                    } */
+	            		console.log("?성공");
+	            		console.log(result);
+	            		
+            		if(result == 1){
+            			
+	            		alert("클래스를 찜했습니다!");
+	            		
+	            		// 스크랩 아이콘 클릭
+	                    if($(".scrap-comple").css("display") == "none") {
+	                        $(".scrap-icon").hide();
+	                        $(".scrap-comple").show();
+	                    }
+	            		
+            		}else{
+            			alert("찜하기에 실패하였습니다.");
+            		}
             		
             	}, error:function(){
             		console.log("실패");
             	}
             })
         }
-
             
         </script>
 

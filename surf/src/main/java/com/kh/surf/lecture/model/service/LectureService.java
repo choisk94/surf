@@ -67,6 +67,8 @@ public interface LectureService {
 	 */
 	ArrayList<ClassInquiry> selectLectureInquiry(int classNo);
 	
+	int selectTeacherNo(int classNo);
+	
 	/**
 	 * @author leeyeji
 	 * 클래스 문의 등록용

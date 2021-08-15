@@ -18,6 +18,7 @@ public class ClassInquiry {
 	private int classNo;
 	private String userNo;
 	private String teacherNo;
+	private int teaNo;
 
 	private String classTitle;
 	private String teacherImage;
