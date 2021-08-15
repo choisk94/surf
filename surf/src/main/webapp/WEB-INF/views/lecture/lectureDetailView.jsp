@@ -190,7 +190,7 @@
 	                    <div id="info-btn">
 	                        <button type="button" class="btn" onclick="scrapCheck();">찜하기</button>
 	                        <input type="hidden" name="classNo" value="${ l.classNo }">
-	                        <a href="#" class="btn payIamport">결제하기</a>
+	                        <button type="button" class="btn payIamport">결제하기</button>
 	                    </div>
 	                </div>
 	                
@@ -255,21 +255,31 @@
             	</div>
             	
 			<script>
+				
+				var cno = $('input[name=classNo]').val();
+		        var uno = '${loginUser.userNo}';
+		        //uno = '${loginUser.userNo}';
+		        //uno = ${empty loginUser.userNo ? -1 : loginUser.userNo};
+		        
+		        if(isNaN(uno)) {
+		        	uno = -1;
+		        } else {
+		        	uno = parseInt( uno );
+		        }
+			
 				// 결제 관련
-				/*
 				var c_price = ${ l.price };
-				var c_no = ${ l.classNo };
-				var user_no = 10;
 				var c_name = '${ l.classTitle }';
 				var payNo = Math.floor(Math.random() * 100) + new Date().getTime();
 				var now = new Date();
-				var pay_method = 1;
+				var payMethod = 1;
+				
 				
 				$('.payIamport').click(function (){
 					IMP.init('imp08801453');
 					IMP.request_pay({
-						pg : 'kakaopay',
-					    pay_method : 'card',
+					    pg : 'kakaopay',
+					    pay_method : payMethod,
 					    merchant_uid : 'merchant_' + new Date().getTime(),
 					    name : c_name,
 					    amount : c_price,
@@ -277,66 +287,61 @@
 					    buyer_name : '구매자이름',
 					    buyer_tel : '010-1234-5678',
 					    buyer_addr : '서울특별시 강남구 삼성동',
-					    buyer_postcode : '123-456'
 					}, function(rsp) {
 					    if ( rsp.success ) {
-					    	console.log("결제성공");
+					    	console.log(rsp)
+					    	
+							var msg = '결제가 완료되었습니다.';
+					    		msg += '\n고유ID : ' + rsp.imp_uid;
+					    		msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+					    		msg += '\결제 금액 : ' + rsp.paid_amount;
+					    		msg += '카드 승인번호 : ' + rsp.apply_num;
+					    		alert(msg);
+					    		
+					    		var r_imp_uid = parseInt(rsp.imp_uid.replace(/[^0-9]/g,''));
+					    		
+					    		var payment = {
+					    				//orderNo : r_imp_uid,
+					    				classNo : cno,
+					    				userNo : uno,
+					    				price : rsp.paid_amount,
+					    				//paymentDate : new Date(),
+					    				payMethod : payMethod,
+					    				status : 'Y'
+					    		}
+					    	
+					    	// 디비 주문내역
 					    	jQuery.ajax({
-					    		url: "/payments/complete", 
+					    		url: "payments.do", 
 					    		type: 'POST',
 					    		dataType: 'json',
-					    		data: {
-						    		imp_uid : rsp.imp_uid
-					    		}
-					    	}).done(function(data) {
-					    		if ( everythings_fine ) {
-					    			var msg = '결제가 완료되었습니다.';
-					    			msg += '\n고유ID : ' + rsp.imp_uid;
-					    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-					    			msg += '\결제 금액 : ' + rsp.paid_amount;
-					    			msg += '카드 승인번호 : ' + rsp.apply_num;
+					    		data: payment,
+					    		success : function(result){
+					    			console.log(result);
+					    			if(result > 0){
+					    				console.log("주문내역 DB 넣기 성공");
+					    			} else{
+					    				console.log("주문내역 DB 넣기 실패");
+					    			}
 					    			
-					    			$.ajax({
-					    				url: "/success.pay", 
-							    		type: 'POST',
-							    		dataType: 'json',
-							    		data: {
-								    		imp_uid : rsp.imp_uid,
-								    		orderNo : payNo,
-								    		price : c_price,
-								    		classTitle : c_name,
-								    		paymentDate : now,
-								    		payMethod : pay_method,
-								    		status : 'Y',
-								    		userNo : user_no
-							    		}, success:function(result){
-							    			if(result == 'y'){
-							    				console.log("INSERT 성공")
-							    			}else{
-							    				console.log("insert 실패.")
-							    			}
-							    		}
-					    			})
-					    			alert(msg);
-					    		} else {
 					    		}
-					    	});
+						    		
+					    	})
+					    } else {
 					        var msg = '결제에 실패하였습니다.';
 					        msg += '에러내용 : ' + rsp.error_msg;
-					        
+					        console.log(rsp)
 					        alert(msg);
 					    }
 					});
-				})*/
-			</script>
-            
-            <script>
+
+				})
+				
             	
-            	var cno = $('input[name=classNo]').val();
-		        var uno = ${loginUser.userNo};
 		        
 		        // 찜하기 중복확인
 		        function scrapCheck(){
+					console.log(uno);
 
 		        	$.ajax({
 		        		url: "scrapCheck.lec",
@@ -390,39 +395,39 @@
                 // 슬라이드 
                 jQuery(document).ready(function ($) {
 
-                $('#checkbox').change(function(){
-                    setInterval(function () {
-                        moveRight();
-                    }, 3000);
-                });
-
-                var slideCount = $('#slider ul li').length;
-                var slideWidth = $('#slider ul li').width();
-                var slideHeight = $('#slider ul li').height();
-                var sliderUlWidth = slideCount * slideWidth;
-                
-                $('#slider').css({ width: slideWidth, height: slideHeight });
-                
-                $('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
-                
-                $('#slider ul li:last-child').prependTo('#slider ul');
-
-                function moveLeft() {
-                    $('#slider ul').animate({
-                        left: + slideWidth
-                    }, 200, function () {
-                        $('#slider ul li:last-child').prependTo('#slider ul');
-                        $('#slider ul').css('left', '');
-                    });
-                };
-
-                function moveRight() {
-                    $('#slider ul').animate({
-                        left: - slideWidth
-                    }, 200, function () {
-                        $('#slider ul li:first-child').appendTo('#slider ul');
-                        $('#slider ul').css('left', '');
-                    });
+	                $('#checkbox').change(function(){
+	                    setInterval(function () {
+	                        moveRight();
+	                    }, 3000);
+	                });
+	
+	                var slideCount = $('#slider ul li').length;
+	                var slideWidth = $('#slider ul li').width();
+	                var slideHeight = $('#slider ul li').height();
+	                var sliderUlWidth = slideCount * slideWidth;
+	                
+	                $('#slider').css({ width: slideWidth, height: slideHeight });
+	                
+	                $('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	                
+	                $('#slider ul li:last-child').prependTo('#slider ul');
+	
+	                function moveLeft() {
+	                    $('#slider ul').animate({
+	                        left: + slideWidth
+	                    }, 200, function () {
+	                        $('#slider ul li:last-child').prependTo('#slider ul');
+	                        $('#slider ul').css('left', '');
+	                    });
+	                };
+	
+	                function moveRight() {
+	                    $('#slider ul').animate({
+	                        left: - slideWidth
+	                    }, 200, function () {
+	                        $('#slider ul li:first-child').appendTo('#slider ul');
+	                        $('#slider ul').css('left', '');
+	                    });
                     };
 
                     $('button.control_prev').click(function () {

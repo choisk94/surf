@@ -15,4 +15,7 @@ public interface PaymentService {
 	int selectListCount(int uesrNo);
 	ArrayList<Payment> selectOrderList(int userNo, PageInfo pi);
 	*/
+	
+	// DB에 주문 내용 추가
+	int insertPayment(Payment p);
 }
