@@ -85,7 +85,7 @@
         line-height:25px;
     }
 
-    .writing{ /* 작성중 W | 검토중 I | 재검토중 A */
+    .waiting{ /* 작성중 W | 검토중 I | 재검토중 A */
         color: rgb(100, 100, 100);
         background: lightgray;
     }
@@ -126,6 +126,11 @@
         cursor: pointer;
         color: rgb(32, 155, 212);
     }
+
+    .openClass:hover{
+        cursor: pointer;
+        opacity: 0.9;
+    }
 </style>
 </head>
 <body>
@@ -137,24 +142,45 @@
                     <label class="form-title">내 클래스 목록(${ listCount })</label>
                     <span onclick="classInputPage();">+ 등록하기</span>
                 </div>
-                
 				<c:forEach var="c" items="${ list }">
-	                <div class="box">
-	                    <div class="img-area">
-	                        <div class="img">
-	                        	<input type="hidden" name="classNo" value="${ c.classNo }">
-	                            <img src="${ c.thumbnail }">
-	                        </div>
+                    <div class="box">
+                        <div class="img-area">
+                        <c:choose>
+                            <c:when test="${ c.status eq 'O' }">
+                                <div class="img openClass" onclick="moveClassDetail(${c.classNo});">
+                                    <input type="hidden" name="classNo" value="${ c.classNo }">
+                                    <img src="${ c.thumbnail }" width="100%" height="100%">
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="img">
+                                    <input type="hidden" name="classNo" value="${ c.classNo }">
+                                    <img src="${ c.thumbnail }" onerror="this.src='resources/uploadFiles/lec_upfiles/writing.png'" width="100%" height="100%">
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
 	                    </div>
 	                    <div class="class-info">
 	                        <div>
-	                            <label class="class-title">${ c.classTitle }</label><br><br>
-	                             <c:choose>
+	                            <label class="class-title">
+                                    <c:choose>
+	                                    <c:when test="${ c.classTitle eq null}">
+	                                    	클래스명을 작성 해 주세요.
+    	                                </c:when>
+        	                            <c:otherwise>
+	        	                            ${ c.classTitle }
+                	                    </c:otherwise>
+                    	                </c:choose>
+                                </label><br><br>
+	                            <c:choose>
 					            	<c:when test="${ c.status eq 'W' }">
 					            		<div class="tag waiting">작성중</div>
 					            	</c:when>
 					            	<c:when test="${ c.status eq 'I' }">
 					            		<div class="tag waiting">검토중</div>
+					            	</c:when>
+                                    <c:when test="${ c.status eq 'R' }">
+					            		<div class="tag waiting">반려</div>
 					            	</c:when>
 					            	<c:when test="${ c.status eq 'A' }">
 					            		<div class="tag waiting">재검토중</div>
@@ -166,21 +192,26 @@
 					            		<div class="tag fund">펀딩중</div>
 					            	</c:when>
 					            	<c:when test="${ c.status eq 'O' }">
-					            		<div class="tag open">오픈</div>
+					            		<div class="tag open">오픈중</div>
 					            	</c:when>
 					            </c:choose>
 	                        </div>
 	                    </div>
 	                    <div class="class-update-btn">
 	                        <div class="update-btn">
-	                            <img class="menu-btn" style="width:20px; height:20px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQyNi42NjcgNDI2LjY2NyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSI0Mi42NjciIGN5PSIyMTMuMzMzIiByPSI0Mi42NjciIGZpbGw9IiM4MzgzODMiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvY2lyY2xlPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSIyMTMuMzMzIiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPGNpcmNsZSBjeD0iMzg0IiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+" />
-	                            <div class="update-menu">
-									<span onclick="classInputPage(${c.classNo})">수정하기</span>
+                                <c:if test="${ c.status eq 'W' or c.status eq 'r' }">
+                                    <img class="menu-btn" style="width:20px; height:20px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQyNi42NjcgNDI2LjY2NyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSI0Mi42NjciIGN5PSIyMTMuMzMzIiByPSI0Mi42NjciIGZpbGw9IiM4MzgzODMiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvY2lyY2xlPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSIyMTMuMzMzIiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPGNpcmNsZSBjeD0iMzg0IiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+" />
+                                    <div class="update-menu">
+                                        <span onclick="classInputPage(${c.classNo})">수정하기</span>
+                                        <span data-toggle="modal" data-target="#delete-modal" onclick="modalChange('${c.classNo}', '${c.classTitle}', 'D');">삭제하기</span>									
+                                    </div>
+	                            </c:if>
 								<c:if test="${ c.status eq 'Q' }">
-									<span data-toggle="modal" data-target="#funding-modal" onclick="modalChange('${c.classNo}', '${c.classTitle}', 'F');">펀딩수락</span>
+                                    <img class="menu-btn" style="width:20px; height:20px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQyNi42NjcgNDI2LjY2NyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSI0Mi42NjciIGN5PSIyMTMuMzMzIiByPSI0Mi42NjciIGZpbGw9IiM4MzgzODMiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvY2lyY2xlPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Y2lyY2xlIGN4PSIyMTMuMzMzIiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPGNpcmNsZSBjeD0iMzg0IiBjeT0iMjEzLjMzMyIgcj0iNDIuNjY3IiBmaWxsPSIjODM4MzgzIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L2NpcmNsZT4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+" />
+                                    <div class="update-menu">
+                                        <span data-toggle="modal" data-target="#funding-modal" onclick="modalChange('${c.classNo}', '${c.classTitle}', 'F');">펀딩수락</span>
+                                    </div>
 								</c:if>
-	                                <span data-toggle="modal" data-target="#delete-modal" onclick="modalChange('${c.classNo}', '${c.classTitle}', 'D');">삭제하기</span>									
-	                            </div>
 	                        </div>
 	                    </div>
 	                </div>
@@ -228,7 +259,7 @@
         
                 <!-- Modal body -->
                 <div class="modal-body" style="padding: 36px;">
-                    <span style="font-weight: 700;">클래스명dddddddddddddddddddddd</span>
+                    <span style="font-weight: 700;">클래스명</span>
                     <br>
                     <span style="display:inline-block; margin-top: 20px; font-size:12px; color:gray;">
                         펀딩 버튼을 누르면 해당 날짜 기준으로 1주일 동안 펀딩을 받아 기준치를 달성하면 강의를 오픈할 수 있습니다.
@@ -281,6 +312,9 @@
             </div>
             </div>
         </div>
+        <form action="lectureInput.te" method="post" id="lectureInput">
+            <input type="hidden" name="classNo" value="0">
+        </form>
     </div>
     </div>
     </div>
@@ -306,9 +340,10 @@
         // 수정, 등록하기 기능
         function classInputPage(num){
             if(num == null){
-                location.href='lectureInput.le';
+                $('#lectureInput').submit();
             }else{
-                location.href='lectureInput.le?classNo=' + num;
+                $('#lectureInput').children('input[name=classNo]').val(num);
+                $('#lectureInput').submit();
             }
         }
         // 삭제, 펀딩승인 모달창 수정
@@ -322,8 +357,13 @@
                 $('#delete-modal').find('.modal-body').children('span').eq(0).text(classTitle);
             }
             
-        } 
-       
+        }
+
+        // 강의 디테일 뷰로 이동
+        function moveClassDetail(classNo){
+
+        }
+
     </script>
 	<jsp:include page="../common/footer.jsp"/>
     

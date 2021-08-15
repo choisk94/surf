@@ -55,15 +55,15 @@
               <li><a href="#">결제내역관리</a>
                 <ul class="sub">
                   <li><a href="settlementDetails.do"> > 정산내역조회</a></li>
-                  <li><a href="paymentDetailsCheck.do"> > 결제내역조회</a></li>
+                  <li><a href="pmList.ad"> > 결제내역조회</a></li>
                 </ul>
               </li>
-              <li><a href="userManagement.do">회원관리</a>
+              <li><a href="memList.ad">회원관리</a>
               </li>
               <li><a href="#">클래스관리</a>
               	<ul class="sub">
-                  <li><a href="lectureManagement.do"> > 클래스 등록관리</a></li>
-                  <li><a href="classFundingManagement.do"> > 클래스 펀딩관리</a></li>
+                  <li><a href="lectureList.ad"> > 클래스 등록관리</a></li>
+                  <li><a href="fundingList.ad"> > 클래스 펀딩관리</a></li>
                 </ul>
               </li>
               <li><a href="teacherList.ad">강사관리</a>

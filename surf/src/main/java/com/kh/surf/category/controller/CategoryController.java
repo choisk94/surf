@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.surf.category.model.service.CategoryService;
-import com.kh.surf.category.model.vo.SubCategory;
 
 @Controller
 public class CategoryController {

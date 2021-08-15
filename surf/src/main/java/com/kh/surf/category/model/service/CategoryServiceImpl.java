@@ -28,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	/**
 	 * 메인카테고리 서브카테고리 조회
+	 * @author HeeRak
 	 */
 	@Override
 	public ArrayList<Maincat> AjaxSelectMaincatList() {

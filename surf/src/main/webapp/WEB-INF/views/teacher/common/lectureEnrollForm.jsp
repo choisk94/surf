@@ -180,6 +180,10 @@
         background: rgb(241, 241, 241);
         padding-left: 10px;
     }
+
+    .menubar-box>div>a:hover{
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -190,7 +194,6 @@
 	<c:remove var="alertMsg" scope="session"/>
 </c:if>
 
-
 <div class="outer">
     <div class="header">
         <div class="head-box">
@@ -198,32 +201,59 @@
                 <a href="<%=request.getContextPath()%>">SURF</a>
             </div>
             <div class="head-title">
-                강의 등록하기
+                강의 <span></span>하기
             </div>
             <div class="degree">
-                70% 완료
+                <label id="degreeStr">0% 완료</label>
                 <div class="progress">
-                    <div class="progress-bar" style="width:70%"></div>
+                    <div class="progress-bar" style="width:0%"></div>
                 </div>
             </div>
-            <a href="<%=request.getContextPath()%>" class="btn btn-secondary btn-sm">나가기</a>
+            <a href="lectureList.te" class="btn btn-secondary btn-sm">나가기</a>
         </div>
     </div>
     <div class="menubar">
         <div class="menubar-box">
-            <div><div class="num-box menu0">0</div><a href="enroll.le?currentPage=0">기본정보</a></div>
-            <div><div class="num-box menu1">1</div><a href="enroll.le?currentPage=1">제목 및 커버</a></div>
-            <div><div class="num-box menu2">2</div><a href="enroll.le?currentPage=2">소개</a></div>
-            <div><div class="num-box menu3">3</div><a href="enroll.le?currentPage=3">커리큘럼</a></div>
-            <div><div class="num-box munu4">4</div><a href="enroll.le?currentPage=4">오픈 전 확인사항</a></div>
+            <div><div class="num-box menu0">0</div><a onclick="loadInputPage(0);">기본정보</a></div>
+            <div><div class="num-box menu1">1</div><a onclick="loadInputPage(1);">제목 및 커버</a></div>
+            <div><div class="num-box menu2">2</div><a onclick="loadInputPage(2);">소개</a></div>
+            <div><div class="num-box menu3">3</div><a onclick="loadInputPage(3);">커리큘럼</a></div>
+            <div><div class="num-box munu4">4</div><a onclick="loadInputPage(4);">오픈 전 확인사항</a></div>
         </div>
     </div>
-            
+    <form id="loadPage" action="lectureInput.te" method="post">
+        <input type="hidden" name="currentPage">
+        <input type="hidden" name="classNo" value="${l.classNo}">
+    </form>        
 <!--</div>-->
 <script>
     $(function(){
         $('.menubar-box').children('div').eq(${ currentPage }).css('backgroundColor', 'rgba(222, 222, 222, 0.8)');
+        
+        // 등록하기 수정하기 판별
+        if('${ l.status}' == 'W'){
+            $('.head-title>span').text('등록');
+        }else{
+            $('.head-title>span').text('재등록');
+        }
     })
+
+    function loadInputPage(currentPage){
+    	if(${currentPage} != currentPage){ // 같은 페이지 클릭 x
+	        $('input[name=currentPage]').val(currentPage);
+	        $('#loadPage').submit();    		
+    	}
+    }
+    
+    // 해당 src 비었는지 3가지 검사 해주는 메소드 (비었으면 false, 채워져있으면 true)
+    function isEmpty(str){
+        if(typeof(str) == "undefined" || typeof(str) == null || typeof(str) == "")
+            return true;
+        else
+            return false;
+        
+    }
+    
 </script>
 </body>
 </html>

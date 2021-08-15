@@ -64,8 +64,7 @@ public interface AdminBoardService {
 	   ArrayList<Teacher> selectTeacherList(PageInfo pi);
 	   
 	   // 2. 게시글 상세조회용
-	   int increaseCount(int teacherNo);
-	   Teacher selectTeacher(int teacherNo);
+	   Teacher selectTeacher(int tno);
 	   
 	   // 3. 게시글 승인,반려
 	   int updateTeacher(int teaherNo);

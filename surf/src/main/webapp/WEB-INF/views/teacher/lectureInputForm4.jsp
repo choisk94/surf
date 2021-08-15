@@ -20,12 +20,26 @@
 	.content>div:first-child>div:last-child{width:300px;}
 
 	#posTerm, #price{
-		width: 300px;
+		width: 170px; text-align: right; font-weight: 700;
 		height: 40px;
 		display: inline-block;
 		margin-left: 45px;
 		margin-bottom: 10px;
 	}
+	#posTerm:hover{
+		cursor: pointer;
+		background-color: rgba(250, 250, 250);
+		opacity: 0.9;
+	}
+	#posTerm{
+		text-align-last: right;
+		appearance: none;
+	}
+	#posTerm option{
+		font-family: 'Nanum Gothic', sans-serif;
+		font-weight: 700;
+	}
+
 
 	.note1{
 		width: 280px;
@@ -49,18 +63,31 @@
 	<div class="content">
 		<div>
 			<div>
+				<form id="inputForm" action="updateLecture.te" method="POST">
+				<input type="hidden" name="classNo" value="${ l.classNo }">
+	            <input type="hidden" name="currentPage" value="${currentPage}">
 				<label class="guide">오픈 전 확인사항입니다<br>꼼꼼히 확인 해 주세요.</label>
 				<br>
 				<br>
-				<label class="subGuide">수강기간</label>
-				<select id="posTerm" class="form-control">
-					<option value="1">1개월</option>
-					<option value="2">2개월</option>
-					<option value="3" selected>3개월</option>
-				</select>
+				<label class="subGuide">수강가능기간</label>
+				<select id="posTerm" name="posTerm" class="form-control" onchange="selectPosTerm();">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3" selected>3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select> <b>개월</b>
 				<br>
-				<label class="subGuide">수강금액</label>
-				<input id="price" type="text" class="form-control" placeholder="금액을 입력해주세요">
+				<label class="subGuide">수강금액&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+				<input id="price" name="spPrice" type="text" class="form-control" placeholder="금액 입력" value="<c:if test='${l.price ne 0}'>${l.price}</c:if>"> <b>원</b>
+				</form>
 			</div>
 			<div>
 				<div class="note-area note1">
@@ -90,6 +117,59 @@
 			</div>
 		</div>
 	</div>
+
+	<%-- 수강기간 불러온 데이터 있을 경우 selected --%>
+	<c:if test="${l.posTerm ne 0}">
+		<script>
+			$('option[value=3]').removeAttr('selected');
+			$('option[value=${l.posTerm}]').attr('selected', true);
+		</script>
+	</c:if>
+
+	<script>
+		// 금액 구분자 (,)
+		$(document).on("focusout", "input[name=spPrice]", function(){
+			$(this).val( $(this).val().replace(",","") );
+			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );	
+		});
+
+		$(function(){
+			spPrice();
+
+			$('input[name=spPrice]').keyup(function(){
+				$('#save-btn').attr('disabled', true);
+
+				if($(this).val().length == ""){
+					return false;
+				}
+				checkSuccess();
+			})
+
+
+			// 강의 완성도 확인하고 
+		})
+
+		// posTerm select 시 조건검사
+		function selectPosTerm(){
+
+			if($('input[name=spPrice]').val.length < 0){
+				return false;
+			}
+
+			checkSuccess();
+		}
+
+		// 처음 금액 로드 시 
+		function spPrice(){
+			var spPrice = $('input[name=spPrice]');
+
+			$('input[name=spPrice]').val( $(spPrice).val().replace(",","") );
+			$('input[name=spPrice]').val( $(spPrice).val().replace(/[^-\.0-9]/gi,"") );
+			$('input[name=spPrice]').val( $(spPrice).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+		}
+	</script>
+
 	<jsp:include page="common/lectureEnrollFormFooter.jsp"/>
 </div>
 </body>

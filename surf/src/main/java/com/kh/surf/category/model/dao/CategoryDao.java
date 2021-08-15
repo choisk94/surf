@@ -6,7 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 
-import com.kh.surf.category.model.vo.SubCategory;
 import com.kh.surf.category.model.vo.Maincat;
 import com.kh.surf.category.model.vo.Subcat;
 

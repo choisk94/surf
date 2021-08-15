@@ -38,21 +38,23 @@
 		}
 		</script>
 		<style>
+			
 			.content {
 				padding: 40px 0px 0px 40px;
 			}
 
 			.path {
 				font-size: 20px;
-				font-weight: 600;
+				font-weight: 700;
+				font-family: 'Nanum Gothic', sans-serif;
 			}
 
 			.stats-menu {
-				width: 650px;
+				width: 570px;
 				height: 70px;
 				background: rgba(200, 200, 200, 0.5);
 				line-height: 70px;
-				font-size: 14px;
+				font-size: 13px;
 			}
 
 			.stats-menu>* {
@@ -63,6 +65,8 @@
 				width: 750px;
 				height: 50px;
 				background: rgba(200, 200, 200, 0.5);
+				font-family: 'Nanum Gothic', sans-serif;
+				font-weight: 700;
 				line-height: 50px;
 			}
 
@@ -72,18 +76,21 @@
 
 			.stats-head>span:nth-child(3) {
 				margin-left: 30px;
-				width: 430px;
+				width: 420px;
+				height: 50px;
 				display: inline-block;
 			}
 
 			.stats-head>span:last-child {
-				width: 160px;
+				width: 180px;
 				display: inline-block;
 			}
+
 			/*차트 스타일 선택*/
 			#table_div{
 				margin-top: 50px;
 				font-family: 'Nanum Gothic', sans-serif;
+				font-weight: 600;
 			}
 			#table_div th{
 				text-align: center;
@@ -126,8 +133,7 @@
 					<select style="width: 100px; height: 40px; display: inline;" class="form-control">
 						<option value="">2021</option>
 					</select>
-					<input type="checkbox" name="tax-option" id="onlyTax"><label for="onlyTax">수수료만</label>
-					<input type="checkbox" name="tax-option" id="extTax"><label for="extTax">수수료제외</label>
+					<input type="checkbox" name="tax-option" id="extTax" checked><label for="extTax">수수료제외</label>
 				</div>
 				<br>
 				<br>
@@ -166,7 +172,7 @@
 			<script>
 				function changeClass(){
 					var cno = $('#classSelect').val();
-
+					
 					$('.stats-head').children('span').eq(2).text($('option[value=' + cno + ']').text());
 
 					$.ajax({
@@ -206,7 +212,7 @@
 									bar: { groupWidth: '60%' },
 									isStacked: true,
 									chartArea: {left: 0, right:0}
-								  };
+									};
 							
 									var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 									chart.draw(data, options);
@@ -238,6 +244,11 @@
 						$('#chart_div').show();
 					})
 					
+					if($(this).is(':checked')){// tax off
+
+					}else{ // tax on
+
+					}
 				})
 			</script>
 			<jsp:include page="../common/footer.jsp" />

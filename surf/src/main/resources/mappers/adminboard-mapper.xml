@@ -18,6 +18,7 @@
 		<result column="teacher_no" property="teacherNo"/>
 		<result column="profile_image" property="profileImage"/>
 		<result column="nickname" property="nickname"/>
+		<result column="email" property="email"/>
 		<result column="phone" property="phone"/>
 		<result column="intro_content" property="introContent"/>
 		<result column="subcat_name" property="subCatName"/>
@@ -86,6 +87,7 @@
 		     , nickname
 		     , board_content
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		     , count
 		  from admin_board a
           join member m on m.user_no = a.user_no
 		 where board_no = #{boardNo}
@@ -238,6 +240,25 @@
           join maincat c using(maincat_no)
          order
 		    by teacher_no desc
+	</select>
+	
+	
+	<select id="selectTeacher" resultMap="adminTeacherResult">
+		select
+		       teacher_no
+             , profile_image 
+		     , email
+			 , t.nickname
+             , phone
+             , intro_content
+			 , c.maincat_name
+         	 , s.subcat_name
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+         where teacher_no = #{tno}
+           and t.status = 'Y'
 	</select>
 	
 	<!-- 신고관리  -->

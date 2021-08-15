@@ -7,46 +7,73 @@
 <meta charset="UTF-8">
 <title>강사 관리</title>
 </head>
+<style>
+  .innerOuter{width:80%; margin:auto;}  
+  form, #btn2{
+    width:700px;
+    background:rgb(52, 152, 219); 
+    padding:10px 150px;
+  }
+  form input, textarea{width:350px;}
+  #btn2{padding-left:270px;}
+  #img1{width:200px; height:200px; border-radius:100px; background-size:contain;}
+</style>
 <body>
 	<jsp:include page="../admin/sidebar.jsp"/>
 		 <!--여기서부터 우측 게시판-->
       <br>
-      <div class="innerOuter" style="width:950px">
-        <br><br><br>
-        <div>
-          <h5>강사 관리 > 강사 상세조회</h5>
-        </div>
-        <hr>
+	<div class="innerOuter" style="width: 950px">
+		<br>
+		<br>
+		<br>
+		<div>
+			<h5>강사 관리 > 강사 상세조회</h5>
+		</div>
 
-        <form action="" >
-          <h4>강사 신청 정보</h4>
-          <br>
-          
-          <div id="img1" class="img1"></div>
-          <br>
-          이메일<br>
-          <input type="email"><br><br>
-          강사명<br>
-          <input type="text"><br><br>
-          핸드폰 번호<br>
-          <input type="text"><br><br>
-          강사님을 소개해주세요<br>
-          <textarea>
-            xxxxxxxxxxx
-          </textarea><br><br>
-          어떤 강의를 열고 싶으신가요?<br>
-          <select name="" id="">
-            <option value="개발">개발</option>
-          </select>
-          <select name="" id="">
-            <option value="프로그래밍 언어">프로그래밍 언어</option>
-          </select>
-          <br><br>
-        </form>
-        <div id="btn2">
-          <button type="button" class="btn btn-info">승인</button>&nbsp;&nbsp;&nbsp;
-          <button type="button" class="btn btn-danger">반려</button>
-        </div>
-      </div>		 
+		<hr>
+
+		<form id="teacherForm" class="adTeacherForm" action="detailTeacher.ad" method="post" enctype="multipart/form-data">
+			<div class="adTeacher">
+			<input type="hidden" name="teacherNo" value="${t.teacherNo}">
+			<h4>강사 신청 정보</h4>
+			<br>
+
+			<div id="img1" class="img1">
+				<img src="${t.profileImage}">
+			</div>
+			<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">			
+			<br> 이메일<br> <input type="email" class="form-control" name="emial" value="${ t.email }"><br>
+			<br> 강사명<br> <input type="text" class="form-control" name="nickname" value="${ t.nickname }"><br>
+			<br> 핸드폰 번호<br> <input type="text" class="form-control" name="phone" value="${ t.phone }"><br>
+			<br> 강사님을 소개해주세요<br>
+			<textarea class="form-control" name="introContent">${ t.introContent }</textarea>
+			<br>
+			<br> 어떤 강의를 열고 싶으신가요?<br> <select name="mainCatName" id="">
+				<option value="대분류">${ t.mainCatName }</option>
+			</select> <select name="subCatName" id="">
+				<option value="소분류">${ t.subCatName }</option>
+			</select> <br>
+			<br>
+			</div>
+		</form>
+		<div id="btn2">
+			<a class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; <a
+				class="btn btn-danger" href="">반려</a>
+		</div>
+	</div>
+	
+	<script>
+		function loadProfileImage(inputFile) {
+
+			if (inputFile.files.length == 1) {    
+				var reader = new FileReader();
+				reader.readAsDataURL(inputFile.files[0]);
+				reader.onload = function (e) { $(inputFile).parents('.adTeacher').find('img').attr("src", e.target.result); }
+			} else {
+				$(inputFile).parents('.adTeacher').find('img').attr("src", "resources/uploadFiles/profile_image/commonSample.png");
+			}
+		}
+	</script>
+
 </body>
 </html>

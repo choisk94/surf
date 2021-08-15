@@ -36,12 +36,7 @@ public class Lecture {
 	private int surveyCount; // 후기 개수
 	private String subCat;
 	private String mainCat;
-	
-	// Has a 관계
+	private int introLength;
 	private ClassFunding cf;
-	
-	// Has many관계
-	private ArrayList<Chapter> chapList;
-	private ArrayList<ClassIntro> classIntroList;
 	
 }

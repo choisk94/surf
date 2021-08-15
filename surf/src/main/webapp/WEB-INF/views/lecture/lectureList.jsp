@@ -86,6 +86,16 @@
         box-shadow: 1px 1px 0 rgb(0,0,0,0.5); position: relative; top:2px;
     }
     #pagingArea{width:fit-content;margin:auto;}
+   
+   /*클래스 타이틀 글씨 넘침 수정 
+   @author 최서경*/ 
+    #classTitle{
+    width:240px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+    display:inline-block;
+    }
 </style>
 </head>
 <body>
@@ -202,7 +212,7 @@
 	                        </div>
 	    
 	                        <p style="margin-top: 5px;">
-	                            <b style="height:40px;">${ l.classTitle }</b><br>
+	                            <b id="classTitle" style="height:40px;">${ l.classTitle }</b><br>
 	                            <span style="font-size:14px">${ l.teacherName }</span> <br>
 	                            <span style="font-size:14px">
 	                            	<b><fmt:formatNumber value="${ l.price }"/>원</b>
