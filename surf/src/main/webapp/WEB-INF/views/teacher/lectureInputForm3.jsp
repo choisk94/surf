@@ -210,8 +210,6 @@
 	<script>
 		// 1. +- 버튼 영역
 		$(function(){
-
-			console.log(${fn:length(chList)});
 			
 			var info = [[1, 1]];
 			var cno = 1;
@@ -301,7 +299,7 @@
 				++cno;
 				++vno;
 				info.push([cno, 1]);
-				console.log(vno);
+				
 				var $clone = $('.clone-box').clone(true);
 				$clone.css('display', 'block').removeClass('clone-box');
 				$clone.find('.chap-head').text('챕터' + cno);
@@ -324,12 +322,9 @@
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (vno-1) + '].chapOrder').val(info[cno-1][0]);
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (vno-1) + '].videoOrder').val(info[cno-1][1]);
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].changeName').val("");
-				
 
 				// subTitle 숫자 변경 
 				$clone.find('.subTitle').text(info[cno-1][0] + '.' + info[cno-1][1]);
-
-				console.log(info);
 
 				afterCheck(cno, vno);
 			})
@@ -337,10 +332,15 @@
 			// 4. 챕터 제거 버튼
 			$('.close-img').click(function(){
 
-				vno = vno - info[cno-1][1];
-				info.splice(cno-1, 1);
-				--cno;
+				var thisCno = $(this).siblings('input[type=hidden]').eq(0).val();
 
+				vno = vno - info[(thisCno-1)][1];
+				info.splice((thisCno-1), 1);
+				for(var i=0; i<info.length; i++){
+					info[i][0] = (i+1);
+				}
+				
+				--cno;
 				$(this).parents('.curriculum').remove();
 				
 				// 챕터 소제목 정렬
@@ -487,6 +487,7 @@
 		function afterCheck(cno, vno){
 			$('#save-btn').attr('disabled', true);
 			//console.log('aa');
+			console.log('v: ' + vno);
 			
 			// 챕터명 길이 검사
 			for(var i=1; i<=cno; i++){

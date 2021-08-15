@@ -214,7 +214,7 @@
 					$('#thumbnail').click();
 				})
 				$('.addRepImg, .addRepVideo').click(function(){
-					$('#introFile').val("").click();
+					$('#introFile').click();
 				})
 
 				// 2. DB 데이터 조회 시 이미지 | 비디오 판별 '${l.introFile}'
@@ -268,23 +268,23 @@
 					enableSubmit();
 				});
 
-				// 4_(1,2) 조건검사
-				function enableSubmit(){
-					// 클래스 제목 길이
-					classTitleLength = $('#classTitle').val().length;
-					// 클래스 썸네일 이미지 유무
-					thumbnailFileLength = document.getElementById('thumbnail').files.length;
-					// intro 파일 유무
-					introFileFileLength =  document.getElementById('introFile').files.length;
-					
-					if(thumbnailFileLength == 1 && classTitleLength > 5 && introFileFileLength == 1){
-						checkSuccess();
-					}else{
-						checkFail();
-					}
-				}
 				
 			})
+			// 4_(1,2) 조건검사
+			function enableSubmit(){
+				// 클래스 제목 길이
+				classTitleLength = $('#classTitle').val().length;
+				// 클래스 썸네일 이미지 유무
+				thumbnailFileLength = document.getElementById('thumbnail').files.length;
+				// intro 파일 유무
+				introFileFileLength =  document.getElementById('introFile').files.length;
+				
+				if(thumbnailFileLength == 1 && classTitleLength > 5 && introFileFileLength == 1){
+					checkSuccess();
+				}else{
+					checkFail();
+				}
+			}
 
 			// thumbnail 이미지 업로드 미리보기
 			function loadThumbnail(inputFile){
@@ -299,9 +299,10 @@
 			
 			// video or img 미리보기
 			function loadIntroFile(inputFile){
-
+				console.log('aa');
 				var status = document.getElementById('file-area').className;
-
+				console.log(inputFile.files.length);
+				
 				if(inputFile.files.length == 1){    //선택한 파일이 존재
 
 					if(status == 'addRepVideo'){ 
@@ -314,22 +315,25 @@
 						reader.readAsDataURL(inputFile.files[0]);
 						reader.onload = function(e){$(inputFile).siblings('div').children('img').attr("src", e.target.result);}
 						$(inputFile).siblings('div').children('div').text("동영상 등록");
+						console.log('axa');
 					} 
 
 				}else{ // 선택한 파일이 없는 경우
-
+					console.log(status + 'x');
 					if(status == 'addRepVideo'){ // 비디오
 						$(inputFile).attr("src", null);
 						$(inputFile).siblings('div').children('img').attr("src", null);
 						$(inputFile).siblings('div').children('div').text("동영상 등록");
 					}else{ // 이미지
+						console.log('aa');
 						$(inputFile).attr("src", null);
 						$('.intro-file').removeAttr("src");
+						$('#intro-img').attr('src', null);
 					}
 
 				}
 
-
+				enableSubmit();
 			}
 			</script>
 	</div>
