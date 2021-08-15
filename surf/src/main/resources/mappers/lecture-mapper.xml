@@ -261,18 +261,9 @@
 		                  ) t 
 		                  on l.user_no = t.teacher_no
 		 where l.status = 'O'
+		   and subcat_no = #{sno}
 		 order 
-		 <choose>
-		 	<when test="sno == 3">
-		    	by students desc
-		    </when>
-		    <when test="sno == 2">
-		    	by star desc
-		    </when>
-		    <otherwise>
-		    	by scrap desc
-		    </otherwise>
-		 </choose>
+		    by star desc
 	</select>
 	
 	<!-- 
@@ -347,6 +338,8 @@
              , chap_order
              , video_order
              , sub_title
+             , origin_name
+             , change_name
           from class_video
          where class_no = #{classNo}
          order
