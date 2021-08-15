@@ -103,5 +103,22 @@ public class StudyBoardDao {
 		return (ArrayList)sqlSession.selectList("studyboardMapper.selectList", map, rowBounds);
 	}
 	
+	/** @author 서정연
+	 * 신고관리 리스트페이지 조회수용
+	 */
+	public int selectReportCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("studyboardMapper.selectReportCount");
+	}
+
+	/** @author 서정연
+	 * 신고관리 리스트페이지 조회용
+	 */
+	public ArrayList<Report> selectReportList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("studyboardMapper.selectReportList", null, rowBounds);
+	}	
+	
 	
 }

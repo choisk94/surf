@@ -76,7 +76,7 @@
               </li>
               <li><a href="#">커뮤니티관리</a>
               </li>
-              <li><a href="report.ad">신고관리</a>
+              <li><a href="reportList.ad">신고관리</a>
               </li>
             </ul>
           </div>

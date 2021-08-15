@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.studyBoard.model.vo.Report;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface AdminBoardService {
@@ -70,10 +71,6 @@ public interface AdminBoardService {
 	   int updateTeacher(int teaherNo);
 	   
 
-	   
-	   /** 신고관리 **/
-	   // 1. 신고 게시판 리스트 페이지 조회용 (페이징)
-	   
-	   // 2. 신고글 블라인드,기각
+
 	   
 }

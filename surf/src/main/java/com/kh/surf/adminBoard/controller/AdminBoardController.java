@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -23,8 +23,7 @@ import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
-import com.kh.surf.lecture.model.vo.Survey;
-import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.studyBoard.model.vo.Report;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -273,7 +272,6 @@ public class AdminBoardController {
 	 */
 	@RequestMapping("deleteFaq.ad")
 	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
-		System.out.println(bno);
 		int result = abService.deleteAdminFaq(bno);
 		if (result > 0) { // 성공 => 리스트페이지
 
@@ -287,6 +285,8 @@ public class AdminBoardController {
 
 	}
 
+
+	
 	/**
 	 * @author 서정연 관리자 FAQ 글수정
 	 */
@@ -333,6 +333,8 @@ public class AdminBoardController {
 		return mv;
 
 	}
+
+
 
 	
 	

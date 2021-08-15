@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.studyBoard.model.vo.Report;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -111,12 +112,13 @@ public class AdminBoardDao {
 		
 		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectTeacherList", null, rowBounds);
 	}
-	
+
+	// 강사신청 리스트 상세조회(관리자)
 	public Teacher selectTeacher(SqlSessionTemplate sqlSession, int tno) {
 		return sqlSession.selectOne("adminBoardMapper.selectTeacher", tno);
 	}
 	
-	/** 신고관리  **/
+
 	
 
 }

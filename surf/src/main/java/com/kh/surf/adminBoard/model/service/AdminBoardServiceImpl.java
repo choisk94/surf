@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.surf.adminBoard.model.dao.AdminBoardDao;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.studyBoard.model.vo.Report;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Service
@@ -129,6 +130,10 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
+
 
 
 }

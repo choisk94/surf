@@ -25,6 +25,18 @@
 		<result column="create_date" property="createDate"/>
 		<result column="modify_date" property="modifyDate"/>
 	</resultMap>
+	
+	<resultMap id="adminReportResult" type="Report">
+		<result column="report_no" property="reportNo"/>
+		<result column="reporter" property="reporter"/>
+		<result column="reported" property="reported"/>
+		<result column="ref_type" property="refType"/>
+		<result column="ref_no" property="refNo"/>
+		<result column="report_content" property="reportContent"/>
+		<result column="report_date" property="reportDate"/>
+		<result column="rsno" property="rsno"/>
+		<result column="status" property="status"/>
+	</resultMap>
 
 	<select id="selectListCount" resultType="_int">
 		select count(*)
@@ -196,6 +208,32 @@
 		  , 'N'
 		  )
 	</insert>
+	
+	<!--
+		신고관리 리스트 페이지 조회수용
+		@author 서정연 관리자
+	-->	
+	<select id="selectReportCount" resultType="_int">
+		select
+		       count(*)
+		  from report
+		 where status = 'N'       
+	</select>
+	
+	<select id="selectReportList" resultMap="adminReportResult">
+		select
+		       report_no
+		     , reporter
+		     , reported
+		     , ref_type
+		     , report_content
+		     , to_char(report_date, 'YYYY-MM-DD') as report_date
+             , status
+          from report
+         where status ='N'
+         order
+            by report_no desc
+	</select>	
 
 </mapper>
 

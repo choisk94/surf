@@ -25,6 +25,8 @@
 		<result column="maincat_name" property="mainCatName"/>		
 		<result column="status" property="status"/>
 	</resultMap>
+	
+
 
 
 	<!--
@@ -325,6 +327,6 @@
            and t.status = 'Y'
 	</select>
 	
-	<!-- 신고관리  -->
+
 
 </mapper>

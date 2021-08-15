@@ -214,6 +214,26 @@ public class StudyBoardController {
 		return mv;
 	}
 	
+	/** @author 서정연 
+	 * 관리자 신고관리 리스트페이지
+	 */
+	@RequestMapping("reportList.ad")
+	public ModelAndView selectReportList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
+		int listCount = sbService.selectReportCount();
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Report> list = sbService.selectReportList(pi);
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("adminBoard/adReportList");
+
+		return mv;
+		
+	}
+	
+
+	
 	
 }
 

@@ -72,5 +72,33 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 		return sbDao.selectList(sqlSession, map, pi);
 	}
 	
+	@Override
+	public int selectReportCount() {
+		return sbDao.selectReportCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Report> selectReportList(PageInfo pi) {
+		return sbDao.selectReportList(sqlSession, pi);
+	}
+	
+	@Override
+	public Study selectReport(int reportNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int increaseReportCount(int reportNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int updateReport(int reportNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

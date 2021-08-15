@@ -32,7 +32,7 @@
           </div>
         </div>
         <hr>
-        <table class="table">
+        <table id="adReportList" class="table" align="center">
           <thead>
             <tr style="background-color: rgb(224, 224, 224)">
               <td width="70">번호</td>
@@ -45,71 +45,65 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>45</td>
-              <td>user10</td>
-              <td>black10</td>
-              <td>댓글</td>
-              <td>부적절한 홍보 게시물</td>
-              <td>2021-07-16</td>
-              <td>대기중</td>
-            </tr>
-            <tr>
-              <td>44</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>게시글</td>
-              <td>명예훼손/사생활침해 및 저작권침해 등</td>
-              <td>2021-07-16</td>
-              <td>기각</td>
-            </tr>
-            <tr>
-              <td>43</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>게시글</td>
-              <td>부적절한 홍보 게시물</td>
-              <td>2021-07-16</td>
-              <td>블라인드</td>
-            </tr>
-            <tr>
-              <td>42</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>댓글</td>
-              <td>욕설 및 비방</td>
-              <td>2021-07-16</td>
-              <td>블라인드</td>
-            </tr>
-            <tr>
-              <td>41</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>댓글</td>
-              <td>욕설 및 비방</td>
-              <td>2021-07-16</td>
-              <td>블라인드</td>
-            </tr>
-            <tr>
-              <td>40</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>게시글</td>
-              <td>명예훼손/사생활침해 및 저작권침해 등</td>
-              <td>2021-07-16</td>
-              <td>기각</td>
-            </tr>
-            <tr>
-              <td>39</td>
-              <td>user09</td>
-              <td>black09</td>
-              <td>게시글</td>
-              <td>부적절한 홍보 게시물</td>
-              <td>2021-07-16</td>
-              <td>블라인드</td>
-            </tr>
+          	<c:forEach var="p" items="${ list }">
+	            <tr>
+	              <td>${ p.reportNo }</td>
+	              <td>${ p.reporter }</td>
+	              <td>${ p.reported }</td>
+	              <td>${ p.refType }</td>
+	              <td data-toggle="modal" data-target="#selectReport">${ p.reportContent }</td>
+	              <td>${ p.reportDate }</td>
+	              <c:choose>
+		           	  <c:when test="${ p.status == 'N' }">
+		              	<td style="color:green">처리 전</td>
+		              </c:when>
+		           	  <c:when test="${ p.status == 'B' }">
+		              	<td style="color:red">블라인드</td>
+		              </c:when>
+		              <c:otherwise>
+		              	<td>기각</td>
+		              </c:otherwise>
+	            </c:choose>
+	            </tr>
+            </c:forEach>
           </tbody>
         </table>
+        
+    <!-- 신고 내용조회 모달창 -->
+        <div class="modal" id="selectReport">
+        	<div class="modal-dialog">
+        		<div class="modal-content">
+        			<form action="selectReport.ad" method="post">
+	        			<div class="modal-header">
+	        			<h4 class="modal-title">신고글 조회</h4>
+	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        			</div>
+	        			
+	        			<div class="modal-body" align="center">
+		        				<table class="table">
+		        					<tr>
+		        						<td>신고 유형</td>
+		        						<td>${ p.refType }</td>
+		        					</tr>
+		        					<tr>
+		        						<td>신고 사유</td>
+		        						<td>${ p.reportContent }</td>
+		        					</tr>
+		        					<tr>
+		        						<td>내용</td>
+		        						<td></td>
+		        					</tr>
+		        				</table>
+	        			</div>
+	        			<div class="modal-footer">
+	        				<button type="submit" class="btn btn-primary">블라인드</button>
+	        				<button type="submit" class="btn btn-secondary">기각</button>
+	        			</div>
+        			</form>
+        		</div>
+        	</div>
+        </div>
+        
         <br>
         <!--여기서부터 페이지이동-->
         <ul class="pagination justify-content-center">
