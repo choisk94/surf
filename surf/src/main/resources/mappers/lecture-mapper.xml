@@ -57,6 +57,7 @@
 		<result column="sub_title" property="subTitle"/>
 		<result column="origin_name" property="originName"/>
 		<result column="change_name" property="changeName"/>
+		<result column="watched" property="watched"/>
 	</resultMap>
 	
 	<resultMap id="chapterResult" type="Chapter">
@@ -519,8 +520,11 @@
 			 , sub_title
 			 , origin_name
 			 , change_name
+			 , watched
 		  from class_video
+		  join progress using(video_no)
 		 where class_no = #{classNo}
+		   and user_no = #{userNo}
 		 order
 		    by chap_order asc
 		     , video_order asc
@@ -817,6 +821,45 @@
 	  		</choose>
 	  	 where class_no = #{classNo}
 	  	   and user_no = #{userNo}
-	  
 	  </update>
+	  
+	  <!-- 
+		  	회원 영상 시청 기록 수정
+		 	@author HeeRak
+	   -->
+	   <update id="ajaxUpdateWatched" parameterType="Progress">
+	   	update progress
+	   	   set watched = 'Y'
+	   	 where user_no = #{userNo}
+	   	   and video_no = #{videoNo}
+	   	   and watched = 'N'
+	   </update>
+	   
+	   <!-- 
+	   		회원 영상시청 진척도
+	   		@author HeeRak
+	    -->
+	   <select id="ajaxLoadStudingDegree" resultType="_int" parameterType="ClassStuding">
+	   	select round(count(watched) /  (select count(video_no)
+                           from class_video
+                          where class_no = 7) * 100, 0)
+		  from progress
+		 where user_no = #{userNo}
+		   and video_no in(select video_no
+		                     from class_video
+		                    where class_no = #{classNo})
+		 group by watched
+		 having watched = 'Y'
+	   </select>
+	   
+	   <!-- 
+	   		회원 최근 영상시청 번호 조회
+	   		@author HeeRak
+	    -->
+	   <select id="ajaxlastViewVideoLoad" resultType="_int">
+	   	select video_no
+	   	  from class_studing
+	   	 where user_no = #{userNo}
+	   	   and class_no = #{classNo}
+	   </select>
 </mapper>

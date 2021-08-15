@@ -18,6 +18,7 @@ public class ClassVideo {
 	private String subTitle;
 	private String originName;
 	private String changeName;
+	private String watched;
 	
 	private ArrayList<ClassVideo> cvList;
 }

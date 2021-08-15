@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.Progress;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -38,9 +40,18 @@ public interface MemberService {
 	ArrayList<Chapter> selectChapterList(int classNo);
 	
 	// 클래스 번호로 '강의영상목록' 가져오기
-	ArrayList<ClassVideo> ajaxSelectVideoList(int classNo);
+	ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l);
 	
-	// 마지막 비디오 시청 기록
+	// 마지막로 본 비디오 번호 저장 
 	int ajaxUpdateClassStuding(ClassStuding cs);
+	
+	// 비디오 시청기록 수정
+	int ajaxUpdateWatched(Progress pg);
+	
+	// 강의 시청 진척도
+	int ajaxLoadStudingDegree(ClassStuding cs);
+	
+	// 마지막 시청 강의 번호 조회
+	int ajaxlastViewVideoLoad(ClassStuding cs);
 	
 }

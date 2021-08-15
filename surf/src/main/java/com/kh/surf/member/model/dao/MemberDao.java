@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.Progress;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -84,8 +86,8 @@ public class MemberDao {
 	 * @author HeeRak
 	 * 클래스 번호로 강의영상목록 조회
 	 */
-	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo, SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoList", classNo);
+	public ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoList", l);
 	}
 	
 	/**
@@ -94,5 +96,29 @@ public class MemberDao {
 	 */
 	public int ajaxUpdateClassStuding(ClassStuding cs, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.ajaxUpdateClassStuding", cs);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 영상 시청 기록 수정
+	 */
+	public int ajaxUpdateWatched(Progress pg, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("lectureMapper.ajaxUpdateWatched", pg);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 강의 시청 진척도
+	 */
+	public int ajaxLoadStudingDegree(ClassStuding cs, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", cs);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 마지막 시청영상 번호 조회
+	 */
+	public int ajaxlastViewVideoLoad(ClassStuding cs, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("lectureMapper.ajaxlastViewVideoLoad", cs);
 	}
 }
