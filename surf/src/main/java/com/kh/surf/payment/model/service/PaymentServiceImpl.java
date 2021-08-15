@@ -18,6 +18,11 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
+	@Override
+	public int insertPayment(Payment p) {
+		return pDao.insertPayment(sqlSession, p);
+	}
 	
 	/**
 	 * @author leeyeji

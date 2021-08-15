@@ -1,18 +1,14 @@
 package com.kh.surf.payment.controller;
 
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.common.template.Pagination;
-import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.payment.model.service.PaymentService;
 import com.kh.surf.payment.model.vo.Payment;
 
@@ -38,4 +34,18 @@ public class PaymentController {
 		return mv;
 	}
 	*/
+	
+	/**
+	 * @author leeyeji
+	 * 결제 성공
+	 */
+	@ResponseBody
+	@RequestMapping(value="payments.do", method = RequestMethod.POST)
+	public int paymentSuccess(Payment p) {
+		int result = pService.insertPayment(p);
+		return result;
+	}
+	
+	
+	
 }

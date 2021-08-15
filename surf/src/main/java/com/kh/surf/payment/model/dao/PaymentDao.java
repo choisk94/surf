@@ -1,12 +1,8 @@
 package com.kh.surf.payment.model.dao;
 
-import java.util.ArrayList;
-
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.payment.model.vo.Payment;
 
 @Repository
@@ -33,5 +29,13 @@ public class PaymentDao {
 		return (ArrayList)sqlSession.selectList("paymentMapper.selectOrderList", userNo, rowBounds);
 	}
 	*/
+	
+	/**
+	 * @author leeyeji
+	 * 주문 내용 추가
+	 */
+	public int insertPayment(SqlSessionTemplate sqlSession, Payment p) {
+		return sqlSession.insert("paymentMapper.insertPayment", p);
+	}
 
 }
