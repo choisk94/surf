@@ -27,131 +27,122 @@ import com.kh.surf.lecture.model.vo.Survey;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
-
 @Controller
 public class AdminBoardController {
-	
+
 	@Autowired
 	private AdminBoardService abService;
-	
+
 	/**
-	 * @param 서정연
-	 * @param 공지사항 리스트조회(관리자)
-	 * @return
+	 * @author 서정연 관리자 공지사항 리스트 페이지
 	 */
 	@RequestMapping("noticeList.ad")
-	public ModelAndView selectList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView selectList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
 		int listCount = abService.selectNoticeCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .setViewName("adminBoard/adNoticeList");
-		
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("adminBoard/adNoticeList");
+
 		return mv;
 	}
-	
+
 	/**
-	 * @return 공지사항 글등록페이지(관리자) 
+	 * @author 서정연 관리자 공지사항 글등록 페이지
 	 */
 	@RequestMapping("enrollNotice.ad")
 	public String enrollNotice() {
 		return "adminBoard/adNoticeEnroll";
 	}
-	
+
 	/**
-	 * @param 서정연
-	 * @param 공지사항 글등록하기(관리자)
-	 * @param 
-	 * @return
+	 * @author 서정연 관리자 공지사항 글작성
 	 */
 	@RequestMapping("insertNotice.ad")
 	public String insertNotice(AdminBoard ab, HttpSession session, Model model) {
-		
-		  int result = abService.insertAdminNotice(ab);
-	      
-	      if(result > 0) { // 성공 => 게시글 리스트페이지
-	         session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
-	         return "redirect:noticeList.ad";
-	      }else { // 실패 => 에러페이지
-	         model.addAttribute("errorMsg", "게시글 등록 실패");
-	         return "common/errorPage";
-	      }
-		
+
+		int result = abService.insertAdminNotice(ab);
+
+		if (result > 0) { // 성공 => 게시글 리스트페이지
+			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+			return "redirect:noticeList.ad";
+		} else { // 실패 => 에러페이지
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/errorPage";
+		}
+
 	}
-	
+
 	/**
-	 * @param 서정연
-	 * @param 공지사항 상세조회(관리자)
-	 * @return
+	 * @author 서정연 관리자 공지사항 상세조회
 	 */
 	@RequestMapping("detailNotice.ad")
 	public ModelAndView selectAdminNotice(int bno, ModelAndView mv) {
 		int result = abService.increaseCountNotice(bno);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			AdminBoard ab = abService.selectAdminNotice(bno);
 			mv.addObject("ab", ab).setViewName("adminBoard/adNoticeDetail");
-		}else {
+		} else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
 		}
 		return mv;
 	}
-	
+
 	/**
-	 * @param 서정연
-	 * @param 공지사항 글삭제
-	 * @param 
-	 * @return
+	 * @author 서정연 관리자 공지사항 글삭제
 	 */
 	@RequestMapping("deleteNotice.ad")
 	public String deleteAdminNotice(int bno, Model model, HttpSession session) {
-		
+
 		int result = abService.deleteAdminNotice(bno);
-		
-		if(result > 0) { // 성공 => 리스트페이지
-			
+
+		if (result > 0) { // 성공 => 리스트페이지
+
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
 			return "redirect:noticeList.ad";
-			
-		}else { // 실패
+
+		} else { // 실패
 			model.addAttribute("errorMsg", "게시글 삭제 실패");
 			return "common/errorPage";
 		}
-	
+
 	}
-	
+
+	/**
+	 * @author 서정연 관리자 공지사항 수정페이지
+	 */	
 	@RequestMapping("updateFormNotice.ad")
 	public String updateFormAdminNotice(int bno, Model model) {
-		
+
 		model.addAttribute("ab", abService.selectAdminNotice(bno));
 		return "adminBoard/adNoticeModify";
-		
+
 	}
-	
+
 	/**
-	 * @param 서정연
-	 * @param 공지사항 글수정
-	 * @param 
-	 * @return
+	 * @author 서정연 관리자 공지사항 글수정
 	 */
 	@RequestMapping("updateNotice.ad")
 	public String updateAdminNotice(AdminBoard ab, Model model, HttpSession session) {
 		int result = abService.updateAdminNotice(ab);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
 			return "redirect:detailNotice.ad?bno=" + ab.getBoardNo();
-		}else {
+		} else {
 			model.addAttribute("errorMsg", "게시글 수정 실패");
 			return "common/errorPage";
 		}
 	}
+
 	
-	
+	/**
+	 * @author 서정연 관리자 공지사항 검색(고쳐야함)
+	 */	
 	@RequestMapping("searchNotice.ad")
 	public ModelAndView selectSearchNoticeList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
@@ -172,75 +163,54 @@ public class AdminBoardController {
 		return mv;
 
 	}
-	
-	
+
 	/**
-	 * @param 서정연
-	 * @param FAQ페이지(관리자)
-	 * @return
+	 * @author 서정연 관리자 FAQ 리스트페이지
 	 */
 	@RequestMapping("faqList.ad")
-	public String selectListFaq(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public String selectListFaq(Model model, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
 		int listCount = abService.selectFaqCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
-		
+
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
-		
+
 		return "adminBoard/adFaqList";
 	}
-	
+
+
+
+	/**********************************************************************************/
 
 	/**
-	 * @param 서정연
-	 * @param FAQ 글작성 (관리자)
-	 * @param 
-	 * @return
-	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**********************************************************************************/
-	
-	/** @author 최서경
-	 * 사용자 공지사항 목록 조회
+	 * @author 최서경 사용자 공지사항 목록 조회
 	 */
 	@RequestMapping("list.no")
-	public ModelAndView selectNoticeList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView selectNoticeList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
 		int listCount = abService.selectNoticeCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .setViewName("adminBoard/noticeBoardList");
-		
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("adminBoard/noticeBoardList");
+
 		return mv;
 	}
-	
-	/** @author 최서경
-	 * 사용자 공지사항 상세 조회
+
+	/**
+	 * @author 최서경 사용자 공지사항 상세 조회
 	 */
 	@RequestMapping("detail.no")
 	public ModelAndView detailNotice(ModelAndView mv, int nno) {
-		
+
 		int result = abService.increaseCountNotice(nno);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			AdminBoard notice = abService.selectAdminNotice(nno);
 			mv.addObject("notice", notice).setViewName("adminBoard/noticeBoardDetail");
 		} else {
@@ -248,162 +218,145 @@ public class AdminBoardController {
 		}
 		return mv;
 	}
-	
-	/** @author 최서경
-	 * 사용자 공지사항 더보기
+
+	/**
+	 * @author 최서경 사용자 공지사항 더보기
 	 */
 	@ResponseBody
-	@RequestMapping(value="more.no", produces="application/json; charset=utf-8")
+	@RequestMapping(value = "more.no", produces = "application/json; charset=utf-8")
 	public String moreNotice(int currentPage) {
-		
+
 		int listCount = abService.selectNoticeCount();
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-		
+
 		ArrayList<AdminBoard> list = abService.selectNoticeList(pi);
-		
+
 		return new Gson().toJson(list);
 	}
-	
-	/** @author 최서경
-	 * 사용자 FAQ 목록 조회
+
+	/**
+	 * @author 최서경 사용자 FAQ 목록 조회
 	 */
 	@RequestMapping("list.faq")
 	public ModelAndView selectFaqList(ModelAndView mv) {
 		int listCount = abService.selectFaqCount();
 		PageInfo pi = Pagination.getPageInfo(listCount, 1, 100, 100);
 		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
-		
+
 		mv.addObject("list", list).setViewName("adminBoard/faqBoard");
-		
+
 		return mv;
 	}
-	
-	/*******************************************************************************************************/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	/*******************************************************************************************************/
+
+	/**
+	 * @author 서정연 관리자 FAQ 글작성
+	 */
 	@RequestMapping("insertFaq.ad")
 	public String enrollFaq(AdminBoard ab, HttpSession session, Model model) {
-		
-        int result = abService.insertAdminFaq(ab);
-        
-        if(result > 0) { // 성공 => 게시글 리스트페이지
-           session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
-           return "redirect:faqList.ad";
-        }else { // 실패 => 에러페이지
-           model.addAttribute("errorMsg", "게시글 등록 실패");
-           return "common/errorPage";
-        }
-		
+
+		int result = abService.insertAdminFaq(ab);
+
+		if (result > 0) { // 성공 => 게시글 리스트페이지
+			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+			return "redirect:faqList.ad";
+		} else { // 실패 => 에러페이지
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/errorPage";
+		}
+
 	}
-	
+
 	/**
-	 * @param 서정연
-	 * @param FAQ 글삭제 (관리자)
-	 * @param 
-	 * @return
+	 * @author 서정연 관리자 FAQ 글삭제
 	 */
 	@RequestMapping("deleteFaq.ad")
 	public String deleteAdminFaq(int bno, Model model, HttpSession session) {
 		System.out.println(bno);
 		int result = abService.deleteAdminFaq(bno);
-		if(result > 0) { // 성공 => 리스트페이지
-			
+		if (result > 0) { // 성공 => 리스트페이지
+
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
 			return "redirect:faqList.ad";
-			
-		}else { // 실패
+
+		} else { // 실패
 			model.addAttribute("errorMsg", "게시글 삭제 실패");
 			return "common/errorPage";
 		}
-		
+
 	}
 
-	
 	/**
-	 * @param 서정연
-	 * @param FAQ 글수정 (관리자)
-	 * @param 
-	 * @return
+	 * @author 서정연 관리자 FAQ 글수정
 	 */
 	@RequestMapping("updateFaq.ad")
 	public String updateAdminFaq(AdminBoard ab, Model model, HttpSession session) {
 		int result = abService.updateAdminFaq(ab);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
 			return "redirect:faqList.ad?bno=" + ab.getBoardNo();
-		}else {
+		} else {
 			model.addAttribute("errorMsg", "게시글 수정 실패");
 			return "common/errorPage";
 		}
 	}
 
-	
 	/**********************************************************************************/
-	
-	
+
+	/**
+	 * @author 서정연 관리자 강사신청 리스트페이지
+	 */
 	@RequestMapping("teacherList.ad")
-	public ModelAndView selectTeacherList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView selectTeacherList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 		int listCount = abService.selectTeacherCount();
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Teacher> list = abService.selectTeacherList(pi);
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .setViewName("adminBoard/adTeacherList");
-		
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("adminBoard/adTeacherList");
+
 		return mv;
 	}
-	
+
+	/**
+	 * @author 서정연 관리자 강사신청 상세조회
+	 */
 	@RequestMapping("detailTeacher.ad")
 	public ModelAndView selectTeacher(int tno, ModelAndView mv) {
 
 		Teacher t = abService.selectTeacher(tno);
 		mv.addObject("t", t).setViewName("adminBoard/adTeacherDetail");
-		
+
 		return mv;
-		
 
 	}
-	
 
 	
+	
 	public String saveFile(HttpSession session, MultipartFile upfile, String path) {
-		
+
 		String savePath = session.getServletContext().getRealPath(path);
-		
+
 		String originName = upfile.getOriginalFilename();
-		
+
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // java.util.Date
-		int ranNum = (int)(Math.random() * 90000 + 10000); //  * 개수 + 시작수
+		int ranNum = (int) (Math.random() * 90000 + 10000); // * 개수 + 시작수
 		String ext = originName.substring(originName.lastIndexOf(".")); // 뒤에서부터 . 찾아서 인덱스
-		
+
 		String changeName = currentTime + ranNum + ext; // 숫자 + 문자열 => 문자열
-		
+
 		// 서버에 파일 업로드(파일이름 바꾸면서)
-		
+
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return changeName;
 	}
-	
-
 
 }

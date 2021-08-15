@@ -27,7 +27,10 @@
 	</resultMap>
 
 
-	<!-- 공지사항  -->
+	<!--
+		공지사항 리스트 페이지 조회수용
+		@author 서정연 관리자
+	-->	
 	<select id="selectNoticeCount" resultType="_int">
 		select
 		       count(*)
@@ -35,7 +38,11 @@
 		 where board_type = '공지사항'
 		   and status = 'Y'
 	</select>
-	
+
+	<!--
+		공지사항 리스트 페이지 조회용
+		@author 서정연 관리자
+	-->	
 	<select id="selectNoticeList" resultMap="adminBoardResult">
 		select
 		       board_no
@@ -50,7 +57,11 @@
 		 order
 		    by board_no desc
 	</select>
-	
+
+	<!--
+		공지사항 글작성용
+		@author 서정연 관리자
+	-->		
 	<insert id="insertAdminNotice">
 		insert
 		  into admin_board
@@ -70,7 +81,11 @@
 		  , '공지사항'
 		  )
 	</insert>
-	
+
+	<!--
+		공지사항 상세조회수용
+		@author 서정연 관리자
+	-->		
 	<update id="increaseCountNotice">
 		update
 		       admin_board
@@ -80,6 +95,10 @@
 		   and status = 'Y'
 	</update>
 	
+	<!--
+		공지사항 상세조회용
+		@author 서정연 관리자
+	-->	
 	<select id="selectAdminNotice" resultMap="adminBoardResult">
 		select
 		       board_no
@@ -92,14 +111,22 @@
           join member m on m.user_no = a.user_no
 		 where board_no = #{boardNo}
 	</select>
-	
+
+	<!--
+		공지사항 글삭제용
+		@author 서정연 관리자
+	-->		
 	<update id="deleteAdminNotice">
 		update
 		       admin_board
 		   set status = 'N'
 		 where board_no = #{boardNo}
 	</update>
-	
+
+	<!--
+		공지사항 글수정용
+		@author 서정연 관리자
+	-->		
 	<update id="updateAdminNotice">
 		update
 			   admin_board
@@ -107,7 +134,11 @@
 		     , board_content = #{boardContent}
 		 where board_no = #{boardNo}
 	</update>
-	
+
+	<!--
+		공지사항 리스트 검색 카운트
+		@author 서정연 관리자
+	-->		
 	<select id="selectSearchNoticeListCount" resultType="_int">
 		select
 		       count(*)
@@ -128,7 +159,11 @@
 		   </choose>
 					like '%' || #{keyword} || '%'
 	</select>
-	
+
+	<!--
+		공지사항 리스트 검색용
+		@author 서정연 관리자
+	-->		
 	<select id="selectSearchNoticeList" resultMap="adminBoardResult">
 		select
 		       board_no
@@ -157,7 +192,10 @@
 	</select>
 	
 	
-	<!-- FAQ -->	
+	<!--
+		FAQ 리스트 페이지 조회수용
+		@author 서정연 관리자
+	-->	
 	<select id="selectFaqCount" resultType="_int">
 		select
 		       count(*)
@@ -165,7 +203,11 @@
 		 where board_type = 'FAQ'
 		   and status = 'Y'
 	</select>
-	
+
+	<!--
+		FAQ 리스트 페이지 조회용
+		@author 서정연 관리자
+	-->		
 	<select id="selectFaqList" resultMap="adminBoardResult">
 		select
 		       board_no
@@ -178,7 +220,11 @@
 		 order
 		    by board_no desc
 	</select>
-	
+
+	<!--
+		FAQ 글작성용
+		@author 서정연 관리자
+	-->	
 	<insert id="insertAdminFaq">
 		insert
 		  into admin_board
@@ -200,14 +246,22 @@
 		  , #{faqCategory}
 		  )
 	</insert>
-	
+
+	<!--
+		FAQ 글삭제용
+		@author 서정연 관리자
+	-->		
 	<update id="deleteAdminFaq">
 		update
 		       admin_board
 		   set status = 'N'
 		 where board_no = #{boardNo}
 	</update>
-	
+
+	<!--
+		FAQ 글수정용
+		@author 서정연 관리자
+	-->		
 	<update id="updateAdminFaq">
 		update
 			   admin_board
@@ -218,14 +272,21 @@
 	</update>	
 
 
-	<!-- 강사신청  -->
+	<!--
+		강사신청 리스트 페이지 조회수용
+		@author 서정연 관리자
+	-->	
 	<select id="selectTeacherCount" resultType="_int">
 		select
 		       count(*)
 		  from teacher
 		 where status = 'Y'      
 	</select>
-	
+
+	<!--
+		FAQ 리스트 페이지 조회용
+		@author 서정연 관리자
+	-->		
 	<select id="selectTeacherList" resultMap="adminTeacherResult">
 		select
 			   teacher_no
@@ -242,7 +303,10 @@
 		    by teacher_no desc
 	</select>
 	
-	
+	<!--
+		FAQ 상세페이지 조회용
+		@author 서정연 관리자
+	-->		
 	<select id="selectTeacher" resultMap="adminTeacherResult">
 		select
 		       teacher_no

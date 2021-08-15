@@ -42,23 +42,28 @@
 				<img src="${t.profileImage}">
 			</div>
 			<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">			
-			<br> 이메일<br> <input type="email" class="form-control" name="emial" value="${ t.email }"><br>
-			<br> 강사명<br> <input type="text" class="form-control" name="nickname" value="${ t.nickname }"><br>
-			<br> 핸드폰 번호<br> <input type="text" class="form-control" name="phone" value="${ t.phone }"><br>
+			<br> 이메일<br> 
+				<input type="email" class="form-control" name="emial" value="${ t.email }"><br>
+			<br> 강사명<br> 
+				<input type="text" class="form-control" name="nickname" value="${ t.nickname }"><br>
+			<br> 핸드폰 번호<br> 
+				<input type="text" class="form-control" name="phone" value="${ t.phone }"><br>
 			<br> 강사님을 소개해주세요<br>
-			<textarea class="form-control" name="introContent">${ t.introContent }</textarea>
+				<textarea class="form-control" name="introContent" rows="10">${ t.introContent }</textarea>
 			<br>
-			<br> 어떤 강의를 열고 싶으신가요?<br> <select name="mainCatName" id="">
+			<br> 어떤 강의를 열고 싶으신가요?<br>
+			<select name="mainCatName" id="">
 				<option value="대분류">${ t.mainCatName }</option>
-			</select> <select name="subCatName" id="">
+			</select> 
+			<select name="subCatName" id="">
 				<option value="소분류">${ t.subCatName }</option>
 			</select> <br>
 			<br>
 			</div>
 		</form>
 		<div id="btn2">
-			<a class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; <a
-				class="btn btn-danger" href="">반려</a>
+			<a class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; 
+			<a class="btn btn-danger" href="">반려</a>
 		</div>
 	</div>
 	
