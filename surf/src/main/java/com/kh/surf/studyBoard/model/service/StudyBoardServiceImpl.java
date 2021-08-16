@@ -93,12 +93,15 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 	@Override
-	public int updateReport(int reportNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateB(int reportNo) {
+		return sbDao.updateB(sqlSession, reportNo);
 	}
+	@Override
+	public int updateR(int reportNo) {
+		return sbDao.updateR(sqlSession, reportNo);
+	}
+	
 
 
 }

@@ -23,7 +23,6 @@ import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
-import com.kh.surf.studyBoard.model.vo.Report;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -163,23 +162,6 @@ public class AdminBoardController {
 
 	}
 
-	/**
-	 * @author 서정연 관리자 FAQ 리스트페이지
-	 */
-	@RequestMapping("faqList.ad")
-	public String selectListFaq(Model model, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-
-		int listCount = abService.selectFaqCount();
-
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
-
-		model.addAttribute("pi", pi);
-		model.addAttribute("list", list);
-
-		return "adminBoard/adFaqList";
-	}
-
 
 
 	/**********************************************************************************/
@@ -249,6 +231,25 @@ public class AdminBoardController {
 
 	/*******************************************************************************************************/
 
+	
+	/**
+	 * @author 서정연 관리자 FAQ 리스트페이지
+	 */
+	@RequestMapping("faqList.ad")
+	public String selectListFaq(Model model, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
+		int listCount = abService.selectFaqCount();
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectFaqList(pi);
+
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+
+		return "adminBoard/adFaqList";
+	}
+	
+	
 	/**
 	 * @author 서정연 관리자 FAQ 글작성
 	 */
@@ -284,8 +285,7 @@ public class AdminBoardController {
 		}
 
 	}
-
-
+	
 	
 	/**
 	 * @author 서정연 관리자 FAQ 글수정
