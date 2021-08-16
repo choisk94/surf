@@ -18,7 +18,7 @@
         </div>
         <hr>
         <div align="center">
-                <table class="table table-hover" style="width: 500px;">
+                <table class="table table-bordered" style="width: 1000px;">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td>${ Ad.adTitle }</td>

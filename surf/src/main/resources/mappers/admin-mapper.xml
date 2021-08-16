@@ -68,6 +68,32 @@
 		<result column="START_DATE" property="startDate"/>
 	</resultMap>
 	
+	<resultMap id="lectureResult" type="Lecture">
+  		<result column="class_no" property="classNo"/>
+  		<result column="class_title" property="classTitle"/>
+  		<result column="create_date" property="createDate"/>
+  		<result column="thumbnail" property="thumbnail"/>
+  		<result column="intro_file" property="introFile"/>
+  		<result column="intro_title" property="introTitle"/>
+  		<result column="intro_content" property="introContent"/>
+  		<result column="status" property="status"/>
+  		<result column="period" property="period"/>
+  		<result column="need" property="need"/>
+  		<result column="note" property="note"/>
+  		<result column="pos_term" property="posTerm"/>
+  		<result column="price" property="price"/>
+  		<result column="subcat_no" property="subcatNo"/>
+  		<result column="user_no" property="userNo"/>
+		<result column="count" property="fundingCount"/>
+		<result column="nickname" property="teacherName"/>
+		<result column="subcat_name" property="subCat"/>
+		<result column="maincat_name" property="mainCat"/>
+		<result column="scrap" property="scrapCount"/>
+		<result column="students" property="students"/>  	
+		<result column="star" property="star"/>
+		<result column="surveyCount" property="surveyCount"/>
+	</resultMap>
+	
 	<select id="selectAdmin" resultMap="memberResult">
 		SELECT
             USER_NO,
@@ -85,6 +111,26 @@
       AND   status = 'N'
       AND	user_code = 'A'
 	</select>
+	
+	<select id="selectLectureDetail" parameterType="Lecture" resultMap="lectureResult">
+	 	select class_no
+			 , class_title
+			 , create_date
+			 , thumbnail
+			 , intro_file
+			 , intro_title
+			 , intro_content
+			 , status
+			 , period
+			 , need
+			 , note
+			 , pos_term
+			 , price
+			 , subcat_no
+		  from lecture
+		 where class_no = #{classNo}
+		   and status != 'D'
+	 </select>
 	
 	<select id="selectLectureListCount" resultType="_int">
 		select
