@@ -1,14 +1,20 @@
 package com.kh.surf.payment.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.common.template.Pagination;
+import com.kh.surf.lecture.model.vo.ClassVideo;
 import com.kh.surf.payment.model.service.PaymentService;
 import com.kh.surf.payment.model.vo.Payment;
 
@@ -22,18 +28,16 @@ public class PaymentController {
 	 * @author leeyeji
 	 * 주문 목록 조회용
 	 */
-	/*
 	@RequestMapping("orderList.mem")
-	public ModelAndView selectOrderList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, HttpSession session) {
-		Member m = (Member)session.getAttribute("loginUser");
-		int userNo = m.getUserNo();
-		int listCount = pService.selectListCount(userNo);
+	public ModelAndView selectOrderList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
+		//Member m = (Member)session.getAttribute("loginUser");
+		//int userNo = m.getUserNo();
+		int listCount = pService.selectListCount(uno);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<Payment> pList = pService.selectOrderList(userNo, pi);
-		mv.addObject("pList", pList).setViewName("member/orderHistory");
+		ArrayList<Payment> pList = pService.selectOrderList(uno, pi);
+		mv.addObject("pList", pList).setViewName("member/orderHistoryList");
 		return mv;
 	}
-	*/
 	
 	/**
 	 * @author leeyeji
@@ -41,9 +45,28 @@ public class PaymentController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="payments.do", method = RequestMethod.POST)
-	public int paymentSuccess(Payment p) {
-		int result = pService.insertPayment(p);
-		return result;
+	public int paymentSuccess(Payment p, @Param("uno") int uno) {
+		HashMap<String, Object> map = new HashMap<>();
+		//HashMap<String, Object> vMap = new HashMap<>();
+		map.put("userNo", p.getUserNo());
+		map.put("classNo", p.getClassNo());
+		
+		int payResult = pService.insertPayment(p);
+		if(payResult > 0) {
+			
+			ArrayList<ClassVideo> cList = pService.selectMyLecVideo(map);
+			System.out.println("list:" + cList);
+			/*
+			if(cList != null) {
+				for (int i = 0; i < cList.size(); i++) {
+					vMap.put("videoNo", cList.get(i));
+					
+				}
+			}*/
+			int proResult = pService.insertProgress(cList);
+		}
+		
+		return payResult;
 	}
 	
 	
