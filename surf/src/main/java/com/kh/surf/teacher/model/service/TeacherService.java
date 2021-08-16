@@ -104,7 +104,6 @@ public interface TeacherService {
 
 	
 	// 19. 강사 신청
-	/*
 	int applyTeacher(Teacher t);
-	*/
+	
 }

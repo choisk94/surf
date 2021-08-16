@@ -350,9 +350,7 @@
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
-                         			/* 찜하기 페이지로 이동
-                         			location.href='';
-                         			*/
+                         			location.href='/surf/scrapList.lec?currentPage=1&&uno=' + ${loginUser.userNo};
                          		} else {
                          			/* 마이클레스로 이동
                          			location.href='';

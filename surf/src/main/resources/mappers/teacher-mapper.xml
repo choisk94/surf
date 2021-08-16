@@ -603,7 +603,7 @@
 		@author leeyeji
 		강사 신청
 	 -->
-	<insert id="applyTeacher">
+	<insert id="applyTeacher" parameterType="Teacher">
 		insert
 		  into teacher
 		  (
@@ -616,12 +616,12 @@
 		  )
 		  values
 		  (
-		  	2
+		  	#{teacherNo}
 		  , #{profileImage}
           , #{nickname}
           , #{phone}
           , #{introContent}
-          , #{subcatNo}
+          , #{subNo}
 		  )
 	</insert>
 	
