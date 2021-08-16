@@ -45,6 +45,7 @@
 		<mapper resource="/mappers/payment-mapper.xml"/>
 		<mapper resource="/mappers/lecture-mapper.xml"/>
 		<mapper resource="/mappers/studyboard-mapper.xml"/>
+		<mapper resource="/mappers/main-mapper.xml"/>
 	</mappers>
 
 
