@@ -138,7 +138,8 @@
             	})
           </script>
         <hr>
-        <table class="table">
+        <table id="boardList" class="table table-hover">
+        <thead>
           <tr style="background-color: rgb(224, 224, 224)">
             <td width="70"><input id="allCheck" type="checkbox"
 						name="allCheck" /></td>
@@ -148,10 +149,13 @@
             <td width="290">클래스명 및 소개</td>
             <td width="130">등록일</td>
             <td width="80">상태</td>
+            <td width="20">번호</td>
           </tr>
+          </thead>
+          <tbody>
           <c:forEach var="l" items="${list}">
 					<tr>
-						<th><input name="RowCheck" type="checkbox"
+						<th class="lno"><input name="RowCheck" type="checkbox"
 							value="${ l.classNo }" /></th>
 						<td>${ l.email }</td>
 						<td>${ l.nickname }</td>
@@ -159,11 +163,18 @@
 						<td>${ l.introTitle }</td>
 						<td>${ l.createDate }</td>
 						<td>${ l.status }</td>
+						<td class="lno">${ l.classNo }</td>
 					</tr>
 		  </c:forEach>
-          
-
+          </tbody>
         </table>
+        <script>
+    	$(function(){
+            $("#boardList>tbody>tr>td").click(function(){
+                location.href="lectureDetail.ad?lno=" + $(this).parent().children(".lno").text(); // $(this)가 원래 tr이었는데 td가 추가돼서 바꼈기때문에 다시 tr로 바꾸기 위해 parent 추가
+            })
+        })
+        </script>
         <div style="text-align: right;">
           <a type="button" class="btn btn-primary" onclick="motionValue(1);">승인</a>
           <a type="button" class="btn btn-danger" onclick="motionValue(2);">반려</a>
@@ -175,17 +186,17 @@
 			<ul class="pagination">
 				<c:choose>
 					<c:when test="${ pi.currentPage eq 1 }">
-						<li class="page-item disabled"><a class="page-link">Previous</a></li>
+						<li class="page-item disabled"><a class="page-link">◁</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+									href="?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">◁</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="lectureList.ad?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+									href="lectureList.ad?currentPage=${ pi.currentPage-1 }">◁</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -209,17 +220,17 @@
 
 				<c:choose>
 					<c:when test="${ pi.currentPage eq pi.maxPage }">
-						<li class="page-item disabled"><a class="page-link">Next</a></li>
+						<li class="page-item disabled"><a class="page-link">▷</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+									href="?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">▷</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="lectureList.ad?currentPage=${ pi.currentPage+1 }">Next</a></li>
+									href="lectureList.ad?currentPage=${ pi.currentPage+1 }">▷</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>

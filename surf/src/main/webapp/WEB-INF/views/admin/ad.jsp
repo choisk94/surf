@@ -175,17 +175,17 @@
 			<ul class="pagination">
 				<c:choose>
 					<c:when test="${ pi.currentPage eq 1 }">
-						<li class="page-item disabled"><a class="page-link">Previous</a></li>
+						<li class="page-item disabled"><a class="page-link">◁</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="search.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+									href="search.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">◁</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="list.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+									href="list.bo?currentPage=${ pi.currentPage-1 }">◁</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -209,17 +209,17 @@
 
 				<c:choose>
 					<c:when test="${ pi.currentPage eq pi.maxPage }">
-						<li class="page-item disabled"><a class="page-link">Next</a></li>
+						<li class="page-item disabled"><a class="page-link">▷</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="search.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+									href="search.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">▷</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="list.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+									href="list.bo?currentPage=${ pi.currentPage+1 }">▷</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>

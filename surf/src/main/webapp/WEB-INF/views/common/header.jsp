@@ -439,7 +439,9 @@
                 				if(k == 0){
                         			value += "<li>" + resultArr[j][k] + "</li>"
                 				} else {
-	                    			value += "<li><a href=''>" + resultArr[j][k] + "</a></li>"
+                					var subCatArr = resultArr[j][k].split('-');
+                					
+	                    			value += "<li><a href='list.lec?sno=" + subCatArr[0] + "'>" + subCatArr[1] + "</a></li>"
                 				}
                 			}
                 			value += "</ul>";

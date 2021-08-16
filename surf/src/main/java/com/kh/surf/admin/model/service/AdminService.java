@@ -7,6 +7,8 @@ import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -98,6 +100,12 @@ public interface AdminService {
 	ArrayList<LectureList> selectFunSearchList(PageInfo pi, HashMap<String, String> map);
 	
 	int selectFunSearchListCount(HashMap<String, String> map);
+
+	//13.클래스 상세조회용
+	Lecture selectLectureDetail(int lno);
+
+	ArrayList<ClassIntro> selectIntroList2(int lno);
+
 	
 	
 	

@@ -11,6 +11,8 @@ import com.kh.surf.admin.model.vo.Ad;
 import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
@@ -205,6 +207,14 @@ public class AdminDao {
 
 	public int selectFunSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("adminMapper.selectFunSearchListCount", map);
+	}
+
+	public Lecture selectLectureDetail(SqlSessionTemplate sqlSession, int lno) {
+		return sqlSession.selectOne("adminMapper.selectLectureDetail", lno);
+	}
+
+	public ArrayList<ClassIntro> selectIntroList2(SqlSessionTemplate sqlSession, int lno) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectIntroList2", lno);
 	}
 
 	

@@ -259,8 +259,10 @@
                     <div style="width: 60%; float: left;">
                         <span style="font-size: 50px; font-weight:bold; color: rgb(32, 155, 212);">SURF</span>
                     </div>
-                    <div style="width: 40%; height:100%; float:left;">
-                        <img src="resources/images/redhair.png" style="height: 100%;">
+                    <div  style="width: 40%; height:100%; float:left;">
+                    <a href="list.bo">
+                        <img src="resources/images/redhair.png" style="height: 100%; ">
+                    </a>
                     </div>
                 </div>
                 
