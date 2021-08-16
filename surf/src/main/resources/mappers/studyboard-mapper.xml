@@ -233,7 +233,23 @@
          where status ='N'
          order
             by report_no desc
-	</select>	
+	</select>
+	
+		
+	<update id="updateBlind">
+		update
+			   report
+		   set status = 'B'
+		 where report_no = #{reportNo}
+	</update>
+	
+		
+	<update id="updateRejection">
+		update
+			   report
+		   set status = 'R'
+		 where report_no = #{reportNo}
+	</update>
 
 </mapper>
 

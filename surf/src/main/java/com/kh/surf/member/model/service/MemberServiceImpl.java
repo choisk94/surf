@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.ClassVideo;
+import com.kh.surf.lecture.model.vo.Lecture;
+import com.kh.surf.lecture.model.vo.Progress;
 import com.kh.surf.member.model.dao.MemberDao;
 import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
@@ -79,8 +81,8 @@ public class MemberServiceImpl implements MemberService {
 	 * 클래스 번호로 강의영상목록 조회
 	 */
 	@Override
-	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo) {
-		return mDao.ajaxSelectVideoList(classNo, sqlSession);
+	public ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l) {
+		return mDao.ajaxSelectVideoList(l, sqlSession);
 	}
 
 	/**
@@ -90,6 +92,33 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int ajaxUpdateClassStuding(ClassStuding cs) {
 		return mDao.ajaxUpdateClassStuding(cs, sqlSession);
+	}
+
+	/**
+	 * @author HeeRak
+	 * 영상 시청 기록
+	 */
+	@Override
+	public int ajaxUpdateWatched(Progress pg) {
+		return mDao.ajaxUpdateWatched(pg, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 영상 시청 기록
+	 */
+	@Override
+	public int ajaxLoadStudingDegree(ClassStuding cs) {
+		return mDao.ajaxLoadStudingDegree(cs, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 마지막 시청 번호 조회
+	 */
+	@Override
+	public int ajaxlastViewVideoLoad(ClassStuding cs) {
+		return mDao.ajaxlastViewVideoLoad(cs, sqlSession);
 	}
 
 

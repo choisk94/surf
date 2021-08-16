@@ -49,12 +49,12 @@
             data : {
                 classNo : ${l.classNo}
             }, success : function(compNo){
-    
+                
                 $('#degreeStr').text(compNo + '% 완료');
     
                 $('.progress-bar').css('width', compNo + '%');
     
-                if(comNo = 100){
+                if(compNo == 100){
                     $('#open-btn').removeAttr('disabled');
                 }
     
@@ -71,7 +71,7 @@
         function checkSuccess(){
             $('#save-btn').removeAttr('disabled');
             $('#next-btn').attr('disabled', true);
-            $('#open-btn').attr('disabled', true);
+            //$('#open-btn').attr('disabled', true);
         }
 
         // input 데이터 조작 후 조건검사 성공 시 '저장버튼' 비활성화

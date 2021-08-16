@@ -232,6 +232,38 @@ public class StudyBoardController {
 		
 	}
 	
+	/** @author 서정연
+	 * 관리자 신고관리 블라인드 처리
+	 */
+	@RequestMapping("updateB.ad")
+	public ModelAndView updateB(ModelAndView mv, HttpSession session, int reportNo) {
+		
+		int result = sbService.updateB(reportNo);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "선택한 신고 글이 블라인드되었습니다.");
+			mv.setViewName("redirect:reportList.ad");
+		} else {
+			mv.addObject("errorMsg", "블라인드 실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	/** @author 서정연
+	 * 관리자 신고관리 기각 처리
+	 */
+	@RequestMapping("updateR.ad")
+	public ModelAndView updateR(ModelAndView mv, HttpSession session, int reportNo) {
+		int result = sbService.updateR(reportNo);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "선택한 신고 글이 기각되었습니다.");
+			mv.setViewName("redirect:reportList.ad");
+		} else {
+			mv.addObject("errorMsg", "기각 실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}	
+	
 
 	
 	

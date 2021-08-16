@@ -50,7 +50,9 @@ public interface StudyBoardService {
 	int increaseReportCount(int reportNo);
 	Study selectReport(int reportNo);
 	   
-	// 3. 신고글 블라인드,기각
-	int updateReport(int reportNo);	
+	// 3. 신고글 블라인드
+	int updateB(int reportNo);	
 	
+	// 4. 신고글 기각
+	int updateR(int reportNo);
 }

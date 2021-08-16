@@ -118,7 +118,15 @@ public class StudyBoardDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("studyboardMapper.selectReportList", null, rowBounds);
-	}	
+	}
 	
+	public int updateB(SqlSessionTemplate sqlSession, int reportNo) {
+		return sqlSession.update("studyboardMapper.updateBlind", reportNo);
+	}
+	
+	public int updateR(SqlSessionTemplate sqlSession, int reportNo) {
+		return sqlSession.update("studyboardMapper.updateRejection", reportNo);
+	}
+
 	
 }

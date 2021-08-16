@@ -20,10 +20,10 @@
 
 	<select id="selectCategory" resultType="string">
 		select
-		    maincat_name|| ',' || listagg(subcat_name, ',') within group (order by subcat_name) category
+		    maincat_name|| ',' || listagg(subcat_no|| '-' ||subcat_name, ',') within group (order by subcat_name) category
 		  from
 		    (
-		    select maincat_name, subcat_name
+		    select maincat_name, subcat_name, subcat_no
 		      from maincat
 		      join subcat using (maincat_no)
 		     order

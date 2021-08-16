@@ -91,8 +91,8 @@
                   <td align="left" style="background: lightgray">
                      <p>${ ab.boardContent }</p> <br>
                      <div align="right">
-                        <a class="btn btn-primary" onclick="postFormSubmit(1, ${ab.boardNo});">수정</a> 
-                        <a class="btn btn-danger" onclick="postFormSubmit(2, ${ab.boardNo});">삭제</a>
+                        <a class="btn btn-primary" data-toggle="modal" data-target="#updateForm">수정</a> 
+                        <a class="btn btn-danger" onclick="postFormSubmit(1, ${ab.boardNo});">삭제</a>
                         <input type="hidden" id="" value="">
                         
                      </div>
@@ -108,12 +108,9 @@
       
       <script>
          function postFormSubmit(num, bno) {
-            if (num == 1) { // 수정하기
-               $("#bno").val(bno);
-               $("#postForm").attr("action", "updateFaq.ad").submit();
-            } else { // 삭제하기
-               $("#bno").val(bno);
-               $("#postForm").attr("action", "deleteFaq.ad").submit();
+            if (num == 1) { // 삭제하기
+                $("#bno").val(bno);
+                $("#postForm").attr("action", "deleteFaq.ad").submit();
             }
          }
       </script>

@@ -12,4 +12,5 @@ public class Progress {
 	private int userNo;
 	private int videoNo;
 	private String watched;
+	private int degree;
 }

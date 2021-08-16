@@ -55,7 +55,7 @@
 	              <td>${ p.reportDate }</td>
 	              <c:choose>
 		           	  <c:when test="${ p.status == 'N' }">
-		              	<td style="color:green">처리 전</td>
+		              	<td>처리 전</td>
 		              </c:when>
 		           	  <c:when test="${ p.status == 'B' }">
 		              	<td style="color:red">블라인드</td>
@@ -81,6 +81,8 @@
 	        			
 	        			<div class="modal-body" align="center">
 		        				<table class="table">
+		        				<input type="hidden" name="reportNo" value="${ p.reportNo }">
+
 		        					<tr>
 		        						<td>신고 유형</td>
 		        						<td>${ p.refType }</td>
@@ -91,18 +93,35 @@
 		        					</tr>
 		        					<tr>
 		        						<td>내용</td>
-		        						<td></td>
+		        						<td>${ p.rsno }</td>
 		        					</tr>
 		        				</table>
 	        			</div>
 	        			<div class="modal-footer">
-	        				<button type="submit" class="btn btn-primary">블라인드</button>
-	        				<button type="submit" class="btn btn-secondary">기각</button>
+	        			<form id="updateReport" action="" method="post">
+	        				<button type="submit" class="btn btn-secondary" id="updateBlind" onclick="updateReport(1);">블라인드</button>
+	        				<button type="submit" class="btn btn-danger"id="updateRejection" onclick="updateReport(2);">기각</button>
+	        			</form>
 	        			</div>
+	        			
+	        			<script>
+							function updateReport(num){
+								if(num == 1("신고된 해당 글을 블라인드 처리 하시겠습니까?")){
+									$("#updateReport").attr("action", "updateB.ad").submit();
+								} else {
+									if(confirm("신고된 해당 글을 기각 처리 하시겠습니까?")){
+										$("#updateReport").attr("action", "updateR.ad").submit();
+									}
+								}
+							}
+					    </script>
         			</form>
         		</div>
         	</div>
         </div>
+        
+
+        
         
         <br>
         <!--여기서부터 페이지이동-->

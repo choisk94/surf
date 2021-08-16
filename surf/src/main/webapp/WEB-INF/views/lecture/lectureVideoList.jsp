@@ -124,7 +124,11 @@
     }
     .chapName{
         font-size: 18px;
-        margin-top: 70px;
+        margin-top: 50px;
+        font-weight: 700;
+    }
+    .video-title{
+        font-size: 14px;
         font-weight: 700;
     }
 
@@ -173,33 +177,39 @@
         padding: 10px 0px 0px 10px;
     }
     .right-box>div:first-child>div:first-child{
-        font-size: 18px;
+        margin-top: 5px;
+        font-size: 20px;
         font-weight: 700;
     }
-    
-
+    .right-box>div:first-child>div:nth-child(2){
+        margin-top: 5px;
+        font-size: 16px;
+        font-weight: 600;
+    }
     
     .right-box>div:last-child{
         overflow: auto;
         width: 100%;
         height: 595px;
     }
-    /*
-    .right-box>div:last-child::-webkit-scrollbar{
-        width: 5px;
-        height: 5px;
+
+    .teacherName{
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: 600;
     }
-    */
+    
     .chapter{
         width: 100%;
         height:50px;
-        /*background: rgba(240, 128, 64, 0.4);*/
         background: lightgray;
         font-size: 15px;
         font-weight: 700;
         border-bottom: 1px solid rgba(211, 211, 211, 0.5);
         line-height: 50px;
         padding-left:10px;
+        overflow:hidden;
+		white-space: nowrap;
     }
 
     .step{
@@ -220,70 +230,28 @@
         cursor: pointer;
         opacity: 0.9;
     }
+
+    /*시청완료 태그*/
+    .watchTag{
+        font-size: 12px;
+        background-color: orange;
+        color:white;
+        height: 20px;
+        padding: 3px 5px 3px 5px;
+        border-radius: 6px;
+    }
+
 </style>
 </head>
 <body>
-	<script>
-        $(function(){
-            // 비디오 목록 가져오기
-            $.ajax({
-                url : "ajaxVideoList.le",
-                type: "post",
-                data : {
-                    classNo : ${ classNo }
-                }, success : function(videoList){
-                    console.log(videoList);
-                    for(var i in videoList){
-                        $('.chapter' + videoList[i].chapOrder)
-                            .append('<div class="step"' + 
-                                    'onclick="loadVideo(&quot;' + videoList[i].videoNo + '&quot;,&quot;' + 
-                                                            videoList[i].chapOrder + '&quot;,&quot;' + 
-                                                            videoList[i].changeName + '&quot;);"' + '><b>' + videoList[i].subTitle +'</b></div>');
-                    }
-
-                    // 처음 비디오 챕터 1_ 소제목 1
-                    $('.left-box').find('#video').attr("src", videoList[0].changeName);
-                    
-                }, error : function(){
-
-                }
-            });
-
-        });
-
-        function loadVideo(videoNo, chapOrder, changeName){
-
-            // 1. 비디오 넣기
-            $('.left-box').find('#video').attr("src", changeName);
-            
-            // 2. 챕터 이름 바꾸기
-            $('.chapName').text($('.chapter' + chapOrder).children('.chapter').text());
-
-            // 3. 최근 시청 video 저장
-            $.ajax({
-                url : "JqAjaxLatestVideoWatching.le",
-                type: "post",
-                data : {
-                    classNo : ${ list[0].classNo },
-                    'videoNo' : videoNo
-                }, success : function(){
-
-                }, error : function(){
-                    console.log("마지막 시청 기록 실패");
-                }
-            });
-
-        }
-	</script>
-
 	<div class="outer">
         <div class="head">
             <div class="home-btn">SURF</div>
             <div class="lecture-list-btn">내 강의 목록</div>
             <div class="degree">
-                70% 시청완료
+                <span>0% 시청완료</span>
                 <div class="progress">
-                    <div class="progress-bar" style="width:70%"></div>
+                    <div class="progress-bar" style="width:0%"></div>
                 </div>
             </div>
         </div>
@@ -294,9 +262,10 @@
                         <label class="className">${ t.classTitle }</label>
                         <br>
                         <label class="chapName">챕터 1. 프롤로그 - JAVA가 뭐에요?</label>
+                        <br>
+                        <label class="video-title"></label>
                     </div>
                     <div>
-                        <div class="bookmark-off bookmark"></div>
                     </div>
                 </div>
                 <div align="center">
@@ -306,14 +275,14 @@
                     </div>
                 </div>
                 <div align="center">
-                    <a href="">&lt; 이전강의</a>
+                    <a onclick="moveVideo(-1);">&lt; 이전강의</a>
                     <label class="current-step">java가 뭐에요?</label>
-                    <a href="">다음강의 &gt;</a>
+                    <a onclick="moveVideo(1);">다음강의 &gt;</a>
                 </div>
             </div>
             <div class="right-box">
                 <div>
-                    <div>목차</div>
+                    <div> - 목차</div>
                     <div>${ t.classTitle }</div>
                     <div class="teacherName"><span>강사 : </span>${ t.nickname }</div>
                 </div>
@@ -330,7 +299,13 @@
 
     <script>
         $(function(){
+            var lastVideoNo = 0;
 
+            // 비디오 목록 가져오기 | 진척도 조회 | 마지막으로 본 비디오 조회
+            loadVideoList();
+            loadDegree();
+            lastViewVideoLoad();
+            
             // 홈 버튼 링크 이동
             $('.home-btn').click(function(){
                 location.href="<%=request.getContextPath()%>";
@@ -339,46 +314,171 @@
                 //                                                                  ★강의목록 페이지 요청값 넣을것
                 location.href="";
             })
-
+            
             // video duration관련 (시청여부)
             var videocontrol = document.getElementById("video");
             var duration;
             videocontrol.addEventListener("play", function(){
+
                 duration = this.duration;
                 
                 setTimeout(function(){
-                    watchingVideo($('.video-area').children('input[name=videoNo]').val());
-                }, duration*1000);
+                    watchingVideo($('.video-area').children('input[name=videoNo]').val(), lastVideoNo);
+                }, duration );                                                              // * 1000 해줄것
+                
             });
+        })
 
-            // 시청완료시 ajax 실행
-            function watchingVideo(videoNo){
+        function lastViewVideoLoad(){ // 마지막으로 본 비디오 조회
+            $.ajax({
+                url : "JqAjaxlastViewVideoLoad.le",
+                type : "post",
+                data : {
+                    classNo : ${ classNo }
+                }, success : function(videoNo){
+                    
+                    $('.video' + videoNo).trigger('click');
+                    console.log(videoNo);
 
-                $.ajax({
-                    url:"JqAjaxfinishedWatching.le",
-                    data:{'videoNo': videoNo},
-                    success:function(result){
-                        alertify.alert("시청완료");                                         // ajax 완성할것
-                    },error:function(){
-                        
-                    }
-                })
-
-            }
-
-            // bookmark css기능관련
-            $('.bookmark').click(function(){
-                if($(this).hasClass('bookmark-off')){
-                    $(this).removeClass('bookmark-off').addClass('bookmark-on');
-                }else{
-                    $(this).removeClass('bookmark-on').addClass('bookmark-off');
+                }, error : function(){
+                    console.log('마지막 시청 조회 실패');
                 }
             })
-                
-            
-        })
-    
 
+        }
+
+        function loadVideoList(){ // 비디오 목록 조회
+
+            $.ajax({
+                url : "ajaxVideoList.le",
+                type: "post",
+                data : {
+                    classNo : ${ classNo }
+                }, success : function(videoList){
+
+                    lastVideoNo = videoList[videoList.length-1].videoNo;
+                    
+                    var watchedVideoCount = 0;
+
+                    for(var i in videoList){
+
+                        if(videoList[i].watched == 'Y'){
+
+                            $('.chapter' + videoList[i].chapOrder)
+                            .append('<div class="step video' + videoList[i].videoNo + '"' + 
+                                    'onclick="loadVideo(&quot;' + videoList[i].videoNo + '&quot;,&quot;' + 
+                                                            videoList[i].chapOrder + '&quot;,&quot;' + 
+                                                            videoList[i].changeName + '&quot;);"' + '>' + '<span class="watchTag">시청완료</span> '+ 
+                                                            '<b>' + videoList[i].subTitle +'</b></div>');
+
+                            ++watchedVideoCount;
+                        }else{
+
+                            $('.chapter' + videoList[i].chapOrder)
+                                .append('<div class="step video' + videoList[i].videoNo + '"' + 
+                                        'onclick="loadVideo(&quot;' + videoList[i].videoNo + '&quot;,&quot;' + 
+                                                                videoList[i].chapOrder + '&quot;,&quot;' + 
+                                                                videoList[i].changeName + '&quot;);">' + 
+                                                                '<b>' + videoList[i].subTitle +'</b></div>');
+
+                        }
+                    }
+
+                    // 처음 비디오 챕터 1_ 소제목 1
+                    $('.left-box').find('#video').attr("src", videoList[0].changeName);
+                    
+                }, error : function(){
+
+                }
+            });
+
+        }
+        
+        function loadDegree(){ // 강의 시청 진척도 표시
+
+        $.ajax({
+            url : "JqAjaxLoadDegree.le",
+            type : "post",
+            data : {
+                classNo : ${ classNo }
+            }, success : function(degree){
+
+                $('.degree').find('span').text(degree + '%시청완료');
+                $('.progress-bar').css('width', degree + '%');
+
+            }, error : function(){
+                console.log('진척도 조회 실패');
+            }
+        })
+
+        }
+    
+        
+        // 시청완료시 ajax 실행
+        function watchingVideo(videoNo, lastVideoNo){
+            
+            $.ajax({
+                url:"JqAjaxfinishedWatching.le",
+                type: 'post',
+                data:{ 
+                    'videoNo': videoNo
+                },
+                success:function(result){
+                    
+                    if(result > 0){
+                        loadDegree();
+                        $('.video' + videoNo).prepend('<span class="watchTag">시청완료</span> ');
+                        alert("시청완료");                                        
+                    }
+                    
+
+                },error:function(){
+                    
+                }
+            })
+
+        }
+        // 소제목 클릭 시 비디오 로딩, 시청여부 송신
+        function loadVideo(videoNo, chapOrder, changeName){
+            
+            // 1. 비디오 넣기
+            $('.left-box').find('#video').attr("src", changeName);
+            
+            // 2. 챕터 이름 바꾸기
+            $('.chapName').text($('.chapter' + chapOrder).children('.chapter').text());
+
+            $('.video-title').text(' - ' + $('.video' + videoNo).children('b').text());
+
+            // 3. 최근 시청 video 저장
+            $.ajax({
+                url : "JqAjaxLatestVideoWatching.le",
+                type: "post",
+                data : {
+                    classNo : ${ list[0].classNo },
+                    'videoNo' : parseInt(videoNo)
+                }, success : function(){
+
+                    $.ajax({
+
+                    })
+
+                }, error : function(){
+                    console.log("마지막 시청 기록 실패");
+                }
+            });
+
+            // 4. 비디오 번호 저장하기
+            $('#video').siblings('input').val(parseInt(videoNo));
+        }
+
+        // 이전 | 다음강의 버튼
+        function moveVideo(no){
+
+            // 현재 로딩된 영상 번호 'videoNo'
+            var currentVideoNo = $('input[name=videoNo]').val();
+
+            $('.video' + (parseInt(currentVideoNo) + no)).trigger('click');
+        }
     </script>
 </body>
 </html>
