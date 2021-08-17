@@ -37,14 +37,14 @@ public class AdminController {
 
 	@Autowired
 	private AdminService aService;
-	
+
 	@Autowired
 	private LectureService lService;
-	
+
 	@Autowired
 	private TeacherService tService;
 
-	//광고게시판 리스트조회
+	// 광고게시판 리스트조회
 	@RequestMapping("list.bo")
 	public ModelAndView selectList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
@@ -59,11 +59,12 @@ public class AdminController {
 		return mv;
 
 	}
-	//결제내역 리스트조회
+
+	// 결제내역 리스트조회
 	@RequestMapping("pmList.ad")
 	public ModelAndView selectPmList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-		
+
 		int listCount = aService.selectPmListCount();
 
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
@@ -74,66 +75,71 @@ public class AdminController {
 		return mv;
 
 	}
-	//회원관리 리스트조회
-		@RequestMapping("memList.ad")
-		public ModelAndView selectmemList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-			
-			int listCount = aService.selectMemListCount();
 
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<Member> list = aService.selectMemList(pi);
+	// 회원관리 리스트조회
+	@RequestMapping("memList.ad")
+	public ModelAndView selectmemList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
-			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/userManagement");
+		int listCount = aService.selectMemListCount();
 
-			return mv;
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = aService.selectMemList(pi);
 
-	}
-	//정산내역 리스트조회
-		@RequestMapping("settleList.ad")
-		public ModelAndView settleList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-			
-			int listCount = aService.settleListCount();
+		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/userManagement");
 
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<PaymentList> list = aService.settleList(pi);
-
-			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/settlementDetails");
-
-			return mv;
+		return mv;
 
 	}
-	//클래스 등록관리 리스트조회
-		@RequestMapping("lectureList.ad")
-		public ModelAndView selectLectureList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-			
-			int listCount = aService.selectLectureListCount();
 
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<Teacher> list = aService.selectLectureList(pi);
+	// 정산내역 리스트조회
+	@RequestMapping("settleList.ad")
+	public ModelAndView settleList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
-			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/lectureManagement");
+		int listCount = aService.settleListCount();
 
-			return mv;
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<PaymentList> list = aService.settleList(pi);
 
-	}
-	//펀딩클래스 리스트조회
-		@RequestMapping("fundingList.ad")
-		public ModelAndView selectFunList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-			
-			int listCount = aService.selectFunListCount();
+		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/settlementDetails");
 
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<LectureList> list = aService.selectFunList(pi);
-
-			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/classFundingManagement");
-
-			return mv;
+		return mv;
 
 	}
+
+	// 클래스 등록관리 리스트조회
+	@RequestMapping("lectureList.ad")
+	public ModelAndView selectLectureList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
+		int listCount = aService.selectLectureListCount();
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Teacher> list = aService.selectLectureList(pi);
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/lectureManagement");
+
+		return mv;
+
+	}
+
+	// 펀딩클래스 리스트조회
+	@RequestMapping("fundingList.ad")
+	public ModelAndView selectFunList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
+		int listCount = aService.selectFunListCount();
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<LectureList> list = aService.selectFunList(pi);
+
+		mv.addObject("pi", pi).addObject("list", list).setViewName("admin/classFundingManagement");
+
+		return mv;
+
+	}
+
 	// 관리자 페이지 이동
 	@RequestMapping("login.ad")
 	public String selectTeacher(HttpSession session, Model model) {
@@ -182,23 +188,21 @@ public class AdminController {
 		}
 		return "redirect:list.bo";
 	}
+
 	@RequestMapping("lectureDetail.ad")
 	public ModelAndView lectureDetail(int lno, ModelAndView mv) {
-		
+
 		Lecture l = aService.selectLectureDetail(lno);
 		ArrayList<Chapter> tList = lService.selectLectureChapter(lno);
 		ArrayList<ClassIntro> introList = aService.selectIntroList2(lno);
-		
-		mv.addObject("tList", tList)
-		  .addObject("l", l)
-		  .addObject("introList", introList)
-		  .setViewName("admin/classDetailedInquiry");
-		
+
+		mv.addObject("tList", tList).addObject("l", l).addObject("introList", introList)
+				.setViewName("admin/classDetailedInquiry");
+
 		return mv;
-		
+
 	}
-	
-	
+
 	// 회원탈퇴용
 	@RequestMapping("userUpdate")
 	public String ajaxTest3(HttpServletRequest request) throws Exception {
@@ -218,6 +222,7 @@ public class AdminController {
 		model.addAttribute("Ad", aService.selectAd(bno));
 		return "admin/adUpdateForm";
 	}
+
 	// 클래스 승인
 	@RequestMapping("lecApproval.ad")
 	public String lecture1(HttpServletRequest request) throws Exception {
@@ -229,6 +234,7 @@ public class AdminController {
 		}
 		return "redirect:lectureList.ad";
 	}
+
 	// 클래스 반려
 	@RequestMapping("lecCompanion.ad")
 	public String lecture2(HttpServletRequest request) throws Exception {
@@ -240,6 +246,7 @@ public class AdminController {
 		}
 		return "redirect:lectureList.ad";
 	}
+
 	// 클래스 삭제
 	@RequestMapping("lecDelete.ad")
 	public String lecture3(HttpServletRequest request) throws Exception {
@@ -251,6 +258,7 @@ public class AdminController {
 		}
 		return "redirect:lectureList.ad";
 	}
+
 	// 클래스 삭제
 	@RequestMapping("funDelete.ad")
 	public String funture(HttpServletRequest request) throws Exception {
@@ -262,6 +270,7 @@ public class AdminController {
 		}
 		return "redirect:fundingList.ad";
 	}
+
 	// 클래스 펀딩
 	@RequestMapping("lecFunding.ad")
 	public String lecture4(HttpServletRequest request) throws Exception {
@@ -273,7 +282,6 @@ public class AdminController {
 		}
 		return "redirect:lectureList.ad";
 	}
-	
 
 	@RequestMapping("adUpdate.ad")
 	public String updateAd(Ad ad, MultipartFile reupfile, HttpSession session, Model model) {
@@ -325,145 +333,95 @@ public class AdminController {
 		return mv;
 
 	}
+
 	// 광고게시판 검색 기능용
-		@RequestMapping("lecSearch.ad")
-		public ModelAndView selectLecSearchList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
-				String keyword) {
+	@RequestMapping("lecSearch.ad")
+	public ModelAndView selectLecSearchList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
 
-			HashMap<String, String> map = new HashMap<>();
-			map.put("condition", condition);
-			map.put("keyword", keyword);
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
 
-			int listCount = aService.selectLecSearchListCount(map);
+		int listCount = aService.selectLecSearchListCount(map);
 
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<LectureList> list = aService.selectLecSearchList(pi, map);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<LectureList> list = aService.selectLecSearchList(pi, map);
 
-			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
-					.setViewName("admin/lectureManagement");
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("admin/lectureManagement");
 
-			return mv;
+		return mv;
 
-		}
+	}
+
 	// 결제내역 검색 기능용
-		@RequestMapping("paySearch.ad")
-		public ModelAndView selectSearchPayList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
-				String keyword) {
+	@RequestMapping("paySearch.ad")
+	public ModelAndView selectSearchPayList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
 
-			HashMap<String, String> map = new HashMap<>();
-			map.put("condition", condition);
-			map.put("keyword", keyword);
-			
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
 
-			int listCount = aService.selectSearchPayListCount(map);
-			
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<PaymentList> list = aService.selectSearchPayList(pi, map);
-			
-			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
-					.setViewName("admin/paymentDetailsCheck");
+		int listCount = aService.selectSearchPayListCount(map);
 
-			return mv;
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<PaymentList> list = aService.selectSearchPayList(pi, map);
 
-	}
-		// 광고게시판 검색 기능용
-		@RequestMapping("funSearch.ad")
-		public ModelAndView selectFunSearchList(ModelAndView mv,
-				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
-				String keyword) {
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("admin/paymentDetailsCheck");
 
-			HashMap<String, String> map = new HashMap<>();
-			map.put("condition", condition);
-			map.put("keyword", keyword);
-
-			int listCount = aService.selectFunSearchListCount(map);
-
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-			ArrayList<LectureList> list = aService.selectFunSearchList(pi, map);
-
-			mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
-					.setViewName("admin/classFundingManagement");
-
-			return mv;
-
-		}
-	
-	  // 유저관리 검색 기능용
-	  
-	  @RequestMapping("userSearch.ad") 
-	  public ModelAndView selectSearchMemList(ModelAndView mv,
-	  
-	  @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-	  String condition, String keyword) {
-	  
-	  HashMap<String, String> map = new HashMap<>(); map.put("condition",
-	  condition); map.put("keyword", keyword);
-	  
-	  int listCount = aService.selectSearchMemListCount(map);
-	  
-	  PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-	  ArrayList<Member> list = aService.selectSearchMemList(pi, map);
-	  
-	  mv.addObject("pi", pi).addObject("list", list).addObject("condition",
-	  condition).addObject("keyword", keyword)
-	  .setViewName("admin/userManagement");
-	  
-	  return mv;
-	  
-	  }
-	 
-	 
-	
-
-	@RequestMapping("logout.ad")
-	public String logoutMember(HttpSession session) {
-		session.invalidate();
-		return "admin/adminLogin";
-	}
-
-	@RequestMapping("adEnroll.ad")
-	public String adEnroll() {
-
-		return "admin/adEnroll";
+		return mv;
 
 	}
 
-	@RequestMapping("lectureManagement.do")
-	public String lectureManagement() {
+	// 광고게시판 검색 기능용
+	@RequestMapping("funSearch.ad")
+	public ModelAndView selectFunSearchList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
 
-		return "admin/lectureManagement";
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = aService.selectFunSearchListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<LectureList> list = aService.selectFunSearchList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("admin/classFundingManagement");
+
+		return mv;
+
 	}
 
-	@RequestMapping("settlementDetails.do")
-	public String settlementDetails() {
+	// 유저관리 검색 기능용
 
-		return "admin/settlementDetails";
-	}
+	@RequestMapping("userSearch.ad")
+	public ModelAndView selectSearchMemList(ModelAndView mv,
 
-	@RequestMapping("paymentDetailsCheck.do")
-	public String paymentDetailsCheck() {
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
 
-		return "admin/paymentDetailsCheck";
-	}
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
 
-	@RequestMapping("userManagement.do")
-	public String userManagement() {
+		int listCount = aService.selectSearchMemListCount(map);
 
-		return "admin/userManagement";
-	}
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = aService.selectSearchMemList(pi, map);
 
-	@RequestMapping("classDetailedInquiry.do")
-	public String classDetailedInquiry() {
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("admin/userManagement");
 
-		return "admin/classDetailedInquiry";
-	}
+		return mv;
 
-	@RequestMapping("classFundingManagement.do")
-	public String classFundingManagement() {
-
-		return "admin/classFundingManagement";
 	}
 
 	@RequestMapping("insert.ad")
