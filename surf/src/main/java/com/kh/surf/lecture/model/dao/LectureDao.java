@@ -180,9 +180,7 @@ public class LectureDao {
 	 * 진행률 조회
 	 */
 	public int ajaxLoadStudingDegree(SqlSessionTemplate sqlSession, ClassStuding s) {
-		int result = sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", s);
-		System.out.println(result);
-		return result;
+		return sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", s);
 	}
 	
 }

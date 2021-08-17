@@ -205,7 +205,7 @@ public class LectureController {
 	public int scrapCheck(int classNo, int userNo) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("classNo", classNo);
-		map.put("classNo", classNo);
+		map.put("userNo", userNo);
 		int result = lService.scrapCheck(map);
 		//System.out.print(result);
 		return result;
