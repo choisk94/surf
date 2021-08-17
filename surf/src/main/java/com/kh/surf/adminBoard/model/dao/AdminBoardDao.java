@@ -127,9 +127,32 @@ public class AdminBoardDao {
 	public int updateNo(SqlSessionTemplate sqlSession, int tno) {
 		return sqlSession.update("adminBoardMapper.updateNo", tno);
 	}
+
+	//강사관리 검색(관리자)
+	public int teacherListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.teacherListCount", map);
+	}
+
+	public ArrayList<Teacher> selectTeacherList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchTeacherList", map, rowBounds);
+	}
 	
+	//FAQ관리 검색(관리자)
+	public int faqListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.faqListCount", map);
+	}
 
-
+	public ArrayList<AdminBoard> selectFaqList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchFaqList", map, rowBounds);
+	}	
 
 	
 

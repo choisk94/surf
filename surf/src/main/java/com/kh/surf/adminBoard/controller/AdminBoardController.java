@@ -325,6 +325,52 @@ public class AdminBoardController {
 
 		return mv;
 	}
+	/**
+	 * @author 김은용 관리자 강사관리 검색
+	 */
+	@RequestMapping("teacherSearch.ad")
+	public ModelAndView selectTeacherList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = abService.teacherListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Teacher> list = abService.selectTeacherList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adTeacherList");
+
+		return mv;
+
+	}
+	/**
+	 * @author 김은용 관리자 강사관리 검색
+	 */
+	@RequestMapping("faqSearch.ad")
+	public ModelAndView selectFaqList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = abService.faqListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectFaqList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adFaqList");
+
+		return mv;
+
+	}
 
 	/**
 	 * @author 서정연 관리자 강사신청 상세조회
