@@ -81,7 +81,7 @@
                 		<c:if test="${ t.chapOrder eq c.chapOrder }">
                 			<tr>
                 				<td>${c.subTitle }</td>
-                				<td>${c.originName }></td>
+                				<td><a href="${c.changeName }">${c.originName }</a></td>
                 			</tr>
                 		</c:if>
                 </c:forEach>

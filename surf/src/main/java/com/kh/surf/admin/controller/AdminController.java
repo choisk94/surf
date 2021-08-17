@@ -89,6 +89,21 @@ public class AdminController {
 			return mv;
 
 	}
+	//정산내역 리스트조회
+		@RequestMapping("settleList.ad")
+		public ModelAndView settleList(ModelAndView mv,
+				@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+			
+			int listCount = aService.settleListCount();
+
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+			ArrayList<PaymentList> list = aService.settleList(pi);
+
+			mv.addObject("pi", pi).addObject("list", list).setViewName("admin/settlementDetails");
+
+			return mv;
+
+	}
 	//클래스 등록관리 리스트조회
 		@RequestMapping("lectureList.ad")
 		public ModelAndView selectLectureList(ModelAndView mv,
