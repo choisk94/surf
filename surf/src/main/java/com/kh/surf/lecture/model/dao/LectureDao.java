@@ -11,6 +11,7 @@ import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -156,6 +157,30 @@ public class LectureDao {
 	
 	public int selectTeacherNo(SqlSessionTemplate sqlSession, int classNo) {
 		return sqlSession.selectOne("lectureMapper.selectTeacherNo", classNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 내 클래스 조회
+	 */
+	public ArrayList<Lecture> selectMyLecture(SqlSessionTemplate sqlSession, int userNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectMyLecture", userNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 설문조사 조회
+	 */
+	public int insertSurvey(SqlSessionTemplate sqlSession, Survey s) {
+		return sqlSession.insert("lectureMapper.insertSurvey", s);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 진행률 조회
+	 */
+	public int ajaxLoadStudingDegree(SqlSessionTemplate sqlSession, ClassStuding s) {
+		return sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", s);
 	}
 	
 }

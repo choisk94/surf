@@ -45,7 +45,7 @@ public class PaymentDao {
 	 * Progress에 추가할 비디오 목록 조회
 	 */
 	public ArrayList<ClassVideo> selectMyLecVideo(SqlSessionTemplate sqlSession, HashMap<String, Object> map){
-		ArrayList<ClassVideo> list = (ArrayList)sqlSession.selectList("lectureMapper.selectMyLecVideo", map);
+		ArrayList<ClassVideo> list = (ArrayList)sqlSession.selectList("paymentMapper.selectMyLecVideo", map);
 		System.out.println("dao:" + list);
 		return list;
 	}
@@ -54,8 +54,8 @@ public class PaymentDao {
 	 * @author leeyeji
 	 * 주문 성공 시 progress 테이블에 해당 데이터 추가
 	 */
-	public int insertProgress(SqlSessionTemplate sqlSession, ArrayList<ClassVideo> cList) {
-		return sqlSession.insert("paymentMapper.insertProgress", cList);
+	public int insertProgress(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.insert("paymentMapper.insertProgress", map);
 	}
 	
 

@@ -209,6 +209,20 @@
 		  )
 	</insert>
 	
+	<update id="deleteReply">
+		update
+				reply
+		   set status = 'N'
+		 where reply_no = #{rno}
+	</update>
+	
+	<update id="updateReply">
+		update
+				reply
+		   set reply_content = #{replyContent}
+		 where reply_no = #{replyNo}
+	</update>
+	
 	<!--
 		신고관리 리스트 페이지 조회수용
 		@author 서정연 관리자

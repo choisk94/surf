@@ -22,11 +22,11 @@
 		<result column="subcat_name" property="subCat"/>
 		<result column="maincat_name" property="mainCat"/>
 		<result column="scrap" property="scrapCount"/>
-		<result column="students" property="students"/>  	
+		<result column="students" property="students"/>
 		<result column="star" property="star"/>
 		<result column="surveyCount" property="surveyCount"/>
 	</resultMap>
-  	
+
   	<resultMap id="studingResult" type="Studing">
 		<result column="user_no" property="userNo"/>
 		<result column="class_no" property="classNo"/>
@@ -34,21 +34,21 @@
 		<result column="end_date" property="endDate"/>
 		<result column="video_no" property="videoNo"/>
 	</resultMap>
-	
+
 	<resultMap type="ScrapSupport" id="scrapResult">
 		<result column="user_no" property="userNo"/>
 		<result column="class_no" property="classNo"/>
 		<result column="type" property="type"/>
 		<result column="scrap_date" property="scrapDate"/>
 	</resultMap>
-	
+
 	<resultMap type="ClassIntro" id="introResult">
 		<result column="intro_order" property="introOrder"/>
 		<result column="Class_no" property="classNo"/>
 		<result column="intro_image" property="introImage"/>
 		<result column="intro_content" property="introContent"/>
-	</resultMap> 
-	
+	</resultMap>
+
 	<resultMap id="classVideoResult" type="ClassVideo">
 		<result column="video_no" property="videoNo"/>
 		<result column="class_no" property="classNo"/>
@@ -59,13 +59,13 @@
 		<result column="change_name" property="changeName"/>
 		<result column="watched" property="watched"/>
 	</resultMap>
-	
+
 	<resultMap id="chapterResult" type="Chapter">
 		<result column="chap_order" property="chapOrder"/>
 		<result column="class_no" property="classNo"/>
 		<result column="chap_name" property="chapName"/>
 	</resultMap>
-	
+
 	<resultMap id="chapterResult2" type="Chapter">
 		<result column="chap_order" property="chapOrder"/>
 		<result column="class_no" property="classNo"/>
@@ -73,7 +73,7 @@
 		<collection column="class_no" property="classVideoList" javaType="java.util.ArrayList"
 			    	ofType="ClassVideo" select="selectLectureVideo"/>
 	</resultMap>
-	
+
 	<resultMap type="Survey" id="surveyResult">
 		<result column="survey_no" property="surveyNo"/>
 		<result column="nickname" property="userNo"/>
@@ -87,7 +87,7 @@
 		<result column="class_no" property="classNo"/>
 		<result column="teacher_no" property="teacherNo"/>
 	</resultMap>
-	
+
 	<resultMap type="ClassInquiry" id="inquiryResult">
 		<result column="inquiry_no" property="inquiryNo"/>
 		<result column="inq_content" property="inqContent"/>
@@ -101,10 +101,10 @@
 		<result column="class_title" property="classTitle"/>
 		<result column="profile_image" property="teacherImage"/>
 	</resultMap>
-  	
-  	<!-- 
+
+  	<!--
   		@author HeeRak
-  		월별정산_ 한 강사의 모든 클래스번호, 이름 조회 
+  		월별정산_ 한 강사의 모든 클래스번호, 이름 조회
   	-->
   	<select id="selectTeacherClassAll" resultMap="lectureResult">
   		select
@@ -116,8 +116,8 @@
   		 order
   		    by create_date asc
   	</select>
-  	
-  	<!-- 
+
+  	<!--
 		@author yeji lee
 		찜하기 중복 체크
 	 -->
@@ -125,23 +125,23 @@
 		select
 			   count(*)
 		  from scrap_support
-		 where 
+		 where
 		 	   user_no = #{userNo}
-		   and 
+		   and
 		       class_no = #{classNo}
-		   and 
+		   and
 		       type = 'S'
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author: yeji lee
-		찜하기 
+		찜하기
 	 -->
 	<insert id="ajaxScrapLecture" parameterType="map">
 		insert
-		  into 
+		  into
 		  	   scrap_support
-		values 
+		values
 			   (
 				 ${userNo}
 			   , ${classNo}
@@ -149,23 +149,23 @@
 			   , SYSDATE
 			   )
 	</insert>
-  	
-  	<!-- 
+
+  	<!--
 		@author leeyeji
-		펀딩 클래스 페이징	
+		펀딩 클래스 페이징
 	 -->
 	 <select id="selectFundingCount" resultType="_int">
 	 	select
 	 		   count(*)
-	 	  from class_funding 
+	 	  from class_funding
 	 </select>
-	
-	<!-- 
+
+	<!--
 		@author leeyeji
 		펀딩 클래스 조회용
 	 -->
 	<select id="selectFundingList" resultMap="lectureResult">
-		select 
+		select
                class_no
              , thumbnail
              , class_title
@@ -176,11 +176,11 @@
           join class_funding f using(class_no)
           join teacher t on(l.user_no = t.teacher_no)
          where l.status = 'F'
-         order 
+         order
             by create_date desc
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author leeyeji
 		펀딩 클래스 상세 조회용
 	 -->
@@ -193,23 +193,23 @@
              , count
              , subcat_name
              , maincat_name
-          from lecture 
+          from lecture
           join class_funding using(class_no)
           join subcat using(subcat_no)
           join maincat using(maincat_no)
          where status = 'F'
            and class_no = #{classNo}
-	 </select> 
-	  
-	 <!-- 
+	 </select>
+
+	 <!--
 	 	@author leeyeji
 	 	펀딩 클래스 응원하기
 	  -->
 	 <insert id="ajaxSupportLecture" parameterType="map">
 	 	insert
-		  into 
+		  into
 		  	   scrap_support
-		values 
+		values
 			   (
 				 ${userNo}
 			   , ${classNo}
@@ -217,8 +217,8 @@
 			   , SYSDATE
 			   )
 	 </insert>
-	
-	<!-- 
+
+	<!--
 		@author : yeji Lee
 		페이징 처리
 	 -->
@@ -232,11 +232,11 @@
 		   </if>
 		   <if test="keyword != ''">
 		   and class_title like '%'||#{keyword}||'%'
-		   </if>		 
-		  
+		   </if>
+
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author : yeji Lee
 		클래스 리스트 조회
 	 -->
@@ -247,7 +247,7 @@
 		     , l.create_date
 		     , l.thumbnail
 		     , l.price
-		     , (select 
+		     , (select
 		               round(avg(score))
 		          from survey
 		         where class_no = l.class_no) star
@@ -263,23 +263,24 @@
 		     , t.nickname
 		  from lecture l
 		  left outer join (
-		                    select 
+		                    select
 		                           teacher_no, nickname
 		                      from teacher
-		                  ) t 
+		                  ) t
 		                  on l.user_no = t.teacher_no
 		 where l.status = 'O'
 		   <if test="sno != 0">
 		   and subcat_no = #{sno}
+		   and rownum between 1 and 5
 		   </if>
 		   <if test="keyword != ''">
 		   and l.class_title like '%'||#{keyword}||'%'
 		   </if>
-		 order 
+		 order
 		    by star desc
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 상세 조회
 	 -->
@@ -295,11 +296,11 @@
              , l.need
              , l.note
              , l.period
-             , (select 
+             , (select
                        round(avg(score))
                   from survey
                  where class_no = l.class_no) star
-             , (select 
+             , (select
                        count(*)
                   from survey
                  where class_no = l.class_no) survey
@@ -311,10 +312,9 @@
           from lecture l
           join teacher t on(l.subcat_no = t.subcat_no)
          where l.class_no = #{classNo}
-           and l.status = 'O'
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 소개 조회
 	 -->
@@ -324,29 +324,29 @@
              , intro_order
              , intro_image
              , intro_content
-          from class_intro 
+          from class_intro
          where class_no = #{classNo}
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 챕터 조회
 	 -->
 	<select id="selectLectureChapter" resultMap="chapterResult2">
-		select 
+		select
                chap_order
              , class_no
              , chap_name
           from chapter
          where class_no = #{classNo}
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 챕터 조회(비디오)
 	 -->
 	<select id="selectLectureVideo" resultMap="classVideoResult">
-		select 
+		select
                video_no
              , chap_order
              , video_order
@@ -358,13 +358,13 @@
          order
             by video_no asc
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 후기 조회
 	 -->
 	<select id="selectLectureReview" resultMap="surveyResult">
-		select 
+		select
                s.survey_no
              , m.nickname
              , s.satisfaction
@@ -373,13 +373,13 @@
           join member m on(s.user_no = m.user_no)
          where class_no = #{userNo}
 	</select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 문의 조회
 	 -->
 	<select id="selectLectureInquiry" resultMap="inquiryResult">
-		select 
+		select
                i.inquiry_no
              , i.inq_content
              , TO_CHAR(i.inq_date, 'YYYY-MM-DD HH24:MI') inq_date
@@ -393,19 +393,19 @@
           from lecture l
           join class_inquiry i on(i.class_no = l.class_no)
           left outer join (
-                            select 
+                            select
                                    teacher_no
                                  , nickname
                                  , profile_image
                                  , subcat_no
                               from teacher
-                          ) t 
+                          ) t
                   on l.subcat_no = t.subcat_no
           join member m on(m.user_no = i.user_no)
          where l.class_no = #{classNo}
 	</select>
-	
-	<!-- 
+
+	<!--
 		선생님 번호 조회
 	 -->
 	 <select id="selectTeacherNo" resultType="_int">
@@ -415,13 +415,13 @@
 		  join lecture l on (l.subcat_no = t.subcat_no)
 		 where l.class_no = #{classNo}
 	 </select>
-	
-	<!-- 
+
+	<!--
 		@author yeji lee
 		클래스 문의 등록
 	 -->
 	<insert id="ajaxEnrollInquiry">
-		insert 
+		insert
 		  into class_inquiry
 		  (
 		    inquiry_no
@@ -442,6 +442,23 @@
 	
 	<!-- 
 		@author yeji lee
+		내 클래스 조회
+	 -->
+	<select id="selectMyLecture" resultMap="lectureResult">
+		select
+		       p.class_no
+		     , p.user_no
+		     , l.class_title
+		     , l.thumbnail
+		  from payment p
+		  join lecture l on(p.class_no = l.class_no)
+		 where p.user_no = #{userNo}
+		 order
+		    by p.order_no desc
+	</select>
+
+	<!--
+		@author yeji lee
 		유저 스크랩 클래스 목록 조회
 	 -->
 	<select id="selectScrapCount" resultType="_int">
@@ -451,7 +468,7 @@
          where user_no = #{userNo}
            and type = 'S'
 	</select>
-	
+
 	<select id="selectScrapList" resultMap="lectureResult">
 		select
 	 		   l.class_no
@@ -459,7 +476,7 @@
              , t.nickname
              , l.price
              , l.create_date
-             , (select 
+             , (select
                        round(avg(score), 1)
                   from survey
                  where class_no = l.class_no) star
@@ -473,12 +490,13 @@
          join scrap_support s on(l.class_no = s.class_no)
         where l.user_no = #{userNo}
           and s.type = 'S'
+          and rownum between 1 and 5
         order
            by scrap_date desc
 	</select>
-	
+
   	<!--
-		한 강사의 '클래스 목록 수' 
+		한 강사의 '클래스 목록 수'
 		@author HeeRak
 	-->
 	<select id="selectLectureListCount" resultType="_int">
@@ -487,13 +505,13 @@
 		 where status != 'D'
 		   and user_no = #{userNo}
 	</select>
-	
+
 	<!--
 		한 강사의 '클래스 목록'
 		@author HeeRak
 	-->
 	<select id="selectLectureByTeacher" resultMap="lectureResult">
-		select 
+		select
 			   class_no
 			 , class_title
 			 , create_date
@@ -506,8 +524,8 @@
 		 order
 		    by create_date desc
 	</select>
-	
-	<!-- 
+
+	<!--
 		한 클래스 '클래스 챕터 목록'
 		@author HeeRak
 	 -->
@@ -520,7 +538,7 @@
 		 order
 		    by chap_order asc
 	</select>
-	 <!-- 
+	 <!--
 		클래스 3 페이지 ClassVideo List 가져오기
 		@author HeeRak
 	 -->
@@ -541,9 +559,9 @@
 		    by chap_order asc
 		     , video_order asc
 	 </select>
-	
-	<!-- 
-		
+
+	<!--
+
 	 -->
 	<update id="ajaxUpdateClassStuding" parameterType="ClassStuding">
 		update class_studing
@@ -551,8 +569,8 @@
 		 where user_no = #{userNo}
 		   and class_no =  #{classNo}
 	</update>
-	
-	<!-- 
+
+	<!--
 		클래스 펀딩승인처리 결과
 		@author HeeRak
 	 -->
@@ -573,8 +591,8 @@
 	 	 where class_no = {classNo}
 	 	   and user_no = {userNo}
 	 </update>
-	 
-	 <!-- 
+
+	 <!--
 		클래스 삭제 결과
 		@author HeeRak
 	 -->
@@ -584,8 +602,8 @@
 	 	 where class_no = {classNo}
 	 	   and user_no = {userNo}
 	 </update>
-	 
-	 <!-- 
+
+	 <!--
 		클래스 등록하기
 		@author HeeRak
 	 -->
@@ -605,8 +623,8 @@
 	 	     , #{userNo}
 	 	     )
 	 </insert>
-	 
-	 <!-- 
+
+	 <!--
 		클래스 0-4 페이지 lecture 가져오기
 		@author HeeRak
 	 -->
@@ -630,8 +648,8 @@
 		   and class_no = #{classNo}
 		   and status != 'D'
 	 </select>
-	 
-	<!-- 
+
+	<!--
 		클래스 2 페이지 ClassIntro List 가져오기
 		@author HeeRak
 	 -->
@@ -643,8 +661,8 @@
 		  from class_intro
 		 where class_no = #{classNo}
 	 </select>
-	 
-	 <!-- 
+
+	 <!--
 		클래스 input 0-4페이지 등록|수정|삭제
 		@author HeeRak
 	 -->
@@ -701,7 +719,7 @@
 	 	     	 		 		intro_order
 	 	     	 		 	  , class_no
 	 	     	 		 	  , intro_image
-	 	     	 		 	  , intro_content	
+	 	     	 		 	  , intro_content
 	 	     	 		 </trim>
 	 	     	 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
 	 	     	 		 	    d.intro_order
@@ -711,7 +729,7 @@
 	 	     	 		 </trim>
 	 </insert>
 	 <delete id="deleteClassIntro2">
-	 	delete 
+	 	delete
 	 	  from class_intro
 	 	 where intro_order > #{introLength}
 	 	   and class_no = #{classNo}
@@ -800,8 +818,8 @@
 	 	 where class_no = #{classNo}
 	 	   and user_no = #{userNo}
 	 </update>
-	 
-	 <!-- 
+
+	 <!--
 	 	강사 강의 등록|수정 완성도
 	 	@author HeeRak
 	  -->
@@ -816,8 +834,8 @@
 		  left join chapter using(class_no)
 		 where class_no = #{classNo}
 	 </select>
-	 
-	 <!-- 
+
+	 <!--
 	 	강사 강의 등록|수정 완성도
 	 	@author HeeRak
 	  -->
@@ -828,14 +846,14 @@
 	  	   set status = 'I'
 	  		</when>
 	  		<otherwise>
-	  	   set status = 'A'	  		
+	  	   set status = 'A'
 	  		</otherwise>
 	  		</choose>
 	  	 where class_no = #{classNo}
 	  	   and user_no = #{userNo}
 	  </update>
-	  
-	  <!-- 
+
+	  <!--
 		  	회원 영상 시청 기록 수정
 		 	@author HeeRak
 	   -->
@@ -846,15 +864,15 @@
 	   	   and video_no = #{videoNo}
 	   	   and watched = 'N'
 	   </update>
-	   
-	   <!-- 
+
+	   <!--
 	   		회원 영상시청 진척도
 	   		@author HeeRak
 	    -->
 	   <select id="ajaxLoadStudingDegree" resultType="_int" parameterType="ClassStuding">
 	   	select round(count(watched) /  (select count(video_no)
                            from class_video
-                          where class_no = 7) * 100, 0)
+                          where class_no = #{classNo}) * 100, 0)
 		  from progress
 		 where user_no = #{userNo}
 		   and video_no in(select video_no
@@ -863,8 +881,8 @@
 		 group by watched
 		 having watched = 'Y'
 	   </select>
-	   
-	   <!-- 
+
+	   <!--
 	   		회원 최근 영상시청 번호 조회
 	   		@author HeeRak
 	    -->
@@ -874,14 +892,34 @@
 	   	 where user_no = #{userNo}
 	   	   and class_no = #{classNo}
 	   </select>
-	   
-	   <select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
-		select 
+
+	<select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
+		select
 			   video_no
 		  from class_video
 		 where class_no = #{classNo}
-		 order
-		    by chap_order asc
-		     , video_order asc
 	</select>
+
+	<!--
+		@author yeji lee
+		설문조사 추가
+	 -->
+	<insert id="insertSurvey" parameterType="Survey">
+		insert
+   		  into survey
+		  values
+		  (
+		    SEQ_VNO.nextval
+		  , 2
+		  , 5
+		  , 5
+		  , 5
+		  , 5
+		  , 5
+		  , '좋았어요'
+		  , sysdate
+		  , 7
+		  , 7
+		  )
+	</insert>
 </mapper>

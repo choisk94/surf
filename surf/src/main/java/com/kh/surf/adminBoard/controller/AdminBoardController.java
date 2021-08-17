@@ -1,5 +1,6 @@
 package com.kh.surf.adminBoard.controller;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
+import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -289,6 +292,7 @@ public class AdminBoardController {
 	
 	/**
 	 * @author 서정연 관리자 FAQ 글수정
+	 * @author 최서경 - 기능 일부 수정했습니다.
 	 */
 	@RequestMapping("updateFaq.ad")
 	public String updateAdminFaq(AdminBoard ab, Model model, HttpSession session) {
@@ -410,6 +414,31 @@ public class AdminBoardController {
 			model.addAttribute("errorMsg", "반려 실패");
 			return "common/errorPage";
 		}
+	}
+	
+	/**
+	 * @author 서정연 관리자 강사신청 검색 기능
+	 */
+	@RequestMapping("searchTeacher.ad")
+	public ModelAndView selectSearchTeacherList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+			String condition, String keyword) {
+			  
+		HashMap<String, String> map = new HashMap<>(); map.put("condition", condition); map.put("keyword", keyword);
+				  
+		int listCount = abService.selectSearchTeacherCount(map);
+				  
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Teacher> list = abService.selectSearchTeacherList(pi, map);
+				  
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword)
+		  .setViewName("adminBoard/adTeacherList");
+				  
+		return mv;
+			  
 	}
 	
 	

@@ -49,6 +49,13 @@
             	})
             </script>
         </div>
+        <script>
+        	$(function(){
+            	if("${condition}" != ""){
+            		$("option[value=${condition}]").attr("selected", true);
+            	}
+            })
+        </script>
         <hr>
         <table id="adTeacherList" class="table" align="center">
           <thead>

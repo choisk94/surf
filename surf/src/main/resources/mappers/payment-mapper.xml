@@ -85,7 +85,7 @@
 		@author yeji lee
 		주문 성공 시 progress에 관련 데이터 추가
 	 -->
-	<insert id="insertProgress" parameterType="java.util.List">
+	<insert id="insertProgress" parameterType="map">
 		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " >
 		   into progress
 			  (
@@ -94,7 +94,7 @@
 			  )
 			  values
 			  (
-			    #{uno}
+			    #{userNo}
 			  , #{item.videoNo}
 			  )
 		</foreach>
@@ -106,8 +106,7 @@
 		  from class_video
 		 where class_no = #{classNo}
 		 order
-		    by chap_order asc
-		     , video_order asc
+		    by video_no asc
 	</select>
 	
 	

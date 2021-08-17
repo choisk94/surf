@@ -20,7 +20,7 @@ public interface PaymentService {
 	ArrayList<ClassVideo> selectMyLecVideo(HashMap<String, Object> map);
 	
 	// progress 데이터 추가
-	int insertProgress(ArrayList<ClassVideo> cList);
+	int insertProgress(HashMap<String, Object> map);
 	
 	// DB에 주문 내역 추가
 	int insertPayment(Payment p);

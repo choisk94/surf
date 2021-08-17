@@ -93,17 +93,21 @@
                   <td>${ ab.boardNo }</td>
                   <td>${ ab.faqCategory }</td>
                   <td align="left">
-                     <div>${ ab.boardTitle }</div>
+                     <div id="faqTitle">${ ab.boardTitle }</div>
                   </td>
                </tr>
                <tr class="faq2">
                   <td colspan="2" style="background: lightgray">A.</td>
                   <td align="left" style="background: lightgray">
-                     <p>${ ab.boardContent }</p> <br>
+                     <p class="faqContent">${ ab.boardContent }</p> <br>
                      <div align="right">
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#updateForm">수정</a> 
+                        <a id="updateBtn" class="btn btn-primary" data-toggle="modal" data-target="#updateForm">수정</a>
                         <a class="btn btn-danger" onclick="postFormSubmit(1, ${ab.boardNo});">삭제</a>
-                        <input type="hidden" id="" value="">
+                        <input type="hidden" id="faqTitle" value="${ ab.boardTitle }">
+                        <input type="hidden" id="faqCat" value="${ ab.faqCategory }">
+                        <input type="hidden" id="boardNo" value="${ ab.boardNo }">
+                        
+                        
                         
                      </div>
                   </td>
@@ -123,6 +127,17 @@
                 $("#postForm").attr("action", "deleteFaq.ad").submit();
             }
          }
+         
+         // FAQ수정 모달창에 값 표시
+         $(function(){
+        	 $("#faqList").on("click", "#updateBtn", function(){
+        		 console.log($(this).siblings("#faqTitle").val());
+        		 $("#modalQuestion").val($(this).siblings("#faqTitle").val());
+        		 $("#modalAnswer").text($(this).parent().siblings(".faqContent").text());
+        		 $("#modalCat>option[value=" + $(this).siblings("#faqCat").val() + "]").attr("selected", true);
+        		 $("#modalBoardNo").val($(this).siblings("#boardNo").val());
+        	 })
+         })
       </script>
 
 
@@ -145,7 +160,7 @@
           })
         </script>
         
-        <!-- 글작성 모달창 -->
+    <!------------------------------ 글작성 모달창 --------------------------------------->
         <div class="modal" id="enrollForm">
         	<div class="modal-dialog">
         		<div class="modal-content">
@@ -192,27 +207,27 @@
         </div>
         <br>
 
-    <!-- 글수정 모달창 -->
+    <!------------------------------ 글수정 모달창 --------------------------------------->
         <div class="modal" id="updateForm">
         	<div class="modal-dialog">
         		<div class="modal-content">
         			<form action="updateFaq.ad" method="post">
 	        			<div class="modal-header">
-	        			<h4 class="modal-title">글 수정</h4>
-	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        				<h4 class="modal-title">글 수정</h4>
+	        				<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        			</div>
 	        			
 	        			<div class="modal-body" align="center">
-	        			<input type="hidden" name="userNo" value="${ loginUser.userNo }">
+	        			<input id="modalBoardNo" type="hidden" name="boardNo" value="">
 		        				<table class="table">
 		        					<tr>
 		        						<td>질문</td>
-		        						<td><input type="text" class="form-control" id="question" name="boardTitle" value="${ ab.boardTitle }" required></td>
+		        						<td><input type="text" class="form-control" id="modalQuestion" name="boardTitle" required></td>
 		        					</tr>
 		        					<tr>
 		        						<td>카테고리</td>
 		        						<td>
-		        							<select style="width:100%;" name="faqCategory" value="${ ab.faqCategory }">
+		        							<select id="modalCat" style="width:100%;" name="faqCategory">
 									              <option value="사이트이용">사이트이용</option>
 									              <option value="계정">계정</option>
 									              <option value="결제/환불">결제/환불</option>
@@ -225,7 +240,7 @@
 		        					</tr>
 		        					<tr>
 		        						<td>답변</td>
-		        						<td><textarea class="form-control" id="answer" name="boardContent" rows="10" required>${ ab.boardContent }</textarea></td>
+		        						<td><textarea class="form-control" id="modalAnswer" name="boardContent" rows="10" required> </textarea></td>
 		        					</tr>
 		        				</table>
 	        			</div>

@@ -50,8 +50,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public int insertProgress(ArrayList<ClassVideo> cList) {
-		return pDao.insertProgress(sqlSession, cList);
+	public int insertProgress(HashMap<String, Object> map) {
+		return pDao.insertProgress(sqlSession, map);
 	}
 
 }

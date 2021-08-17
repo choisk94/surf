@@ -17,6 +17,7 @@ import com.kh.surf.lecture.model.service.LectureService;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -182,6 +183,7 @@ public class LectureController {
 	 */
 	@RequestMapping("scrapList.lec")
 	public ModelAndView selectScrapList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
+		System.out.print(uno);
 		int listCount = lService.selectScrapCount(uno);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 4, 12);
@@ -203,7 +205,7 @@ public class LectureController {
 	public int scrapCheck(int classNo, int userNo) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("classNo", classNo);
-		map.put("classNo", classNo);
+		map.put("userNo", userNo);
 		int result = lService.scrapCheck(map);
 		//System.out.print(result);
 		return result;
@@ -222,5 +224,46 @@ public class LectureController {
 		int result = lService.ajaxScrapLecture(map);
 		return result;
 	}
+	
+	/**
+	 * @author leeyeji
+	 * 내 클래스 조회
+	 */
+	@RequestMapping("myLecture.lec")
+	public ModelAndView selectMyLecture(int uno, ModelAndView mv) {
+		ArrayList<Lecture> mList = lService.selectMyLecture(uno);
+		mv.addObject("mList", mList).setViewName("member/myLectureList");
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping("progress.lec")
+	public int ajaxLoadStudingDegree(int userNo, int classNo) {
+		ClassStuding s = new ClassStuding();
+		s.setUserNo(userNo);
+		s.setClassNo(classNo);
+		
+		int progress = lService.ajaxLoadStudingDegree(s);
+		
+		return progress;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 설문조사 추가
+	 */
+	@ResponseBody
+	@RequestMapping("survey.lec")
+	public int insertSurvey(Survey s) {
+		System.out.println("s");
+		int result = lService.insertSurvey(s);
+		return result;
+	}
+	
+	
+	
+	
+	
+	
 	
 }

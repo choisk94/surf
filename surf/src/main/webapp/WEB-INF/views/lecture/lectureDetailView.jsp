@@ -190,7 +190,7 @@
 	                    <div id="info-btn">
 	                        <button type="button" class="btn" onclick="scrapCheck();">찜하기</button>
 	                        <input type="hidden" name="classNo" value="${ l.classNo }">
-	                        <button type="button" class="btn payIamport">결제하기</button>
+	                        <a class="btn payIamport">결제하기</a>
 	                    </div>
 	                </div>
 	                
@@ -257,15 +257,15 @@
 			<script>
 				
 				var cno = $('input[name=classNo]').val();
-		        var uno = '${loginUser.userNo}';
+		        var userNo = ${loginUser.userNo};
 		        //uno = '${loginUser.userNo}';
 		        //uno = ${empty loginUser.userNo ? -1 : loginUser.userNo};
-		        
+		        /*
 		        if(isNaN(uno)) {
 		        	uno = -1;
 		        } else {
 		        	uno = parseInt( uno );
-		        }
+		        }*/
 			
 				// 결제 관련
 				var c_price = ${ l.price };
@@ -303,7 +303,7 @@
 					    		var payment = {
 					    				//orderNo : r_imp_uid,
 					    				classNo : cno,
-					    				userNo : uno,
+					    				//userNo : uno,
 					    				price : rsp.paid_amount,
 					    				//paymentDate : new Date(),
 					    				payMethod : payMethod,
@@ -312,7 +312,7 @@
 					    	
 					    	// 디비 주문내역
 					    	jQuery.ajax({
-					    		url: "payments.do?uno=" + uno, 
+					    		url: "payments.do?userNo=" + userNo, 
 					    		type: 'POST',
 					    		dataType: 'json',
 					    		data: payment,
@@ -341,16 +341,15 @@
 		        
 		        // 찜하기 중복확인
 		        function scrapCheck(){
-					console.log(uno);
 
 		        	$.ajax({
 		        		url: "scrapCheck.lec",
 		        		data : {
 		        			classNo : cno,
-		        			userNo : uno
+		        			userNo : userNo
 		        		}, success: function(result){
 		        			console.log(result);
-		        			if(result == 1){
+		        			if(result > 0){
 		        				alert("이미 찜한 클래스입니다.");
 		        			}else {
 		        				scrapLecture();
@@ -371,7 +370,7 @@
 		            	type: "GET",
 		            	data: {
 		            		classNo : cno,
-		            		userNo : uno
+		            		userNo : userNo
 		            	},
 		            	success:function(result){
 		            		

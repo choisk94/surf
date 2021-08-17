@@ -39,7 +39,12 @@ public interface StudyBoardService {
 	// 9. 기준 선택 후 -> 스터디 목록 조회
 	int selectListCount(HashMap<String, String> map);
 	ArrayList<Study> selectList(HashMap<String, String> map, PageInfo pi);
-
+	
+	// 10. 댓글 삭제
+	int deleteReply(int rno);
+	
+	// 11. 댓글 수정
+	int updateReply(Reply r);
 	   
 	/** 신고관리 **/
 	// 1. 신고 게시판 리스트 페이지 조회용 (페이징)

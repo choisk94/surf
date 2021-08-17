@@ -273,7 +273,48 @@
 		 where board_no = #{boardNo}
 	</update>	
 
-
+	<!--
+		FAQ 리스트 페이지 조회용
+		@author 서정연 관리자
+	-->		
+	<select id="selectTeacherList" resultMap="adminTeacherResult">
+		select
+			   teacher_no
+			 , t.nickname
+			 , phone
+         	 , s.subcat_name
+			 , c.maincat_name
+             , t.status
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+         order
+		    by teacher_no desc
+	</select>
+	
+	<!--
+		FAQ 상세페이지 조회용
+		@author 서정연 관리자
+	-->		
+	<select id="selectTeacher" resultMap="adminTeacherResult">
+		select
+		       teacher_no
+             , profile_image 
+		     , email
+			 , t.nickname
+             , phone
+             , intro_content
+			 , c.maincat_name
+         	 , s.subcat_name
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+         where teacher_no = #{tno}
+           and t.status = 'Y'
+	</select>
+	
 	<!--
 		강사신청 리스트 페이지 조회수용
 		@author 서정연 관리자
@@ -305,35 +346,17 @@
 		       teacher
 		   set status = 'N'
 		 where teacher_no = #{teacherNo}
-	</update>	
-
-	<!--
-		FAQ 리스트 페이지 조회용
-		@author 서정연 관리자
-	-->		
-	<select id="selectTeacherList" resultMap="adminTeacherResult">
-		select
-			   teacher_no
-			 , t.nickname
-			 , phone
-         	 , s.subcat_name
-			 , c.maincat_name
-             , t.status
-		  from teacher t
-          join subcat s using(subcat_no)
-          join member m on t.nickname=m.nickname
-          join maincat c using(maincat_no)
-         order
-		    by teacher_no desc
-	</select>
+	</update>
+	
 	
 	<!--
-		FAQ 상세페이지 조회용
+		강사신청 검색용
 		@author 서정연 관리자
-	-->		
-	<select id="selectTeacher" resultMap="adminTeacherResult">
-		 select
-             teacher_no
+
+	-->	
+	<select id="selectSearchTeacherList" resultMap="adminTeacherResult">
+		select
+		       teacher_no
              , profile_image 
            , email
           , t.nickname
@@ -428,6 +451,13 @@
 	 		</otherwise>
 	 	</choose>
 	 		like '%' || #{keyword} || '%')
+	</select>
+
+	<select id="selectSearchTeacherCount" resultType="_int">
+		select
+		       count(*)
+		  from teacher
+
 	</select>
 	
 	<select id="selectSearchFaqList" resultMap="adminBoardResult">

@@ -350,16 +350,13 @@
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
-                         			location.href='/surf/scrapList.lec?currentPage=1&&uno=' + ${loginUser.userNo};
+                         			location.href='/scrapList.lec?uno=' + ${loginUser.userNo};
                          		} else {
-                         			/* 마이클레스로 이동
-                         			location.href='';
-                         			*/
-                         			
+                         			location.href='/myLecture.lec?uno=' + ${loginUser.userNo};
                          		}
                          	}
                          })
-                	})
+                	});
                 
                 </script>
 

@@ -68,6 +68,17 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 	}
 	
 	@Override
+	public int deleteReply(int rno) {
+		return sbDao.deleteReply(sqlSession, rno);
+	}
+	
+	@Override
+	public int updateReply(Reply r) {
+		return sbDao.updateReply(sqlSession, r);
+	}
+	
+	
+	@Override
 	public ArrayList<Study> selectList(HashMap<String, String> map, PageInfo pi) {
 		return sbDao.selectList(sqlSession, map, pi);
 	}
@@ -101,7 +112,6 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 	public int updateR(int reportNo) {
 		return sbDao.updateR(sqlSession, reportNo);
 	}
-	
 
 
 }
