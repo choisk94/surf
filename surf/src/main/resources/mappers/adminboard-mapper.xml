@@ -346,7 +346,6 @@
           join member m on t.nickname=m.nickname
           join maincat c using(maincat_no)
          where teacher_no = #{tno}
-           and t.status = 'Y'
 	</select>
 	
 

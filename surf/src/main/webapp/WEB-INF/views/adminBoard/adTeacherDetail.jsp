@@ -52,26 +52,27 @@
 				<textarea class="form-control" name="introContent" rows="10">${ t.introContent }</textarea>
 			<br>
 			<br> 어떤 강의를 열고 싶으신가요?<br>
-			<select name="mainCatName" id="">
+			<select name="mainCatName">
 				<option value="대분류">${ t.mainCatName }</option>
 			</select> 
-			<select name="subCatName" id="">
+			<select name="subCatName">
 				<option value="소분류">${ t.subCatName }</option>
 			</select> <br>
 			<br>
 			</div>
 		</form>
-		<div id="btn2">
-				<a onclick="updateForm(1);" class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; 
-				<a onclick="updateForm(2);" class="btn btn-danger" href="">반려</a>
-		</div>
-		
       	<form id="udForm" action="" method="post">
       		<input type="hidden" name="tno" value="${ t.teacherNo }">
       	</form>		
+		<div id="btn2">
+				<a class="btn btn-info" href="javascript:updateForm(1);">승인</a>&nbsp;&nbsp;&nbsp; 
+				<a class="btn btn-danger" href="javascript:updateForm(2);">반려</a>
+		</div>
+		
 		
 		<script>
 			function updateForm(num){
+				console.log(num);
 				if(num == 1){ // 승인
 					$("#udForm").attr("action", "updateYes.ad").submit();
 				} else { // 반려
