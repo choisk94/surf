@@ -23,35 +23,35 @@ public interface AdminService {
 	int selectListCount();
 
 	ArrayList<Ad> selectList(PageInfo pi);
-	
-	//2-1 결제내역 게시판 리스트 페이지 조회용
+
+	// 2-1 결제내역 게시판 리스트 페이지 조회용
 	int selectPmListCount();
 
 	ArrayList<PaymentList> selectPmList(PageInfo pi);
-	
-	//2-2 회원관리 게시판 리스트 페이지 조회용
+
+	// 2-2 회원관리 게시판 리스트 페이지 조회용
 	int selectMemListCount();
 
 	ArrayList<Member> selectMemList(PageInfo pi);
-	
-	//2-3 클래스등록관리  리스트 페이지 조회용
+
+	// 2-3 클래스등록관리 리스트 페이지 조회용
 	int selectLectureListCount();
 
 	ArrayList<Teacher> selectLectureList(PageInfo pi);
-	
-	//2-4 펀딩클래스관리 리스트 페이지 조회용
+
+	// 2-4 펀딩클래스관리 리스트 페이지 조회용
 	int selectFunListCount();
 
 	ArrayList<LectureList> selectFunList(PageInfo pi);
+
 	// 3.게시물 선택 삭제
 	void delete(String adNo);
+
 	// 3-1.펀딩클래스 선택 삭제
 	void funUpdate(String classNo);
 
 	// 4.광고베너 표시
 	void update(String adNo);
-	
-	
 
 	// 5.관리자페이지 이동
 	Member selectAdmin(int userNo);
@@ -69,20 +69,20 @@ public interface AdminService {
 
 	int selectSearchListCount(HashMap<String, String> map);
 
-	//8-1.결제내역 게시판 검색용
+	// 8-1.결제내역 게시판 검색용
 	ArrayList<PaymentList> selectSearchPayList(PageInfo pi, HashMap<String, String> map);
-	
+
 	int selectSearchPayListCount(HashMap<String, String> map);
-	
-	//8-2.회원관리 게시판 검색용
+
+	// 8-2.회원관리 게시판 검색용
 	ArrayList<Member> selectSearchMemList(PageInfo pi, HashMap<String, String> map);
 
 	int selectSearchMemListCount(HashMap<String, String> map);
-	
-	//9.회원탈퇴용
+
+	// 9.회원탈퇴용
 	void userUpdate(String userNo);
-	
-	//10.클래스등록관리 승인/반려/삭제/펀딩
+
+	// 10.클래스등록관리 승인/반려/삭제/펀딩
 	void approvalUpdate(String classNo);
 
 	void companionUpdate(String classNo);
@@ -91,36 +91,25 @@ public interface AdminService {
 
 	void fundingUpdate(String classNo);
 
-	//11.클래스등록관리 검색용
+	// 11.클래스등록관리 검색용
 	ArrayList<LectureList> selectLecSearchList(PageInfo pi, HashMap<String, String> map);
-	
+
 	int selectLecSearchListCount(HashMap<String, String> map);
-	
-	//12.펀딩클래스관리 검색용
+
+	// 12.펀딩클래스관리 검색용
 	ArrayList<LectureList> selectFunSearchList(PageInfo pi, HashMap<String, String> map);
-	
+
 	int selectFunSearchListCount(HashMap<String, String> map);
 
-	//13.클래스 상세조회용
+	// 13.클래스 상세조회용
 	Lecture selectLectureDetail(int lno);
 
 	ArrayList<ClassIntro> selectIntroList2(int lno);
 
-	//14.결제 내역 페이징용
-	
+	// 14.결제 내역 페이징용
+
 	int settleListCount();
 
 	ArrayList<PaymentList> settleList(PageInfo pi);
-
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
 
 }

@@ -52,6 +52,32 @@
 			<mapping path="/lectureList.te"/>
 			<beans:bean id="teacherInterceptor" class="com.kh.surf.common.interceptor.TeacherInterceptor"/>
 		</interceptor>
+		
+		<interceptor>
+			<mapping path="/list.bo"/>
+			<mapping path="/pmList.ad"/>
+			<mapping path="/memList.ad"/>
+			<mapping path="/settleList.ad"/>
+			<mapping path="/lectureList.ad"/>
+			<mapping path="/fundingList.ad"/>
+			<mapping path="/login.ad"/>
+			<mapping path="/lectureDetail.ad"/>
+			<mapping path="/updateForm.ad"/>
+			<mapping path="/lecSearch.ad"/>
+			<mapping path="/updateForm.ad"/>
+			<mapping path="/insert.ad"/>
+			<!-- 여기부터 정연님꺼 -->
+			<mapping path="/noticeList.ad"/>
+			<mapping path="/enrollNotice.ad"/>
+			<mapping path="/insertNotice.ad"/>
+			<mapping path="/detailNotice.ad"/>
+			<mapping path="/deleteNotice.ad"/>
+			<mapping path="/updateFormNotice.ad"/>
+			<mapping path="/reportList.ad"/>
+			<mapping path="/updateB.ad"/>
+			<mapping path="/updateR.ad"/>
+			<beans:bean id="AdminInterceptor" class="com.kh.surf.common.interceptor.AdminInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 </beans:beans>
