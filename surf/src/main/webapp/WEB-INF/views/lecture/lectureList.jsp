@@ -79,10 +79,10 @@
         left: 210px;
     }
     .fa-heart{color: red; margin-right: 2px;}
-    .scrap-comple{display: none;}
+    #scrap-comple{display: none;}
     .fa-star{color: rgb(231, 217, 17); margin-right: 2px;}
-    .scrap-icon:hover{color: darkred;}
-    .scrap-icon:active{
+    #scrap-icon:hover{color: darkred;}
+    #scrap-icon:active{
         box-shadow: 1px 1px 0 rgb(0,0,0,0.5); position: relative; top:2px;
     }
     #pagingArea{width:fit-content;margin:auto;}
@@ -212,8 +212,8 @@
                                <img src="${ l.thumbnail }" width="240" height="150" id="">
                                <div class="text" onclick="scrapCheck(this)">
                                    <input type="hidden" name="classNo" value="${ l.classNo }">
-                                   <i class="far fa-heart scrap-icon"></i>
-	                               <i class="fas fa-heart scrap-comple" style="display:none;"></i>
+                                   <i class="far fa-heart" id="scrap-icon"></i>
+	                               <i class="fas fa-heart " id="scrap-comple" style="display:none;"></i>
                                </div>
                            </div>
        
@@ -340,9 +340,9 @@
 	            		alert("클래스를 찜했습니다!");
 	            		
 	            		// 스크랩 아이콘 클릭
-	                    if($(elem).find(".scrap-comple").css("display") == "none") {
-	                        $(".scrap-icon").css("display", "none");
-	                        $(".scrap-comple").show();
+	                    if($(elem).find("#scrap-comple").css("display") == "none") {
+	                        $("#scrap-icon").css("display", "none");
+	                        $("#scrap-comple").show();
 	                    }
 	            		
             		}else{
