@@ -173,6 +173,7 @@ public class LectureController {
 	 */
 	@RequestMapping("scrapList.lec")
 	public ModelAndView selectScrapList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
+		System.out.print(uno);
 		int listCount = lService.selectScrapCount(uno);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 4, 12);
@@ -213,5 +214,34 @@ public class LectureController {
 		int result = lService.ajaxScrapLecture(map);
 		return result;
 	}
+	
+	/**
+	 * @author leeyeji
+	 * 내 클래스 조회
+	 */
+	@RequestMapping("progress.lec")
+	public ModelAndView selectMyLecture(int uno, ModelAndView mv) {
+		ArrayList<Lecture> mList = lService.selectMyLecture(uno);
+		mv.addObject("mList", mList).setViewName("member/myLectureList");
+		return mv;
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 설문조사 추가
+	 */
+	@ResponseBody
+	@RequestMapping("survey.lec")
+	public int insertSurvey(Survey s) {
+		System.out.println("s");
+		int result = lService.insertSurvey(s);
+		return result;
+	}
+	
+	
+	
+	
+	
+	
 	
 }

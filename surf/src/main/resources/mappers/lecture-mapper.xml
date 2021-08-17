@@ -263,6 +263,7 @@
 		                  on l.user_no = t.teacher_no
 		 where l.status = 'O'
 		   and subcat_no = #{sno}
+		   and rownum between 1 and 5
 		 order 
 		    by star desc
 	</select>
@@ -461,6 +462,7 @@
          join scrap_support s on(l.class_no = s.class_no)
         where l.user_no = #{userNo}
           and s.type = 'S'
+          and rownum between 1 and 5
         order
            by scrap_date desc
 	</select>
@@ -863,13 +865,33 @@
 	   	   and class_no = #{classNo}
 	   </select>
 	   
-	   <select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
+	<select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
 		select 
 			   video_no
 		  from class_video
 		 where class_no = #{classNo}
-		 order
-		    by chap_order asc
-		     , video_order asc
 	</select>
+
+	<!-- 
+		@author yeji lee
+		설문조사 추가
+	 -->
+	<insert id="insertSurvey" parameterType="Survey">
+		insert
+   		  into survey
+		  values
+		  (
+		    SEQ_VNO.nextval
+		  , 2
+		  , 5
+		  , 5
+		  , 5
+		  , 5
+		  , 5
+		  , '좋았어요'
+		  , sysdate
+		  , 7
+		  , 7
+		  )
+	</insert>
 </mapper>

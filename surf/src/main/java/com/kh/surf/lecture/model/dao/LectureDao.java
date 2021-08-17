@@ -158,4 +158,20 @@ public class LectureDao {
 		return sqlSession.selectOne("lectureMapper.selectTeacherNo", classNo);
 	}
 	
+	/**
+	 * @author leeyeji
+	 * 내 클래스 조회
+	 */
+	public ArrayList<Lecture> selectMyLecture(SqlSessionTemplate sqlSession, int userNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectMyLecture", userNo);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 설문조사 조회
+	 */
+	public int insertSurvey(SqlSessionTemplate sqlSession, Survey s) {
+		return sqlSession.insert("lectureMapper.insertSurvey", s);
+	}
+	
 }

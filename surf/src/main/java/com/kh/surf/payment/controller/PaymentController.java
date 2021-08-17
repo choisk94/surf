@@ -44,29 +44,24 @@ public class PaymentController {
 	 * 결제 성공
 	 */
 	@ResponseBody
-	@RequestMapping(value="payments.do", method = RequestMethod.POST)
-	public int paymentSuccess(Payment p, @Param("uno") int uno) {
+	@RequestMapping(value="payments.do")
+	public int paymentSuccess(Payment p) {
 		HashMap<String, Object> map = new HashMap<>();
-		//HashMap<String, Object> vMap = new HashMap<>();
 		map.put("userNo", p.getUserNo());
 		map.put("classNo", p.getClassNo());
-		
+
 		int payResult = pService.insertPayment(p);
 		if(payResult > 0) {
 			
 			ArrayList<ClassVideo> cList = pService.selectMyLecVideo(map);
-			System.out.println("list:" + cList);
-			/*
+			
 			if(cList != null) {
-				for (int i = 0; i < cList.size(); i++) {
-					vMap.put("videoNo", cList.get(i));
-					
-				}
-			}*/
-			int proResult = pService.insertProgress(cList);
+				map.put("list", cList);
+			}
+			int proResult = pService.insertProgress(map);
 		}
+		return payResult;				
 		
-		return payResult;
 	}
 	
 	
