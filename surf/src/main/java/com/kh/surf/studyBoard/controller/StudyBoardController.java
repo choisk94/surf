@@ -214,6 +214,37 @@ public class StudyBoardController {
 		return mv;
 	}
 	
+	/** @author 최서경
+	 * 댓글 삭제
+	 */
+	@ResponseBody
+	@RequestMapping("delete.re")
+	public String deleteReply(int rno) {
+		
+		int result = sbService.deleteReply(rno);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	/** @author 최서경
+	 * 댓글 수정
+	 */
+	@ResponseBody
+	@RequestMapping("update.re")
+	public String updateReply(Reply r) {
+
+		int result = sbService.updateReply(r);
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}		
+	}
+	
 	/** @author 서정연 
 	 * 관리자 신고관리 리스트페이지
 	 */

@@ -61,7 +61,7 @@
 	font-size: 13px;
 }
 
-#replyEnroll {
+#replyEnroll, #replyUpdate {
 	float: left;
 	width: 85%;
 	font-size: 12px;
@@ -92,6 +92,17 @@ input[name=whyReport] {
 
 #goBackBtn:hover {
 	opacity: 0.7;
+}
+
+.rbtn{
+    font-weight: 600;
+    font-size: 11px;
+    color: rgb(94, 94, 94);
+}
+
+.rbtn:hover{
+    opacity:0.7;
+    cursor:pointer;
 }
 
 </style>
@@ -180,9 +191,11 @@ input[name=whyReport] {
 			<h5><b id="rCount"></b></h5>
 			
 			<!-- 새로운 댓글 작성 -->
+			<div id="renewReply">
 			<textarea class="form-control" name="replyContent" id="replyEnroll"	maxlength="80" rows="3"></textarea>
 			<button id="replyBtn" class="btn btn-sm btn-warning" style="height: 45px; margin-left: 20px; margin-top: 10px; 
 				font-size: 12px;" type="button" onclick="insertReply();">등록하기</button>
+			</div>
 
 			<!--댓글 목록 -->
 			<div id="replyArea" style="clear: both; margin-top: 30px;" align="center">
@@ -203,6 +216,7 @@ input[name=whyReport] {
 	<script>
 		$(function(){
 			selectReplyList();
+
 		})
 			
 		// 댓글 작성
@@ -238,9 +252,18 @@ input[name=whyReport] {
 						result = '<div style="width: 100%; margin-bottom: 30px;" align="center"> 등록된 댓글이 없습니다. </div>'						
 					} else {
 						for( var i in rlist){
-							result += '<div style="width: 100%; margin-bottom: 30px;" align="left">'
+							result += '<div class="router" style="width: 100%; margin-bottom: 30px;" align="left">'
 										+ '<i class="fas fa-fish replyMark"></i>' 
-										+ '<span class="replyWriter">' + rlist[i].replyWriter + '</span>'
+										+ '<span class="replyWriter">'
+											+ rlist[i].replyWriter
+
+										    if(rlist[i].userNo == '${loginUser.userNo}') {
+												result += '<input class="rno" type="hidden" value="' + rlist[i].replyNo + '">'
+								                        + '<span class="rbtn mx-2 rDel">삭제 <i class="fas fa-trash-alt"></i></span>'
+								                        + '<span class="rbtn rUpd">수정 <i class="fas fa-edit"></i></span>'
+											}
+										
+								result += '</span>'
 								        + '<span class="replyTime">'
 									        + rlist[i].createDate 
 										  	+ '<input class="sno" type="hidden" value="' + rlist[i].replyNo + '">'
@@ -259,10 +282,67 @@ input[name=whyReport] {
 					
 				}
 			})
+		
 		}
+    
+		/***************** 댓글 삭제 및 수정 *******************/
+		$(function(){
+			// 댓글 삭제
+            $("#replyArea").on("click", ".rDel", function(){
+            	if(confirm("선택한 댓글을 삭제하시겠습니까?")){
+            		
+            		$.ajax({
+            			url:"delete.re",
+            			data:{rno:$(this).siblings(".rno").val()},
+            			type:"POST",
+            			success:function(result){
+            				if(result == "success"){
+            					selectReplyList();
+            				} else {
+            					alert("댓글 삭제 실패");
+            				}
+            			}, error:function(){
+            				console.log("ajax통신 실패");
+            			}
+            		})
+            	}
+
+            })
+            
+            var $replyInsertForm = $("#renewReply").html();
+
+            // 댓글 수정
+            $("#replyArea").on("click", ".rUpd", function(){
+            	$(this).parents(".router").remove();
+            	var update = "";
+            	update += '<input id="rno" type="hidden" value="' + $(this).siblings(".rno").val() + '">'
+            		    + '<textarea class="form-control" id="replyUpdate" maxlength="80" rows="3">' + $(this).parent().siblings(".replyContent").text() + '</textarea>'
+    					+ '<button id="rUpdateBtn" class="btn btn-sm btn-info" style="height: 45px; margin-left: 20px; margin-top: 10px;' 
+    					+ 'font-size: 12px;" type="button" onclick="">수정하기</button>'
+				$("#renewReply").html(update);                
+            })
+            
+            $("#renewReply").on("click", "#rUpdateBtn", function(){
+            	$.ajax({
+            		url:"update.re",
+            		type:"post",
+            		data:{replyNo:$(this).siblings("#rno").val(),
+						  replyContent:$(this).siblings("#replyUpdate").val()
+            		}, success:function(result){
+            			if(result == "success"){
+            				alert("댓글이 정상적으로 수정되었습니다.");
+            				$("#renewReply").html($replyInsertForm);
+            				selectReplyList();
+            			}
+            		}, error:function(){
+            			console.log("ajax통신 실패");
+            		}
+            	})
+            })
+
+        })
 	</script>
-
-
+	
     <!-- 게시글 신고하기 Modal -->
     <div class="modal" id="bReportModal">
         <div class="modal-dialog modal-dialog-centered">
@@ -326,7 +406,7 @@ input[name=whyReport] {
 			})
 			
 	        $(".report").tooltip();
-
+			
 		})
 	</script>
 	<jsp:include page="../common/footer.jsp"/>

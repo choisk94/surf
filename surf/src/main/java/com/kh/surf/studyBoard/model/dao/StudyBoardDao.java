@@ -103,6 +103,20 @@ public class StudyBoardDao {
 		return (ArrayList)sqlSession.selectList("studyboardMapper.selectList", map, rowBounds);
 	}
 	
+	/** @author 최서경
+	 * 댓글 삭제
+	 */
+	public int deleteReply(SqlSessionTemplate sqlSession, int rno) {
+		return sqlSession.update("studyboardMapper.deleteReply", rno);
+	}
+	
+	/** @author 최서경
+	 * 댓글 수정
+	 */
+	public int updateReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.update("studyboardMapper.updateReply", r);
+	}
+	
 	/** @author 서정연
 	 * 신고관리 리스트페이지 조회수용
 	 */
