@@ -24,7 +24,12 @@ import com.kh.surf.admin.model.vo.LectureList;
 import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
+import com.kh.surf.lecture.model.service.LectureService;
+import com.kh.surf.lecture.model.vo.Chapter;
+import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.teacher.model.service.TeacherService;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -32,6 +37,12 @@ public class AdminController {
 
 	@Autowired
 	private AdminService aService;
+	
+	@Autowired
+	private LectureService lService;
+	
+	@Autowired
+	private TeacherService tService;
 
 	//광고게시판 리스트조회
 	@RequestMapping("list.bo")
@@ -156,6 +167,23 @@ public class AdminController {
 		}
 		return "redirect:list.bo";
 	}
+	@RequestMapping("lectureDetail.ad")
+	public ModelAndView lectureDetail(int lno, ModelAndView mv) {
+		
+		Lecture l = aService.selectLectureDetail(lno);
+		ArrayList<Chapter> tList = lService.selectLectureChapter(lno);
+		ArrayList<ClassIntro> introList = aService.selectIntroList2(lno);
+		
+		mv.addObject("tList", tList)
+		  .addObject("l", l)
+		  .addObject("introList", introList)
+		  .setViewName("admin/classDetailedInquiry");
+		
+		return mv;
+		
+	}
+	
+	
 	// 회원탈퇴용
 	@RequestMapping("userUpdate")
 	public String ajaxTest3(HttpServletRequest request) throws Exception {

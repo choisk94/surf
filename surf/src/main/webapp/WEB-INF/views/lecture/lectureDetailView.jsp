@@ -312,7 +312,7 @@
 					    	
 					    	// 디비 주문내역
 					    	jQuery.ajax({
-					    		url: "payments.do", 
+					    		url: "payments.do?uno=" + uno, 
 					    		type: 'POST',
 					    		dataType: 'json',
 					    		data: payment,

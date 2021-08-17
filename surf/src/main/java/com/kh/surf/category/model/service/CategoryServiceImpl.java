@@ -39,4 +39,13 @@ public class CategoryServiceImpl implements CategoryService {
 		return cDao.AjaxSelectSubcatList(maincatNo, sqlSession);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 서브 카테고리 조
+	 */
+	@Override
+	public ArrayList<Subcat> selectSubCategory() {
+		return cDao.selectSubCategory(sqlSession);
+	}
+
 }

@@ -102,9 +102,9 @@ public interface TeacherService {
 	int updateStatus(Lecture l);
 
 
+
 	
 	// 19. 강사 신청
-	/*
 	int applyTeacher(Teacher t);
-	*/
+	
 }

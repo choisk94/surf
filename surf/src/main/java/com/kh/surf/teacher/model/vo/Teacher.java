@@ -18,6 +18,7 @@ public class Teacher {
 	private String introContent;
 	private String subCatNo;
 	private String status;
+	private int subNo;
 	
 	// 1:1
 	private String classTitle;

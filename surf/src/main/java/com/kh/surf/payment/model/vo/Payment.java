@@ -16,6 +16,7 @@ public class Payment {
 	private int classNo;
 	private int userNo;
 	private int price;
+	private String classTitle;
 	private Date paymentDate;
 	private String payMethod;
 	private String status;

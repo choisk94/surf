@@ -874,4 +874,14 @@
 	   	 where user_no = #{userNo}
 	   	   and class_no = #{classNo}
 	   </select>
+	   
+	   <select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
+		select 
+			   video_no
+		  from class_video
+		 where class_no = #{classNo}
+		 order
+		    by chap_order asc
+		     , video_order asc
+	</select>
 </mapper>

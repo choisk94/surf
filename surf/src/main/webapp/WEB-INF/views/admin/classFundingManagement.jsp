@@ -118,15 +118,6 @@
 			<button type="submit" class="searchBtn btn btn-secondary"
 				style="background-color: #3AB6F7; border: 0; outline: 0; border-radius: 10px;">🔍</button>
 		 </form>
-		<div id="filter" style=" float: right; width: 100%;">
-              <select id="qna-filter" style="width:140px; height: 30px; font-size:14px;">
-                  <option value="">전체 조회</option>
-                  <option value="승인">승인</option>
-                  <option value="반려">반려</option>
-                  <option value="펀딩중">펀딩중</option>
-
-              </select>
-              </div>
 		<br>
 		<script>
             	$(function(){
@@ -168,17 +159,17 @@
 			<ul class="pagination">
 				<c:choose>
 					<c:when test="${ pi.currentPage eq 1 }">
-						<li class="page-item disabled"><a class="page-link">Previous</a></li>
+						<li class="page-item disabled"><a class="page-link">◁</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="funSearch.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+									href="funSearch.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">◁</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="fundingList.ad?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+									href="fundingList.ad?currentPage=${ pi.currentPage-1 }">◁</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -202,17 +193,17 @@
 
 				<c:choose>
 					<c:when test="${ pi.currentPage eq pi.maxPage }">
-						<li class="page-item disabled"><a class="page-link">Next</a></li>
+						<li class="page-item disabled"><a class="page-link">▷</a></li>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ !empty condition }">
 								<li class="page-item"><a class="page-link"
-									href="funSearch.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+									href="funSearch.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">▷</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item"><a class="page-link"
-									href="fundingList.ad?currentPage=${ pi.currentPage+1 }">Next</a></li>
+									href="fundingList.ad?currentPage=${ pi.currentPage+1 }">▷</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
