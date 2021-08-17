@@ -289,6 +289,7 @@ public class AdminBoardController {
 	
 	/**
 	 * @author 서정연 관리자 FAQ 글수정
+	 * @author 최서경 - 기능 일부 수정했습니다.
 	 */
 	@RequestMapping("updateFaq.ad")
 	public String updateAdminFaq(AdminBoard ab, Model model, HttpSession session) {
