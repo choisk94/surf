@@ -43,10 +43,15 @@
         opacity: 0.7;
     }
     /*.thumbnail span{margin-bottom: 5px;}*/
-    .thumbnail>p{height: 120px;   }
+    .thumbnail>p{height: 65px;   }
     .class-thumb{position: relative;}
     .scrap-icon img{position:absolute;top: 20px;}
     #pagingArea{width:fit-content;margin:auto;}
+    #modal-open{
+    	background-color: rgb(32, 155, 212);
+    	width: 240px;
+    	color: white;
+    }
 
     /*진행바*/
     progress {
@@ -168,6 +173,7 @@
         height: 30px;
         margin-bottom: 10px;
     }
+    .body-titlebox>h3{font-weight: bold;}
     .body-contentbox {
         word-break: break-word;
         overflow-y: auto;
@@ -188,7 +194,11 @@
         cursor: pointer;
         background-color: rgb(32, 155, 212);
     }
-    .pop-btn.confirm {border-right: 1px solid lightgray;}
+    .pop-btn.confirm {
+    	border-right: 1px solid lightgray;
+    	background-color: rgb(32, 155, 212);
+    	color: white;
+    }
 </style>
 </head>
 <body>
@@ -221,27 +231,26 @@
                     <!-- 클래스 -->
                     <div class="class-list">
 
+                        <c:forEach var="m" items="${ mList }">
+	                        <div class="thumbnail" align="center">
+	                            <input type="hidden" name="classNo" value="${ m.classNo }">
+	                            <input type="hidden" name="teacherNo" value="">
+	                            <div id="class-thumb">
+	                                <img src="${ m.thumbnail }" width="240" height="150" id="">
+	                            </div>
+	        
+	                            <p style="margin-top: 5px;">
+	                                <b>${ m.classTitle }</b><br>
+	                                <progress id="pro_value" value="20" max="100"></progress>
+	                                <span id="progress" style="font-size:14px">진행률 65%</span> 
+	                            </p>
+	                            <!-- 진행률 100%시 설문조사 버튼 if문 처리 -->
+	                            <button type="button" class="btn" id="modal-open">설문조사</button>
+	                        </div>
+                        </c:forEach>
                         
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <progress value="20" max="100"></progress>
-                                <span style="font-size:14px">진행률 65%</span> <br>
-                                <span style="font-size:14px"><b>월 30,000원</b>  (30일)</span> <br>
 
-                                
-                            </p>
-                            <!-- 진행률 100%시 설문조사 버튼 if문 처리 -->
-                            <button type="button" class="btn" id="modal-open">설문조사</button>
-                        </div>
-                        
-
-                        <!-- 페이징 -->
+                        <!-- 페이징 
                         <br><br><br><br>
                         <div id="pagingArea ">
                             <ul class="pagination">
@@ -253,7 +262,7 @@
                                 <li class="page-item"><a class="page-link" href="#">5</a></li>
                                 <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
                             </ul>
-                        </div>
+                        </div>-->
                         <br><br>
 
                     </div>
@@ -265,7 +274,7 @@
         
         <!-- 설문조사 클릭시 모달창 -->
         <!-- modal area -->
-        <form action="" method="POST">
+        <form action="survey.lec" method="POST">
 
             <div id="survey">
                 <div class="popup-wrap" id="popup"> <!--모달을 감싸는 박스-->
@@ -283,38 +292,47 @@
 
                                     <strong>퀄리티</strong>
                                     <div class="class-quality rating rating2">
-                                        <button type="button" class="btn" title="Give 5 stars">★</button>
-                                        <button type="button" class="btn" title="Give 4 stars">★</button>
-                                        <button type="button" class="btn" title="Give 3 stars">★</button>
-                                        <button type="button" class="btn" title="Give 2 stars">★</button>
-                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                        <button type="button" class="btn qual" title="Give 5 stars" id="clickQual5">★</button>
+                                        <button type="button" class="btn qual" title="Give 4 stars" id="clickQual4">★</button>
+                                        <button type="button" class="btn qual" title="Give 3 stars" id="clickQual3">★</button>
+                                        <button type="button" class="btn qual" title="Give 2 stars" id="clickQual2">★</button>
+                                        <button type="button" class="btn qual" title="Give 1 star" id="clickQual1">★</button>
                                     </div>
 
                                     <strong>만족도</strong>
                                     <div class="class-sati rating rating2">
-                                        <button type="button" class="btn" title="Give 5 stars">★</button>
-                                        <button type="button" class="btn" title="Give 4 stars">★</button>
-                                        <button type="button" class="btn" title="Give 3 stars">★</button>
-                                        <button type="button" class="btn" title="Give 2 stars">★</button>
-                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                        <button type="button" class="btn sati" title="Give 5 stars" id="clickSati5">★</button>
+                                        <button type="button" class="btn sati" title="Give 4 stars" id="clickSati4">★</button>
+                                        <button type="button" class="btn sati" title="Give 3 stars" id="clickSati3">★</button>
+                                        <button type="button" class="btn sati" title="Give 2 stars" id="clickSati2">★</button>
+                                        <button type="button" class="btn sati" title="Give 1 star" id="clickSati1">★</button>
+                                    </div>
+                                    
+                                    <strong>난이도</strong>
+                                    <div class="class-price rating rating2">
+                                        <button type="button" class="btn diffi" title="Give 5 stars" id="clickDiffi5">★</button>
+                                        <button type="button" class="btn diffi" title="Give 4 stars" id="clickDiffi4">★</button>
+                                        <button type="button" class="btn diffi" title="Give 3 stars" id="clickDiffi3">★</button>
+                                        <button type="button" class="btn diffi" title="Give 2 stars" id="clickDiffi2">★</button>
+                                        <button type="button" class="btn diffi" title="Give 1 star" id="clickDiffi1">★</button>
                                     </div>
 
                                     <strong>가격</strong>
                                     <div class="class-price rating rating2">
-                                        <button type="button" class="btn" title="Give 5 stars">★</button>
-                                        <button type="button" class="btn" title="Give 4 stars">★</button>
-                                        <button type="button" class="btn" title="Give 3 stars">★</button>
-                                        <button type="button" class="btn" title="Give 2 stars">★</button>
-                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                        <button type="button" class="btn pri" title="Give 5 stars" id="clickPri5">★</button>
+                                        <button type="button" class="btn pri" title="Give 4 stars" id="clickPri4">★</button>
+                                        <button type="button" class="btn pri" title="Give 3 stars" id="clickPri3">★</button>
+                                        <button type="button" class="btn pri" title="Give 2 stars" id="clickPri2">★</button>
+                                        <button type="button" class="btn pri" title="Give 1 star" id="clickPri1">★</button>
                                     </div>
 
                                     <strong>평점</strong>
                                     <div class="class-star rating rating2" >
-                                        <button type="button" class="btn" title="Give 5 stars">★</button>
-                                        <button type="button" class="btn" title="Give 4 stars">★</button>
-                                        <button type="button" class="btn" title="Give 3 stars">★</button>
-                                        <button type="button" class="btn" title="Give 2 stars">★</button>
-                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                        <button type="button" class="btn sco" title="Give 5 stars" id="clickSco5">★</button>
+                                        <button type="button" class="btn sco" title="Give 4 stars" id="clickSco4">★</button>
+                                        <button type="button" class="btn sco" title="Give 3 stars" id="clickSco3">★</button>
+                                        <button type="button" class="btn sco" title="Give 2 stars" id="clickSco2">★</button>
+                                        <button type="button" class="btn sco" title="Give 1 star" id="clickSco1">★</button>
                                     </div>
 
                                     <strong>후기</strong> 
@@ -334,12 +352,77 @@
 
         <script>
         
-            // 모달 관련 스크립트
+        	var uno = '${loginUser.userNo}';
+        	var cno = $('input[name=classNo]').val();
+        	var tno = $('input[name=teacherNo]').val();
+        	
+        	$(".qual").click(function(){
+        		var qual = $(this).attr("id");
+        	});
+        	$(".sati").click(function(){
+        		var sati = $(this).attr("id");
+        	});
+        	$(".diffi").click(function(){
+        		var diffi = $(this).attr("id");
+        	});
+        	$(".pri").click(function(){
+        		var pri = $(this).attr("id");
+        	});
+        	$(".sco").click(function(){
+        		var sco = $(this).attr("id");
+        	});
+        	
+        	// 진행률 
+        	$(document).ready(function(){
+        		console.log(cno);
+        		console.log(uno);
+        		
+        		$.ajax({
+        			url: "progress.lec",
+        			data: {
+        				classNo : cno,
+        				userNo : uno
+        			}, success:function(result){
+        				
+        				$("#pro_value").val(result);
+        				$("#progress").html("진행률 " + result + "%");
+        				
+        			}, error:function(){
+        				console.log("진행률 실패");
+        			}
+        		})
+        		
+        	}) // End of ready
+        	
+        	// 설문조사
+        	$(".confirm").click(function(){
+        		$.ajax({
+        			url: "survey.lec",
+        			data: {
+        				userNo : uno,
+        				quality : qual,
+        				satisfaction : sati,
+        				difficulty: diffi,
+        				price : pri,
+        				score : sco,
+        				classNo : cno,
+        				teacherNo : tno
+        			}, success:function(result){
+        				if(result > 0){
+	        				alert("설문 조사에 제출되었습니다!");
+        				}else{
+        					console.log("설문조사 디비 실패");
+        				}
+        			}, error:function(){
+        				console.log("설문조사 통신 실패");
+        			}
+        		});
+        	})
+        
+            // 모달
             $(function(){
                 $("#confirm").click(function(){
                     modalClose(); 
-                    //컨펌 이벤트 처리 어케해
-
                 });
                 $("#modal-open").click(function(){        
                     $("#popup").css('display','flex').hide().fadeIn();
@@ -351,7 +434,7 @@
                     $("#popup").fadeOut(); 
                 }
             });
-    
+            
         </script>
 
 

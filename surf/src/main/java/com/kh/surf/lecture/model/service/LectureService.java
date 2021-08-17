@@ -7,6 +7,7 @@ import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -105,4 +106,10 @@ public interface LectureService {
 	 * 설문조사 추가
 	 */
 	int insertSurvey(Survey s);
+	
+	/**
+	 * @author leeyeji
+	 * 진행률 조회
+	 */
+	int ajaxLoadStudingDegree(ClassStuding s);
 }

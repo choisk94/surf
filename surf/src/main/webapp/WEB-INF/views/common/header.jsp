@@ -350,9 +350,9 @@
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
-                         			location.href='/surf/scrapList.lec?uno=' + ${loginUser.userNo};
+                         			location.href='/scrapList.lec?uno=' + ${loginUser.userNo};
                          		} else {
-                         			location.href='/surf/progress.lec?uno=' + ${loginUser.userNo};
+                         			location.href='/myLecture.lec?uno=' + ${loginUser.userNo};
                          		}
                          	}
                          })

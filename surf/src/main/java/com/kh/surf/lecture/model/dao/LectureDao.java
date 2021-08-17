@@ -11,6 +11,7 @@ import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -172,6 +173,16 @@ public class LectureDao {
 	 */
 	public int insertSurvey(SqlSessionTemplate sqlSession, Survey s) {
 		return sqlSession.insert("lectureMapper.insertSurvey", s);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 진행률 조회
+	 */
+	public int ajaxLoadStudingDegree(SqlSessionTemplate sqlSession, ClassStuding s) {
+		int result = sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", s);
+		System.out.println(result);
+		return result;
 	}
 	
 }
