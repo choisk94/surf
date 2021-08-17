@@ -4,10 +4,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="UTF-8">
 <title>SURF</title>
+</head>
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+window.jQuery3_4_1 = jQuery.noConflict(true);
+</script>
+<!-- Slick Slider -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+<!-- XEicon 아이콘 -->
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <style>
     div{
         border: 0px solid black;
@@ -31,24 +42,167 @@
     }
 
     /* 광고 배너 슬라이드 관련 */
-    .slide_wrap { position: relative; width: 1080px; height: 340px; }
-    .slide_box { width: 100%; margin: auto; overflow-x: hidden; }
-    .slide_content { display: table; float: left; width: 1080px; height: 340px; }
-    .slide_content > p { display: table-cell; vertical-align: middle; text-align: center; font-size: 100px; font-weight: bold; color: #555; }
-    .slide_content > img { width: 100%;}
-    .slide_content.slide01 { background: #ddbdff; }
-    .slide_content.slide02 { background: #9fd6c2; }
-    .slide_content.slide03 { background: #abe2f7; }
-    .slide_content.slide04 { background: #f08c78; }
-    .slide_content.slide05 { background: #fbdb65; }
-    .slide_btn_box > button { position: absolute; top: 50%; margin-top: -55px; width: 100px; height: 100px; background: none; border: 0px; cursor: pointer; }
-    .slide_btn_box > .slide_btn_prev { left: -10px; }
-    .slide_btn_box > .slide_btn_next { right: -10px; }
-    .slide_btn_box > button:focus { border: none; outline: none;}
-    .slide_pagination { position: absolute; left: 50%; bottom: 10px; list-style: none; margin: 0; padding: 0; transform: translateX(-50%); }
-    .slide_pagination .dot { display: inline-block; width: 15px; height: 15px; margin: 0 5px; overflow: hidden; background: #ddd; border-radius: 50%; transition: 0.3s; }
-    .slide_pagination .dot.dot_active { background: steelblue; }
-    .slide_pagination .dot a { display: block; width: 100%; height: 100%; }
+    .slide-wrap { position: relative; width: 1080px; height: 340px; }
+    .slide-box { width: 100%; margin: auto; overflow-x: hidden; }
+    .img-box > img { display:block; width:100%; }
+
+    /* 메인 부모 */
+    .slide-list1 {
+        position:relative;
+    }
+    .slide-list1 .item {
+        position:relative;
+    }
+
+    /* 버튼 요소 */
+    .slide-list1 button {
+        position:absolute;
+        z-index:1;
+        top:47%;
+        transform:translateY(-50%);
+        width:71px;
+        height:71px;
+        /* 버튼 속 글씨 지우는 방법 */
+        color:transparent;
+        font-size:0;
+    }
+    /* 버튼 속 아이콘 통일 화 */
+    .slide-list1 button::before {
+        font-family:"xeicon";
+        display:block;
+        color:rgb(70, 70, 70);
+        font-size:50px;
+    }
+
+    /* 버튼 요소 - 좌 */
+    .slide-list1 button.slick-prev {
+        left:10px;
+    }
+    /* 버튼 요소 - 좌 아이콘 넣기위해서 */
+    .slide-list1 button.slick-prev::before {
+        content:"\e93d";
+    }
+
+
+    /* 버튼 요소 - 우 */
+    .slide-list1 button.slick-next {
+        right:10px;
+    }
+    /* 버튼 요소 - 우 아이콘 넣기위해서 */
+    .slide-list1 button.slick-next::before {
+        content:"\e940";
+    }
+    /* 페이지네이션 */
+    .slick-dots {bottom: 7px;}
+
+    /* 슬라이더 시작 */
+    /* 슬라이더 시작 - 슬라이더 속 텍스트 이동 및 통일화 */
+    .slide-list1 .text-box {
+        position:absolute;
+        top:50%;
+        left:50%;
+        width:100%;
+        transform:translateX(-50%) translateY(-50%);
+        z-index:2;
+    }
+    .slide-list1 .text-box p {
+        font-size:30px;
+        text-align:center;
+        color:#000;
+    }
+
+    /* 애니메이션 v1 트렌지션으로 줌 */
+
+
+    .slide-list1 .item-1 .text-box .text1 {
+        opacity:0;
+        transform:translateX(-50px);
+        /* 앞에 있는 숫자는 애니메이션 동안 뒤에 숫자는 딜레이 */
+        transition:all .5s .5s;
+    }
+
+    .slide-list1 .slick-active .item-1 .text-box .text1 {
+        opacity:1;
+        transform:translateX(0);
+    }
+
+    .slide-list1 .item-1 .text-box .text2 {
+        opacity:0;
+        transform:translateX(50px);
+        transition:all .5s .5s;
+    }
+
+    .slide-list1 .slick-active .item-1 .text-box .text2 {
+        opacity:1;
+        transform:translateX(0);
+    }
+
+    .slide-list1 .item-1 .text-box .text3 {
+        opacity:0;
+        transform:translateY(-50px);
+        transition:all .5s .5s;
+    }
+
+    /* full 버전 */
+    .slide-list1 > .slick-list > .slick-track > .slick-active > div > .item-1 > .text-box > .text3 {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+
+
+    /* 애니메이션 v2 키프레임으로 애니메이션 적용 */
+    /* 트렌지션으로 주면 약간의 딜레이가 생겨서 */
+
+    .slide-list1 .item-2 .text-box .text1 {
+        opacity:0;
+    }
+
+    .slide-list1 .slick-active .item-2 .text-box .text1 {
+        animation:ani 1 .5s .5s both;
+    }
+
+    .slide-list1 .item-2 .text-box .text2 {
+        opacity:0;
+        font-size:15px;
+    }
+
+    .slide-list1 .slick-active .item-2 .text-box .text2 {
+        animation-name:ani;
+        animation-delay: .7s;
+        animation-duration: .5s;
+        /* 몇번 실행할 것인지 */
+        animation-iteration-count:1;
+        /* 실행하고 마지막 100%를 유지하기 */
+        animation-fill-mode: both;
+    }
+
+    .slide-list1 .item-2 .text-box .text3 {
+        opacity:0;
+        font-size:12px;
+        /*word-break:keep-all;*/
+        
+    }
+    /* full 버전 */
+    .slide-list1 > .slick-list > .slick-track > .slick-active > div > .item-2 > .text-box > .text3 {
+        animation-name:ani;
+        animation-delay: .9s;
+        animation-duration: .5s;
+        /* 몇번 실행할 것인지 */
+        animation-iteration-count:1;
+        /* 실행하고 마지막 100%를 유지하기 */
+        animation-fill-mode: both;
+    }
+
+    @keyframes ani {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
 
     /* 카테고리 */
     #main-category{
@@ -83,6 +237,9 @@
         font-size: 14px;
         margin-top: 4px;
     }
+    .condition:hover{
+    	cursor:pointer;
+    }
 
     /* 추천 클래스 */
     #recommend{
@@ -109,7 +266,7 @@
     }
     .vertical-line {
         float: left;
-        border-color: gray;
+        border-color: lightgray;
         border-style: solid;
         border-width: 0 0 0 1px;
         margin: 4px 5px;
@@ -130,7 +287,11 @@
     .class-img{
         width: 240px;
         height: 150px;
-        background-color: lightsteelblue;
+    }
+    .class-img>img{
+    	width: 240px;
+    	height: 150px;
+    	object-fit:cover;
     }
     .like{
         margin-top: 7px;
@@ -138,15 +299,36 @@
         width: 24px;
         opacity: 0.5;
     }
-    /* height값 오토로 둬야? 클래스명이 길경우와 짧을 경우.. */
     .class-name{
-        width: 240px;
+        width: 235px;
         height: 50px;
         overflow: hidden;
+        text-overflow: ellipsis;
         font-weight: 600;
+        margin: 4px 2px 0px 2px;
+    }
+    .class-teacher{
+        width: 235px;
+        margin: 0 2px;
     }
     .class-price{
         font-weight: 600;
+        width: 160px;
+        float: left;
+        margin: 0 2px;
+    }
+    .score{
+        float: right;
+        margin-right: 5px;
+        height: 27px;
+    }
+    .score>img{
+        float: left;
+        width: 20px;
+    }
+    .score>p{
+        float: left;
+        margin-top: -2px;
     }
     #recommend hr{
         position: relative;
@@ -170,9 +352,13 @@
     #more{
         position: absolute;
         width: 60px;
-        top: 35px;
+        top: 30px;
         left: 455px;
         font-size: 14px;
+        font-weight: 600;
+    }
+    #more:hover{
+    	cursor:pointer;
     }
     #post-wrap{
         position: absolute;
@@ -183,33 +369,56 @@
         width: 480px;
         height: 80px;
         margin-bottom: 7px;
+        position: relative;
+        background-color: rgb(250, 250, 250);
     }
     .post-box:hover{
         cursor: pointer;
     }
-    .post-img{
-        width: 110px;
-        height: 80px;
-        float: left;
-        background-color: lightslategrey;
-    }
     .post-title{
-        width: 350px;
+        position: absolute;
+        width: 360px;
         height: 27px;
         float: left;
         overflow: hidden;
-        margin-top: 3px;
-        margin-left: 10px;
+        text-overflow: ellipsis;
+	    white-space: nowrap;
+        top: 9px;
+        left: 14px;
         font-weight: 600;
     }
+    .post-box>img{
+        position: absolute;
+        top: 10px;
+        left: 425px;
+    }
+    .post-writer{
+        position: absolute;
+        width: 88px;
+        top: 34px;
+        left: 380px;
+        font-size: 13px;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+	    white-space: nowrap;
+    }
+    .post-date{
+        position: absolute;
+        top: 52px;
+        left: 398px;
+        font-size: 13px;
+        text-align: right;
+    }
     .post-content{
-        width: 350px;
-        height: 46px;
+        position: absolute;
+        width: 360px;
+        height: 40px;
         float: left;
         overflow: hidden;
-        margin-top: 2px;
-        margin-left: 10px;
-        font-size: 14px;
+        top: 34px;
+        left: 14px;
+        font-size: 13px;
     }
 
     /* 클래스 펀딩 */
@@ -238,23 +447,8 @@
     .slide_wrap2 { position: relative; width: 480px; height: 340px; }
     .slide_box2 { width: 100%; margin: auto; overflow-x: hidden; }
     .slide_content2 { display: table; float: left; width: 480px; height: 340px; }
-    .slide_content2 > p { display: table-cell; vertical-align: middle; text-align: center; font-size: 100px; font-weight: bold; color: #555; }
-    .slide_content2 > img { width: 100%;}
-    .slide_content2.slide01 { background: #ddbdff; }
-    .slide_content2.slide02 { background: #9fd6c2; }
-    .slide_content2.slide03 { background: #abe2f7; }
-    .slide_content2.slide04 { background: #f08c78; }
-    .slide_content2.slide05 { background: #fbdb65; }
-    .slide_btn_box2 > button { position: absolute; top: 50%; margin-top: -55px; width: 100px; height: 100px; background: none; border: 0px; cursor: pointer; }
-    .slide_btn_box2 > .slide_btn_prev2 { left: -10px; }
-    .slide_btn_box2 > .slide_btn_next2 { right: -10px; }
-    .slide_btn_box2 > button:focus { border: none; outline: none;}
-    .slide_pagination2 { position: absolute; left: 50%; bottom: 10px; list-style: none; margin: 0; padding: 0; transform: translateX(-50%); }
-    .slide_pagination2 .dot2 { display: inline-block; width: 15px; height: 15px; margin: 0 5px; overflow: hidden; background: #ddd; border-radius: 50%; transition: 0.3s; }
-    .slide_pagination2 .dot2.dot_active2 { background: steelblue; }
-    .slide_pagination2 .dot2 a { display: block; width: 100%; height: 100%; }
+
 </style>
-</head>
 <body>
 	<div id="outer">
 	
@@ -262,174 +456,76 @@
 	
 	    <div id="body-wrap">
 	        <div id="banner">
-	            <div class="slide_wrap">
-	                <div class="slide_box">
-	                    <div class="slide_list clearfix">
-	                        <div class="slide_content slide01">
-	                            <img src="resources/images/main/ad1.jpg">
-	                        </div>
-	                        <div class="slide_content slide02">
-	                            <img src="resources/images/main/ad2.jpg">
-	                        </div>
-	                        <div class="slide_content slide03">
-	                            <img src="resources/images/main/ad3.jpg">
-	                        </div>
-	                        <div class="slide_content slide04">
-	                            <img src="resources/images/main/ad4.jpg">
-	                        </div>
-	                        <div class="slide_content slide05">
-	                            <img src="resources/images/main/ad5.jpg">
-	                        </div>
-	                        <div class="slide_content slide06">
-	                            <img src="resources/images/main/ad_none.jpg">
-	                        </div>
-	                    </div>
+	            <div class="slide-wrap">
+	                <div class="slide-box">
+	                    <section class="slide-list1">
+					        
+					    </section>
 	                </div>
-	                <div class="slide_btn_box">
-	                    <button type="button" class="slide_btn_prev"><img src="resources/images/main/chevron-left.svg" alt=""></button>
-	                    <button type="button" class="slide_btn_next"><img src="resources/images/main/chevron-right.svg" alt=""></button>
-	                </div>
-	                <ul class="slide_pagination"></ul>
 	            </div>
 	        </div>
-	        <script>
-	            // 광고 배너 슬라이드 관련
-	            (function () {
-	              const slideList = document.querySelector('.slide_list');  // Slide parent dom
-	              const slideContents = document.querySelectorAll('.slide_content');  // each slide dom
-	              const slideBtnNext = document.querySelector('.slide_btn_next'); // next button
-	              const slideBtnPrev = document.querySelector('.slide_btn_prev'); // prev button
-	              const pagination = document.querySelector('.slide_pagination');
-	              const slideLen = slideContents.length;  // slide length
-	              const slideWidth = 1080; // slide width
-	              const slideSpeed = 300; // slide speed
-	              const startNum = 0; // initial slide index (0 ~ 4)
-	              
-	              slideList.style.width = slideWidth * (slideLen + 2) + "px";
-	              
-	              // Copy first and last slide
-	              let firstChild = slideList.firstElementChild;
-	              let lastChild = slideList.lastElementChild;
-	              let clonedFirst = firstChild.cloneNode(true);
-	              let clonedLast = lastChild.cloneNode(true);
+	        <script type="text/javascript">
 	        
-	              // Add copied Slides
-	              slideList.appendChild(clonedFirst);
-	              slideList.insertBefore(clonedLast, slideList.firstElementChild);
+	        	// 광고 배너 ajax 조회
+	        	$(function(){		                    	
+		             //ajaxSelectAdList();
+		        })
+	                    
+	            function ajaxSelectAdList() {
+	                    		
+		            $.ajax({
+		    				url:"ajaxSelectAdList.do",
+		    				success:function(alist){
+			    				console.log(alist);
+			    									    								
+			    				var value="";
+			    								
+			    				if(alist == null) {
+			    				value += "<div class=\"item item-1\">"
+			    						+ "<picture class=\"img-box\">"
+			    						+ "<img src=\"resources/images/main/ad_none.jpg\">"
+			    						+ "</picture>"
+			    						+ "</div>" ;
+			    				}else {
+				    				for(var a in alist){
+				    					value += "<div class=\"item item-" + a + "\">"
+				    							 + "<picture class=\"img-box\">"
+				    						     + "<img src=\"" + alist[a].changeName 
+				    						     + "\" onclick=\"location.href='" + alist[a].adLink + "';\">"
+				    						     + "</picture>"
+				    						     + "</div>" ;
+				    				}
+			    				}
+			    								
+			    				$(".slide-list1").html(value);
+			    								
+		    				},error:function(){
+		    					console.log("광고 배너 조회 ajax 통신 실패");
+		    				}
+					})
+	            }
 	        
-	              // Add pagination dynamically
-	              let pageChild = '';
-	              for (var i = 0; i < slideLen; i++) {
-	                pageChild += '<li class="dot';
-	                pageChild += (i === startNum) ? ' dot_active' : '';
-	                pageChild += '" data-index="' + i + '"><a href="#"></a></li>';
-	              }
-	              pagination.innerHTML = pageChild;
-	              const pageDots = document.querySelectorAll('.dot'); // each dot from pagination
+	            
+	            console.clear();
+	            jQuery3_4_1('.slide-list1').slick({
+	                autoplay: true,
+	                autoplaySpeed: 5000,
+	                dots:true
+	            });
 	        
-	              slideList.style.transform = "translate3d(-" + (slideWidth * (startNum + 1)) + "px, 0px, 0px)";
-	        
-	              let curIndex = startNum; // current slide index (except copied slide)
-	              let curSlide = slideContents[curIndex]; // current slide dom
-	              curSlide.classList.add('slide_active');
-	        
-	              // 자동 슬라이드 배너
-	              window.addEventListener('load', function() {
-	                setTimeout(showSlides, 5000);
-	                function showSlides() {
-	                    for(var i=0;i<slideLen;i++){
-	                        slideList.style.transition = slideSpeed + "ms";
-	                        slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 2)) + "px, 0px, 0px)";    
-	                    }
-	                    if (curIndex === slideLen - 1) {
-	                        setTimeout(function() {
-	                            slideList.style.transition = "0ms";
-	                            slideList.style.transform = "translate3d(-" + slideWidth + "px, 0px, 0px)";
-	                        }, slideSpeed);
-	                        curIndex = -1;
-	                    }
-	                    curSlide.classList.remove('slide_active');
-	                    pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active');
-	                    curSlide = slideContents[++curIndex];
-	                    curSlide.classList.add('slide_active');
-	                    pageDots[curIndex].classList.add('dot_active');
-	                    setTimeout(showSlides, 5000);
-	                }
-	              });
-	
-	              /** Next Button Event */
-	              slideBtnNext.addEventListener('click', function() {
-	                if (curIndex <= slideLen - 1) {
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 2)) + "px, 0px, 0px)";
-	                }
-	                if (curIndex === slideLen - 1) {
-	                  setTimeout(function() {
-	                    slideList.style.transition = "0ms";
-	                    slideList.style.transform = "translate3d(-" + slideWidth + "px, 0px, 0px)";
-	                  }, slideSpeed);
-	                  curIndex = -1;
-	                }
-	                curSlide.classList.remove('slide_active');
-	                pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active');
-	                curSlide = slideContents[++curIndex];
-	                curSlide.classList.add('slide_active');
-	                pageDots[curIndex].classList.add('dot_active');
-	              });
-	        
-	              /** Prev Button Event */
-	              slideBtnPrev.addEventListener('click', function() {
-	                if (curIndex >= 0) {
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * curIndex) + "px, 0px, 0px)";
-	                }
-	                if (curIndex === 0) {
-	                  setTimeout(function() {
-	                    slideList.style.transition = "0ms";
-	                    slideList.style.transform = "translate3d(-" + (slideWidth * slideLen) + "px, 0px, 0px)";
-	                  }, slideSpeed);
-	                  curIndex = slideLen;
-	                }
-	                curSlide.classList.remove('slide_active');
-	                pageDots[(curIndex === slideLen) ? 0 : curIndex].classList.remove('dot_active');
-	                curSlide = slideContents[--curIndex];
-	                curSlide.classList.add('slide_active');
-	                pageDots[curIndex].classList.add('dot_active');
-	              });
-	        
-	              /** Pagination Button Event */
-	              let curDot;
-	              Array.prototype.forEach.call(pageDots, function (dot, i) {
-	                dot.addEventListener('click', function (e) {
-	                  e.preventDefault();
-	                  curDot = document.querySelector('.dot_active');
-	                  curDot.classList.remove('dot_active');
-	                  
-	                  curDot = this;
-	                  this.classList.add('dot_active');
-	        
-	                  curSlide.classList.remove('slide_active');
-	                  curIndex = Number(this.getAttribute('data-index'));
-	                  curSlide = slideContents[curIndex];
-	                  curSlide.classList.add('slide_active');
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 1)) + "px, 0px, 0px)";
-	                });
-	              });
-	            })();
 	        </script>
 	
 	        <div id="main-category">
 	            <div class="sort-box">
-	                <div class="sort-img"><img src="resources/images/main/develop.jpg" alt=""></div>
+	                <div class="sort-img"><img src="resources/images/main/develop.jpg"></div>
 	                <div class="sort-name">개발</div>
 	            </div>
 	            <div class="sort-box">
-	                <div class="sort-img"><img src="resources/images/main/writing.jpg" alt=""></div>
+	                <div class="sort-img"><img src="resources/images/main/writing.jpg"></div>
 	                <div class="sort-name">글쓰기</div>
 	            </div>
 	            <div class="sort-box">
-	                <div class="sort-img"><img src="resources/images/main/workout.jpg" alt=""></div>
+	                <div class="sort-img"><img src="resources/images/main/workout.jpg"></div>
 	                <div class="sort-name">운동</div>
 	            </div>
 	            <div class="sort-box">
@@ -437,17 +533,16 @@
 	                <div class="sort-name">공예</div>
 	            </div>
 	            <div class="sort-box">
-	                <div class="sort-img"><img src="resources/images/main/drawing.jpg" alt=""></div>
+	                <div class="sort-img"><img src="resources/images/main/drawing.jpg"></div>
 	                <div class="sort-name">드로잉</div>
 	            </div>
 	            <div class="sort-box">
 	                <div class="sort-img"><img src="resources/images/main/baking.jpg" alt=""></div>
 	                <div class="sort-name">쿠킹</div>
 	            </div>
-	
 	        </div>
 	        <script>
-	            $(document).ready(function(){
+	            $(function(){
 	                $(".sort-box").hover(function(){
 	                    $(this).children(".sort-img").css("opacity", "0.8");
 	                }, function(){
@@ -459,87 +554,136 @@
 	        <div id="recommend">
 	            <div id="recommend-title">추천 클래스</div>
 	            <div id="class-sort">
-	                <div>찜개수 기준</div>
+	            	<input type="hidden" name="condition" value="1">
+	                <div class="condition">찜개수 기준
+	                	<input type="hidden" value="1">
+	                </div>
 	                <div class="vertical-line"></div>
-	                <div>별점 기준</div>
+	                <div class="condition">별점 기준
+	                	<input type="hidden" value="2">
+	                </div>
 	                <div class="vertical-line"></div>
-	                <div>수강생수 기준</div>
+	                <div class="condition">수강생수 기준
+	                	<input type="hidden" value="3">
+	                </div>
 	            </div>
-	            <div class="class-box">
-	                <div class="class-img"><img class="like" src="resources/images/main/heart-empty.png" alt=""></div>
-	                <div class="class-name">클래스명(길이가 길 경우 이정도까지 길수 있습니다)</div>
-	                <div class="class-teacher">강사명</div>
-	                <div class="class-price">110,000원</div>
-	            </div>
-	            <div class="class-box">
-	                <div class="class-img"><img class="like" src="resources/images/main/heart-empty.png" alt=""></div>
-	                <div class="class-name">클래스명(길이가 길 경우 이정도까지 길수 있습니다)</div>
-	                <div class="class-teacher">강사명</div>
-	                <div class="class-price">110,000원</div>
-	            </div>
-	            <div class="class-box">
-	                <div class="class-img"><img class="like" src="resources/images/main/heart-empty.png" alt=""></div>
-	                <div class="class-name">클래스명(길이가 길 경우 이정도까지 길수 있습니다)</div>
-	                <div class="class-teacher">강사명</div>
-	                <div class="class-price">110,000원</div>
-	            </div>
-	            <div class="class-box">
-	                <div class="class-img"><img class="like" src="resources/images/main/heart-empty.png" alt=""></div>
-	                <div class="class-name">클래스명(길이가 길 경우 이정도까지 길수 있습니다)</div>
-	                <div class="class-teacher">강사명</div>
-	                <div class="class-price">110,000원</div>
-	            </div>
+	            <script>
+	            	$(".condition").click(function(){
+	            		$("input[name=condition]").val($(this).children("input").val());
+	            		ajaxRecomClassList();
+	            	});
+	            </script>
+	            
+	            <div id="class-wrap"></div>
 	            <hr>
 	            <script>
-	                $(document).ready(function(){
-	                    // 클래스이미지만 투명도 주도록 변경(하트제외)
-	                    $(".class-box").hover(function(){
-	                        $(this).children(".class-img").css("opacity", "0.8");
-	                    }, function(){
-	                        $(this).children(".class-img").css("opacity", "1");
-	                    })
-	                    $(".like").hover(function(){
-	                        $(this).attr("src", $(this).attr("src").replace("heart-empty.png", "heart-fill.png"));
-	                    }, function(){
-	                        $(this).attr("src", $(this).attr("src").replace("heart-fill.png", "heart-empty.png"));
-	                    })
+		            $(document).on("mouseenter", ".class-box", function() {
+		            	$(this).children(".class-img").css("opacity", "0.8");
+		            });
+		            $(document).on("mouseleave", ".class-box", function() {
+		            	$(this).children(".class-img").css("opacity", "1");
+		            });
+		            $(document).on("click", ".class-box", function() {
+		            	location.href="detail.lec?cno=" + $(this).children("input").val();
+		            });
+
+	                /*
+	                $(".like").hover(function(){
+	                    $(this).attr("src", $(this).attr("src").replace("heart-empty.png", "heart-fill.png"));
+	                }, function(){
+	                    $(this).attr("src", $(this).attr("src").replace("heart-fill.png", "heart-empty.png"));
 	                });
+	                */
+	                    
+	                $(function(){
+	                    ajaxRecomClassList();
+	                });
+	                
+	                function ajaxRecomClassList() {
+	                	$.ajax({
+	                		url:"ajaxRecomClassList.do",
+	                		data:{"condition":$("input[name=condition]").val()},
+							success:function(clist){
+								
+								var value="";
+								
+			    				for(var c in clist){
+				    				value += "<div class=\"class-box\">"
+				    						 + "<input type=\"hidden\" value=\"" + clist[c].classNo + "\"/>"
+				    						 + "<div class=\"class-img\">"
+				    					     + "<img src=\"" + clist[c].thumbnail + "\"></div>"
+				    					     + "<div class=\"class-name\">" + clist[c].classTitle + "</div>"
+				    					     + "<div class=\"class-teacher\">" + clist[c].teacherName + "</div>"
+				   						     + "<div class=\"class-price\">" + clist[c].classPrice + "</div>"
+				   						     + "<div class=\"score\">"
+				   		                     + "<img src=\"https://img.icons8.com/color/48/000000/filled-star--v1.png\"/>"
+				   		                     + "<p>&nbsp;("+clist[c].score+")</p>"
+				   		                	 + "</div>"
+				   						     + "</div>";
+				    			}
+			    				
+			    				$("#class-wrap").html(value);
+								
+							},error:function(){
+								console.log("추천 클래스 조회 ajax 통신 실패");
+							}
+	                	})
+	                }
 	            </script>
 	        </div>
 	
 	        <div id="community">
 	            <div id="community-title">커뮤니티</div>
 	            <div id="more">더보기 ></div>
-	            <div id="post-wrap">
-	                <div class="post-box">
-	                    <div class="post-img"></div>
-	                    <div class="post-title">커뮤니티 포스트 제목</div>
-	                    <div class="post-content">커뮤니티 포스트 내용 아마 어느 정도 길이가 있을듯합니다 내용으로 채워보기</div>
-	                </div>
-	                <div class="post-box">
-	                    <div class="post-img"></div>
-	                    <div class="post-title">커뮤니티 포스트 제목</div>
-	                    <div class="post-content">커뮤니티 포스트 내용 아마 어느 정도 길이가 있을듯~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</div>
-	                </div>
-	                <div class="post-box">
-	                    <div class="post-img"></div>
-	                    <div class="post-title">커뮤니티 포스트 제목</div>
-	                    <div class="post-content">커뮤니티 포스트 내용 아마 어느 정도 길이가 있을듯~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</div>
-	                </div>
-	                <div class="post-box">
-	                    <div class="post-img"></div>
-	                    <div class="post-title">커뮤니티 포스트 제목</div>
-	                    <div class="post-content">커뮤니티 포스트 내용 아마 어느 정도 길이가 있을듯~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</div>
-	                </div>
-	            </div>
+	            <div id="post-wrap"></div>
 	            <script>
-	                $(document).ready(function(){
-	                    $(".post-box").hover(function(){
-	                        $(this).children(".post-img").css("opacity", "0.8");
-	                    }, function(){
-	                        $(this).children(".post-img").css("opacity", "1");
-	                    })
+		            $(document).on("click", "#more", function() {
+		            	location.href="list.sb";
+		            });
+	            
+		            $(document).on("mouseenter", ".post-box", function() {
+		            	$(this).css("background-color", "rgb(245, 245, 245)");
+		            });
+		            $(document).on("mouseleave", ".post-box", function() {
+		            	$(this).css("background-color", "rgb(250, 250, 250)");
+		            });
+		            $(document).on("click", ".post-box", function() {
+		            	location.href="detail.sb?sno=" + $(this).children("input").val();
+		            });
+	            
+		            $(function(){
+		            	ajaxPostList();
 	                });
+	                
+	                function ajaxPostList() {
+	                	$.ajax({
+	                		url:"ajaxPostList.do",
+							success:function(plist){
+								
+								var value="";
+								
+			    				for(var p in plist){
+			    					
+			    					var originalContent = plist[p].studyContent;
+			    					var convertContent = originalContent.replace(/(<([^>]+)>)/ig,"");
+
+			    					value += "<div class=\"post-box\">"
+				    						 + "<input type=\"hidden\" value=\"" + plist[p].studyNo + "\"/>"
+				    						 + "<div class=\"post-title\">" + plist[p].studyTitle + "</div>"
+				    					     + "<img src=\"https://img.shields.io/badge/%EB%AA%A8%EC%A7%91%EC%A4%91-00B388?style=flat-square&&logoColor=white\">"
+				    					     + "<div class=\"post-writer\">" + plist[p].writer + "</div>"
+				    					     + "<div class=\"post-date\">" + plist[p].createDate + "</div>"
+				   						     + "<div class=\"post-content\">" + convertContent + "</div>"
+				   						     + "</div>";
+				    			}
+			    				
+			    				$("#post-wrap").html(value);
+								
+							},error:function(){
+								console.log("추천 클래스 조회 ajax 통신 실패");
+							}
+	                	})
+	                }
 	            </script>
 	        </div>
 	
@@ -548,158 +692,24 @@
 	            <div id="funding-banner">
 	                <div class="slide_wrap2">
 	                    <div class="slide_box2">
-	                        <div class="slide_list2 clearfix">
-	                            <div class="slide_content2 slide01">
-	                                <p>1</p>
-	                            </div>
-	                            <div class="slide_content2 slide02">
-	                                <p>2</p>
-	                            </div>
-	                            <div class="slide_content2 slide03">
-	                                <p>3</p>
-	                            </div>
-	                            <div class="slide_content2 slide04">
-	                                <p>4</p>
-	                            </div>
-	                            <div class="slide_content2 slide05">
-	                                <p>5</p>
-	                            </div>
+	                        <div class="slide-list2">
+	                        	<div class="item item-1">
+							        <picture class="img-box">
+							            <img src="">
+							        </picture>
+		                            <div class="text-box">
+						            	<p class="text text1">펀딩 제목</p>
+						            	<p class="text text2">현재 펀딩수</p>
+            							<p class="text text3">펀딩하러가기 유도</p>
+						            </div>
+					            </div>
 	                        </div>
 	                    </div>
-	                    <div class="slide_btn_box2">
-	                        <button type="button" class="slide_btn_prev2"><img src="resources/images/main/chevron-left.svg" alt=""></button>
-	                        <button type="button" class="slide_btn_next2"><img src="resources/images/main/chevron-right.svg" alt=""></button>
-	                    </div>
-	                    <ul class="slide_pagination2"></ul>
 	                </div>
 	            </div>
 	        </div>
 	        <script>
-	            // 펀딩 배너 슬라이드 관련
-	            (function () {
-	              const slideList = document.querySelector('.slide_list2');  // Slide parent dom
-	              const slideContents = document.querySelectorAll('.slide_content2');  // each slide dom
-	              const slideBtnNext = document.querySelector('.slide_btn_next2'); // next button
-	              const slideBtnPrev = document.querySelector('.slide_btn_prev2'); // prev button
-	              const pagination = document.querySelector('.slide_pagination2');
-	              const slideLen = slideContents.length;  // slide length
-	              const slideWidth = 480; // slide width
-	              const slideSpeed = 300; // slide speed
-	              const startNum = 0; // initial slide index (0 ~ 4)
-	              
-	              slideList.style.width = slideWidth * (slideLen + 2) + "px";
-	              
-	              // Copy first and last slide
-	              let firstChild = slideList.firstElementChild;
-	              let lastChild = slideList.lastElementChild;
-	              let clonedFirst = firstChild.cloneNode(true);
-	              let clonedLast = lastChild.cloneNode(true);
-	        
-	              // Add copied Slides
-	              slideList.appendChild(clonedFirst);
-	              slideList.insertBefore(clonedLast, slideList.firstElementChild);
-	        
-	              // Add pagination dynamically
-	              let pageChild = '';
-	              for (var i = 0; i < slideLen; i++) {
-	                pageChild += '<li class="dot2';
-	                pageChild += (i === startNum) ? ' dot_active2' : '';
-	                pageChild += '" data-index="' + i + '"><a href="#"></a></li>';
-	              }
-	              pagination.innerHTML = pageChild;
-	              const pageDots = document.querySelectorAll('.dot2'); // each dot from pagination
-	        
-	              slideList.style.transform = "translate3d(-" + (slideWidth * (startNum + 1)) + "px, 0px, 0px)";
-	        
-	              let curIndex = startNum; // current slide index (except copied slide)
-	              let curSlide = slideContents[curIndex]; // current slide dom
-	              curSlide.classList.add('slide_active2');
-	        
-	              // 자동 슬라이드 배너
-	              window.addEventListener('load', function() {
-	                setTimeout(showSlides, 5000);
-	                function showSlides() {
-	                    for(var i=0;i<slideLen;i++){
-	                        slideList.style.transition = slideSpeed + "ms";
-	                        slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 2)) + "px, 0px, 0px)";    
-	                    }
-	                    if (curIndex === slideLen - 1) {
-	                        setTimeout(function() {
-	                            slideList.style.transition = "0ms";
-	                            slideList.style.transform = "translate3d(-" + slideWidth + "px, 0px, 0px)";
-	                        }, slideSpeed);
-	                        curIndex = -1;
-	                    }
-	                    curSlide.classList.remove('slide_active2');
-	                    pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active2');
-	                    curSlide = slideContents[++curIndex];
-	                    curSlide.classList.add('slide_active2');
-	                    pageDots[curIndex].classList.add('dot_active2');
-	                    setTimeout(showSlides, 5000);
-	                }
-	              });
-	
-	              /** Next Button Event */
-	              slideBtnNext.addEventListener('click', function() {
-	                if (curIndex <= slideLen - 1) {
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 2)) + "px, 0px, 0px)";
-	                }
-	                if (curIndex === slideLen - 1) {
-	                  setTimeout(function() {
-	                    slideList.style.transition = "0ms";
-	                    slideList.style.transform = "translate3d(-" + slideWidth + "px, 0px, 0px)";
-	                  }, slideSpeed);
-	                  curIndex = -1;
-	                }
-	                curSlide.classList.remove('slide_active2');
-	                pageDots[(curIndex === -1) ? slideLen - 1 : curIndex].classList.remove('dot_active2');
-	                curSlide = slideContents[++curIndex];
-	                curSlide.classList.add('slide_active2');
-	                pageDots[curIndex].classList.add('dot_active2');
-	              });
-	        
-	              /** Prev Button Event */
-	              slideBtnPrev.addEventListener('click', function() {
-	                if (curIndex >= 0) {
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * curIndex) + "px, 0px, 0px)";
-	                }
-	                if (curIndex === 0) {
-	                  setTimeout(function() {
-	                    slideList.style.transition = "0ms";
-	                    slideList.style.transform = "translate3d(-" + (slideWidth * slideLen) + "px, 0px, 0px)";
-	                  }, slideSpeed);
-	                  curIndex = slideLen;
-	                }
-	                curSlide.classList.remove('slide_active2');
-	                pageDots[(curIndex === slideLen) ? 0 : curIndex].classList.remove('dot_active2');
-	                curSlide = slideContents[--curIndex];
-	                curSlide.classList.add('slide_active2');
-	                pageDots[curIndex].classList.add('dot_active2');
-	              });
-	        
-	              /** Pagination Button Event */
-	              let curDot;
-	              Array.prototype.forEach.call(pageDots, function (dot, i) {
-	                dot.addEventListener('click', function (e) {
-	                  e.preventDefault();
-	                  curDot = document.querySelector('.dot_active2');
-	                  curDot.classList.remove('dot_active2');
-	                  
-	                  curDot = this;
-	                  this.classList.add('dot_active2');
-	        
-	                  curSlide.classList.remove('slide_active2');
-	                  curIndex = Number(this.getAttribute('data-index2'));
-	                  curSlide = slideContents[curIndex];
-	                  curSlide.classList.add('slide_active2');
-	                  slideList.style.transition = slideSpeed + "ms";
-	                  slideList.style.transform = "translate3d(-" + (slideWidth * (curIndex + 1)) + "px, 0px, 0px)";
-	                });
-	              });
-	                
-	            })();
+	            
 	        </script>
 	    </div>
 	    

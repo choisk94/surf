@@ -38,5 +38,7 @@ public class Lecture {
 	private String mainCat;
 	private int introLength;
 	private ClassFunding cf;
+	private String classPrice;
+	private String score;
 	
 }

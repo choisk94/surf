@@ -125,10 +125,16 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	}
 
 	@Override
-	public int updateTeacher(int teaherNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateYes(int tno) {
+		return abDao.updateYes(sqlSession, tno);
 	}
+
+	@Override
+	public int updateNo(int tno) {
+		return abDao.updateNo(sqlSession, tno);
+	}
+
+
 
 
 

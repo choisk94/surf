@@ -62,6 +62,16 @@
 		 order
 		    by subcat_no asc
 	</select>
+	
+	<select id="selectSubCategory" resultMap="subcatResult">
+		select 
+			   subcat_no
+			 , subcat_name
+			 , maincat_no
+		  from subcat
+		  order
+		    by subcat_no asc
+	</select>
 
 
 </mapper>

@@ -175,7 +175,7 @@
                 </div>
 
                 <!-- 강사 신청 -->
-                <form id="teacher-form" action="" method="post" enctype="multipart/form-data">
+                <form id="teacher-form" action="apply.tea" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="teacherNo" value="${ loginUser.userNo }">
 
                     <!-- 사진 등록 -->
@@ -185,14 +185,14 @@
                             <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">첨부파일 등록하기</button>-->
                             
                             <div class="image-upload-wrap">
-                            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                            <input class="file-upload-input" type='file' name="upfile" onchange="readURL(this)" accept="image/*" />
                             <div class="drag-text">
                                 <p>이미지를 <br> 등록하세요!</p>
                             </div>
                             </div>
             
                             <div class="file-upload-content">
-                            <img class="file-upload-image" src="#" alt="your image" onclick="removeUpload()" />
+                            <img class="file-upload-image" src="#" name="upfile" alt="your image" onclick="removeUpload()" />
                             <div class="image-title-wrap">
                                 <!--<button type="button" onclick="removeUpload()" class="remove-image"><span class="image-title"></span>를 수정하시겠어요?</button>-->
                             </div>
@@ -221,23 +221,17 @@
                     어떤 강의를 열고 싶으신가요? <br>
                     <div class="cate-select" style="margin-top: 10px;">
 						
-                        <select name="subCat" id="">
-                            <option name="subcatNo" value="62" hidden>다과 떡</option>
+                        <select name="subNo" id="subCat">
+                            
                         </select>
-
+						
                     </div>
                     <br>
-                    <button type="submit" class="btn apply-teacher" onclick="successAlert();">강사 신청</button>
+                    <button type="submit" class="btn apply-teacher" >강사 신청</button>
 
                 </form>
                 <br><br>
 
-                <script>
-                    $(".apply-teache").click{
-                        console.log('success');
-                        alert('강사 신청이 완료되었습니다!\n승인까지 2~3일 소요됩니다.');
-                    }
-                </script>
 
             </div>
 
@@ -251,27 +245,56 @@
 
 
     <script>
-
+    	/*
+	    $(".apply-teacher").click(){
+	        console.log('success');
+	        alert('강사 신청이 완료되었습니다!\n승인까지 2~3일 소요됩니다.');
+	    };*/
+	    
+	    $(document).ready(function(){
+    		
+        	$.ajax({
+				url: 'subcat.do',
+				success:function(list){
+					console.log(list);
+					
+					var value = "";
+	        		for(var s in list){
+	        		
+            			value += '<option value="' + list[s].subcatNo + '" >'
+						+ list[s].subcatName + '</option>'; 
+            				
+	        		}
+					$("#subCat").html(value);
+					
+				}, error:function(){
+					console.log("카테고리 조회 실패");
+				}
+				
+			}); // End of ajax
+        
+        });
+	    
         function readURL(input) {
 	        if (input.files && input.files[0]) {
 	
 	            var reader = new FileReader();
 	
 	            reader.onload = function(e) {
-	            $('.image-upload-wrap').hide();
-	
-	            $('.file-upload-image').attr('src', e.target.result);
-	            $('.file-upload-content').show();
-	
-	            $('.image-title').html(input.files[0].name);
+		            $('.image-upload-wrap').hide();
+		
+		            $('.file-upload-image').attr('src', e.target.result);
+		            $('.file-upload-content').show();
+		
+		            $('.image-title').html(input.files[0].name);
 	            };
 	
 	            reader.readAsDataURL(input.files[0]);
 	
 	        } else {
 	            removeUpload();
-        }
-        }
+        	}
+        };
         
         // 업로드한 파일 수정 = 제거
         function removeUpload() {
@@ -285,36 +308,6 @@
         $('.image-upload-wrap').bind('dragleave', function () {
             $('.image-upload-wrap').removeClass('image-dropping');
         });
-		/*
-		$.ajax({
-			url: 'subcat.do',
-			success:function(list){
-				console.log(list);
-				
-				var maxLength = 0;
-        		for(var l in list){
-        			
-        			if(list[l].length > maxLength){
-        				maxLength = list[l].length;
-        			}
-        		}
-				
-				var value = "";
-				value += '<select name="subCat" id="">'
-				for(s in list){
-			    	value += '<option name="subcatNo" value="' + list[s].subCatNo + '" hidden>'
-						+ list[s].subCatName
-				}
-					value += '</option>'
-			    	+ '</select>';
-
-				$(".cate-select").html(value);
-				
-			}, error:function(){
-				console.log("카테고리 조회 실패");
-			}
-		})
-		*/
 
     </script>
     

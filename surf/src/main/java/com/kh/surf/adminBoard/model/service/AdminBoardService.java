@@ -66,10 +66,11 @@ public interface AdminBoardService {
 	   // 2. 게시글 상세조회용
 	   Teacher selectTeacher(int tno);
 	   
-	   // 3. 게시글 승인,반려
-	   int updateTeacher(int teaherNo);
+	   // 3. 게시글 승인
+	   int updateYes(int tno);
 	   
-
+	   // 4. 게시글 반려
+	   int updateNo(int tno);
 
 	   
 }

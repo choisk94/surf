@@ -333,9 +333,39 @@ public class AdminBoardController {
 		return mv;
 
 	}
-
-
-
+	
+	/**
+	 * @author 서정연 관리자 강사신청 승인
+	 */
+	@RequestMapping("updateYes.ad")
+	public String updateYes(Model model, HttpSession session, int tno) {
+		int result = abService.updateYes(tno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "강사신청이 승인되었습니다.");
+			return "redirect:teacherList.ad";
+		} else {
+			model.addAttribute("errorMsg", "승인 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	/**
+	 * @author 서정연 관리자 강사신청 반려
+	 */
+	@RequestMapping("updateNo.ad")
+	public String updateNo(Model model, HttpSession session, int tno) {
+		int result = abService.updateNo(tno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "강사신청이 반려되었습니다.");
+			return"redirect:teacherList.ad";
+		} else {
+			model.addAttribute("errorMsg", "반려 실패");
+			return "common/errorPage";
+		}
+	}
+	
 	
 	
 	public String saveFile(HttpSession session, MultipartFile upfile, String path) {

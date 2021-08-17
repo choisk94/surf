@@ -279,12 +279,10 @@ public class TeacherServiceImpl implements TeacherService{
 	 * @author leeyeji
 	 * 강사 신청
 	 */
-	/*
 	@Override
 	public int applyTeacher(Teacher t) {
 		return tDao.applyTeacher(sqlSession, t);
 	}
-	*/
 	
 	
 	/**

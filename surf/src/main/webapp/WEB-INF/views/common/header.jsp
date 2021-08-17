@@ -309,16 +309,16 @@
 
 			<!-- 검색창 -->
 			<div style="width: 63%;" align="center">
-				<div class="input-group mb-3" style="margin-top: 20px; width: 90%;">
-					<input type="search" class="form-control"
-						placeholder="관심있는 클래스를 찾아보세요!">
-					<div class="input-group-append">
-						<button class="btn btn-success" type="submit"
-							style="background-color: rgb(32, 155, 212);">
-							<i class="fa fa-search"></i>
-						</button>
+				<form action="list.lec" method="get">
+					<div class="input-group mb-3" style="margin-top: 20px; width: 90%;">
+						<input type="search" name="keyword" class="form-control" placeholder="관심있는 클래스를 찾아보세요!" value="${ searchKeyword }">
+						<div class="input-group-append">
+							<button class="btn btn-success" type="submit" style="background-color: rgb(32, 155, 212);">
+								<i class="fa fa-search"></i>
+							</button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 
 			<!------------------------------ 하단 우측 아이콘(마이페이지|찜|내클래스) ----------------------------------------------->
@@ -350,9 +350,7 @@
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
-                         			/* 찜하기 페이지로 이동
-                         			location.href='';
-                         			*/
+                         			location.href='/surf/scrapList.lec?currentPage=1&&uno=' + ${loginUser.userNo};
                          		} else {
                          			/* 마이클레스로 이동
                          			location.href='';

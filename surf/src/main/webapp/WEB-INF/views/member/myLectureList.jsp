@@ -65,6 +65,130 @@
         background-color: rgb(32, 155, 212);
         border-radius: 10px;
     }
+    /*별점*/
+    /*
+    em {
+        display: block;
+        margin: .5em auto 2em;
+        color: #bbb;
+    }
+    p,
+    p a {
+        color: #aaa;
+        text-decoration: none;
+    }
+    p a:hover,
+    p a:focus {
+        text-decoration: underline;
+    }
+    p+p {
+        color: #bbb;
+        margin-top: 2em;
+    }
+    */
+    .detail {
+        position: absolute;
+        text-align: right;
+        right: 5px;
+        bottom: 5px;
+        width: 50%;
+    }
+    button[href*="intent"] {
+        display: inline-block;
+        margin-top: 0.4em;
+    }
+     /* 별점 스타일 */
+    .rating {
+        width: 200px;
+        /*margin: 0 auto 1em;*/
+        font-size: 20px;
+        overflow: hidden;
+    }
+    .rating input {
+        float: right;
+        opacity: 0;
+        position: absolute;
+    }
+    .rating button,
+    .rating label {
+        float: right;
+        color: #aaa;
+        text-decoration: none;
+        -webkit-transition: color .4s;
+        -moz-transition: color .4s;
+        -o-transition: color .4s;
+        transition: color .4s;
+        padding: 0px;
+    }
+    .rating label:hover~label,
+    .rating input:focus~label,
+    .rating label:hover,
+    .rating button:hover,
+    .rating button:hover~button,
+    .rating button:focus,
+    .rating button:focus~button {
+        color: orange;
+        cursor: pointer;
+    }
+    .rating2 {direction: rtl;}
+    .rating2 button {float: none}
+    /*모달*/
+    .popup-wrap {
+        background-color: rgba(0, 0, 0, .3);
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        padding: 15px;
+    }
+    .popup {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: rgb(32, 155, 212);
+        box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, .3);
+    }
+    .popup-head {
+        width: 100%;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .popup-body {width: 100%; background-color: #ffffff;}
+    .body-content {width: 100%; padding: 30px;}
+    .body-titlebox {
+        text-align: center;
+        width: 100%;
+        height: 30px;
+        margin-bottom: 10px;
+    }
+    .body-contentbox {
+        word-break: break-word;
+        overflow-y: auto;
+        min-height: 100px;
+        max-height: 450px;
+    }
+    .body-contentbox>strong{font-size: 15px;}
+    .body-contentbox>p {font-size: 13px; color: gray;}
+    .popup-foot {width: 100%; height: 50px;}
+    .pop-btn {
+        display: inline-flex;
+        width: 50%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        color: #ffffff;
+        cursor: pointer;
+        background-color: rgb(32, 155, 212);
+    }
+    .pop-btn.confirm {border-right: 1px solid lightgray;}
 </style>
 </head>
 <body>
@@ -109,49 +233,12 @@
                                 <progress value="20" max="100"></progress>
                                 <span style="font-size:14px">진행률 65%</span> <br>
                                 <span style="font-size:14px"><b>월 30,000원</b>  (30일)</span> <br>
+
+                                
                             </p>
+                            <!-- 진행률 100%시 설문조사 버튼 if문 처리 -->
+                            <button type="button" class="btn" id="modal-open">설문조사</button>
                         </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <progress value="20" max="100"></progress>
-                                <span style="font-size:14px">진행률 65%</span> <br>
-                                <span style="font-size:14px"><b>월 30,000원</b>  (30일)</span> <br>
-                            </p>
-                        </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <progress value="20" max="100"></progress>
-                                <span style="font-size:14px">진행률 65%</span> <br>
-                                <span style="font-size:14px"><b>월 30,000원</b>  (30일)</span> <br>
-                            </p>
-                        </div>
-                        <div class="thumbnail" align="center">
-                            <input type="hidden" value="">
-                            <div id="class-thumb">
-                                <img src="" width="240" height="150" id="">
-                            </div>
-        
-                            <p style="margin-top: 5px;">
-                                <b>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇ</b><br>
-                                <progress value="20" max="100"></progress>
-                                <span style="font-size:14px">진행률 65%</span> <br>
-                                <span style="font-size:14px"><b>월 30,000원</b>  (30일)</span> <br>
-                            </p>
-                        </div>
-                        
-                        
                         
 
                         <!-- 페이징 -->
@@ -175,6 +262,97 @@
             </div>
 
         </div>
+        
+        <!-- 설문조사 클릭시 모달창 -->
+        <!-- modal area -->
+        <form action="" method="POST">
+
+            <div id="survey">
+                <div class="popup-wrap" id="popup"> <!--모달을 감싸는 박스-->
+                    <div class="popup">	<!--모달팝업-->
+                        <div class="popup-head">
+                            <span class="head-title"></span>
+                            </div>
+                            <div class="popup-body">	<!--컨텐츠 영역-->
+                            <div class="body-content">
+                                <div class="body-titlebox">
+                                    <h3>설문조사</h3>
+                                </div>
+                                <div class="body-contentbox">
+                                    <p align="center">수강하신 클래스에 대한 후기를 남겨주세요!</p><br>
+
+                                    <strong>퀄리티</strong>
+                                    <div class="class-quality rating rating2">
+                                        <button type="button" class="btn" title="Give 5 stars">★</button>
+                                        <button type="button" class="btn" title="Give 4 stars">★</button>
+                                        <button type="button" class="btn" title="Give 3 stars">★</button>
+                                        <button type="button" class="btn" title="Give 2 stars">★</button>
+                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                    </div>
+
+                                    <strong>만족도</strong>
+                                    <div class="class-sati rating rating2">
+                                        <button type="button" class="btn" title="Give 5 stars">★</button>
+                                        <button type="button" class="btn" title="Give 4 stars">★</button>
+                                        <button type="button" class="btn" title="Give 3 stars">★</button>
+                                        <button type="button" class="btn" title="Give 2 stars">★</button>
+                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                    </div>
+
+                                    <strong>가격</strong>
+                                    <div class="class-price rating rating2">
+                                        <button type="button" class="btn" title="Give 5 stars">★</button>
+                                        <button type="button" class="btn" title="Give 4 stars">★</button>
+                                        <button type="button" class="btn" title="Give 3 stars">★</button>
+                                        <button type="button" class="btn" title="Give 2 stars">★</button>
+                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                    </div>
+
+                                    <strong>평점</strong>
+                                    <div class="class-star rating rating2" >
+                                        <button type="button" class="btn" title="Give 5 stars">★</button>
+                                        <button type="button" class="btn" title="Give 4 stars">★</button>
+                                        <button type="button" class="btn" title="Give 3 stars">★</button>
+                                        <button type="button" class="btn" title="Give 2 stars">★</button>
+                                        <button type="button" class="btn" title="Give 1 star">★</button>
+                                    </div>
+
+                                    <strong>후기</strong> 
+                                    <input type="text" name="review" id="" style="width: 300px;">
+                                </div>
+                            </div>
+                            <div class="popup-foot">
+                            <button type="submit" class="pop-btn btn confirm" id="confirm">제출하기</button>
+                            <span class="pop-btn modalClose" id="close">취소</span>
+                        	</div>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+
+        <script>
+        
+            // 모달 관련 스크립트
+            $(function(){
+                $("#confirm").click(function(){
+                    modalClose(); 
+                    //컨펌 이벤트 처리 어케해
+
+                });
+                $("#modal-open").click(function(){        
+                    $("#popup").css('display','flex').hide().fadeIn();
+                });
+                $("#close").click(function(){
+                    modalClose(); 
+                });
+                function modalClose(){
+                    $("#popup").fadeOut(); 
+                }
+            });
+    
+        </script>
 
 
         <!-- footer -->

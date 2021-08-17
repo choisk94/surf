@@ -35,8 +35,8 @@ public interface LectureService {
 	 * @author leeyeji
 	 * 클래스 목록 조회용
 	 */
-	int selectListCount(int sno);
-	ArrayList<Lecture> selectLectureList(PageInfo pi, int sno);
+	int selectListCount(HashMap<String, Object> map);
+	ArrayList<Lecture> selectLectureList(PageInfo pi, HashMap<String, Object> map);
 	
 	/**
 	 * @author leeyeji

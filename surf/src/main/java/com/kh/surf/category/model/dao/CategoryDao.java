@@ -17,7 +17,15 @@ public class CategoryDao {
 
 		return (ArrayList)sqlSession.selectList("categoryMapper.selectCategory");
 	}
-
+	
+	/**
+	 * @author leeyeji
+	 * 서브 카테고리 조회
+	 */
+	public ArrayList<Subcat> selectSubCategory(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("categoryMapper.selectSubCategory");
+	}
+	
 	/**
 	 * 메인 카테고리 조회
 	 * @author HeeRak

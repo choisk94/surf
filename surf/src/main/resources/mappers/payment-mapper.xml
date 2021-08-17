@@ -13,35 +13,48 @@
 		<result column="refund_status" property="refundStatus"/>
 		<result column="refund_date" property="refundDate"/>
 		<result column="refund_reason" property="refundReason"/>
+		<result column="class_title" property="classTitle"/>
 	</resultMap>
 	
-	<!-- 
+	<resultMap id="classVideoResult" type="ClassVideo">
+		<result column="video_no" property="videoNo"/>
+		<result column="class_no" property="classNo"/>
+		<result column="chap_order" property="chapOrder"/>
+		<result column="video_order" property="videoOrder"/>
+		<result column="sub_title" property="subTitle"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		<result column="watched" property="watched"/>
+	</resultMap>
+	 
 	<select id="selectListCount" resultType="_int">
 		select
 		       count(*)
 		  from payment
-		 where user_no = #{userNo};
+		 where user_no = #{userNo}
 	</select>
 	
 	<select id="selectOrderList" resultMap="paymentResult">
 		select
-               order_no
-             , class_no
-             , user_no
-             , price
-             , payment_date
-             , pay_method
-             , status
-             , refund_status
-             , refund_date
-             , refund_reason
-         from payment
-        where user_no = #{userNo}
+               p.order_no
+             , p.class_no
+             , l.class_title
+             , p.user_no
+             , p.price
+             , p.payment_date
+             , p.pay_method
+             , p.status
+             , p.refund_status
+             , p.refund_date
+             , p.refund_reason
+         from payment p
+         join lecture l on(l.class_no = p.class_no)
+        where p.user_no = #{classNo}
+          and rownum between 1 and 5
         order
            by payment_date desc
 	</select>
 	
-	 -->
 	 
 	<insert id="insertPayment" parameterType="Payment">
 		insert
@@ -66,6 +79,36 @@
 		  , #{status}
 		  )
 	</insert>
+	
+	
+	<!-- 
+		@author yeji lee
+		주문 성공 시 progress에 관련 데이터 추가
+	 -->
+	<insert id="insertProgress" parameterType="java.util.List">
+		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " >
+		   into progress
+			  (
+			    user_no
+			  , video_no
+			  )
+			  values
+			  (
+			    #{uno}
+			  , #{item.videoNo}
+			  )
+		</foreach>
+	</insert>
+	
+	<select id="selectMyLecVideo" parameterType="map" resultMap="classVideoResult">
+		select 
+			   video_no
+		  from class_video
+		 where class_no = #{classNo}
+		 order
+		    by chap_order asc
+		     , video_order asc
+	</select>
 	
 	
 </mapper>

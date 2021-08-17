@@ -432,45 +432,31 @@ public class TeacherController {
 	 * @author leeyeji
 	 * 강사 신청
 	 */
-	/*
 	@RequestMapping("enrollTeacher.tea")
 	public String enrollTeacher() {
 		return "member/applyTeacherForm";
 	}
 	@RequestMapping("apply.tea")
 	public String applyTeacher(Teacher t, MultipartFile upfile, HttpSession session, Model model) {
-		
-		if(!upfile.getOriginalFilename().contentEquals("")) { // 첨부파일이 있을 경우!
+		System.out.println(t);
+		System.out.println(t.getSubNo());
+		if(!upfile.getOriginalFilename().contentEquals("")) {
 			
-			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/profile_image/");
 			String originName = upfile.getOriginalFilename();
-			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			int ranNum = (int)(Math.random() * 90000 + 10000);
-			String ext = originName.substring(originName.lastIndexOf(".")); // .의 인덱스를 알아내서 확장자 뽑아넣기
-						
-			String changeName = currentTime + ranNum + ext; // 하나로 합치기
-						
-			try {
-				upfile.transferTo(new File(savePath + changeName));// 어떤 경로에 어떤 이름으로 업로드 시키는지 transferTo 메소드로 제시
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
 			
-			t.setProfileImage("resources/uploadFiles/profile_image/" + changeName); // "resources/uploadFiles/2021070217013612342.jpg"
+			t.setProfileImage("resources/uploadFiles/profile_image/" + originName); 
 			
 		}
 		
 		int result = tService.applyTeacher(t);
-		System.out.print(t);
+		System.out.print(result);
 		
-		if(result > 0) { // 성공 => 게시글 리스트 페이지
-			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+		if(result > 0) { 
 			return "redirect:enrollTeacher.tea";
-		}else { // 실패 => 에러페이지
-			model.addAttribute("errorMsg", "게시글 등록 실패");
+		}else { 
 			return "common/errorPage";
 		}
-	}*/
+	}
 	
 	/**
 	 * 강의 등록|수정 하기  0페이지
