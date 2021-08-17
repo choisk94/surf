@@ -117,6 +117,15 @@ public class AdminBoardDao {
 		return sqlSession.selectOne("adminBoardMapper.selectTeacher", tno);
 	}
 	
+	// 강사신청 승인(관리자)
+	public int updateYes(SqlSessionTemplate sqlSession, int tno) {
+		return sqlSession.update("adminBoardMapper.updateYes", tno);
+	}	
+	
+	// 강사신청 반려(관리자)
+	public int updateNo(SqlSessionTemplate sqlSession, int tno) {
+		return sqlSession.update("adminBoardMapper.updateNo", tno);
+	}	
 
 	
 

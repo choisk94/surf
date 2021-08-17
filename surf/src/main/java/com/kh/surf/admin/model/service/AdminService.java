@@ -106,6 +106,12 @@ public interface AdminService {
 
 	ArrayList<ClassIntro> selectIntroList2(int lno);
 
+	//14.결제 내역 페이징용
+	
+	int settleListCount();
+
+	ArrayList<PaymentList> settleList(PageInfo pi);
+
 	
 	
 	

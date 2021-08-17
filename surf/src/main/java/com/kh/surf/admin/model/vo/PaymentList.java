@@ -24,6 +24,8 @@ public class PaymentList {
 	private int count;
 	private String email;
 	private String nickname;
+	private String classTitle;
+	private Date mon;
 	
 	private ArrayList<PaymentList> adminList;
 }

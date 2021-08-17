@@ -217,6 +217,18 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectIntroList2", lno);
 	}
 
+	public int settleListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("adminMapper.settleListCount");
+	}
+
+	public ArrayList<PaymentList> settleList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList) sqlSession.selectList("adminMapper.settleList", null, rowBounds);
+
+	}
+
 	
 
 	

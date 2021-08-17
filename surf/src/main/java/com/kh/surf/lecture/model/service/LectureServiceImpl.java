@@ -64,8 +64,8 @@ public class LectureServiceImpl implements LectureService{
 	 * 클래스 목록 페이징
 	 */
 	@Override
-	public int selectListCount(int sno) {
-		return lDao.selectListCount(sqlSession, sno);
+	public int selectListCount(HashMap<String, Object> map) {
+		return lDao.selectListCount(sqlSession, map);
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class LectureServiceImpl implements LectureService{
 	 * 클래스 목록 조회
 	 */
 	@Override
-	public ArrayList<Lecture> selectLectureList(PageInfo pi, int sno) {
-		return lDao.selectLectureList(sqlSession, pi, sno);
+	public ArrayList<Lecture> selectLectureList(PageInfo pi, HashMap<String, Object> map) {
+		return lDao.selectLectureList(sqlSession, pi, map);
 	}
 	
 	/**

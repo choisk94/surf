@@ -56,19 +56,19 @@ public class LectureDao {
 	 * @author leeyeji
 	 * 클래스 목록 페이징 처리용
 	 */
-	public int selectListCount(SqlSessionTemplate sqlSession, int sno) {
-		return sqlSession.selectOne("lectureMapper.selectListCount", sno);
+	public int selectListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		return sqlSession.selectOne("lectureMapper.selectListCount", map);
 	}
 	
 	/**
 	 * @author leeyeji
 	 * 클래스 목록 조회용
 	 */
-	public ArrayList<Lecture> selectLectureList(SqlSessionTemplate sqlSession, PageInfo pi, int sno){
+	public ArrayList<Lecture> selectLectureList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, Object> map){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureList", sno, rowBounds);
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectLectureList", map, rowBounds);
 	}
 	
 	/**

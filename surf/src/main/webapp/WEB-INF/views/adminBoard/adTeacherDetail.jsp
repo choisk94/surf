@@ -62,9 +62,24 @@
 			</div>
 		</form>
 		<div id="btn2">
-			<a class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; 
-			<a class="btn btn-danger" href="">반려</a>
+				<a onclick="updateForm(1);" class="btn btn-info" href="">승인</a>&nbsp;&nbsp;&nbsp; 
+				<a onclick="updateForm(2);" class="btn btn-danger" href="">반려</a>
 		</div>
+		
+      	<form id="udForm" action="" method="post">
+      		<input type="hidden" name="tno" value="${ t.teacherNo }">
+      	</form>		
+		
+		<script>
+			function updateForm(num){
+				if(num == 1){ // 승인
+					$("#udForm").attr("action", "updateYes.ad").submit();
+				} else { // 반려
+					$("#udForm").attr("action", "updateNo.ad").submit();
+				}
+			}
+		</script>	
+		
 	</div>
 	
 	<script>
