@@ -226,7 +226,14 @@
 		select
 		 	   count(*)
 		  from lecture
-		 where status = 'O' 
+		 where status = 'O'
+		   <if test="sno != 0">
+		   and subcat_no = #{sno}
+		   </if>
+		   <if test="keyword != ''">
+		   and class_title like '%'||#{keyword}||'%'
+		   </if>		 
+		  
 	</select>
 	
 	<!-- 
@@ -262,7 +269,12 @@
 		                  ) t 
 		                  on l.user_no = t.teacher_no
 		 where l.status = 'O'
+		   <if test="sno != 0">
 		   and subcat_no = #{sno}
+		   </if>
+		   <if test="keyword != ''">
+		   and l.class_title like '%'||#{keyword}||'%'
+		   </if>
 		 order 
 		    by star desc
 	</select>

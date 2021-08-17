@@ -77,18 +77,27 @@ public class LectureController {
 	 * 클래스 목록 페이징
 	 * 클래스 목록 조회
 	 */
-	// 이친구를 고쳐야 한다
 	@RequestMapping("list.lec")
 	public ModelAndView selectLectureList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage
-										  , int sno) {
+										  				 , @RequestParam(value="sno", defaultValue="0")int sno
+										  				 , @RequestParam(value="keyword", defaultValue="") String keyword) {
 		
-		int listCount = lService.selectListCount(sno);
+		/* @author 최서경
+		 * 키워드 사용 클래스 검색기능 구현을 위해 mapper전달 parameter를 int sno -> HashMap map으로 수정했습니다.
+		 * service, dao도 변경사항 반영되도록 함께 수정했습니다.
+		 */
+		HashMap<String, Object> map = new HashMap();
+		map.put("sno", sno);
+		map.put("keyword", keyword);
+		
+		int listCount = lService.selectListCount(map);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 9);
-		ArrayList<Lecture> list = lService.selectLectureList(pi, sno);
+		ArrayList<Lecture> list = lService.selectLectureList(pi, map);
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("searchKeyword", keyword)
 		  .setViewName("lecture/lectureList");
 		
 		return mv;
