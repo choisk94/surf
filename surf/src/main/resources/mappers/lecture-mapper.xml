@@ -312,7 +312,6 @@
           from lecture l
           join teacher t on(l.subcat_no = t.subcat_no)
          where l.class_no = #{classNo}
-           and l.status = 'O'
 	</select>
 
 	<!--
