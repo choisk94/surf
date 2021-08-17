@@ -148,6 +148,7 @@
 				<label class="subTitle">1.1</label>
 				<input type="text" name="cvList[0].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" placeholder="소제목을 입력해주세요.">
 				<input type="file" name="upfile[0]" onchange="loadOriginName(this);">
+				<input type="hidden" name="cvList[0].originName">
 				<input type="hidden" name="cvList[0].changeName">
 				<div class="video-img">추가</div>
 			</div>
@@ -155,11 +156,11 @@
 		<span class="insertTitle-btn">+ 제목 추가</span>
 	</div>
 	
-
 	<div class="content">
 		<form id="inputForm" action="updateCurriculum.te" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="classNo" value="${ l.classNo }">
 			<input type="hidden" name="currentPage" value="${currentPage}">
+			<input type="hidden" name="beforeCno" value="${fn:length(chList)}">
 			<div>
 				<label class="guide">강의 커리큘럼</label>
 			</div>
@@ -167,7 +168,7 @@
 			<div id="input-box">
 				<div class="curriculum">
 					<div class="curriculum-box chap1">
-						<label class="chap-head">챕터1</label>
+						<label class="chap-head">챕터1</label><div class="close-img"></div>
 						<input type="hidden" name="chList[0].chapOrder" value="1">
 						<input type="hidden" name="chList[0].classNo" value="${ l.classNo }">
 						<input id="chapName1" name="chList[0].chapName" type="text" class="form-control chap" style="width:400px; height:40px;" placeholder="챕터명을 입력해주세요" value="${chList[0].chapName}">
@@ -214,18 +215,27 @@
 			var info = [[1, 1]];
 			var cno = 1;
 			var vno = 1;
+
+			var classVideo;
+			
 			// 1. -제목 제거버튼
 			$(document).on('click', '.minus-img', function(){
 				var subTitleNo = $(this).siblings('.subTitle').text().substr(2, 1);
 				var chapNo = $(this).siblings('.subTitle').text().substr(0, 1) - 1;
 				var target = $(this).parents('.curriculum').children('.curriculum-box').children('.subTitle-box');
 				
-				if(subTitleNo < 2){
-					alertify.alert("챕터에 소제목은 최소 한개 필요합니다");
+				if(info[chapNo][1] == 1){
+					alertify.alert('한 챕터에는 최소 한 강의영상이 필요합니다.')
 				}else{
 					$(this).parent('.subTitle-box').remove();
 					info[chapNo][1] -= 1;
 					--vno;
+
+					var deleteChangeName = target.children('input[type=hidden]').eq(5).val();
+
+					if(deleteChangeName != ""){
+						$('#inputForm').prepend('<input type="hidden" name="deleteFileName" value="' + deleteChangeName + '">');
+					}
 
 					var sum = 1;
 					for(var i=0; i<cno; i++){
@@ -236,14 +246,15 @@
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
-							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].changeName');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
 							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
 						}
 						sum += info[i][1];
 					}
 				}
-
+				
 				afterCheck(cno, vno);
 			})
 			
@@ -253,12 +264,13 @@
 				// 해당 버튼 챕터값 가져오기
 				var chapNo = $(this).siblings(".curriculum-box").children('.chap-head').text().substr(2, 1) - 1;
 				
-				
 				if(info[chapNo][1] < 9){
 					
 					info[chapNo][1] += 1;
 					++vno;
 					var $clone = $(this).siblings(".curriculum-box").children(".subTitle-box").last().clone(true);
+					$clone.children('input[type=hidden]').eq(0).val(0);
+					$clone.children('input[type=hidden]').eq(5).val("");
 
 					var sum = 1;
 					
@@ -275,11 +287,13 @@
 						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
 						//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
 						for(var j=sum; j<=sum+info[i][1]; j++){
+
 							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
-							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].changeName');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
 							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
 							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
@@ -321,7 +335,8 @@
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (vno-1) + '].classNo').val(${l.classNo});
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (vno-1) + '].chapOrder').val(info[cno-1][0]);
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (vno-1) + '].videoOrder').val(info[cno-1][1]);
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].changeName').val("");
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].originName').val("");
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (vno-1) + '].changeName').val("");
 
 				// subTitle 숫자 변경 
 				$clone.find('.subTitle').text(info[cno-1][0] + '.' + info[cno-1][1]);
@@ -334,6 +349,20 @@
 
 				var thisCno = $(this).siblings('input[type=hidden]').eq(0).val();
 
+				// 챕터 지우기
+				$('#inputForm').prepend('<input type="hidden" name="deleteCno" value="' + $(this).siblings('input[type=hidden]').eq(0).val() + '">');
+
+				// 제거 할 파일명 받아오기
+				for(var i=0; i<info[thisCno-1][1]; i++){
+
+					// 파일명 받아오기
+					var deleteChangeName = $(this).siblings('.subTitle-box').eq(i).children('input[type=hidden]').eq(5).val();
+
+					// 파일명 form 안에 넣기
+					$('#inputForm').prepend('<input type="hidden" name="deleteFileName" value="' + deleteChangeName + '">');
+
+				}
+
 				vno = vno - info[(thisCno-1)][1];
 				info.splice((thisCno-1), 1);
 				for(var i=0; i<info.length; i++){
@@ -341,6 +370,10 @@
 				}
 				
 				--cno;
+				// 제거 파일명 가져오기(changeName)
+				
+
+				// 해당 챕터 제거
 				$(this).parents('.curriculum').remove();
 				
 				// 챕터 소제목 정렬
@@ -348,25 +381,26 @@
 				for(var i=0; i<cno; i++){
 					//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
 
-						$('#input-box').children('div').eq(i).find('.chap-head').text('챕터' + (i+1));
-						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(0).attr('name', 'chList[' + i + '].chapOrder').val(i + 1);
-						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(1).attr('name', 'chList[' + i + '].classNo');
-						$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
+					$('#input-box').children('div').eq(i).find('.chap-head').text('챕터' + (i+1));
+					$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(0).attr('name', 'chList[' + i + '].chapOrder').val(i + 1);
+					$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(1).attr('name', 'chList[' + i + '].classNo');
+					$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
 
-						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+					var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
 
-						for(var j=sum; j<=sum+info[i][1]; j++){
-							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
-							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
-							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
-							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
-							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].changeName');
-							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
-							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
-							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
-						}
-						sum += info[i][1];
+					for(var j=sum; j<=sum+info[i][1]; j++){
+						$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
+						$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
+						$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
+						$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
+						$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
+						$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
 					}
+					sum += info[i][1];
+				}
 
 				afterCheck(cno, vno);
 				
@@ -380,47 +414,82 @@
                 data : {
 					classNo : ${ l.classNo }
                 }, success : function(videoList){
-				for(var i=2; i<=${fn:length(chList)}; i++){
-					info.push([i, 0]);
-				}
-				info[0][1] -=1;
-				console.log(videoList[0]);
-				
-				for(var i in videoList){
-					var ch = videoList[i].chapOrder;
-					$('.chap' + videoList[i].chapOrder)
-					.append('<div class="subTitle-box">' + 
-						'<input type="hidden" name="cvList[' + i +'].videoNo" value="' + videoList[i].videoNo + '">' +
-						'<input type="hidden" name="cvList[' + i +'].classNo" value="' + ${l.classNo} + '">' +
-						'<input type="hidden" name="cvList[' + i +'].chapOrder" value="' + videoList[i].chapOrder + '">' +
-									'<input type="hidden" name="cvList[' + i +'].videoOrder" value="' + videoList[i].videoOrder + '">' +
-									'<div class="minus-img"></div>' +
-									'<label class="subTitle">' + videoList[i].chapOrder + '.' +  videoList[i].videoOrder + '</label>' + 
-									'<input type="text" id="subTitle' + (parseInt(i) + 1) +'" name="cvList[' + i + '].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" ' +
-									'placeholder="소제목을 입력해주세요." value="'+ videoList[i].subTitle + '">' + 
-									'<input type="file" name="upfile" onchange="loadOriginName(this);">' +
-									'<input type="hidden" name="cvList[' + i +'].changeName" value="' + videoList[i].changeName + '">' +
-									'<div class="video-img">' + videoList[i].originName + '</div>'
-									+ '</div>');
-									
-									// info
-									info[ch-1][1] += 1;
+					
+					// 소제목 길이 저장 _ 로드시 첫화면과 vno 다름
+					info[0][1] -=1;
+
+					// 챕터 길이 배열 저장
+					for(var i=2; i<=${fn:length(chList)}; i++){
+						info.push([i, 0]);
+						++cno;
+					}
+					console.log(videoList);
+					for(var i in videoList){
+
+						$('.chap' + videoList[i].chapOrder)
+						.append('<div class="subTitle-box">' + 
+							'<input type="hidden" name="cvList[' + i +'].videoNo" value="' + videoList[i].videoNo + '">' +
+							'<input type="hidden" name="cvList[' + i +'].classNo" value="' + ${l.classNo} + '">' +
+							'<input type="hidden" name="cvList[' + i +'].chapOrder" value="' + videoList[i].chapOrder + '">' +
+										'<input type="hidden" name="cvList[' + i +'].videoOrder" value="' + videoList[i].videoOrder + '">' +
+										'<div class="minus-img"></div>' +
+										'<label class="subTitle">' + videoList[i].chapOrder + '.' +  videoList[i].videoOrder + '</label>' + 
+										'<input type="text" id="subTitle' + (parseInt(i) + 1) +'" name="cvList[' + i + '].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" ' +
+										'placeholder="소제목을 입력해주세요." value="'+ videoList[i].subTitle + '">' + 
+										'<input type="file" name="upfile" onchange="loadOriginName(this);">' +
+										'<input type="hidden" name="cvList[' + i +'].originName" value="' + videoList[i].originName + '">' +
+										'<input type="hidden" name="cvList[' + i +'].changeName" value="' + videoList[i].changeName + '">' +
+										'<div class="video-img">' + videoList[i].originName + '</div>'
+										+ '</div>');
+										
+						// info
+						info[videoList[i].chapOrder-1][1] += 1;
+					}
+
+					sum = 1;
+
+					for(var i=0; i<cno; i++){
+
+						$('#input-box').children('div').eq(i).find('.chap-head').text('챕터' + (i+1));
+						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(0).attr('name', 'chList[' + i + '].chapOrder').val(i + 1);
+						$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(1).attr('name', 'chList[' + i + '].classNo');
+						$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
+
+						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+							//  3   
+							console.log(cno);
+						for(var j=sum; j<=sum+info[i][1]; j++){
+							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
+							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
+							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
+							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
+							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
+							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j ).attr('name', 'cvList[' + (j-1) + '].subTitle');
+							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
 						}
-				$('.video-img')
-				.css('background-size', 0)
-				.css('padding-left', 0)
-				.css('width', '130px')
-				.css('text-overflow', 'ellipsis');
-				
-				// 처음 조건 검사
-				cno = info.length;
-				vno = 0;
-				
-				for(var i=0; i<cno; i++){
-					vno += info[i][1];
-				}
-				
-				beforeCheck(cno, vno);
+						sum += info[i][1];
+					}
+
+					$('.video-img')
+					.css('background-size', 0)
+					.css('padding-left', 0)
+					.css('width', '130px')
+					.css('text-overflow', 'ellipsis');
+					
+					// 처음 조건 검사
+					cno = info.length;
+					vno = 0;
+					
+					for(var i=0; i<cno; i++){
+						vno += info[i][1];
+					}
+					
+					beforeCheck(cno, vno);
+					console.log(info);
+					console.log(vno);
+
+	//				$('input[name=beforeVno]').val(info);
 				}, error : function(){
 
 					
@@ -486,8 +555,6 @@
 		// 7. 작성 중 조건검사
 		function afterCheck(cno, vno){
 			$('#save-btn').attr('disabled', true);
-			//console.log('aa');
-			console.log('v: ' + vno);
 			
 			// 챕터명 길이 검사
 			for(var i=1; i<=cno; i++){
@@ -502,7 +569,7 @@
 					return false;
 				}
 			}
-			//console.log('bb');
+			
 			// 부제목, 원본명 길이 검사
 			for(var i=1; i<=vno; i++){
 				

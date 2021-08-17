@@ -52,8 +52,10 @@ public class AjaxTeacherController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="ajaxNicknameCheck.te", produces="text/html; charset=utf-8")
-	public String checkNickname(Teacher t) {
+	public String checkNickname(HttpSession session,
+								Teacher t) {
 		
+		t.setTeacherNo(((Member)session.getAttribute("loginUser")).getUserNo());
 		String responseData;		
 		int result = tService.checkNickname(t);
 		
@@ -74,17 +76,23 @@ public class AjaxTeacherController {
 	@RequestMapping(value="ajaxUpdate.te", method=RequestMethod.POST, produces="text/html; charset=utf-8")
 	public String uploadFile(MultipartFile file, Teacher t, HttpSession session) {
 		
+		t.setTeacherNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		
 		String savePath = "resources/uploadFiles/profile_image/";
+		System.out.println(t);
+		// 요청 이전의 파일 수정명
+		String beforeChagneName = t.getProfileImage().substring(t.getProfileImage().lastIndexOf("/")+1);
 		// 새로운 첨부파일 있는 경우
 		if(!file.getOriginalFilename().equals("")) {
 			// 기존 파일 지우기
-			if(t.getProfileImage() != null) {
-				new File(session.getServletContext().getRealPath(t.getProfileImage())).delete();
+			if(!t.getProfileImage().equals("")) {
+				new File(session.getServletContext().getRealPath(savePath) + beforeChagneName).delete();
 			}
 			
 			// 새로운 파일 업로드(template 사용)
 			String changeName = saveFile(session, file, "/"+savePath);
 			t.setProfileImage(savePath + changeName);
+			
 		}
 						
 		int result = tService.updateTeacher(t);
@@ -249,8 +257,11 @@ public class AjaxTeacherController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="ajaxVideoList.te", produces="application/json; charset=utf-8")
-	public String ajaxSelectVideoList(int classNo) {
-		ArrayList<ClassVideo> cvList = tService.ajaxSelectVideoList(classNo);
+	public String ajaxSelectVideoList(HttpSession session, Lecture l) {
+		
+		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+		
+		ArrayList<ClassVideo> cvList = tService.ajaxSelectVideoList(l);
 		
 		return new Gson().toJson(cvList);
 	}

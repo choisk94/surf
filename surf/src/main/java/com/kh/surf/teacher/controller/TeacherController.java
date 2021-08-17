@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -500,6 +501,7 @@ public class TeacherController {
 									  ModelAndView mv,
 									  MultipartFile[] upfile,
 									  String spPrice) {
+		
 		l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
 		
 		int result;
@@ -515,8 +517,10 @@ public class TeacherController {
 					if(!upfile[i].getOriginalFilename().equals("") && i == 0) { // Thumbnail
 						
 						// 기존 파일 지우기
-						if(l.getThumbnail() != null) {
-							new File(session.getServletContext().getRealPath(l.getThumbnail())).delete();
+						if(!l.getThumbnail().equals("")) {
+							
+							new File(session.getServletContext().getRealPath(savePath) + 
+									 l.getThumbnail().substring(l.getThumbnail().lastIndexOf("/")+1)).delete();
 						}
 						
 						// 새로운 파일 업로드(template 사용)
@@ -524,11 +528,13 @@ public class TeacherController {
 						l.setThumbnail(savePath + changeName);
 					}
 					
-					if(!upfile[i].getOriginalFilename().equals("") && i == 1) {
+					if(!upfile[i].getOriginalFilename().equals("") && i == 1) { // introFile
 						
 						// 기존 파일 지우기
-						if(l.getIntroFile() != null) {
-							new File(session.getServletContext().getRealPath(l.getThumbnail())).delete();
+						if(!l.getIntroFile().equals("")) {
+							String beforeChagneName = l.getIntroFile().substring(l.getIntroFile().lastIndexOf("/")+1);
+							new File(session.getServletContext().getRealPath(savePath) + 
+									 l.getIntroFile().substring(l.getIntroFile().lastIndexOf("/")+1)).delete();
 						}
 						
 						// 새로운 파일 업로드(template 사용)
@@ -578,6 +584,7 @@ public class TeacherController {
 	@RequestMapping("updateLecture2.te")
 	public ModelAndView updateLecture2(HttpSession session,
 									  @RequestParam(value="currentPage", defaultValue="0")int currentPage,
+									  @RequestParam(value="deleteName", defaultValue="")String[] deleteName,
 									  Lecture l,
 									  ModelAndView mv,
 									  ClassIntro intro,
@@ -588,7 +595,7 @@ public class TeacherController {
 		
 		int result;
 		String alertMsg = "";
-		System.out.println(intro.getClassIntroList());
+		
 		// 1. Lecture 관련 부분 업데이트
 		result = tService.updateLecture2(l);
 		
@@ -596,11 +603,13 @@ public class TeacherController {
 		String savePath = "resources/uploadFiles/intro_upfiles/";
 		// introList list 사이즈와 그림은 무조건 같으니 이걸 기준으로 반복문 돌려도 된다.
 		for(int i=0; i<intro.getClassIntroList().size(); i++) {
+			
 			if(!"".equals(upfile[i].getOriginalFilename())) { // introImage
 				
 				// 기존 파일 지우기
-				if(intro.getClassIntroList().get(i).getIntroImage() != null) {
-					new File(session.getServletContext().getRealPath(intro.getClassIntroList().get(i).getIntroImage())).delete();
+				if(!intro.getClassIntroList().get(i).getIntroImage().equals("")) {
+					new File(session.getServletContext().getRealPath(savePath) + 
+							 intro.getClassIntroList().get(i).getIntroImage().substring(intro.getClassIntroList().get(i).getIntroImage().lastIndexOf("/")+1)).delete();
 				}
 				
 				// 새로운 파일 업로드(template 사용)
@@ -610,15 +619,20 @@ public class TeacherController {
 			
 		}
 		
+		
 		Lecture introInfo = new Lecture();
 		introInfo.setClassNo(l.getClassNo());
 		introInfo.setIntroLength(intro.getClassIntroList().size());
 		
-		// 3. classNo, introOrder 가 있는 테이블이면 update 아니면 insert
-		//           6                       2                          3,4,5,6지우기
-		if(beforeIntroLength < intro.getClassIntroList().size()) {
-			result = result * tService.updateClassIntro2(intro.getClassIntroList());					
+		if(beforeIntroLength <= intro.getClassIntroList().size()) {
+			// 전 보다 많거나 같은경우
+			result = result * tService.updateClassIntro2(intro.getClassIntroList());
 		}else {
+			// 전 보다 적은경우 SQL(delete) 될 파일 지우기
+			for(int i=0; i<deleteName.length; i++) {
+				new File(session.getServletContext().getRealPath(savePath) + 
+						 deleteName[i].substring(deleteName[i].lastIndexOf("/")+1)).delete();
+			}
 			result = result * tService.updateClassIntro2(intro.getClassIntroList());
 			result = result * tService.deleteClassIntro2(introInfo);
 		}
@@ -648,6 +662,9 @@ public class TeacherController {
 									   Chapter chapter,
 									   ClassVideo classVideo,
 									   MultipartFile[] upfile,
+									   int beforeCno,
+									   @RequestParam(value="deleteFileName", defaultValue="nodata")String[] deleteFileName,
+									   @RequestParam(value="deleteCno", defaultValue="0")int[] deleteCno,
 									   ModelAndView mv) {
 
 	l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
@@ -655,36 +672,69 @@ public class TeacherController {
 	System.out.println(chapter.getChList());
 	System.out.println(classVideo.getCvList());
 	
-	String alertMsg = "";
-	
-	// 2. 업로드 된 파일 있으면 기존 파일 지우고  새로운파일 업로드(changeName도 얻어오기)
 	String savePath = "resources/uploadFiles/class_video/";
 	
-	for(int i=0; i<classVideo.getCvList().size(); i++) {
+	String alertMsg = "";
+	int result1 = 1;
+	int result2 = 1;
+	
+	// 1. 파일 지우기 (기존의 파일을 지우는 값이 넘어오면)
+	
+	// 지우는 파일 있는 경우
+	
+	if(!deleteFileName[0].equals("nodata")) {
 		
-		if(!"".equals(upfile[i].getOriginalFilename())) {
+		for(int i=0; i<deleteFileName.length; i++) {
+			System.out.println("삭제");
 			
-			// 기존 파일 지우기
-			if(classVideo.getCvList().get(i).getChangeName() != null) {
-				new File(session.getServletContext().getRealPath(classVideo.getCvList().get(i).getChangeName())).delete();
-			}
+			new File(session.getServletContext().getRealPath(savePath) + 
+					deleteFileName[i].substring(deleteFileName[i].lastIndexOf("/")+1)).delete();
 			
-			
+			System.out.println(deleteFileName[i]);
+		}
+		result1 = tService.deleteVideoList(deleteFileName);
+	}
+	
+	// 2. 챕터 지우기
+	if(deleteCno[0] != 0 && beforeCno > chapter.getChList().size()) {
+				
+		Chapter deleteChap = new Chapter();
+		
+		deleteChap.setClassNo(l.getClassNo());
+		deleteChap.setChapOrder(beforeCno - deleteCno.length);
+		System.out.println("챕터지우기");
+		System.out.println(deleteChap);
+		
+		result2 = tService.deleteChapterList(deleteChap);
+		
+	}
+	
+	
+	for(int i=0; i < classVideo.getCvList().size(); i++) {
+		
+		if(!"".equals(upfile[i].getOriginalFilename())) { //파일이 있다면?
+			System.out.println("파일지우기");
 			String changeName = saveFile(session, upfile[i], "/"+savePath);
 			classVideo.getCvList().get(i).setChangeName(savePath + changeName);
 			classVideo.getCvList().get(i).setOriginName(upfile[i].getOriginalFilename());
+			
 		}
 	}
 	
-	int result1 = tService.updateChapterList(chapter.getChList());
-	int result2 = tService.updateVideoList(classVideo.getCvList());
+	int result3 = tService.updateChapterList(chapter.getChList());
+	int result4 = tService.updateVideoList(classVideo.getCvList());
 	
-	int result = result1 * result2;
+	System.out.println(result1);
+	System.out.println(result2);
+	System.out.println(result3);
+	System.out.println(result4);
+	
+	int result = result1 * result2 * result3 * result4;
 	
 	if(result > 0) {
-	alertMsg = "커리큘럼 저장성공";
+		alertMsg = "커리큘럼 저장성공";
 	}else {
-	alertMsg = "커리큘럼 저장실패";
+		alertMsg = "커리큘럼 저장실패";
 	}
 	
 	
@@ -695,6 +745,10 @@ public class TeacherController {
 	return mv;
 	}
 	
+	/**
+	 * 오픈 신청하기
+	 * @author HeeRak
+	 */
 	@RequestMapping("updateStatus.te")
 	public String updateStatus(HttpSession session,
 							   Lecture l) {
