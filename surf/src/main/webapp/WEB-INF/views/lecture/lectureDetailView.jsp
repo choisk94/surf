@@ -190,7 +190,7 @@
 	                    <div id="info-btn">
 	                        <button type="button" class="btn" onclick="scrapCheck();">찜하기</button>
 	                        <input type="hidden" name="classNo" value="${ l.classNo }">
-	                        <button type="button" class="btn payIamport">결제하기</button>
+	                        <a class="btn payIamport">결제하기</a>
 	                    </div>
 	                </div>
 	                
@@ -341,16 +341,15 @@
 		        
 		        // 찜하기 중복확인
 		        function scrapCheck(){
-					console.log(uno);
 
 		        	$.ajax({
 		        		url: "scrapCheck.lec",
 		        		data : {
 		        			classNo : cno,
-		        			userNo : uno
+		        			userNo : userNo
 		        		}, success: function(result){
 		        			console.log(result);
-		        			if(result == 1){
+		        			if(result > 0){
 		        				alert("이미 찜한 클래스입니다.");
 		        			}else {
 		        				scrapLecture();
@@ -371,7 +370,7 @@
 		            	type: "GET",
 		            	data: {
 		            		classNo : cno,
-		            		userNo : uno
+		            		userNo : userNo
 		            	},
 		            	success:function(result){
 		            		

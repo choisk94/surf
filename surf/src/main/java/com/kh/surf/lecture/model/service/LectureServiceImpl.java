@@ -12,6 +12,7 @@ import com.kh.surf.lecture.model.dao.LectureDao;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -175,6 +176,11 @@ public class LectureServiceImpl implements LectureService{
 	@Override
 	public int insertSurvey(Survey s) {
 		return lDao.insertSurvey(sqlSession, s);
+	}
+
+	@Override
+	public int ajaxLoadStudingDegree(ClassStuding s) {
+		return lDao.ajaxLoadStudingDegree(sqlSession, s);
 	}
 	
 	

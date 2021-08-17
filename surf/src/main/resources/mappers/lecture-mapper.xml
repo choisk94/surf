@@ -440,6 +440,23 @@
           , #{teaNo}
 		  )
 	</insert>
+	
+	<!-- 
+		@author yeji lee
+		내 클래스 조회
+	 -->
+	<select id="selectMyLecture" resultMap="lectureResult">
+		select
+		       p.class_no
+		     , p.user_no
+		     , l.class_title
+		     , l.thumbnail
+		  from payment p
+		  join lecture l on(p.class_no = l.class_no)
+		 where p.user_no = #{userNo}
+		 order
+		    by p.order_no desc
+	</select>
 
 	<!--
 		@author yeji lee
@@ -856,7 +873,7 @@
 	   <select id="ajaxLoadStudingDegree" resultType="_int" parameterType="ClassStuding">
 	   	select round(count(watched) /  (select count(video_no)
                            from class_video
-                          where class_no = 7) * 100, 0)
+                          where class_no = #{classNo}) * 100, 0)
 		  from progress
 		 where user_no = #{userNo}
 		   and video_no in(select video_no

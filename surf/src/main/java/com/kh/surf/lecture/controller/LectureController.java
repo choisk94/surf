@@ -17,6 +17,7 @@ import com.kh.surf.lecture.model.service.LectureService;
 import com.kh.surf.lecture.model.vo.Chapter;
 import com.kh.surf.lecture.model.vo.ClassInquiry;
 import com.kh.surf.lecture.model.vo.ClassIntro;
+import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
 
@@ -204,7 +205,7 @@ public class LectureController {
 	public int scrapCheck(int classNo, int userNo) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("classNo", classNo);
-		map.put("classNo", classNo);
+		map.put("userNo", userNo);
 		int result = lService.scrapCheck(map);
 		//System.out.print(result);
 		return result;
@@ -228,11 +229,23 @@ public class LectureController {
 	 * @author leeyeji
 	 * 내 클래스 조회
 	 */
-	@RequestMapping("progress.lec")
+	@RequestMapping("myLecture.lec")
 	public ModelAndView selectMyLecture(int uno, ModelAndView mv) {
 		ArrayList<Lecture> mList = lService.selectMyLecture(uno);
 		mv.addObject("mList", mList).setViewName("member/myLectureList");
 		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping("progress.lec")
+	public int ajaxLoadStudingDegree(int userNo, int classNo) {
+		ClassStuding s = new ClassStuding();
+		s.setUserNo(userNo);
+		s.setClassNo(classNo);
+		
+		int progress = lService.ajaxLoadStudingDegree(s);
+		
+		return progress;
 	}
 	
 	/**
