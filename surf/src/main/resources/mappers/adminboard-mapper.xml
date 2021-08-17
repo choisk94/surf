@@ -359,9 +359,6 @@
 	</update>
 	
 	
-	
-	
-	
 	<!-- 강사신청 검색기능 -->
 	<select id="teacherListCount" resultType="_int">
 		select
