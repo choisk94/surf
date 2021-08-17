@@ -106,7 +106,7 @@
 	<br>
 	<div class="ml-4" style="width: 950px">
 
-		<h4>결제내역관리>고객 결제내역 조회</h4>
+		<h4>광고베너관리</h4>
 		<form id="searchForm" action="search.ad" method="Get">
 			<div class="select">
 				<select class="custom-select" name="condition">

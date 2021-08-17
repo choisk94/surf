@@ -257,15 +257,15 @@
 			<script>
 				
 				var cno = $('input[name=classNo]').val();
-		        var uno = '${loginUser.userNo}';
+		        var userNo = ${loginUser.userNo};
 		        //uno = '${loginUser.userNo}';
 		        //uno = ${empty loginUser.userNo ? -1 : loginUser.userNo};
-		        
+		        /*
 		        if(isNaN(uno)) {
 		        	uno = -1;
 		        } else {
 		        	uno = parseInt( uno );
-		        }
+		        }*/
 			
 				// 결제 관련
 				var c_price = ${ l.price };
@@ -303,7 +303,7 @@
 					    		var payment = {
 					    				//orderNo : r_imp_uid,
 					    				classNo : cno,
-					    				userNo : uno,
+					    				//userNo : uno,
 					    				price : rsp.paid_amount,
 					    				//paymentDate : new Date(),
 					    				payMethod : payMethod,
@@ -312,7 +312,7 @@
 					    	
 					    	// 디비 주문내역
 					    	jQuery.ajax({
-					    		url: "payments.do?uno=" + uno, 
+					    		url: "payments.do?userNo=" + userNo, 
 					    		type: 'POST',
 					    		dataType: 'json',
 					    		data: payment,

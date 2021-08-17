@@ -94,4 +94,15 @@ public interface LectureService {
 	 */
 	int ajaxScrapLecture(HashMap<String, Integer> map);
 	
+	/**
+	 * @author leeyeji
+	 * 내 클래스 조회
+	 */
+	ArrayList<Lecture> selectMyLecture(int userNo);
+	
+	/**
+	 * @author leeyeji
+	 * 설문조사 추가
+	 */
+	int insertSurvey(Survey s);
 }

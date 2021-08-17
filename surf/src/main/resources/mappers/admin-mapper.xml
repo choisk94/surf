@@ -50,6 +50,8 @@
 		<result column="count" property="count"/>
 		<result column="EMAIL" property="email"/>
 		<result column="NICKNAME" property="nickname"/>
+		<result column="class_title" property="classTitle"/>
+		<result column="mon" property="mon"/>
 	</resultMap>
 	
 	<resultMap id="rectureResult" type="LectureList">
@@ -673,5 +675,39 @@
 	 		</when>
 	 		</choose>
 	 		like '%' || #{keyword} || '%'
+	</select>
+	<select id="settleList" resultMap="pmResult">
+	select 
+	         p.user_no
+	      ,  nickname
+	      ,  class_title
+	      ,  payment_date
+          ,  p.status
+	      ,  TO_CHAR(TO_DATE(payment_date, 'YYYY-MM-DD HH24:MI:SS') + INTERVAL '1' MONTH, 'YYYY-MM-DD') AS MON
+	      ,  p.class_no
+	      ,  email
+	      from  payment p
+	      join  member m
+	      on p.user_no = m.user_no
+	      join  lecture l
+	      on p.class_no = l.class_no
+	</select>
+	<select id="settleListCount" resultType="_int">
+	select
+			count(*)
+		from (select 
+	         p.user_no
+	      ,  nickname
+	      ,  class_title
+	      ,  payment_date
+          ,  p.status
+	      ,  TO_CHAR(TO_DATE(payment_date, 'YYYY-MM-DD HH24:MI:SS') + INTERVAL '1' MONTH, 'YYYY-MM-DD') AS MON
+	      ,  p.class_no
+	      ,  email
+	      from  payment p
+	      join  member m
+	      on p.user_no = m.user_no
+	      join  lecture l
+	      on p.class_no = l.class_no)
 	</select>
 </mapper>

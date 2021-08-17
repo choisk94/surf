@@ -218,6 +218,16 @@ public class AdminServiceImpl implements AdminService {
 		return aDao.selectIntroList2(sqlSession, lno);
 	}
 
+	@Override
+	public int settleListCount() {
+		return aDao.settleListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<PaymentList> settleList(PageInfo pi) {
+		return aDao.settleList(sqlSession, pi);
+	}
+
 	
 
 	

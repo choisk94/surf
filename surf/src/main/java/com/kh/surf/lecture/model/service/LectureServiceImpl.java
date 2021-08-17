@@ -166,6 +166,16 @@ public class LectureServiceImpl implements LectureService{
 	public int selectTeacherNo(int classNo) {
 		return lDao.selectTeacherNo(sqlSession, classNo);
 	}
+
+	@Override
+	public ArrayList<Lecture> selectMyLecture(int userNo) {
+		return lDao.selectMyLecture(sqlSession, userNo);
+	}
+
+	@Override
+	public int insertSurvey(Survey s) {
+		return lDao.insertSurvey(sqlSession, s);
+	}
 	
 	
 }
