@@ -141,22 +141,30 @@
 		공지사항 리스트 검색 카운트
 		@author 서정연 관리자
 	-->		
-	<select id="selectSearchNoticeListCount" resultType="_int">
+	<select id="selectSearchNoticeCount" resultType="_int">
 		select
 		       count(*)
-		  from admin_board a
-          join member m on m.user_no = a.user_no
-		 where board_type = '공지사항'
-		   and a.status = 'Y'
+		  from
+		  (select
+			       board_no
+			     , board_title
+			     , nickname
+			     , count
+			     , to_char(create_date, 'YYYY-MM-DD') as create_date
+			  from admin_board a
+	          join member m on m.user_no = a.user_no
+			 where board_type = '공지사항'
+			   and a.status = 'Y')
+             where
 		   <choose>
 			   <when test="condition == 'writer'">
-			   		and nickname
+			   		nickname
 			   </when>
 			   <when test="condition == 'title'">
-			   		and board_title
+			   		board_title
 			   </when>
 			   <otherwise>
-			   		and board_content
+			   		board_content
 			   </otherwise>
 		   </choose>
 					like '%' || #{keyword} || '%'
@@ -189,8 +197,6 @@
 		   		</otherwise>
 		   </choose>
 		   			like '%' || #{keyword} || '%'
-		  order
-		     by board_no desc
 	</select>
 	
 	
@@ -312,7 +318,6 @@
           join member m on t.nickname=m.nickname
           join maincat c using(maincat_no)
          where teacher_no = #{tno}
-           and t.status = 'Y'
 	</select>
 	
 	<!--
@@ -323,7 +328,7 @@
 		select
 		       count(*)
 		  from teacher
-		 where status = 'Y'      
+		 where status = 'Y'  
 	</select>
 
 	<!--

@@ -33,8 +33,7 @@ public interface AdminBoardService {
 	   int updateAdminNotice(AdminBoard ab);
 	   
 	   // 6. 검색용
-	   int selectSearchNoticeListCount(HashMap<String, String> map);
-	   
+	   int selectSearchNoticeCount(HashMap<String, String> map);
 	   ArrayList<AdminBoard> selectSearchNoticeList(PageInfo pi, HashMap<String, String> map);
 	   
 	   

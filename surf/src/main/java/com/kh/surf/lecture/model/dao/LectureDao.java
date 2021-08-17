@@ -92,11 +92,8 @@ public class LectureDao {
 	 * @author leeyeji
 	 * 유저 찜한 클래스 목록 조회
 	 */
-	public ArrayList<Lecture> selectScrapList(SqlSessionTemplate sqlSession, int userNo, PageInfo pi){
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		return (ArrayList)sqlSession.selectList("lectureMapper.selectScrapList", userNo, rowBounds);
+	public ArrayList<Lecture> selectScrapList(SqlSessionTemplate sqlSession, int userNo){
+		return (ArrayList)sqlSession.selectList("lectureMapper.selectScrapList", userNo);
 	}
 	
 	/**

@@ -137,12 +137,8 @@ public class LectureServiceImpl implements LectureService{
 	 * 유저 스크랩 목록 조회
 	 */
 	@Override
-	public int selectScrapCount(int userNo) {
-		return lDao.selectScrapCount(sqlSession, userNo);
-	}
-	@Override
-	public ArrayList<Lecture> selectScrapList(int userNo, PageInfo pi) {
-		return lDao.selectScrapList(sqlSession, userNo, pi);
+	public ArrayList<Lecture> selectScrapList(int userNo) {
+		return lDao.selectScrapList(sqlSession, userNo);
 	}
 
 	/**

@@ -12,8 +12,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
-        font-family: 'Noto Sans KR', sans-serif;
     }
     .container{display: flex;}
     .sub-nav{width: 20%; height: 800px;}

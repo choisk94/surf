@@ -231,7 +231,7 @@
 		select
 		       count(*)
 		  from report
-		 where status = 'N'       
+		 where status = 'N'
 	</select>
 	
 	<select id="selectReportList" resultMap="adminReportResult">

@@ -55,16 +55,16 @@ public class AdminBoardDao {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
 	
-
-	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
+	// 공지사항 검색(관리자)
+	public int selectSearchNoticeCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeCount", map);
 	}
 	
 	public ArrayList<AdminBoard> selectSearchNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
 
 	}
 	
