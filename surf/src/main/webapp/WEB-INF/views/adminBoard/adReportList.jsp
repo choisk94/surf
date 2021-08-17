@@ -13,6 +13,12 @@
 	#search_btn{background:deepskyblue;}
 	#search_btn:hover{background:rgb(52, 152, 219);}
 </style>
+<style>
+#pagingArea {
+	width: fit-content;
+	margin: auto;
+}
+</style>
 <body>
 	<jsp:include page="../admin/sidebar.jsp"/>
 		 <!--여기서부터 우측 게시판-->
@@ -21,15 +27,25 @@
         <br><br><br>
         <div>
           <h5>신고 관리 > 신고목록</h5>
-          <div align="right">
-            <select name="refType" style="width: 120px;">
-              <option value="">게시글</option>
-              <option value="">댓글</option>
-              <option selected>선택</option>
-            </select>
-            <input type="text" placeholder="키워드를 입력하세요">
-            <button type="button" class="btn btn-default" id="search_btn">검색</button>
+          <form id="searchForm" action="reportSearch.ad" method="Get">
+          <div class="select" align="right">
+	            <select style="width: 120px;" name="condition">
+	              <option value="category">신고 유형</option>
+	              <option value="reason">신고 사유</option>
+	              <option selected>선택</option>
+	            </select>
+            <input type="text" name="keyword"
+					value="${ keyword }">
+            <button type="submit" class="btn btn-default" id="search_btn">검색</button>
           </div>
+          </form>
+      		<script>
+            	$(function(){
+            		if("${condition}" != ""){
+            			$("option[value=${condition}]").attr("selected", true);
+            		}
+            	})
+            </script>
         </div>
         <hr>
         <table id="adReportList" class="table" align="center">
@@ -143,30 +159,62 @@
         
         <br>
         <!--여기서부터 페이지이동-->
-        <ul class="pagination justify-content-center">
-        	<c:choose>
-        		<c:when test="${ pi.currentPage eq 1 }">
-	          		<li class="page-item disabled"><a class="page-link">이전</a></li>
-	          	</c:when>
-	          	<c:otherwise>
-	          		<li class="page-item"><a class="page-link" href="reportList.ad?currentPage=${ pi.currentPage-1 }">이전</a></li>
-           		</c:otherwise>
-            </c:choose>
-            
-            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.maxPage }">
-          		<li class="page-item"><a class="page-link" href="reportList.ad?currentPage=${ p }">${ p }</a></li>
-          	</c:forEach>
-          	
-          	<c:choose>
-          		<c:when test="${ pi.currentPage eq pi.maxPage }">
-		          	<li class="page-item disabled"><a class="page-link">다음</a></li>
-		    	</c:when>
-		    	<c:otherwise>
-		          	<li class="page-item"><a class="page-link" href="reportList.ad?currentPage=${ pi.currentPage+1 }">다음</a></li>
-          		</c:otherwise>
-          	</c:choose>
-        </ul>
-      </div>
+        <div id="pagingArea">
+			<ul class="pagination">
+				<c:choose>
+					<c:when test="${ pi.currentPage eq 1 }">
+						<li class="page-item disabled"><a class="page-link">이전</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="reportSearch.ad?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">이전</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="reportList.ad?currentPage=${ pi.currentPage-1 }">이전</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+
+
+
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:choose>
+						<c:when test="${ !empty condition }">
+							<li class="page-item"><a class="page-link"
+								href="reportSearch.ad?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="reportList.ad?currentPage=${ p }">${ p }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+
+				<c:choose>
+					<c:when test="${ pi.currentPage eq pi.maxPage }">
+						<li class="page-item disabled"><a class="page-link">다음</a></li>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ !empty condition }">
+								<li class="page-item"><a class="page-link"
+									href="reportSearch.ad?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">다음</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link"
+									href="reportList.ad?currentPage=${ pi.currentPage+1 }">다음</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
+	</div>
       
 
 </body>
