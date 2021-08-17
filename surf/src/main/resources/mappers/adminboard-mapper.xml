@@ -12,6 +12,7 @@
 		<result column="faq_category" property="faqCategory"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="user_no" property="userNo"/>
+		<result column="status" property="status"/>		
 	</resultMap>
 
 	<resultMap id="adminTeacherResult" type="Teacher">
@@ -149,6 +150,7 @@
 			       board_no
 			     , board_title
 			     , nickname
+			     , board_content
 			     , count
 			     , to_char(create_date, 'YYYY-MM-DD') as create_date
 			     , board_content
@@ -180,6 +182,7 @@
 		       board_no
 		     , board_title
 		     , nickname
+		     , board_content
 		     , count
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
 		     , board_content
