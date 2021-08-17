@@ -57,8 +57,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	}
 	
 	@Override
-	public int selectSearchNoticeListCount(HashMap<String, String> map) {
-		return abDao.selectSearchNoticeListCount(sqlSession, map);
+	public int selectSearchNoticeCount(HashMap<String, String> map) {
+		return abDao.selectSearchNoticeCount(sqlSession, map);
 	}
 
 	@Override
@@ -134,15 +134,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		return abDao.updateNo(sqlSession, tno);
 	}
 
-	@Override
-	public ArrayList<Teacher> selectSearchTeacherList(PageInfo pi, HashMap<String, String> map) {
-		return abDao.selectSearchTeacherList(sqlSession, pi, map);
-	}
 
-	@Override
-	public int selectSearchTeacherCount(HashMap<String, String> map) {
-		return abDao.selectSearchTeacherCount(sqlSession, map);
-	}
+
 
 
 

@@ -140,10 +140,10 @@ public class AdminBoardController {
 		}
 	}
 
-	
+
 	/**
-	 * @author 서정연 관리자 공지사항 검색(고쳐야함)
-	 */	
+	 * @author 서정연 관리자 공지사항 검색 기능
+	 */
 	@RequestMapping("searchNotice.ad")
 	public ModelAndView selectSearchNoticeList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
@@ -152,18 +152,19 @@ public class AdminBoardController {
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
+		
 
-		int listCount = abService.selectSearchNoticeListCount(map);
-
+		int listCount = abService.selectSearchNoticeCount(map);
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<AdminBoard> list = abService.selectSearchNoticeList(pi, map);
-
+		
 		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
 				.setViewName("adminBoard/adNoticeList");
 
 		return mv;
 
-	}
+}		
 
 
 
@@ -370,30 +371,9 @@ public class AdminBoardController {
 		}
 	}
 	
-	/**
-	 * @author 서정연 관리자 강사신청 검색 기능
-	 */
-	@RequestMapping("searchTeacher.ad")
-	public ModelAndView selectSearchTeacherList(ModelAndView mv,
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			String condition, String keyword) {
-			  
-		HashMap<String, String> map = new HashMap<>(); map.put("condition", condition); map.put("keyword", keyword);
-				  
-		int listCount = abService.selectSearchTeacherCount(map);
-				  
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-		ArrayList<Teacher> list = abService.selectSearchTeacherList(pi, map);
-				  
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("condition", condition)
-		  .addObject("keyword", keyword)
-		  .setViewName("adminBoard/adTeacherList");
-				  
-		return mv;
-			  
-	}
+
+	
+
 	
 	
 	
