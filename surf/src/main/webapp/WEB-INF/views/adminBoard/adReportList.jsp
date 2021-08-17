@@ -51,7 +51,7 @@
 	              <td>${ p.reporter }</td>
 	              <td>${ p.reported }</td>
 	              <td>${ p.refType }</td>
-	              <td data-toggle="modal" data-target="#selectReport">${ p.reportContent }</td>
+	              <td class="report" data-toggle="modal" data-target="#selectReport">${ p.reportContent }</td>
 	              <td>${ p.reportDate }</td>
 	              <c:choose>
 		           	  <c:when test="${ p.status == 'N' }">
@@ -79,27 +79,8 @@
 	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        			</div>
 	        			<div class="modal-body" align="center">
-		        				<table class="table">
-		        					<tr>
-		        						<td>신고 유형</td>
-		        						<td>${ p.refType }</td>
-		        					</tr>
-		        					<tr>
-		        						<td>신고 사유</td>
-		        						<td>${ p.reportContent }</td>
-		        					</tr>
-		        					<tr>
-		        						<td>내용</td>
-		        						<td>${ p.rsno }</td>
-		        					</tr>
-		        				</table>
 
-	        			</div>
-	        			<div class="modal-footer">
-	        				<button type="button" class="btn btn-secondary" id="updateBlind" onclick="updateReport(1);">블라인드</button>
-	        				<button type="button" class="btn btn-danger"id="updateRejection" onclick="updateReport(2);">기각</button>
-	        			</div>
-	        			<form action="report.sb" method="post">
+	        			<form action="report.ad" method="post">
                         	<input type="hidden" id="refType" name="refType">
                         	<input type="hidden" id="refNo" name="refNo">
                         	<input type="hidden" name="reporter" value="${ loginUser.userNo }">
@@ -127,12 +108,9 @@
                             </div>
                         </form>
 	        			
-	        			
-	        			
         				<form id="updateReport" action="" method="post">
 		        			<input type="hidden" name="reportNo" value="${ p.reportNo }">
-                        </form>	
-                      
+                        </form>	               
                                            
 						<script>
 							function updateReport(num){
@@ -149,7 +127,16 @@
         	</div>
         </div>
         
-
+	<script>
+		$(function(){
+			$(".report").on("click", function(){
+				$(".refType").val("게시글");
+				$(".reportContent").val($(this).siblings(".sno").val());
+				$(".studyNo").val($(this).siblings(".reported").val());
+			})
+			
+		})
+	</script>
         
 
         
