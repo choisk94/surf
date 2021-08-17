@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 public interface AdminBoardService {
@@ -51,11 +50,6 @@ public interface AdminBoardService {
 	   // 4. FAQ  게시글 수정용
 	   int updateAdminFaq(AdminBoard ab);
 	   
-	   // 5. 검색용
-	   int selectSearchFaqListCount(HashMap<String, String> map);
-	   
-	   ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map);
-	   
 	   
 	   
 	   /** 강사신청 관리 **/
@@ -71,10 +65,6 @@ public interface AdminBoardService {
 	   
 	   // 4. 게시글 반려
 	   int updateNo(int tno);
-
-	   // 5. 검색용
-	   ArrayList<Teacher> selectSearchTeacherList(PageInfo pi, HashMap<String, String> map);
-	   int selectSearchTeacherCount(HashMap<String, String> map);
 	   
 	   /** 검색 관련 **/
 	   // 1. 강사관리페이지 검색

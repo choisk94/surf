@@ -93,18 +93,6 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		return abDao.updateAdminFaq(sqlSession, ab);
 	}
 	
-	
-	@Override
-	public int selectSearchFaqListCount(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 	/** 강사신청 **/
@@ -155,6 +143,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public ArrayList<AdminBoard> selectFaqList(PageInfo pi, HashMap<String, String> map) {
 		return abDao.selectFaqList(sqlSession, pi, map);
 	}
+
 
 
 

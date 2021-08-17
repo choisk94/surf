@@ -357,30 +357,6 @@
 	</update>
 	
 	
-	<!--
-		강사신청 검색용
-		@author 서정연 관리자
-
-	-->	
-	<select id="selectSearchTeacherList" resultMap="adminTeacherResult">
-		select
-		       teacher_no
-             , profile_image 
-           , email
-          , t.nickname
-             , phone
-             , intro_content
-          , c.maincat_name
-             , s.subcat_name
-        from teacher t
-          join subcat s using(subcat_no)
-          join member m on t.nickname=m.nickname
-          join maincat c using(maincat_no)
-         where teacher_no = #{tno}
-
-	</select>
-	
-	
 	<!-- 강사신청 검색기능 -->
 	<select id="teacherListCount" resultType="_int">
 		select

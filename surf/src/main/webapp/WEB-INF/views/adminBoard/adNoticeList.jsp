@@ -22,26 +22,24 @@
         <div>
           <h5>고객센터 관리 > 공지사항 목록</h5>
           <div align="right">
-            <form id="searchForm" action="searchNotice.ad" method="GET">
-              <div class="select">
-	              <select class="chooseNotice" name="condition">
-	              	<option value="writer">작성자</option>
-	              	<option value="title">제목</option>
-	              	<option value="content">내용</option>
-	              </select>
-	          </div>
-	          <div class="text">
-              	<input type="text" placeholder="키워드를 입력하세요" name="keyword">
+ 			<form id="searchForm" action="searchNotice.ad" method="GET">
+              <div class="select" align="right">
+                 <select class="chooseNotice" style="width: 120px;" name="condition">
+                    <option value="writer">작성자</option>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                 </select>
+                 <input type="text" placeholder="키워드를 입력하세요" name="keyword">
+                 <button type="submit" class="btn btn-default" id="search_btn">검색</button>
               </div>
-              <button type="submit" class="btn btn-default" id="search_btn">검색</button>
             </form>
             <script>
-            	$(function(){
-            		if("${condition}" != ""){
-            			$("option[value=${condition}]").attr("selected", true);
-            		}
-            	})
-          	</script>
+               $(function(){
+                  if("${condition}" != ""){
+                     $("option[value=${condition}]").attr("selected", true);
+                  }
+               })
+             </script>
           </div>
         <hr>
         <table class="table" id="adNoticeList">
