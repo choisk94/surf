@@ -80,8 +80,7 @@ public interface LectureService {
 	 * @author leeyeji
 	 * 유저 스크랩 목록 조회용
 	 */
-	int selectScrapCount(int userNo);
-	ArrayList<Lecture> selectScrapList(int userNo, PageInfo pi);
+	ArrayList<Lecture> selectScrapList(int userNo);
 	
 	/**
 	 * @author leeyeji

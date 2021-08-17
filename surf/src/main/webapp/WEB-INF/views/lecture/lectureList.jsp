@@ -17,7 +17,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{display: flex;}
     .category{width: 20%; height: 900px;}

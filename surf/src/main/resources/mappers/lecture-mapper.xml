@@ -25,6 +25,7 @@
 		<result column="students" property="students"/>
 		<result column="star" property="star"/>
 		<result column="surveyCount" property="surveyCount"/>
+		<result column="profile_image" property="teacherProfile"/>
 	</resultMap>
 
   	<resultMap id="studingResult" type="Studing">
@@ -309,6 +310,7 @@
                   from payment
                  where class_no = l.class_no) students
             , t.nickname nickname
+            , t.profile_image profile_image 
           from lecture l
           join teacher t on(l.subcat_no = t.subcat_no)
          where l.class_no = #{classNo}
@@ -387,7 +389,7 @@
              , TO_CHAR(i.ans_date, 'YYYY-MM-DD HH24:MI') ans_date
              , m.nickname user_no
              , t.teacher_no teaNo
-             , t.nickname teacher_nick
+             , t.nickname teacher_no
              , t.profile_image
              , l.class_no
           from lecture l
@@ -488,9 +490,8 @@
          from lecture l
          join teacher t on(l.user_no = t.teacher_no)
          join scrap_support s on(l.class_no = s.class_no)
-        where l.user_no = #{userNo}
+        where s.user_no = #{userNo}
           and s.type = 'S'
-          and rownum between 1 and 5
         order
            by scrap_date desc
 	</select>

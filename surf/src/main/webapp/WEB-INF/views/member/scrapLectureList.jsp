@@ -113,7 +113,7 @@
                         </c:forEach>
                         
 
-                        <!-- 페이징 -->
+                        <!-- 페이징
                         <br><br><br>
                         <div id="pagingArea">
                             <ul class="pagination">
@@ -139,7 +139,7 @@
 			                    </c:otherwise>
 			                </c:choose>
 		                </ul>
-                        </div>
+                        </div> -->
                         <br><br>
 
                     </div>
