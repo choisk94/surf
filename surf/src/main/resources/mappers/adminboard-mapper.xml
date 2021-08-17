@@ -153,6 +153,7 @@
 			     , board_content
 			     , count
 			     , to_char(create_date, 'YYYY-MM-DD') as create_date
+			     , board_content
 			  from admin_board a
 	          join member m on m.user_no = a.user_no
 			 where board_type = '공지사항'
@@ -184,6 +185,7 @@
 		     , board_content
 		     , count
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		     , board_content
 		  from admin_board a
           join member m on m.user_no = a.user_no
          where board_type = '공지사항'
@@ -435,13 +437,6 @@
 	 		</otherwise>
 	 	</choose>
 	 		like '%' || #{keyword} || '%')
-	</select>
-
-	<select id="selectSearchTeacherCount" resultType="_int">
-		select
-		       count(*)
-		  from teacher
-
 	</select>
 	
 	<select id="selectSearchFaqList" resultMap="adminBoardResult">

@@ -60,4 +60,9 @@ public interface StudyBoardService {
 	
 	// 4. 신고글 기각
 	int updateR(int reportNo);
+	
+	/** 검색관리 **/
+	//1. 신고관리 검색
+	int reportListCount(HashMap<String, String> map);
+	ArrayList<Report> selectReportList(PageInfo pi, HashMap<String, String> map);
 }

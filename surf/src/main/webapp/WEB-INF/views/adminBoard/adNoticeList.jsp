@@ -31,6 +31,15 @@
                  </select>
                  <input type="text" placeholder="키워드를 입력하세요" name="keyword">
                  <button type="submit" class="btn btn-default" id="search_btn">검색</button>
+            <form id="searchForm" action="searchNotice.ad" method="GET">
+              <div class="select" align="right">
+	              <select class="chooseNotice" style="width: 120px;" name="condition">
+	              	<option value="writer">작성자</option>
+	              	<option value="title">제목</option>
+	              	<option value="content">내용</option>
+	              </select>
+              	<input type="text" placeholder="키워드를 입력하세요" name="keyword">
+              	<button type="submit" class="btn btn-default" id="search_btn">검색</button>
               </div>
             </form>
             <script>

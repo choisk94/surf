@@ -295,6 +295,29 @@ public class StudyBoardController {
 		return mv;
 	}	
 	
+	/**
+	 * @author 김은용 관리자 강사관리 검색
+	 */
+	@RequestMapping("reportSearch.ad")
+	public ModelAndView selectReportList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = sbService.reportListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Report> list = sbService.selectReportList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adReportList");
+
+		return mv;
+
+	}
 
 	
 	

@@ -112,6 +112,14 @@ public class StudyBoardServiceImpl implements StudyBoardService {
 	public int updateR(int reportNo) {
 		return sbDao.updateR(sqlSession, reportNo);
 	}
+	@Override
+	public int reportListCount(HashMap<String, String> map) {
+		return sbDao.reportListCount(sqlSession, map);
+	}
+	@Override
+	public ArrayList<Report> selectReportList(PageInfo pi, HashMap<String, String> map) {
+		return sbDao.selectReportList(sqlSession, pi, map);
+	}
 
 
 }
