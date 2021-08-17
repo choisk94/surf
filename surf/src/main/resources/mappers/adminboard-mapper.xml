@@ -12,6 +12,7 @@
 		<result column="faq_category" property="faqCategory"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="user_no" property="userNo"/>
+		<result column="status" property="status"/>		
 	</resultMap>
 
 	<resultMap id="adminTeacherResult" type="Teacher">
@@ -149,6 +150,7 @@
 			       board_no
 			     , board_title
 			     , nickname
+			     , board_content
 			     , count
 			     , to_char(create_date, 'YYYY-MM-DD') as create_date
 			  from admin_board a
@@ -179,6 +181,7 @@
 		       board_no
 		     , board_title
 		     , nickname
+		     , board_content
 		     , count
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
 		  from admin_board a
@@ -186,7 +189,7 @@
          where board_type = '공지사항'
 		   and a.status = 'Y'
 		 <choose>
-		   		<when test="condition == 'writer">
+		   		<when test="condition == 'writer'">
 		   			and nickname
 		   		</when>
 		   		<when test="condition == 'title'">
