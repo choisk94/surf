@@ -133,6 +133,28 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public int updateNo(int tno) {
 		return abDao.updateNo(sqlSession, tno);
 	}
+	
+	
+	/** 검색 관련 **/
+	@Override
+	public int teacherListCount(HashMap<String, String> map) {
+		return abDao.teacherListCount(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<Teacher> selectTeacherList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectTeacherList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int faqListCount(HashMap<String, String> map) {
+		return abDao.faqListCount(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<AdminBoard> selectFaqList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectFaqList(sqlSession, pi, map);
+	}
 
 
 

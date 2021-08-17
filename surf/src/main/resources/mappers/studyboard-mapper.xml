@@ -250,6 +250,53 @@
 		   set status = 'R'
 		 where report_no = #{reportNo}
 	</update>
+	
+	<!-- 신고 검색기능 -->
+	<select id="reportListCount" resultType="_int">
+		select
+		       	   count(*)
+		      FROM (select
+		       report_no
+		     , reporter
+		     , reported
+		     , ref_type
+		     , report_content
+		     , to_char(report_date, 'YYYY-MM-DD') as report_date
+             , status
+          from report
+         where status ='N'
+	 		<choose>
+	 		<when test="condition == 'category'">
+	 			and ref_type
+	 		</when>
+	 		<otherwise>
+	 			and report_content
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%')
+	</select>
+	
+	<select id="selectSearchReportList" resultMap="adminReportResult">
+		select
+		       report_no
+		     , reporter
+		     , reported
+		     , ref_type
+		     , report_content
+		     , to_char(report_date, 'YYYY-MM-DD') as report_date
+             , status
+          from report
+         where status ='N'
+	 		<choose>
+	 		<when test="condition == 'category'">
+	 			and ref_type
+	 		</when>
+	 		<otherwise>
+	 			and report_content
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
 
 </mapper>
 

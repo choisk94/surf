@@ -71,6 +71,17 @@ public interface AdminBoardService {
 	   
 	   // 4. 게시글 반려
 	   int updateNo(int tno);
+	   
+	   /** 검색 관련 **/
+	   // 1. 강사관리페이지 검색
+	   int teacherListCount(HashMap<String, String> map);
+		
+	   ArrayList<Teacher> selectTeacherList(PageInfo pi, HashMap<String, String> map);
+	   
+	   // 2. FAQ페이지 검색
+		int faqListCount(HashMap<String, String> map);
+		
+		ArrayList<AdminBoard> selectFaqList(PageInfo pi, HashMap<String, String> map);
 
 	   
 }
