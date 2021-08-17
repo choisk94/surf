@@ -273,40 +273,6 @@
 		 where board_no = #{boardNo}
 	</update>	
 
-
-	<!--
-		강사신청 리스트 페이지 조회수용
-		@author 서정연 관리자
-	-->	
-	<select id="selectTeacherCount" resultType="_int">
-		select
-		       count(*)
-		  from teacher
-		 where status = 'Y'      
-	</select>
-
-	<!--
-		강사신청 승인
-		@author 서정연 관리자
-	-->		
-	<update id="updateYes">
-		update
-		       teacher
-		   set status = 'Y'
-		 where teacher_no = #{teacherNo}
-	</update>
-		
-	<!--
-		강사신청 반려
-		@author 서정연 관리자
-	-->		
-	<update id="updateNo">
-		update
-		       teacher
-		   set status = 'N'
-		 where teacher_no = #{teacherNo}
-	</update>	
-
 	<!--
 		FAQ 리스트 페이지 조회용
 		@author 서정연 관리자
@@ -347,6 +313,80 @@
           join maincat c using(maincat_no)
          where teacher_no = #{tno}
            and t.status = 'Y'
+	</select>
+	
+	<!--
+		강사신청 리스트 페이지 조회수용
+		@author 서정연 관리자
+	-->	
+	<select id="selectTeacherCount" resultType="_int">
+		select
+		       count(*)
+		  from teacher
+		 where status = 'Y'      
+	</select>
+
+	<!--
+		강사신청 승인
+		@author 서정연 관리자
+	-->		
+	<update id="updateYes">
+		update
+		       teacher
+		   set status = 'Y'
+		 where teacher_no = #{teacherNo}
+	</update>
+		
+	<!--
+		강사신청 반려
+		@author 서정연 관리자
+	-->		
+	<update id="updateNo">
+		update
+		       teacher
+		   set status = 'N'
+		 where teacher_no = #{teacherNo}
+	</update>
+	
+	
+	<!--
+		강사신청 검색용
+		@author 서정연 관리자
+	-->	
+	<select id="selectSearchTeacherList" resultMap="adminTeacherResult">
+		select
+		       teacher_no
+             , profile_image 
+		     , email
+			 , t.nickname
+             , phone
+             , intro_content
+			 , c.maincat_name
+         	 , s.subcat_name
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+         where teacher_no = #{tno}
+		 <choose>
+	 		<when test="condition == '대기'">
+	 			and status = 'W'
+	 		</when>
+	 		<when test="condition == '승인'">
+	 			and status = 'Y'
+	 		</when>	 		
+	 		<otherwise>
+	 			and status = 'N'
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'	 	 	
+	</select>
+		
+	<select id="selectSearchTeacherCount" resultType="_int">
+		select
+		       count(*)
+		  from teacher
+
 	</select>
 	
 

@@ -21,17 +21,27 @@
         <br><br><br>
         <div>
           <h5>강사 관리 > 강사 신청 목록</h5>
+          <form id="searchForm" action="searchTeacher.ad" method="get">
+          	<input type="hidden" name="currentPage" value="1">
           <div align="right">
-            <select name="refType" style="width: 120px;">
-              <option>대기</option>
-              <option>승인</option>
-              <option>반려</option>
+            <select class="chooseStatus" name="condition" style="width: 120px;">
+              <option value="대기">대기</option>
+              <option value="승인">승인</option>
+              <option value="반려">반려</option>
               <option selected>선택</option>
             </select>
-            <input type="text" placeholder="키워드를 입력하세요">
-            <button type="button" class="btn btn-default" id="search_btn">검색</button>
+            <input type="text" placeholder="키워드를 입력하세요" name="keyword" value="${ keyword }">
+            <button type="submit" class="btn btn-default" id="search_btn">검색</button>
           </div>
+          </form>
         </div>
+        <script>
+        	$(function(){
+            	if("${condition}" != ""){
+            		$("option[value=${condition}]").attr("selected", true);
+            	}
+            })
+        </script>
         <hr>
         <table id="adTeacherList" class="table" align="center">
           <thead>

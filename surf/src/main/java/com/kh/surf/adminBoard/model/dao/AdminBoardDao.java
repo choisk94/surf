@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
+import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -125,7 +126,20 @@ public class AdminBoardDao {
 	// 강사신청 반려(관리자)
 	public int updateNo(SqlSessionTemplate sqlSession, int tno) {
 		return sqlSession.update("adminBoardMapper.updateNo", tno);
-	}	
+	}
+	
+	// 강사신청 검색(관리자)	
+	public ArrayList<Teacher> selectSearchTeacherList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchTeacherList", map, rowBounds);
+	}
+	
+	public int selectSearchTeacherCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.selectSearchTeacherCount", map);
+	}
+
 
 	
 

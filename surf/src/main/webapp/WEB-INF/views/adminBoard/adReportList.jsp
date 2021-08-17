@@ -35,7 +35,7 @@
         <table id="adReportList" class="table" align="center">
           <thead>
             <tr style="background-color: rgb(224, 224, 224)">
-              <td width="70">번호</td>
+              <td width="70" id="rtype" name="refType">번호</td>
               <td width="100">신고자</td>
               <td width="100">신고된 ID</td>
               <td width="100">신고 유형</td>
@@ -67,22 +67,19 @@
 	            </tr>
             </c:forEach>
           </tbody>
-        </table>
+        </table> 
+      
         
     <!-- 신고 내용조회 모달창 -->
         <div class="modal" id="selectReport">
         	<div class="modal-dialog">
         		<div class="modal-content">
-        			<form action="selectReport.ad" method="post">
 	        			<div class="modal-header">
 	        			<h4 class="modal-title">신고글 조회</h4>
 	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        			</div>
-	        			
 	        			<div class="modal-body" align="center">
 		        				<table class="table">
-		        				<input type="hidden" name="reportNo" value="${ p.reportNo }">
-
 		        					<tr>
 		        						<td>신고 유형</td>
 		        						<td>${ p.refType }</td>
@@ -96,15 +93,48 @@
 		        						<td>${ p.rsno }</td>
 		        					</tr>
 		        				</table>
+
 	        			</div>
 	        			<div class="modal-footer">
-	        			<form id="updateReport" action="" method="post">
-	        				<button type="submit" class="btn btn-secondary" id="updateBlind" onclick="updateReport(1);">블라인드</button>
-	        				<button type="submit" class="btn btn-danger"id="updateRejection" onclick="updateReport(2);">기각</button>
-	        			</form>
+	        				<button type="button" class="btn btn-secondary" id="updateBlind" onclick="updateReport(1);">블라인드</button>
+	        				<button type="button" class="btn btn-danger"id="updateRejection" onclick="updateReport(2);">기각</button>
 	        			</div>
+	        			<form action="report.sb" method="post">
+                        	<input type="hidden" id="refType" name="refType">
+                        	<input type="hidden" id="refNo" name="refNo">
+                        	<input type="hidden" name="reporter" value="${ loginUser.userNo }">
+                        	<input type="hidden" id="reported" name="reported">
+                        	<input type="hidden" id="rsno" name="" value="">
+                            
+                            <div class="refType">
+                            	신고 유형 <br>
+                            	${ refType }
+                            </div>
+                            <br>
+                            <div class="reportContent">
+                            	신고 사유 <br>
+                            	${ reportContent }
+                            </div>
+                            <br>
+                            <div class="studyNo">
+                            	내용 <br>
+                            	${ studyNo }
+                            </div>
+                            <br>
+                            <div class="modal-footer"> 
+                            	<button type="button" class="btn btn-secondary" href="updateB.ad">블라인드</button>
+	        					<button type="button" class="btn btn-danger" href="updateR.ad">기각</button>
+                            </div>
+                        </form>
 	        			
-	        			<script>
+	        			
+	        			
+        				<form id="updateReport" action="" method="post">
+		        			<input type="hidden" name="reportNo" value="${ p.reportNo }">
+                        </form>	
+                      
+                                           
+						<script>
 							function updateReport(num){
 								if(num == 1("신고된 해당 글을 블라인드 처리 하시겠습니까?")){
 									$("#updateReport").attr("action", "updateB.ad").submit();
@@ -115,10 +145,11 @@
 								}
 							}
 					    </script>
-        			</form>
         		</div>
         	</div>
         </div>
+        
+
         
 
         

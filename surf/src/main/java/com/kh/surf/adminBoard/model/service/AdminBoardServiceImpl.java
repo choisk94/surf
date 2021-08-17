@@ -134,6 +134,16 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		return abDao.updateNo(sqlSession, tno);
 	}
 
+	@Override
+	public ArrayList<Teacher> selectSearchTeacherList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectSearchTeacherList(sqlSession, pi, map);
+	}
+
+	@Override
+	public int selectSearchTeacherCount(HashMap<String, String> map) {
+		return abDao.selectSearchTeacherCount(sqlSession, map);
+	}
+
 
 
 
