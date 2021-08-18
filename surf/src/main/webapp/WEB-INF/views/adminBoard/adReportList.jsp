@@ -12,10 +12,16 @@
 	.table tbody :hover{background:lightgray; cursor:pointer;}
 	#search_btn{background:deepskyblue;}
 	#search_btn:hover{background:rgb(52, 152, 219);}
+	
+	#modalTable *:hover{
+		background-color:white;
+		cursor:auto;
+	}
+	
 </style>
 <body>
 	<jsp:include page="../admin/sidebar.jsp"/>
-		 <!--여기서부터 우측 게시판-->
+		 <!-------------------------------------------여기서부터 우측 게시판----------------------------------------------------->
       <br>
       <div class="innerOuter" style="width:950px">
         <br><br><br>
@@ -39,7 +45,7 @@
               <td width="100">신고자</td>
               <td width="100">신고된 ID</td>
               <td width="100">신고 유형</td>
-              <td width="300">신고 사유</td>
+              <td width="220">신고 사유</td>
               <td width="130">신고날짜</td>
               <td width="100">처리여부</td>
             </tr>
@@ -47,97 +53,91 @@
           <tbody>
           	<c:forEach var="p" items="${ list }">
 	            <tr>
-	              <td>${ p.reportNo }</td>
-	              <td>${ p.reporter }</td>
-	              <td>${ p.reported }</td>
-	              <td>${ p.refType }</td>
-	              <td data-toggle="modal" data-target="#selectReport">${ p.reportContent }</td>
+	              <td class="rno">${ p.reportNo }</td>
+	              <td class="reporter">${ p.reporterId }</td>
+	              <td class="reported">${ p.reportedId }</td>
+	              <td class="refType">${ p.refType }</td>
+	              <td class="detailBtn" data-toggle="modal" data-target="#selectReport">
+		              <span class="reportContent">${ p.reportContent }</span>
+		              <c:choose>
+			           	  <c:when test="${ p.refType == '댓글' }">
+				              <div type="hidden" class="rsno" style="display:none;">${ p.replyContent }</div>
+			              </c:when>
+			              <c:otherwise>
+				              <div type="hidden" class="rsno" style="display:none;">${ p.studyContent }</div>
+			              </c:otherwise>
+		              </c:choose>
+	              </td>
 	              <td>${ p.reportDate }</td>
+	              
 	              <c:choose>
 		           	  <c:when test="${ p.status == 'N' }">
 		              	<td>처리 전</td>
 		              </c:when>
 		           	  <c:when test="${ p.status == 'B' }">
-		              	<td style="color:red">블라인드</td>
+		              	<td style="color:red;">블라인드</td>
 		              </c:when>
 		              <c:otherwise>
-		              	<td>기각</td>
+		              	<td style="color:green;">기각</td>
 		              </c:otherwise>
 	            </c:choose>
 	            </tr>
             </c:forEach>
           </tbody>
-        </table> 
+        </table>
+        
+        <script>
+        	$(function(){
+        		$("#adReportList").on("click", ".detailBtn", function(){
+        			$("#modalrefType").text($(this).siblings(".refType").text());
+        			$("#reportNo").val($(this).siblings(".rno").html());
+        			$("#modalreportContent").text($(this).children(".reportContent").text());
+        			$("#modalRsno").html($(this).children(".rsno").text());
+        		})
+        	})
+        
+        </script>
       
         
-    <!-- 신고 내용조회 모달창 -->
+    <!----------------------------------------- 신고 내용조회 모달창 ----------------------------------------------------->
         <div class="modal" id="selectReport">
-        	<div class="modal-dialog">
+        	<div class="modal-dialog modal-lg">
         		<div class="modal-content">
 	        			<div class="modal-header">
 	        			<h4 class="modal-title">신고글 조회</h4>
 	        			<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        			</div>
 	        			<div class="modal-body" align="center">
-		        				<table class="table">
+		        				<table class="table" id="modalTable">
 		        					<tr>
-		        						<td>신고 유형</td>
-		        						<td>${ p.refType }</td>
+		        						<td width="130">신고 유형</td>
+		        						<td id="modalrefType"></td>
 		        					</tr>
 		        					<tr>
 		        						<td>신고 사유</td>
-		        						<td>${ p.reportContent }</td>
+		        						<td id="modalreportContent"></td>
 		        					</tr>
 		        					<tr>
 		        						<td>내용</td>
-		        						<td>${ p.rsno }</td>
+		        						<td id="modalRsno"></td>
 		        					</tr>
 		        				</table>
 
 	        			</div>
+        				<form id="updateReport" action="" method="post">
+		        			<input id="reportNo" type="hidden" name="reportNo">
+                        </form>	
 	        			<div class="modal-footer">
 	        				<button type="button" class="btn btn-secondary" id="updateBlind" onclick="updateReport(1);">블라인드</button>
 	        				<button type="button" class="btn btn-danger"id="updateRejection" onclick="updateReport(2);">기각</button>
 	        			</div>
-	        			<form action="report.sb" method="post">
-                        	<input type="hidden" id="refType" name="refType">
-                        	<input type="hidden" id="refNo" name="refNo">
-                        	<input type="hidden" name="reporter" value="${ loginUser.userNo }">
-                        	<input type="hidden" id="reported" name="reported">
-                        	<input type="hidden" id="rsno" name="" value="">
-                            
-                            <div class="refType">
-                            	신고 유형 <br>
-                            	${ refType }
-                            </div>
-                            <br>
-                            <div class="reportContent">
-                            	신고 사유 <br>
-                            	${ reportContent }
-                            </div>
-                            <br>
-                            <div class="studyNo">
-                            	내용 <br>
-                            	${ studyNo }
-                            </div>
-                            <br>
-                            <div class="modal-footer"> 
-                            	<button type="button" class="btn btn-secondary" href="updateB.ad">블라인드</button>
-	        					<button type="button" class="btn btn-danger" href="updateR.ad">기각</button>
-                            </div>
-                        </form>
-	        			
-	        			
-	        			
-        				<form id="updateReport" action="" method="post">
-		        			<input type="hidden" name="reportNo" value="${ p.reportNo }">
-                        </form>	
-                      
                                            
 						<script>
 							function updateReport(num){
-								if(num == 1("신고된 해당 글을 블라인드 처리 하시겠습니까?")){
-									$("#updateReport").attr("action", "updateB.ad").submit();
+								if(num == 1){
+									if(confirm("신고된 해당 글을 블라인드 처리 하시겠습니까?")){
+										$("#updateReport").attr("action", "updateB.ad").submit();
+									}
 								} else {
 									if(confirm("신고된 해당 글을 기각 처리 하시겠습니까?")){
 										$("#updateReport").attr("action", "updateR.ad").submit();
@@ -148,11 +148,6 @@
         		</div>
         	</div>
         </div>
-        
-
-        
-
-        
         
         <br>
         <!--여기서부터 페이지이동-->

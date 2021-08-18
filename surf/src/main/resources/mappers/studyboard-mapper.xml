@@ -34,7 +34,10 @@
 		<result column="ref_no" property="refNo"/>
 		<result column="report_content" property="reportContent"/>
 		<result column="report_date" property="reportDate"/>
-		<result column="rsno" property="rsno"/>
+		<result column="reporter_id" property="reporterId"/>
+		<result column="reported_id" property="reportedId"/>		
+		<result column="reply_content" property="replyContent"/>
+		<result column="study_content" property="studyContent"/>
 		<result column="status" property="status"/>
 	</resultMap>
 
@@ -235,18 +238,53 @@
 	</select>
 	
 	<select id="selectReportList" resultMap="adminReportResult">
-		select
+		SELECT 
 		       report_no
-		     , reporter
-		     , reported
+		     , REPORTER_ID
+		     , REPORTED_ID
 		     , ref_type
+		     , REF_NO
 		     , report_content
 		     , to_char(report_date, 'YYYY-MM-DD') as report_date
-             , status
-          from report
-         where status ='N'
-         order
-            by report_no desc
+		     , A.STATUS
+		     , S.STUDY_CONTENT
+		     , r.reply_content
+		  FROM 
+			 (
+			  select  
+				      report_no
+				    , m.email "REPORTER_ID"
+				    , b.email "REPORTED_ID"
+				    , ref_type
+				    , REF_NO
+				    , report_content
+				    , report_date
+				    , p.status STATUS
+			    from report p
+			    join reply on (ref_no = reply_no)
+			    join member m on (p.reporter = m.user_no)
+			    join member b on (p.reported = b.user_no)
+			   where ref_type = '댓글'
+			   union
+			  select  
+				      report_no
+				    , m.email "REPORTER_ID"
+				    , b.email "REPORTED_ID"
+				    , ref_type
+				    , REF_NO
+				    , report_content
+				    , report_date
+				    , p.status STATUS
+			    from report p
+			    join study on (ref_no = study_no)
+			    join member m on (p.reporter = m.user_no)
+			    join member b on (p.reported = b.user_no)     
+			   where ref_type = '게시글'
+			  ) A
+	LEFT JOIN STUDY S ON (A.REF_NO = S.STUDY_NO)
+	LEFT JOIN REPLY R ON (A.REF_NO = R.REPLY_NO)
+		ORDER 
+		   BY REPORT_NO DESC
 	</select>
 	
 		

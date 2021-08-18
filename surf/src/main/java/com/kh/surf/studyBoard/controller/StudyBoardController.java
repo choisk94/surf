@@ -257,7 +257,9 @@ public class StudyBoardController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Report> list = sbService.selectReportList(pi);
 
-		mv.addObject("pi", pi).addObject("list", list).setViewName("adminBoard/adReportList");
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("adminBoard/adReportList");
 
 		return mv;
 		
