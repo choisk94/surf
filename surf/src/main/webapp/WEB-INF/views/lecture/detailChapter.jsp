@@ -13,7 +13,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{
         /*display: flex; */
