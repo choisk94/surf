@@ -14,6 +14,7 @@ import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.payment.model.vo.Payment;
 
 @Repository
 public class LectureDao {
@@ -178,6 +179,14 @@ public class LectureDao {
 	 */
 	public int ajaxLoadStudingDegree(SqlSessionTemplate sqlSession, ClassStuding s) {
 		return sqlSession.selectOne("lectureMapper.ajaxLoadStudingDegree", s);
+	}
+	
+	/**
+	 * @author leeyeji
+	 * 결제 내역 조회
+	 */
+	public int selectPayCount(SqlSessionTemplate sqlSession, Payment p) {
+		return sqlSession.selectOne("lectureMapper.selectPayCount", p);
 	}
 	
 }

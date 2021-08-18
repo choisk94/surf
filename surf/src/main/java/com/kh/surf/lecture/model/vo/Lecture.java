@@ -41,5 +41,5 @@ public class Lecture {
 	private String classPrice;
 	private String score;
 	private String teacherProfile;
-	
+	private int teacherNo;
 }

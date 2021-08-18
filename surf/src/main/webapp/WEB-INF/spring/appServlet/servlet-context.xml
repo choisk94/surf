@@ -35,6 +35,9 @@
 			<mapping path="/scrapList.lec"/>
 			<mapping path="/myLecture.lec"/>
 			<mapping path="/lectureVideoList.le"/>
+			<mapping path="/order.mem"/>
+			<mapping path="/enrollTeacher.tea"/>
+			
 			<!-- header에서 찜하기 | 내클래스 가는 url 다 추가해야됨!! 
 			<mapping path="/enrollForm.bo"/>
 			 -->

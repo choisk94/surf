@@ -14,7 +14,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{
         /*display: flex; */
@@ -86,9 +85,12 @@
         width: 150px;
         margin-bottom: 10px;
     }
-    .class-slider{position: relative;}
+    .class-slider{
+    	position: relative;
+    }
 
     /*이미지 슬라이드*/
+    /*
     .slider-area{
         width: 1140px; 
         text-align: center;
@@ -120,7 +122,7 @@
         line-height: 300px;
     }
     #slider img{width: 100%; height: 100%; }
-    button.control_prev, button.control_next {
+    button.control_prev, button.control_next{
         position: absolute;
         top: 40%;
         z-index: 999;
@@ -137,13 +139,12 @@
     }
     button.control_prev:hover, button.control_next:hover {
         opacity: 1;
-        /*-webkit-transition: all 0.2s ease;*/
     }
     button.control_prev {
         border-radius: 0 2px 2px 0;
     }
     button.control_next {
-        right: 0;
+        right: 0px;
         border-radius: 2px 0 0 2px;
     }
     .slider_option {
@@ -151,6 +152,47 @@
         margin: 10px auto;
         width: 160px;
         font-size: 18px;
+    }
+    .intro-content{
+   		color:black;
+    }*/
+    
+	.intro-area {
+        width: 700px;
+        height: 550px;
+        position: relative;
+        margin: auto;
+    }
+    .intro-image {
+        width: 600px;
+        height: 600px;
+        background-size: cover;
+        border-radius: 10px;
+        animation: fade 2s;
+        margin: auto;
+    }
+    .images {
+        width: 600px;
+        height: 400px;
+    }
+    .prev,.next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        transition: 0.6s ease;
+        border-radius: 5px;
+        border: 0px;
+        background-color: white;
+    }
+    .next {
+        right: 0;
+    }
+    .prev:hover,
+    .next:hover {
+        background-color: rgba(190, 190, 190, 0.5);
+        border:0px;
     }
 </style>
 </head>
@@ -169,7 +211,14 @@
 	            <div class="class-element">
 	                
 	                <div id="class-representative">
-	                    <img src="${ l.introFile }" alt=""> 
+	                	<c:choose>
+	                		<c:when test="${ count gt 0 }">
+	                    		<img src="${ l.introFile }" onclick="location.href='lectureVideoList.le?classNo=${l.classNo}'"> 
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<img src="${ l.introFile }" alt="">
+	                    	</c:otherwise>
+	                    </c:choose>
 	                </div>
 	
 	                <div class="class-main-info">
@@ -184,7 +233,7 @@
 	                        ${ l.surveyCount }개의 수강후기 | 수강생 ${ l.students }명
 	                    </div>
 	                    <div id="info-teacher">
-	                        <img src="" style="width: 45px; height:45px; border-radius: 50px;"> &nbsp;
+	                        <img src="${ l.teacherProfile }" style="width: 45px; height:45px; border-radius: 50px;"> &nbsp;
 	                        <strong>${ l.teacherName }</strong> 
 	                    </div>
 	                    <div id="info-btn">
@@ -216,26 +265,19 @@
 	                    </p>
 	                </div>
 	
-					<c:forEach var="c" items="${ cList }">
-		                <div class="class-slider">
-		                	<div class="slider-area">
-			                    <div id="slider">
-			                        <button class="btn control_next">&gt;</button>
-			                        <button class="btn control_prev">&lt;</button>
-			                        <ul>
-				                        <li><img src="${ c.introImage }" alt=""></li>
-				                        <!-- <li>SLIDE 2</li>
-				                        <li>SLIDE 3</li>
-				                        <li style="background: #aaa;">SLIDE 4</li> -->
-			                        </ul>  
-			                    </div> 
-			                    <div class="intro-content">
-			                        ${ c.introContent }
-			                    </div>
+					<div class="intro-area">
+		                <c:forEach var="c" items="${ cList }">
+							<div class="intro-image">
+				                <img src="${ c.introImage }" class="images">
+				                <div class="intro-content">
+				                	${ c.introContent }
+				                </div>
 			                </div>
-		                </div>
-	                </c:forEach>
-	                
+		                </c:forEach>
+		                
+		                <button class="prev" onclick="slide_click(-1)">﹤</button>
+		                <button class="next" onclick="slide_click(1)">﹥</button>
+                	</div>
 	                <br>
 	
 	                <div class="class-notice">
@@ -338,7 +380,6 @@
 				})
 				
             	
-		        
 		        // 찜하기 중복확인
 		        function scrapCheck(){
 
@@ -389,56 +430,26 @@
 		            
 		        }
 		        
-		        
-            
-                // 슬라이드 
-                jQuery(document).ready(function ($) {
+		        // 슬라이드
+		        let currSlide = 1;
+                showSlide(currSlide);
+                
+                function slide_click(num){
+                    showSlide((currSlide += num));
+                }
+                function showSlide(num){
+                    const slides = document.querySelectorAll(".intro-image");
+                    if(num>slides.length){
+                    	currSlide =1;
+                    }if(num<1){
+                    	currSlide = slides.length;
+                    }
+                    for(let i=0; i<slides.length; i++){
+                    	slides[i].style.display="none";
+                    }slides[currSlide -1].style.display="block";
+                }
 
-	                $('#checkbox').change(function(){
-	                    setInterval(function () {
-	                        moveRight();
-	                    }, 3000);
-	                });
-	
-	                var slideCount = $('#slider ul li').length;
-	                var slideWidth = $('#slider ul li').width();
-	                var slideHeight = $('#slider ul li').height();
-	                var sliderUlWidth = slideCount * slideWidth;
-	                
-	                $('#slider').css({ width: slideWidth, height: slideHeight });
-	                
-	                $('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
-	                
-	                $('#slider ul li:last-child').prependTo('#slider ul');
-	
-	                function moveLeft() {
-	                    $('#slider ul').animate({
-	                        left: + slideWidth
-	                    }, 200, function () {
-	                        $('#slider ul li:last-child').prependTo('#slider ul');
-	                        $('#slider ul').css('left', '');
-	                    });
-	                };
-	
-	                function moveRight() {
-	                    $('#slider ul').animate({
-	                        left: - slideWidth
-	                    }, 200, function () {
-	                        $('#slider ul li:first-child').appendTo('#slider ul');
-	                        $('#slider ul').css('left', '');
-	                    });
-                    };
-
-                    $('button.control_prev').click(function () {
-                        moveLeft();
-                    });
-
-                    $('button.control_next').click(function () {
-                        moveRight();
-                    });
-
-                });    
-            </script>
+                </script>
 
         </div>
 

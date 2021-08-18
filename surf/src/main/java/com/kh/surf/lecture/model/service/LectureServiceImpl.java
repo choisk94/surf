@@ -15,6 +15,7 @@ import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.payment.model.vo.Payment;
 
 @Service
 public class LectureServiceImpl implements LectureService{
@@ -159,24 +160,49 @@ public class LectureServiceImpl implements LectureService{
 		return lDao.scrapCheck(sqlSession, map);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 강사 번호 조회
+	 */
 	@Override
 	public int selectTeacherNo(int classNo) {
 		return lDao.selectTeacherNo(sqlSession, classNo);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 내 클래스 목록 조회
+	 */
 	@Override
 	public ArrayList<Lecture> selectMyLecture(int userNo) {
 		return lDao.selectMyLecture(sqlSession, userNo);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 설문조사 추가
+	 */
 	@Override
 	public int insertSurvey(Survey s) {
 		return lDao.insertSurvey(sqlSession, s);
 	}
 
+	/**
+	 * @author leeyeji
+	 * 진행률 조회
+	 */
 	@Override
 	public int ajaxLoadStudingDegree(ClassStuding s) {
 		return lDao.ajaxLoadStudingDegree(sqlSession, s);
+	}
+
+	/**
+	 * @author leeyeji
+	 * 결제 내역 조회
+	 */
+	@Override
+	public int selectPayCount(Payment p) {
+		return lDao.selectPayCount(sqlSession, p);
 	}
 	
 	

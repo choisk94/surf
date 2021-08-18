@@ -26,6 +26,7 @@
 		<result column="star" property="star"/>
 		<result column="surveyCount" property="surveyCount"/>
 		<result column="profile_image" property="teacherProfile"/>
+		<result column="teacher_no" property="teacherNo"/>
 	</resultMap>
 
   	<resultMap id="studingResult" type="Studing">
@@ -315,6 +316,18 @@
           join teacher t on(l.subcat_no = t.subcat_no)
          where l.class_no = #{classNo}
 	</select>
+	
+	<!-- 
+		@author yeji lee
+		결제 내역 조회
+	 -->
+	<select id="selectPayCount" parameterType="Payment" resultType="_int">
+		select 
+		       count(*)
+		  from payment
+		 where class_no = #{classNo}
+		   and user_no = #{userNo}
+	</select>
 
 	<!--
 		@author yeji lee
@@ -452,8 +465,10 @@
 		     , p.user_no
 		     , l.class_title
 		     , l.thumbnail
+		     , t.teacher_no
 		  from payment p
 		  join lecture l on(p.class_no = l.class_no)
+		  join teacher t on(l.subcat_no = t.subcat_no)
 		 where p.user_no = #{userNo}
 		 order
 		    by p.order_no desc
@@ -962,16 +977,16 @@
 		  values
 		  (
 		    SEQ_VNO.nextval
-		  , 2
-		  , 5
-		  , 5
-		  , 5
-		  , 5
-		  , 5
-		  , '좋았어요'
+		  , #{userNo}
+		  , #{quality}
+		  , #{satisfaction}
+		  , #{difficulty}
+		  , #{price}
+		  , #{score}
+		  , #{review}
 		  , sysdate
-		  , 7
-		  , 7
+		  , #{classNo}
+		  , #{teacherNo}
 		  )
 	</insert>
 </mapper>

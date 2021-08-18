@@ -181,7 +181,7 @@
 				<c:otherwise>
 					<c:choose>
 						<c:when test="${ loginUser.userCode eq 'M' }">
-							<a href="">강사신청</a>
+							<a href="enrollTeacher.tea">강사신청</a>
 						</c:when>
 						<c:when test="${ loginUser.userCode eq 'T' }">
 							<a href="updateForm.te">강사페이지</a>

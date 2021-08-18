@@ -3,6 +3,8 @@ package com.kh.surf.lecture.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.payment.model.vo.Payment;
 
 @Controller
 public class LectureController {
@@ -109,11 +113,18 @@ public class LectureController {
 	 * 클래스 상세 조회
 	 */
 	@RequestMapping("detail.lec")
-	public ModelAndView selectLecture(ModelAndView mv, int cno) {
+	public ModelAndView selectLecture(ModelAndView mv, int cno, HttpSession session) {
 		Lecture l = lService.selectLecture(cno);
+		int uno = ((Member)session.getAttribute("loginUser")).getUserNo();
+		Payment p = new Payment();
+		p.setClassNo(cno);
+		p.setUserNo(uno);
+		
 		ArrayList<ClassIntro> cList = lService.selectLectureIntro(cno);
+		int payCount = lService.selectPayCount(p);
+		
 		mv.addObject("l", l)
-		  .addObject("c", cList)
+		  .addObject("count", payCount)
 		  .addObject("cList", cList)
 		  .setViewName("lecture/lectureDetailView");
 		return mv;

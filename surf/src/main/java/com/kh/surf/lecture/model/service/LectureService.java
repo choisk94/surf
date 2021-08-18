@@ -10,6 +10,7 @@ import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.payment.model.vo.Payment;
 
 public interface LectureService {
 	
@@ -111,4 +112,10 @@ public interface LectureService {
 	 * 진행률 조회
 	 */
 	int ajaxLoadStudingDegree(ClassStuding s);
+	
+	/**
+	 * @author leeyeji
+	 * 결제 내역 조회
+	 */
+	int selectPayCount(Payment p);
 }
