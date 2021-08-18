@@ -343,16 +343,16 @@
 			<script>
                 	$(function(){
                 		 $(".memBtn").on("click", function(){
-                         	
+                			 
                          	if(${empty loginUser}){
                          		alert("로그인 후 이용가능한 서비스입니다.");
                          	} else {
                          		if($(this).is("#mypage")){
                          			location.href='myPage.me';
                          		} else if($(this).is("#like")){
-                         			location.href='scrapList.lec?uno=' + ${loginUser.userNo};
+                         			location.href='scrapList.lec?uno=' + '${loginUser.userNo}';
                          		} else {
-                         			location.href='myLecture.lec?uno=' + ${loginUser.userNo};
+                         			location.href='myLecture.lec?uno=' + '${loginUser.userNo}';
                          		}
                          	}
                          })
