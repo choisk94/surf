@@ -71,7 +71,6 @@ public class MainController {
 	public String selectFundingList() {
 		
 		ArrayList<ClassFunding> flist = mService.selectFundingList();
-		System.out.println(flist);
 		
 		return new Gson().toJson(flist);
 	}

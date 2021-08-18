@@ -185,7 +185,7 @@ div {
 
 #class-sort {
 	margin-top: 20px;
-	margin-left: 810px;
+	margin-left: 815px;
 	position: absolute;
 	font-size: 14px;
 }
@@ -918,7 +918,6 @@ div {
 		            $.ajax({
 		    				url:"ajaxFundingList.do",
 		    				success:function(flist){
-			    				console.log(flist);
 			    				
 				    			for(var f in flist){
 		                            $(".slide-list2").find(".slick-track").children().not(".slick-cloned").eq(f).find(".item").attr("onclick", "location.href='funding.lec'");
@@ -926,26 +925,10 @@ div {
 		                            $(".slide-list2").find(".slick-track").children().not(".slick-cloned").eq(f).find("p").eq(0).html(flist[f].classTitle);
 		                            $(".slide-list2").find(".slick-track").children().not(".slick-cloned").eq(f).find("p").eq(1).html("응원 현황 : " + flist[f].count + " / " + flist[f].standard);
 		                            $(".slide-list2").find(".slick-track").children().not(".slick-cloned").eq(f).find("p").eq(2).text("응원하러 가기!");
-				    				//$(".silde-list2").children().eq(f).find("img").attr("src", flist[f].thumbnail);
-				   					//$(".silde-list2").children().eq(f).find(".text1").text(flist[f].classTitle);
 			    				}
 
 		                        $(".slide-list2").find(".slick-track").children(".slick-cloned").eq(0).find("img").attr("src", flist[4].thumbnail);
 		                        $(".slide-list2").find(".slick-track").children(".slick-cloned").eq(1).find("img").attr("src", flist[0].thumbnail);
-			    				
-				    					/*
-				    					value += "<div class=\"item item-" + f + "\">"
-				    							 + "<picture class=\"img-box\">"
-				    						     + "<img src=\"" + flist[f].thumbnail + "\">"
-				    						     + "</picture>"
-				    						     + "<div class=\"text-box\">"
-				    						     + "<p class=\"text text1\">" + flist[f].classTitle + "</p>"
-				    						     + "<p class=\"text text2\">응원 현황 : " + flist[f].count + " / " + flist[f].standard + "</p>"
-				    						     + "<p class=\"text text3\" onclick=\"location.href=''";>응원하러 가기!</p>"
-				    						     + "</div>"
-				    						     + "</div>" ;
-				    						     <p class="text text3" onclick="location.href='funding.lec'";>응원하러 가기!</p>
-				    						     */
 			    				
 		    				},error:function(){
 		    					console.log("펀딩 배너 조회 ajax 통신 실패");
