@@ -255,7 +255,6 @@
         	$.ajax({
 				url: 'subcat.do',
 				success:function(list){
-					console.log(list);
 					
 					var value = "";
 	        		for(var s in list){

@@ -27,7 +27,7 @@
         height: 100%;
         margin: auto;
     }
-    .class-main-info{margin-left: 40px;}
+    .class-main-info{margin-left: 20px;}
     .class-main-info>div{width: 400px; margin-bottom: 15px;}
     #info-title{font-size: 23px; font-weight: bolder;}
     #info-price span{color: darkgray;}

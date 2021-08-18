@@ -115,16 +115,25 @@ public class LectureController {
 	@RequestMapping("detail.lec")
 	public ModelAndView selectLecture(ModelAndView mv, int cno, HttpSession session) {
 		Lecture l = lService.selectLecture(cno);
-		int uno = ((Member)session.getAttribute("loginUser")).getUserNo();
-		Payment p = new Payment();
-		p.setClassNo(cno);
-		p.setUserNo(uno);
+		int count = 0;
+		if(session.getAttribute("loginUser") != null) {
+			int uno = ((Member)session.getAttribute("loginUser")).getUserNo();
+			Payment p = new Payment();
+			p.setClassNo(cno);
+			p.setUserNo(uno);
+			
+			int payCount = lService.selectPayCount(p);
+			if(payCount > 0) {
+				count += 1;
+			}
+			
+		}
 		
 		ArrayList<ClassIntro> cList = lService.selectLectureIntro(cno);
-		int payCount = lService.selectPayCount(p);
 		
 		mv.addObject("l", l)
-		  .addObject("count", payCount)
+		  .addObject("count", count)
+		  .addObject("c", cList)
 		  .addObject("cList", cList)
 		  .setViewName("lecture/lectureDetailView");
 		return mv;

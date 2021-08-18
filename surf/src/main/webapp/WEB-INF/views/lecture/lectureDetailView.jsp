@@ -204,10 +204,8 @@
 		<jsp:include page="../common/header.jsp" />
 		
 		<br><br>
-        <div class="container">
+        <div class="container" style="padding: 0px 0px 0px 0px;">
 		
-			
-	            
 	            <div class="class-element">
 	                
 	                <div id="class-representative">
@@ -237,7 +235,7 @@
 	                        <strong>${ l.teacherName }</strong> 
 	                    </div>
 	                    <div id="info-btn">
-	                        <button type="button" class="btn" onclick="scrapCheck();">찜하기</button>
+	                        <button type="button" class="btn" onclick="scrapCheck()">찜하기</button>
 	                        <input type="hidden" name="classNo" value="${ l.classNo }">
 	                        <a class="btn payIamport">결제하기</a>
 	                    </div>
@@ -297,17 +295,29 @@
             	</div>
             	
 			<script>
+			
+
+	        // 슬라이드
+	        let currSlide = 1;
+            showSlide(currSlide);
+            
+            function slide_click(num){
+                showSlide((currSlide += num));
+            }
+            function showSlide(num){
+                const slides = document.querySelectorAll(".intro-image");
+                if(num>slides.length){
+                	currSlide =1;
+                }if(num<1){
+                	currSlide = slides.length;
+                }
+                for(let i=0; i<slides.length; i++){
+                	slides[i].style.display="none";
+                }slides[currSlide -1].style.display="block";
+            }
 				
 				var cno = $('input[name=classNo]').val();
-		        var userNo = ${loginUser.userNo};
-		        //uno = '${loginUser.userNo}';
-		        //uno = ${empty loginUser.userNo ? -1 : loginUser.userNo};
-		        /*
-		        if(isNaN(uno)) {
-		        	uno = -1;
-		        } else {
-		        	uno = parseInt( uno );
-		        }*/
+		        var userNo = '${loginUser.userNo}';
 			
 				// 결제 관련
 				var c_price = ${ l.price };
@@ -430,24 +440,6 @@
 		            
 		        }
 		        
-		        // 슬라이드
-		        let currSlide = 1;
-                showSlide(currSlide);
-                
-                function slide_click(num){
-                    showSlide((currSlide += num));
-                }
-                function showSlide(num){
-                    const slides = document.querySelectorAll(".intro-image");
-                    if(num>slides.length){
-                    	currSlide =1;
-                    }if(num<1){
-                    	currSlide = slides.length;
-                    }
-                    for(let i=0; i<slides.length; i++){
-                    	slides[i].style.display="none";
-                    }slides[currSlide -1].style.display="block";
-                }
 
                 </script>
 

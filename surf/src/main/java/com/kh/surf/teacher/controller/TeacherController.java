@@ -439,8 +439,6 @@ public class TeacherController {
 	}
 	@RequestMapping("apply.tea")
 	public String applyTeacher(Teacher t, MultipartFile upfile, HttpSession session, Model model) {
-		System.out.println(t);
-		System.out.println(t.getSubNo());
 		if(!upfile.getOriginalFilename().contentEquals("")) {
 			
 			String originName = upfile.getOriginalFilename();
@@ -448,11 +446,12 @@ public class TeacherController {
 			t.setProfileImage("resources/uploadFiles/profile_image/" + originName); 
 			
 		}
-		
+		String alertMsg = "";
 		int result = tService.applyTeacher(t);
-		System.out.print(result);
 		
 		if(result > 0) { 
+			alertMsg = "강사 신청이 완료되었습니다!";
+			session.setAttribute("alertMsg", alertMsg);
 			return "redirect:enrollTeacher.tea";
 		}else { 
 			return "common/errorPage";
