@@ -660,7 +660,6 @@ public class TeacherController {
 									   Lecture l,
 									   Chapter chapter,
 									   ClassVideo classVideo,
-									   MultipartFile[] upfile,
 									   int beforeCno,
 									   @RequestParam(value="deleteFileName", defaultValue="nodata")String[] deleteFileName,
 									   @RequestParam(value="deleteCno", defaultValue="0")int[] deleteCno,
@@ -668,6 +667,7 @@ public class TeacherController {
 
 	l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
 	
+	System.out.println("처음 들어왔을때");
 	System.out.println(chapter.getChList());
 	System.out.println(classVideo.getCvList());
 	
@@ -677,10 +677,7 @@ public class TeacherController {
 	int result1 = 1;
 	int result2 = 1;
 	
-	// 1. 파일 지우기 (기존의 파일을 지우는 값이 넘어오면)
-	
-	// 지우는 파일 있는 경우
-	
+	// 1. 지우는 파일 있는 경우
 	if(!deleteFileName[0].equals("nodata")) {
 		
 		for(int i=0; i<deleteFileName.length; i++) {
@@ -708,18 +705,23 @@ public class TeacherController {
 		
 	}
 	
-	
+	// 3. 파일있으면 파일 업로드하고 originName, ChangeName가져옴
 	for(int i=0; i < classVideo.getCvList().size(); i++) {
 		
-		if(!"".equals(upfile[i].getOriginalFilename())) { //파일이 있다면?
-			System.out.println("파일지우기");
-			String changeName = saveFile(session, upfile[i], "/"+savePath);
+		if(classVideo.getCvList().get(i).getUpfile() != null && !classVideo.getCvList().get(i).getUpfile().getOriginalFilename().equals("")) { //파일이 있다면?
+			System.out.println("파일 업로드");
+			System.out.println(classVideo.getCvList().get(i).getUpfile().getOriginalFilename());
+			System.out.println(i);
+			String changeName = saveFile(session, classVideo.getCvList().get(i).getUpfile(), "/"+savePath);
 			classVideo.getCvList().get(i).setChangeName(savePath + changeName);
-			classVideo.getCvList().get(i).setOriginName(upfile[i].getOriginalFilename());
+			classVideo.getCvList().get(i).setOriginName(classVideo.getCvList().get(i).getUpfile().getOriginalFilename());
 			
 		}
 	}
 	
+	System.out.println("들어가기 전");
+	System.out.println(chapter.getChList());
+	System.out.println(classVideo.getCvList());
 	int result3 = tService.updateChapterList(chapter.getChList());
 	int result4 = tService.updateVideoList(classVideo.getCvList());
 	

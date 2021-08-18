@@ -95,7 +95,7 @@
                     <tr>
                         <th width="100px;">강의기간 *</th>
                         <td width="400px;">
-                            <input id="period" type="number" class="form-control" placeholder="강의 기간을 숫자로 입력해주세요" name="period" min="0"> <b>일</b>
+                            <input id="period" type="number" class="form-control" placeholder="강의 기간을 숫자로 입력해주세요" name="period" min="0" max="360"> <b>일</b>
                         </td>
                     </tr>
                     <tr>
@@ -134,6 +134,15 @@
             
             if($period.val() < 0){
                 $period.val("");
+            }
+
+            if($period.val().length > 3){
+                $period.val($period.val().substr(0, $period.val().length - 1));
+            }
+
+            if($period.val() > 365){
+                alertify.alert('365일 이하로 입력해 주세요.');
+                $period.val($period.val().substr(0, $period.val().length - 1));
             }
 
             if($period.val().length > 0 && $need.val().length > 1){

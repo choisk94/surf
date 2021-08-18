@@ -135,21 +135,21 @@
 	<div class="curriculum clone-box">
 		<div class="curriculum-box">
 			<label class="chap-head"></label><div class="close-img"></div>
-			<input type="hidden" name="chList[0].chapOrder" value="1">
-			<input type="hidden" name="chList[0].classNo" value="${ l.classNo }">
-			<input name="chList[0].chapName" type="text" class="form-control chap" style="width:400px; height:40px;" placeholder="챕터명을 입력해주세요">
+			<input type="hidden" name="chapOrder" value="1">
+			<input type="hidden" name="classNo" value="${ l.classNo }">
+			<input name="chapName" type="text" class="form-control chap" style="width:400px; height:40px;" placeholder="챕터명을 입력해주세요">
 			<br>
 			<div class="subTitle-box">
-				<input type="hidden" name="cvList[0].videoNo" value="0">
-				<input type="hidden" name="cvList[0].classNo" value="${ l.classNo }">
-				<input type="hidden" name="cvList[0].chapOrder" value="1">
-				<input type="hidden" name="cvList[0].videoOrder" value="1">
+				<input type="hidden" name="videoNo" value="0">
+				<input type="hidden" name="classNo" value="${ l.classNo }">
+				<input type="hidden" name="chapOrder" value="1">
+				<input type="hidden" name="videoOrder" value="1">
 				<div class="minus-img"></div>
 				<label class="subTitle">1.1</label>
-				<input type="text" name="cvList[0].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" placeholder="소제목을 입력해주세요.">
-				<input type="file" name="upfile[0]" onchange="loadOriginName(this);">
-				<input type="hidden" name="cvList[0].originName">
-				<input type="hidden" name="cvList[0].changeName">
+				<input type="text" name="subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" placeholder="소제목을 입력해주세요.">
+				<input type="file" name="upfile" onchange="loadOriginName(this);">
+				<input type="hidden" name="originName">
+				<input type="hidden" name="changeName">
 				<div class="video-img">추가</div>
 			</div>
 		</div>
@@ -182,8 +182,9 @@
 							<div class="minus-img"></div>
 							<label class="subTitle">1.1</label>
 							<input type="text" name="cvList[0].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" placeholder="소제목을 입력해주세요." val="" id="subTitle1">
-							<input type="file" name="upfile" onchange="loadOriginName(this);">
-							<!-- changeName-->
+							<input type="file" name="cvList[0].upfile" onchange="loadOriginName(this);">
+							<input type="hidden" name="cvList[0].originName">
+							<input type="hidden" name="cvList[0].changeName">
 							<div class="video-img" style="background-size: 20px; padding-left: 20px; width: 50px; text-overflow: ellipsis;">추가</div>
 						</div>
 						</c:if>
@@ -230,8 +231,10 @@
 					$(this).parent('.subTitle-box').remove();
 					info[chapNo][1] -= 1;
 					--vno;
+					console.log($(this));
+					var deleteChangeName = $(this).parent('.subTitle-box').children('input[type=hidden]').eq(5).val();
 
-					var deleteChangeName = target.children('input[type=hidden]').eq(5).val();
+					console.log(deleteChangeName);
 
 					if(deleteChangeName != ""){
 						$('#inputForm').prepend('<input type="hidden" name="deleteFileName" value="' + deleteChangeName + '">');
@@ -248,6 +251,7 @@
 							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
 							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
+							$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
 						}
@@ -270,13 +274,13 @@
 					++vno;
 					var $clone = $(this).siblings(".curriculum-box").children(".subTitle-box").last().clone(true);
 					$clone.children('input[type=hidden]').eq(0).val(0);
+					$clone.children('input[type=hidden]').eq(4).val("");
 					$clone.children('input[type=hidden]').eq(5).val("");
 
 					var sum = 1;
 					
 					// 복사할때 file 제거하고 추가버튼으로 되돌리고 name값 변경
 					$clone.children('input[type=file]').val("");
-					$clone.children('input[type=file]').attr('name', 'upfile');
 					$clone.children('input[type=file]').siblings('.video-img').css('background-size', '20px').text('추가').css('padding-left', 20).css('width', '50px');
 					// input text 값 제거하고 name 값 변경
 					$clone.children('input[type=text]').val("").attr('name', 'cvList[' + (vno-1) + '].subTitle').attr('id', 'subTitle' + vno);
@@ -296,7 +300,7 @@
 							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
 							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
-							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
+							$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 						}
 						sum += info[i][1];
 					}
@@ -326,7 +330,7 @@
 				$clone.children('.curriculum-box').children('input[type=text]').eq(0).attr('name', 'chList[' + (cno-1) + '].chapName').attr('id', 'chapName' + cno);
 				// 복사할때 file 제거하고 추가버튼으로 되돌리고 name값 변경
 				$clone.find('input[type=file]').val("");
-				$clone.find('input[type=file]').attr('name', 'upfile');
+				$clone.find('input[type=file]').attr('name', 'cvList[' + (vno-1) + '].upfile');
 				$clone.find('input[type=file]').siblings('.video-img').css('background-size', '20px').text('추가').css('padding-left', 20).css('width', '50px');
 				// input text 값 제거하고 name 값 변경
 				$clone.find('input[type=text]').last().attr('name', 'cvList[' + (vno-1) + '].subTitle').attr('id', 'subTitle' + vno);
@@ -335,8 +339,8 @@
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (vno-1) + '].classNo').val(${l.classNo});
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (vno-1) + '].chapOrder').val(info[cno-1][0]);
 				$clone.find(".subTitle-box").children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (vno-1) + '].videoOrder').val(info[cno-1][1]);
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].originName').val("");
-				$clone.find(".subTitle-box").children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (vno-1) + '].changeName').val("");
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (vno-1) + '].originName');
+				$clone.find(".subTitle-box").children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (vno-1) + '].changeName');
 
 				// subTitle 숫자 변경 
 				$clone.find('.subTitle').text(info[cno-1][0] + '.' + info[cno-1][1]);
@@ -397,7 +401,7 @@
 						$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
 						$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 						$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
-						$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
+						$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 					}
 					sum += info[i][1];
 				}
@@ -436,7 +440,7 @@
 										'<label class="subTitle">' + videoList[i].chapOrder + '.' +  videoList[i].videoOrder + '</label>' + 
 										'<input type="text" id="subTitle' + (parseInt(i) + 1) +'" name="cvList[' + i + '].subTitle" class="form-control" style="width:350px; height:40px; margin-bottom: 10px; display: inline;" ' +
 										'placeholder="소제목을 입력해주세요." value="'+ videoList[i].subTitle + '">' + 
-										'<input type="file" name="upfile" onchange="loadOriginName(this);">' +
+										'<input type="file" name="cvList[' + i +'].upfile" onchange="loadOriginName(this);">' +
 										'<input type="hidden" name="cvList[' + i +'].originName" value="' + videoList[i].originName + '">' +
 										'<input type="hidden" name="cvList[' + i +'].changeName" value="' + videoList[i].changeName + '">' +
 										'<div class="video-img">' + videoList[i].originName + '</div>'
@@ -463,10 +467,11 @@
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
 							$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
+							$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
 							$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 							$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j ).attr('name', 'cvList[' + (j-1) + '].subTitle');
-							$chap.eq(j-sum).children('input[type=file]').attr('name', 'upfile');
+							$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 						}
 						sum += info[i][1];
 					}

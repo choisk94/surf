@@ -570,7 +570,7 @@
 		  from class_video
 		 where class_no = #{classNo}
 		 order
-		    by video_no asc
+		    by chap_order asc, video_no asc
 	 </select>
 	 
 	 <!-- 
@@ -591,7 +591,7 @@
 		 where class_no = #{classNo}
 		   and user_no = #{userNo}
 		 order
-		    by video_no asc
+		    by chap_order asc, video_no asc
 	 </select>
 
 	<!--
@@ -845,7 +845,7 @@
 	 	     			     , #{cv.changeName} as change_name
 	 	     			  from dual
 	 	     		</foreach>
-	 	     		order by chap_order asc, video_order asc
+	 	     		order by chap_order asc, video_order desc
 	 	     		) d
 	 	     	on (
 	 	     		 cv.video_no = d.video_no
