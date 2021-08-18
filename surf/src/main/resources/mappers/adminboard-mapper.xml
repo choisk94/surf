@@ -12,6 +12,7 @@
 		<result column="faq_category" property="faqCategory"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="user_no" property="userNo"/>
+		<result column="status" property="status"/>		
 	</resultMap>
 
 	<resultMap id="adminTeacherResult" type="Teacher">
@@ -141,22 +142,32 @@
 		공지사항 리스트 검색 카운트
 		@author 서정연 관리자
 	-->		
-	<select id="selectSearchNoticeListCount" resultType="_int">
+	<select id="selectSearchNoticeCount" resultType="_int">
 		select
 		       count(*)
-		  from admin_board a
-          join member m on m.user_no = a.user_no
-		 where board_type = '공지사항'
-		   and a.status = 'Y'
+		  from
+		  (select
+			       board_no
+			     , board_title
+			     , nickname
+			     , board_content
+			     , count
+			     , to_char(create_date, 'YYYY-MM-DD') as create_date
+			     , board_content
+			  from admin_board a
+	          join member m on m.user_no = a.user_no
+			 where board_type = '공지사항'
+			   and a.status = 'Y')
+             where
 		   <choose>
 			   <when test="condition == 'writer'">
-			   		and nickname
+			   		nickname
 			   </when>
 			   <when test="condition == 'title'">
-			   		and board_title
+			   		board_title
 			   </when>
 			   <otherwise>
-			   		and board_content
+			   		board_content
 			   </otherwise>
 		   </choose>
 					like '%' || #{keyword} || '%'
@@ -171,14 +182,16 @@
 		       board_no
 		     , board_title
 		     , nickname
+		     , board_content
 		     , count
 		     , to_char(create_date, 'YYYY-MM-DD') as create_date
+		     , board_content
 		  from admin_board a
           join member m on m.user_no = a.user_no
          where board_type = '공지사항'
 		   and a.status = 'Y'
 		 <choose>
-		   		<when test="condition == 'writer">
+		   		<when test="condition == 'writer'">
 		   			and nickname
 		   		</when>
 		   		<when test="condition == 'title'">
@@ -189,8 +202,6 @@
 		   		</otherwise>
 		   </choose>
 		   			like '%' || #{keyword} || '%'
-		  order
-		     by board_no desc
 	</select>
 	
 	
@@ -312,7 +323,6 @@
           join member m on t.nickname=m.nickname
           join maincat c using(maincat_no)
          where teacher_no = #{tno}
-           and t.status = 'Y'
 	</select>
 	
 	<!--
@@ -323,7 +333,7 @@
 		select
 		       count(*)
 		  from teacher
-		 where status = 'Y'      
+		 where status = 'Y'  
 	</select>
 
 	<!--
@@ -349,46 +359,103 @@
 	</update>
 	
 	
-	<!--
-		강사신청 검색용
-		@author 서정연 관리자
-	-->	
-	<select id="selectSearchTeacherList" resultMap="adminTeacherResult">
+	<!-- 강사신청 검색기능 -->
+	<select id="teacherListCount" resultType="_int">
 		select
-		       teacher_no
-             , profile_image 
-		     , email
+		       	   count(*)
+		      FROM (select
+			   teacher_no
 			 , t.nickname
-             , phone
-             , intro_content
-			 , c.maincat_name
+			 , phone
          	 , s.subcat_name
+			 , c.maincat_name
+             , t.status
 		  from teacher t
           join subcat s using(subcat_no)
           join member m on t.nickname=m.nickname
           join maincat c using(maincat_no)
-         where teacher_no = #{tno}
-		 <choose>
-	 		<when test="condition == '대기'">
-	 			and status = 'W'
+		      where
+	 		<choose>
+	 		<when test="condition == 'big'">
+	 			c.maincat_name
 	 		</when>
-	 		<when test="condition == '승인'">
-	 			and status = 'Y'
-	 		</when>	 		
+	 		<when test="condition == 'smail'">
+	 			s.subcat_name
+	 		</when>
 	 		<otherwise>
-	 			and status = 'N'
+	 			t.nickname
 	 		</otherwise>
 	 	</choose>
-	 		like '%' || #{keyword} || '%'	 	 	
-	</select>
-		
-	<select id="selectSearchTeacherCount" resultType="_int">
-		select
-		       count(*)
-		  from teacher
-
+	 		like '%' || #{keyword} || '%')
 	</select>
 	
-
-
+	<select id="selectSearchTeacherList" resultMap="adminTeacherResult">
+		select
+		       
+			   teacher_no
+			 , t.nickname
+			 , phone
+         	 , s.subcat_name
+			 , c.maincat_name
+             , t.status
+		  from teacher t
+          join subcat s using(subcat_no)
+          join member m on t.nickname=m.nickname
+          join maincat c using(maincat_no)
+		  where
+		<choose>
+	 		<when test="condition == 'big'">
+	 			c.maincat_name
+	 		</when>
+	 		<when test="condition == 'smail'">
+	 			s.subcat_name
+	 		</when>
+	 		<otherwise>
+	 			t.nickname
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
+	<!-- FAQ관리 검색기능 -->
+	<select id="faqListCount" resultType="_int">
+		select
+		       	   count(*)
+		      FROM (select
+		       board_no
+             , faq_category
+		     , board_title
+             , board_content
+		  from admin_board
+		 where board_type = 'FAQ'
+		   and status = 'Y'
+	 		<choose>
+	 		<when test="condition == 'category'">
+	 			and faq_category
+	 		</when>
+	 		<otherwise>
+	 			and board_title
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%')
+	</select>
+	
+	<select id="selectSearchFaqList" resultMap="adminBoardResult">
+		select
+		       board_no
+             , faq_category
+		     , board_title
+             , board_content
+		  from admin_board
+		 where board_type = 'FAQ'
+		   and status = 'Y'
+	 		<choose>
+	 		<when test="condition == 'category'">
+	 			and faq_category
+	 		</when>
+	 		<otherwise>
+	 			and board_title
+	 		</otherwise>
+	 	</choose>
+	 		like '%' || #{keyword} || '%'
+	</select>
 </mapper>

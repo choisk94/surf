@@ -40,5 +40,6 @@ public class Lecture {
 	private ClassFunding cf;
 	private String classPrice;
 	private String score;
+	private String teacherProfile;
 	
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
-import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Repository
@@ -55,16 +54,16 @@ public class AdminBoardDao {
 		return sqlSession.update("adminBoardMapper.updateAdminNotice", ab);
 	}
 	
-
-	public int selectSearchNoticeListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeListCount", map);
+	// 공지사항 검색(관리자)
+	public int selectSearchNoticeCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.selectSearchNoticeCount", map);
 	}
 	
 	public ArrayList<AdminBoard> selectSearchNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
+		return (ArrayList)sqlSession.selectList("adminBoardMapper.selectSearchNoticeList", map, rowBounds);
 
 	}
 	
@@ -127,19 +126,32 @@ public class AdminBoardDao {
 	public int updateNo(SqlSessionTemplate sqlSession, int tno) {
 		return sqlSession.update("adminBoardMapper.updateNo", tno);
 	}
-	
-	// 강사신청 검색(관리자)	
-	public ArrayList<Teacher> selectSearchTeacherList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+
+	//강사관리 검색(관리자)
+	public int teacherListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.teacherListCount", map);
+	}
+
+	public ArrayList<Teacher> selectTeacherList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> map) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchTeacherList", map, rowBounds);
 	}
 	
-	public int selectSearchTeacherCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
-		return sqlSession.selectOne("adminBoardMapper.selectSearchTeacherCount", map);
+	//FAQ관리 검색(관리자)
+	public int faqListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("adminBoardMapper.faqListCount", map);
 	}
 
+	public ArrayList<AdminBoard> selectFaqList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList) sqlSession.selectList("adminBoardMapper.selectSearchFaqList", map, rowBounds);
+	}	
 
 	
 

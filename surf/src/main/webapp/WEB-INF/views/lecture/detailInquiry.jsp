@@ -147,7 +147,7 @@
 	                        
 		                        <c:when test="${ !empty i.ansContent  }">
 			                        <div class="photo">
-			                            <img src="" >
+			                            <img src="${ i.teacherImage }" >
 			                        </div>
 			                        <div class="meta">${ i.teacherNo }</div>
 			                        
@@ -252,7 +252,7 @@
                 				+ '<li class="comment level-2">';
                     				if(list[i].ansContent != null){
                        					value += '<div class="photo">'
-		                            				+ '<img src="" >'
+		                            				+ '<img src="'+ list[i].teacherImage + '" >'
 		                        				+ '</div>'
 		                        				+ '<div class="meta">' + list[i].teacherNo + '</div>'
 		                        				+ '<div class="comment-body">'

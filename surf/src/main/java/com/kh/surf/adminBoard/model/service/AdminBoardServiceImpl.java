@@ -57,8 +57,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	}
 	
 	@Override
-	public int selectSearchNoticeListCount(HashMap<String, String> map) {
-		return abDao.selectSearchNoticeListCount(sqlSession, map);
+	public int selectSearchNoticeCount(HashMap<String, String> map) {
+		return abDao.selectSearchNoticeCount(sqlSession, map);
 	}
 
 	@Override
@@ -93,18 +93,6 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 		return abDao.updateAdminFaq(sqlSession, ab);
 	}
 	
-	
-	@Override
-	public int selectSearchFaqListCount(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ArrayList<AdminBoard> selectSearchFaqList(PageInfo pi, HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 	/** 강사신청 **/
@@ -133,16 +121,32 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 	public int updateNo(int tno) {
 		return abDao.updateNo(sqlSession, tno);
 	}
-
+	
+	
+	/** 검색 관련 **/
 	@Override
-	public ArrayList<Teacher> selectSearchTeacherList(PageInfo pi, HashMap<String, String> map) {
-		return abDao.selectSearchTeacherList(sqlSession, pi, map);
+	public int teacherListCount(HashMap<String, String> map) {
+		return abDao.teacherListCount(sqlSession, map);
 	}
 
 	@Override
-	public int selectSearchTeacherCount(HashMap<String, String> map) {
-		return abDao.selectSearchTeacherCount(sqlSession, map);
+	public ArrayList<Teacher> selectTeacherList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectTeacherList(sqlSession, pi, map);
 	}
+
+	@Override
+	public int faqListCount(HashMap<String, String> map) {
+		return abDao.faqListCount(sqlSession, map);
+	}
+
+	@Override
+	public ArrayList<AdminBoard> selectFaqList(PageInfo pi, HashMap<String, String> map) {
+		return abDao.selectFaqList(sqlSession, pi, map);
+	}
+
+
+
+
 
 
 

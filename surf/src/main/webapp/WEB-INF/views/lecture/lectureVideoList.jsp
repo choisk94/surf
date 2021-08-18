@@ -338,7 +338,6 @@
                 }, success : function(videoNo){
                     
                     $('.video' + videoNo).trigger('click');
-                    console.log(videoNo);
 
                 }, error : function(){
                     console.log('마지막 시청 조회 실패');

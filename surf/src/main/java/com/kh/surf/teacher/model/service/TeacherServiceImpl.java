@@ -325,8 +325,8 @@ public class TeacherServiceImpl implements TeacherService{
 	 * 강의 페이지 조회 '비디오 목록'
 	 */
 	@Override
-	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo) {
-		return tDao.ajaxSelectVideoList(classNo, sqlSession);
+	public ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l) {
+		return tDao.ajaxSelectVideoList(l, sqlSession);
 	}
 
 	/**
@@ -367,6 +367,24 @@ public class TeacherServiceImpl implements TeacherService{
 	public int deleteClassIntro2(Lecture introInfo) {
 		return tDao.deleteClassIntro2(introInfo, sqlSession);
 	}
+	
+	/**
+	 * 강의 등록|수정 '비디오 목록' 제거
+	 */
+	@Override
+	public int deleteVideoList(String[] deleteFileName) {
+		return tDao.deleteVideoList(deleteFileName, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '챕터 목록' 제거
+	 */
+	@Override
+	public int deleteChapterList(Chapter deleteChap) {
+		return tDao.deleteChapterList(deleteChap, sqlSession);
+	}
+
 
 	/**
 	 * @author HeeRak
@@ -404,6 +422,11 @@ public class TeacherServiceImpl implements TeacherService{
 	public int updateStatus(Lecture l) {
 		return tDao.updateStatus(l, sqlSession);
 	}
+
+
+	
+
+	
 
 
 }

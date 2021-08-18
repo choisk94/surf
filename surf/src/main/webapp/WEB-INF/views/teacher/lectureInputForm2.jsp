@@ -195,7 +195,7 @@
 			if(introCount < 6){
 				var $clone = $('#clone-area>div:last-child').clone(true);
 
-				$clone.addClass('intro' + (introCount + 1)).removeClass('intro' + introCount);
+				//$clone.addClass('intro' + (introCount + 1)).removeClass('intro' + introCount);
 				
 				$clone.children('input').eq(0).attr('name', 'classIntroList[' + (introCount) + '].introOrder').val(introCount + 1);
 				$clone.children('input').eq(1).attr('name', 'classIntroList[' + (introCount) + '].classNo').val(${l.classNo});
@@ -226,6 +226,7 @@
 		
 		// 박스제거 버튼 기능
 		$('.close-btn').on('click', function(){
+			$('#inputForm').children('div').eq(0).prepend('<input type="hidden" name="deleteName" value="' + $(this).siblings('.addImage').children('img').attr('src') + '">');
 
 			$(this).parent('.introBox').remove();
 			--introCount;

@@ -1,6 +1,5 @@
 package com.kh.surf.adminBoard.controller;
 
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -20,12 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.kh.surf.admin.model.vo.PaymentList;
 import com.kh.surf.adminBoard.model.service.AdminBoardService;
 import com.kh.surf.adminBoard.model.vo.AdminBoard;
 import com.kh.surf.common.model.vo.PageInfo;
 import com.kh.surf.common.template.Pagination;
-import com.kh.surf.member.model.vo.Member;
 import com.kh.surf.teacher.model.vo.Teacher;
 
 @Controller
@@ -140,10 +137,10 @@ public class AdminBoardController {
 		}
 	}
 
-	
+
 	/**
-	 * @author 서정연 관리자 공지사항 검색(고쳐야함)
-	 */	
+	 * @author 서정연 관리자 공지사항 검색 기능
+	 */
 	@RequestMapping("searchNotice.ad")
 	public ModelAndView selectSearchNoticeList(ModelAndView mv,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
@@ -152,18 +149,19 @@ public class AdminBoardController {
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
+		
 
-		int listCount = abService.selectSearchNoticeListCount(map);
-
+		int listCount = abService.selectSearchNoticeCount(map);
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<AdminBoard> list = abService.selectSearchNoticeList(pi, map);
-
+		
 		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
 				.setViewName("adminBoard/adNoticeList");
 
 		return mv;
 
-	}
+}		
 
 
 
@@ -324,6 +322,52 @@ public class AdminBoardController {
 
 		return mv;
 	}
+	/**
+	 * @author 김은용 관리자 강사관리 검색
+	 */
+	@RequestMapping("teacherSearch.ad")
+	public ModelAndView selectTeacherList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = abService.teacherListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Teacher> list = abService.selectTeacherList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adTeacherList");
+
+		return mv;
+
+	}
+	/**
+	 * @author 김은용 관리자 강사관리 검색
+	 */
+	@RequestMapping("faqSearch.ad")
+	public ModelAndView selectFaqList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, String condition,
+			String keyword) {
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		int listCount = abService.faqListCount(map);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<AdminBoard> list = abService.selectFaqList(pi, map);
+
+		mv.addObject("pi", pi).addObject("list", list).addObject("condition", condition).addObject("keyword", keyword)
+				.setViewName("adminBoard/adFaqList");
+
+		return mv;
+
+	}
 
 	/**
 	 * @author 서정연 관리자 강사신청 상세조회
@@ -370,30 +414,9 @@ public class AdminBoardController {
 		}
 	}
 	
-	/**
-	 * @author 서정연 관리자 강사신청 검색 기능
-	 */
-	@RequestMapping("searchTeacher.ad")
-	public ModelAndView selectSearchTeacherList(ModelAndView mv,
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-			String condition, String keyword) {
-			  
-		HashMap<String, String> map = new HashMap<>(); map.put("condition", condition); map.put("keyword", keyword);
-				  
-		int listCount = abService.selectSearchTeacherCount(map);
-				  
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-		ArrayList<Teacher> list = abService.selectSearchTeacherList(pi, map);
-				  
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("condition", condition)
-		  .addObject("keyword", keyword)
-		  .setViewName("adminBoard/adTeacherList");
-				  
-		return mv;
-			  
-	}
+
+	
+
 	
 	
 	

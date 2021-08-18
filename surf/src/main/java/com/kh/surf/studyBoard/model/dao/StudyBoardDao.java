@@ -142,5 +142,16 @@ public class StudyBoardDao {
 		return sqlSession.update("studyboardMapper.updateRejection", reportNo);
 	}
 
+	public int reportListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("studyboardMapper.reportListCount", map);
+	}
+
+	public ArrayList<Report> selectReportList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("studyboardMapper.selectSearchReportList", map, rowBounds);
+	}
+
 	
 }

@@ -36,7 +36,6 @@ public class TeacherInterceptor extends HandlerInterceptorAdapter{
 			return false;
 		}
 		
-		
 		return true;
 		
 	}

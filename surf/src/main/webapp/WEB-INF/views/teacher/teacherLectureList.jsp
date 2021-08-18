@@ -53,7 +53,7 @@
 
     .box>div{height:100%; float: left;}
     .img-area{width:195px;}
-    .class-info{width:345px;}
+    .class-info{width:340px;}
     .class-update-btn{width:53px;margin-left: 5px;}
 
     .img{

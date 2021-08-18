@@ -280,20 +280,25 @@ public class TeacherDao {
 	public ArrayList<Chapter> selectChapterList(int classNo, SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("lectureMapper.selectChapterList", classNo);
 	}
-	public ArrayList<ClassVideo> ajaxSelectVideoList(int classNo, SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoList", classNo);
+	public ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l, SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("lectureMapper.ajaxSelectVideoListbyTeacher", l);
 	}
 
 	/**
 	 * @author HeeRak
 	 * 0-4번 등록|수정페이지  update
 	 */
+	// 0번 페이지
 	public int updateLecture0(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateLecture0", l);
 	}
+	
+	// 1번 페이지
 	public int updateLecture1(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateLecture1", l);
 	}
+	
+	// 2번 페이지
 	public int updateLecture2(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateLecture2", l);
 	}
@@ -303,12 +308,24 @@ public class TeacherDao {
 	public int deleteClassIntro2(Lecture introInfo, SqlSessionTemplate sqlSession) {
 		return sqlSession.delete("lectureMapper.deleteClassIntro2", introInfo);
 	}
+	
+	// 3번 페이지
+	public int deleteVideoList(String[] deleteFileName, SqlSessionTemplate sqlSession) {
+		return sqlSession.delete("lectureMapper.deleteVideoList", deleteFileName);
+	}
+	public int deleteChapterList(Chapter deleteChap, SqlSessionTemplate sqlSession) {
+		int result = sqlSession.delete("lectureMapper.deleteVideoListCount", deleteChap) *
+			         sqlSession.delete("lectureMapper.deleteChapterList", deleteChap);
+		return result;
+	}
 	public int updateChapterList(ArrayList<Chapter> chList, SqlSessionTemplate sqlSession) {
 		return sqlSession.insert("lectureMapper.updateChapterList", chList);
 	}
 	public int updateVideoList(ArrayList<ClassVideo> cvList, SqlSessionTemplate sqlSession) {
 		return sqlSession.insert("lectureMapper.updateVideoList", cvList);
 	}
+	
+	// 4번 페이지
 	public int updateLecture4(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateLecture4", l);
 	}
@@ -328,6 +345,8 @@ public class TeacherDao {
 	public int updateStatus(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateStatus", l);
 	}
+
+
 
 	
 }
