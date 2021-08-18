@@ -369,7 +369,7 @@
 		select
                s.survey_no
              , m.nickname
-             , s.satisfaction
+             , s.score
              , s.review
           from survey s
           join member m on(s.user_no = m.user_no)
@@ -478,6 +478,7 @@
              , t.nickname
              , l.price
              , l.create_date
+             , l.thumbnail
              , (select
                        round(avg(score), 1)
                   from survey

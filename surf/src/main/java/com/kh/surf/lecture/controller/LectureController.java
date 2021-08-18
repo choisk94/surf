@@ -114,6 +114,7 @@ public class LectureController {
 		ArrayList<ClassIntro> cList = lService.selectLectureIntro(cno);
 		mv.addObject("l", l)
 		  .addObject("c", cList)
+		  .addObject("cList", cList)
 		  .setViewName("lecture/lectureDetailView");
 		return mv;
 	}
@@ -182,15 +183,9 @@ public class LectureController {
 	 * 유저 찜한 클래스 목록
 	 */
 	@RequestMapping("scrapList.lec")
-	public ModelAndView selectScrapList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
-		System.out.print(uno);
-		int listCount = lService.selectScrapCount(uno);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 4, 12);
-		ArrayList<Lecture> sList = lService.selectScrapList(uno, pi);
-		
+	public ModelAndView selectScrapList(ModelAndView mv, int uno) {
+		ArrayList<Lecture> sList = lService.selectScrapList(uno);
 		mv.addObject("sList", sList)
-		  .addObject("pi", pi)
 		  .setViewName("member/scrapLectureList");
 		
 		return mv;

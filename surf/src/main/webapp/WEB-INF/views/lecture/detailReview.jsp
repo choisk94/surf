@@ -101,7 +101,7 @@
 					<span style="font-size: 14px;">${ s.userNo }</span>
 				</div>
 				<div class="review-star"> 
-					<i class="fas fa-star"></i> ${ s.satisfaction }
+					<i class="fas fa-star"></i> ${ s.score }
 				</div>
 				<div class="review-content">
 					${ s.review }

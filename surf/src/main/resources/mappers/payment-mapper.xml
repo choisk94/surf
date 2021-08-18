@@ -52,7 +52,7 @@
         where p.user_no = #{classNo}
           and rownum between 1 and 5
         order
-           by payment_date desc
+           by p.payment_date desc
 	</select>
 	
 	 

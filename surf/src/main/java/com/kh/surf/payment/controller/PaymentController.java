@@ -28,14 +28,14 @@ public class PaymentController {
 	 * @author leeyeji
 	 * 주문 목록 조회용
 	 */
-	@RequestMapping("orderList.mem")
+	@RequestMapping("order.mem")
 	public ModelAndView selectOrderList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
-		//Member m = (Member)session.getAttribute("loginUser");
-		//int userNo = m.getUserNo();
 		int listCount = pService.selectListCount(uno);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Payment> pList = pService.selectOrderList(uno, pi);
-		mv.addObject("pList", pList).setViewName("member/orderHistoryList");
+		mv.addObject("pList", pList)
+		  .addObject("pi", pi)
+		  .setViewName("member/orderHistoryList");
 		return mv;
 	}
 	
