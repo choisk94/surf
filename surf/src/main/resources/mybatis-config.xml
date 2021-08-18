@@ -33,6 +33,7 @@
 		<typeAlias type="com.kh.surf.category.model.vo.Maincat" alias="Maincat"/>
 		<typeAlias type="com.kh.surf.category.model.vo.Subcat" alias="Subcat"/>
 		<typeAlias type="com.kh.surf.studyBoard.model.vo.Report" alias="Report"/>
+		<typeAlias type="com.kh.surf.lecture.model.vo.ClassFunding" alias="ClassFunding"/>
 	</typeAliases>
 
 	<mappers>
