@@ -39,7 +39,7 @@
 			<br>
 
 			<div id="img1" class="img1">
-				<img src="resources/uploadFiles/profile_image/${t.profileImage}">
+				<img src="${t.profileImage}" style="width:350px;">
 			</div>
 			<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">			
 			<br> 이메일<br> 
