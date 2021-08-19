@@ -295,26 +295,25 @@
             	</div>
             	
 			<script>
-			
 
-	        // 슬라이드
-	        let currSlide = 1;
-            showSlide(currSlide);
-            
-            function slide_click(num){
-                showSlide((currSlide += num));
-            }
-            function showSlide(num){
-                const slides = document.querySelectorAll(".intro-image");
-                if(num>slides.length){
-                	currSlide =1;
-                }if(num<1){
-                	currSlide = slides.length;
-                }
-                for(let i=0; i<slides.length; i++){
-                	slides[i].style.display="none";
-                }slides[currSlide -1].style.display="block";
-            }
+		        // 슬라이드
+		        let currSlide = 1;
+	            showSlide(currSlide);
+	            
+	            function slide_click(num){
+	                showSlide((currSlide += num));
+	            }
+	            function showSlide(num){
+	                const slides = document.querySelectorAll(".intro-image");
+	                if(num>slides.length){
+	                	currSlide =1;
+	                }if(num<1){
+	                	currSlide = slides.length;
+	                }
+	                for(let i=0; i<slides.length; i++){
+	                	slides[i].style.display="none";
+	                }slides[currSlide -1].style.display="block";
+	            }
 				
 				var cno = $('input[name=classNo]').val();
 		        var userNo = '${loginUser.userNo}';
@@ -326,8 +325,12 @@
 				var now = new Date();
 				var payMethod = 1;
 				
-				
 				$('.payIamport').click(function (){
+					
+				if(${ empty loginUser }){
+					alert("로그인 후 이용할 수 있습니다.");
+				}else{
+					
 					IMP.init('imp08801453');
 					IMP.request_pay({
 					    pg : 'kakaopay',
@@ -344,10 +347,6 @@
 					    	console.log(rsp)
 					    	
 							var msg = '결제가 완료되었습니다.';
-					    		msg += '\n고유ID : ' + rsp.imp_uid;
-					    		msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-					    		msg += '\결제 금액 : ' + rsp.paid_amount;
-					    		msg += '카드 승인번호 : ' + rsp.apply_num;
 					    		alert(msg);
 					    		
 					    		var r_imp_uid = parseInt(rsp.imp_uid.replace(/[^0-9]/g,''));
@@ -386,31 +385,38 @@
 					        alert(msg);
 					    }
 					});
-
-				})
+			
+					}
+				
+				}) // End of payment
 				
             	
 		        // 찜하기 중복확인
 		        function scrapCheck(){
 
-		        	$.ajax({
-		        		url: "scrapCheck.lec",
-		        		data : {
-		        			classNo : cno,
-		        			userNo : userNo
-		        		}, success: function(result){
-		        			console.log(result);
-		        			if(result > 0){
-		        				alert("이미 찜한 클래스입니다.");
-		        			}else {
-		        				scrapLecture();
-		        			}
-		        			
-		        		}, error:function(){
-		        			console.log("찜하기 중복 ajax 실패");
-		        		}
-		        	})
-		        	
+					if(${ empty loginUser }){
+						alert("로그인 후 이용할 수 있습니다.");
+					}else{
+						
+			        	$.ajax({
+			        		url: "scrapCheck.lec",
+			        		data : {
+			        			classNo : $('input[name=classNo]').val(),
+			        			userNo : '${loginUser.userNo}'
+			        		}, success: function(result){
+
+			        			if(result > 0){
+			        				alert("이미 찜한 클래스입니다.");
+			        			}else {
+			        				scrapLecture();
+			        			}
+			        			
+			        		}, error:function(){
+			        			console.log("찜하기 중복 ajax 실패");
+			        		}
+			        	}) // End of ajax
+					}
+					
 		        }
 		        
 		        // 찜하기 

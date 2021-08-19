@@ -470,7 +470,10 @@
         	}) // End of ready
         	
         	// 설문조사
-        	$(".confirm").click(function(){
+        	$(".confirm").on("click", function(){
+				
+        		
+        		
         		console.log(qual);
         		console.log(sati);
         		console.log(diffi);
@@ -478,7 +481,7 @@
         		console.log(sco);
         		console.log($("input[name=review]").val());
         		console.log(tno);
-        		
+            	
         		$.ajax({
         			url: "survey.lec",
         			data: {
@@ -503,15 +506,17 @@
         				console.log("설문조사 통신 실패");
         			}
         		});
+        		
         	})
-        
+        	
             // 모달
             $(function(){
                 $("#confirm").click(function(){
                     modalClose(); 
                 });
-                $("#modal-open").click(function(){        
+                $("#modal-open").click(function(e){        
                     $("#popup").css('display','flex').hide().fadeIn();
+                    e.stopImmediatePropagation();
                 });
                 $("#close").click(function(){
                     modalClose(); 
