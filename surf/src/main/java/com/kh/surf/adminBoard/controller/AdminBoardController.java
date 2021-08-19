@@ -376,6 +376,7 @@ public class AdminBoardController {
 	public ModelAndView selectTeacher(int tno, ModelAndView mv) {
 
 		Teacher t = abService.selectTeacher(tno);
+		
 		mv.addObject("t", t).setViewName("adminBoard/adTeacherDetail");
 
 		return mv;
@@ -420,9 +421,9 @@ public class AdminBoardController {
 	
 	
 	
-	public String saveFile(HttpSession session, MultipartFile upfile, String path) {
+	public String saveFile(HttpSession session, MultipartFile upfile) {
 
-		String savePath = session.getServletContext().getRealPath(path);
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/profile_image/");
 
 		String originName = upfile.getOriginalFilename();
 
@@ -442,5 +443,7 @@ public class AdminBoardController {
 
 		return changeName;
 	}
+	
+
 
 }

@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.lecture.model.vo.ClassFunding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.studyBoard.model.vo.Study;
 
@@ -22,5 +23,9 @@ public class MainDao {
 	
 	public ArrayList<Study> selectPostList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("mainMapper.selectPostList");
+	}
+	
+	public ArrayList<ClassFunding> selectFundingList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("mainMapper.selectFundingList");
 	}
 }

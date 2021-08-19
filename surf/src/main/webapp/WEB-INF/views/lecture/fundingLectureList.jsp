@@ -12,7 +12,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{display: flex; width: 1200px;}
     .class-area{
@@ -44,19 +43,18 @@
     }
     .thumbnail:hover {
         cursor: pointer;
-        opacity: 0.7;
         /*border: 1px solid rgb(0, 120, 51);*/
         /*background: rgba(0, 120, 52, 0.1);*/
     }
     /*.thumbnail span{margin-bottom: 5px;}*/
-    .thumbnail>p{height: 120px;}
+    .thumbnail>p{height: 150px;}
     .class-thumb{position: relative;}
     .scrap-icon img{position:absolute;top: 20px;}
     #pagingArea{width:fit-content;margin:auto;}
     .support-btn{
         margin-top: 10px;
         width: 240px;
-        background: rgb(32, 155, 212);
+        background-color: rgb(32, 155, 212);
         color: white;
         font-weight: bold;
     }
@@ -91,6 +89,7 @@
     }
     .popup-body{
         width:100%;
+        
         background-color:#ffffff;
     }
     .body-content{
@@ -100,7 +99,7 @@
     .body-titlebox{
         text-align:center;
         width:100%;
-        height:70px;
+        /*height:70px;*/
         margin-bottom:10px;
     }
     .body-contentbox{
@@ -121,7 +120,11 @@
         color:#ffffff;
         cursor:pointer;
     }
-    .pop-btn.confirm{border-right:1px solid lightgray; }
+    .pop-btn.confirm{
+    	border-right:1px solid lightgray;
+    	color: white;
+    	font-weight:bold; 
+    }
     .modal-img{
         width: 100%;
         height: 400px;
@@ -134,10 +137,13 @@
         top:370px;
         left:510px;
         color: white;
+        -webkit-text-stroke-width: 1px;
+		-webkit-text-stroke-color: black;
     }
     .category{color: darkgray; font-size: 13px; margin-top: 10px;}
-    .intro-content{margin-top: 5px; max-width: 300px;}
-    .fa-heart{color:red;}
+    .intro-content{margin-top: 10px; max-width: 600px;}
+    .fa-heart{color: red; margin-right: 2px;}
+    p>b{margin-bottom: 5px; font-size:15px;}
 </style>
 </head>
 <body>
@@ -157,36 +163,34 @@
                 <!-- select option-->
                 <div class="select-list">
                     <div id="menu-title">펀딩중인 클래스</div>
-                    <!--<select name="" class="selectpicker">
-                        <option value="">인기순</option>
-                        <option value="">별점순</option>
-                        <option value="">수강생순</option>
-                    </select>-->
                 </div>
 
                 <!-- 클래스 -->
                 <div class="class-list">
-					<c:forEach var="f" items="${ fList }">
-	                    <div class="thumbnail" align="center">
-	                        <input type="hidden" name="classNo" value="">
-	                        <div id="class-thumb">
-	                            <img src="${ f.thumbnail }" width="240" height="150" id="">
-	                        </div>
-	    
-	                        <p style="margin-top: 10px;">
-	                            <b>${ f.classTitle }</b><br>
-	                            <span style="font-size:14px">${ f.teacherName }</span> <br>
-	                            <span style="font-size:14px">
-	                                <i class="fas fa-heart"></i> ${ f.fundingCount }
-	                            </span> <br>
-	                            <button type="button" class="btn support-btn" id="modal-open">응원하기</button>
-	                        </p>
-	                    </div>
-					</c:forEach>
+
+				<c:forEach var="f" items="${ fList }">
+                    <div class="thumbnail" align="center">
+                        <input type="hidden" name="classNo" value="${ f.classNo }">
+                        <div id="class-thumb">
+                             <img src="${ f.thumbnail }" width="240" height="150" id="">
+                        </div>
+    
+                        <p style="margin-top: 10px;">
+                            <b>${ f.classTitle }</b><br>
+                            <span style="font-size:14px">${ f.teacherName }</span> <br>
+                            <span style="font-size:14px">
+                                 <i class="fas fa-heart"></i> ${ f.fundingCount }
+                            </span> <br>
+                            <button type="button" class="btn support-btn" id="modal-open"
+                            	style="background-color: rgb(32, 155, 212); color:white; font-weight:bold;"
+                            >응원하기</button>
+                        </p>
+                    </div>
+				</c:forEach>
                     
                     
 
-                    <!-- 페이징 -->
+                    <!-- 페이징 
                     <br><br><br>
                     <div id="pagingArea">
                         <ul class="pagination">
@@ -195,7 +199,7 @@
 		                    		<li class="page-item disabled"><a class="page-link">&lt;</a></li>
 		                    	</c:when>
 		                    	<c:otherwise>
-		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
+		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">Previous</a></li>
 		                    	</c:otherwise>
 		                    </c:choose>
 		                    
@@ -208,11 +212,11 @@
 			                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
 			                    </c:when>
 			                    <c:otherwise>
-			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
+			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">Next</a></li>
 			                    </c:otherwise>
 			                </c:choose>
 		                </ul>
-                    </div>
+                    </div>-->
                     <br><br>
 
 
@@ -233,35 +237,32 @@
                             <span class="head-title"></span>
                             </div>
                             <div class="popup-body">	<!--컨텐츠 영역-->
-                            <div class="body-content">
-                                <div class="body-titlebox">
-                                    <h3>아이패드로 여행 드로잉 한번에 끝내기 ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-                                </div>
-                                <div class="body-contentbox">
-                                    
-                                    <div class="modal-img">
-                                        <img src="../resource/img/dog.jpeg" class="funding-img" 
-                                        style="width: 640px; height: 400px; ">
-                                        <!--클래스 대표 이미지 넣기-->
-                                        <div class="text">
-                                            현재 응원수 <strong>41</strong>개
-                                        </div>
-                                    </div>
-                                    <div class="category">
-                                        공예 - 뜨개질
-                                    </div>
-                                    <div class="intro-content">
-                                        털실로 스웨터 만드는 법을 알려드립니다.
-                                        강의설명
-                                        강의 간단설명
-                                        강의 설 명
-                                    </div>
-                                </div>
-                            </div>
+	                            <div class="body-content">
+	                                <div class="body-titlebox">
+	                                    <h3></h3>
+	                                </div>
+	                                <div class="body-contentbox">
+	                                    
+	                                    <div class="modal-img">
+	                                        <img src="../resource/img/dog.jpeg" class="funding-img" 
+	                                        style="width: 640px; height: 400px; ">
+	                                        <!--클래스 대표 이미지 넣기-->
+	                                        <div class="text">
+	                                            현재 응원수 <strong></strong>개
+	                                        </div>
+	                                    </div>
+	                                    <div class="category">
+	                                        
+	                                    </div>
+	                                    <div class="intro-content">
+	                                        
+	                                    </div>
+	                                </div>
+	                            </div>
                             </div>
                             <div class="popup-foot">
-                            <button type="submit" class="pop-btn btn confirm" id="confirm">응원하기</button>
-                            <span class="pop-btn modalClose" id="close">취소</span>
+                            <button type="submit" class="pop-btn btn confirm" id="confirm" onclick="supportLecture()">응원하기</button>
+                            <span class="pop-btn modalClose" id="close" >취소</span>
                         </div>
                     </div>
                 </div>
@@ -271,17 +272,95 @@
 
         <script>
         
-        	/*
-            function supportModal(){
+        	var cno = $('input[name=classNo]').val();
+        	var uno = ${loginUser.userNo};
+        	
+        	// 모달 상세 조회
+        	$("#modal-open").click(function(){
+        	//function selectLecture(){
+        		
+        		$.ajax({
+        			url : '/surf/fundingDetail.lec?cno=' + cno,
+        			//data : { classNo : cno },
+        			success: function(data){
+        				
+        				var value = "";
+        				
+        				value += "<div class='body-titlebox'>" 
+                        	   + 	"<h3>" + data.classTitle + "</h3>"
+                        	   + "</div>"
+                        	   + "<div class='body-contentbox'>"
+                               + 	"<div class='modal-img'>"
+                               		if( data.introFile != null){
+                               			value += "<img src='" + data.introFile + "' class='funding-img' style='width: 620px; height: 400px;'>";
+                               		} else{
+                               			value += "<img src='' class='funding-img' style='width: 640px; height: 400px;'>";
+                               		}
+                               + 		"<div class='text'>"
+                               +     		"현재 응원수 <strong>" + data.fundingCount + "</strong>개"
+                               + 		"</div>"
+                               +    "</div>";
+                               if(data.mainCat == null && data.subCat == null){
+                            	value += 	"<div class='category'>"
+ 	                               	  + 	"</div>";
+                               }else{
+                            	value += 	"<div class='category'>"
+	                            	  + 		"" + data.mainCat + "-" + data.subCat 
+	                               	  + 	"</div>";
+                               }
+                               if(data.introContent != null){
+	                               value +=	"<div class='intro-content'>"
+	                               		 + 		"" + data.introContent
+	                               		 + 	"</div>";
+                               }else{
+                            	   value +=	"<div class='intro-content'>"
+	                               		 + 		"소개 내용이 없습니다."
+	                               		 + 	"</div>";
+                               }
+                        value += "</div>";
+        				
+        				$(".body-content").children().remove();
+        				$(".body-content").html(value);
+                        	   
+        				//$("#popup").css('display','flex').hide().fadeIn();
+        			}, error : function(){
+        				console.log("실패");
+        			}
+        		
+        		}) // End of ajax
+        	
+        	}); // End of modal-open Click
+        
+        	// 응원하기 에이작스
+            function supportLecture(){
                 
-            }*/
+            	$.ajax({
+        			url : '/surf/support.lec?cno=' + cno,
+        			type : "get", 
+        			data : { userNo : uno },
+        			success: function(result){
+        				
+        				if(result == 1 ){
+        					
+	        				alert("클래스를 응원했습니다!");
+	        				
+        				} else {
+        					alert("응원 실패!");
+        				}
+        				
+        			}, error : function(){
+        				console.log("응원하기 ajax 실패");
+        			}
+        		
+        		}) // End of ajax
+        		
+            } // End of supportLecture
+        	
 
-
-            // 모달 관련 스크립트
+         	// 모달
             $(function(){
                 $("#confirm").click(function(){
                     modalClose(); 
-
                 });
                 $("#modal-open").click(function(){        
                     $("#popup").css('display','flex').hide().fadeIn();
@@ -293,6 +372,7 @@
                     $("#popup").fadeOut(); 
                 }
             });
+            
         
     
         </script>

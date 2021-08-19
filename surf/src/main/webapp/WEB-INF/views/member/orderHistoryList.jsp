@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{display: flex; flex-wrap: wrap;}
     .sub-nav{
@@ -72,38 +72,55 @@
                                 <th>금액</th>
                             </tr>
                         </thead>
-                        <tbody style="font-weight:400;">
-                            <tr>
-                                <td>321654</td>
-                                <td>2021-05-01 18:00:40</td>
-                                <td>결제 완료</td>
-                                <td>아이패드로 끝내는 여행 드로잉</td>
-                                <td>117,800원</td>
-                            </tr>
-                            <tr>
-                                <td>16452313</td>
-                                <td>2021-05-01 18:00:40</td>
-                                <td>주문 취소</td>
-                                <td>아이패드로 끝내는 여행 드로잉</td>
-                                <td>117,800원</td>
-                            </tr>
-                        </tbody>
+                        <c:set var="ran"><%= java.lang.Math.round(java.lang.Math.random() * 1234) %></c:set>
+                        <c:forEach var="p" items="${ pList }">
+	                        <tbody style="font-weight:400;">
+	                            <tr>
+	                                <td>${ p.orderNo }${ran }</td>
+	                                <td><fmt:formatDate value="${ p.paymentDate }" pattern="yyyy-MM-dd"/></td>
+	                                <c:choose>
+	                                	<c:when test="${ p.status eq 'Y' }">
+		                                	<td>결제 완료</td>
+	                                	</c:when>
+	                                	<c:otherwise>
+	                                		<td>결제 대기</td>
+	                                	</c:otherwise>
+	                                </c:choose>
+	                                <td>${ p.classTitle }</td>
+	                                <td><fmt:formatNumber value="${p.price}" pattern="#,###"/> </td>
+	                            </tr>
+	                        </tbody>
+                        </c:forEach>
                     </table>
                 </div>
 
                 <!-- 페이징 -->
                 <br><br>
                 <div id="pagingArea">
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                    </ul>
-                </div>
+                        <ul class="pagination">
+		                	<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+		                    		<li class="page-item disabled"><a class="page-link">&lt;</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">${ p }</a></li>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+			                    	<li class="page-item disabled"><a class="page-link">&gt;</a></li>
+			                    </c:when>
+			                    <c:otherwise>
+			                    	<li class="page-item"><a class="page-link" href="list.bo?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
+			                    </c:otherwise>
+			                </c:choose>
+		                </ul>
+                    </div>
 
 
             </div>

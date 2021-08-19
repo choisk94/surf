@@ -13,7 +13,6 @@
     .outer{
         width: 1200px;
         margin: auto;
-        margin-top: 50px;
     }
     .container{display: flex;}
     .sub-nav{width: 20%; height: 800px;}
@@ -256,7 +255,6 @@
         	$.ajax({
 				url: 'subcat.do',
 				success:function(list){
-					console.log(list);
 					
 					var value = "";
 	        		for(var s in list){

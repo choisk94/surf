@@ -96,7 +96,6 @@
 					</div>
 					<div>
 						<input type="file" name="file" style="display:none;" onchange="loadProfileImage(this);">
-						<input type="hidden" name="teacherNo" value="${t.teacherNo}">
 						<span class="input-title">닉네임</span><br>
 						<input type="text" class="form-control" name="nickname"
 						style="width:300px; height: 40px; margin: 10px 0px 0px 0px;" value="${t.nickname}"
@@ -108,6 +107,7 @@
 						style="width:300px; height: 40px; margin: 10px 0px 0px 0px;" value="${t.phone}"
 						placeholder="- 제외하고 입력해주세요" maxlength="11">
 						<span class="validityCheck phoneCheck">message</span>
+						<input type="hidden" name="profileImage" value="${t.profileImage}">
 					</div>
 				</div>
 				<div>

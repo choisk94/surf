@@ -100,12 +100,13 @@
         display: inline-block;
         margin-top: 0.4em;
     }
-     /* 별점 스타일 */
+     /* 별점 스타일 
     .rating {
-        width: 200px;
-        /*margin: 0 auto 1em;*/
+        width: 90px;
+        margin: 0 auto 1em;
         font-size: 20px;
         overflow: hidden;
+        margin-bottom:10px;
     }
     .rating input {
         float: right;
@@ -134,7 +135,7 @@
         cursor: pointer;
     }
     .rating2 {direction: rtl;}
-    .rating2 button {float: none}
+    .rating2 button {float: none}*/
     /*모달*/
     .popup-wrap {
         background-color: rgba(0, 0, 0, .3);
@@ -197,6 +198,47 @@
     	background-color: rgb(32, 155, 212);
     	color: white;
     }
+    #review-input{
+    	height: 30px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid gray;}
+        
+    .rating {
+	  display:flex;
+	  flex-direction: row-reverse;
+	  font-size:1.5em;
+	  justify-content:space-around;
+	  padding:0 .2em;
+	  text-align:center;
+	  width:5em;
+	}
+	
+	.rating input {
+	  display:none;
+	}
+	
+	.rating label {
+	  color:#ccc;
+	  cursor:pointer;
+	}
+	
+	.rating :checked ~ label {
+	  color:#f90;
+	}
+	
+	.rating label:hover,
+	.rating label:hover ~ label {
+	  color:#fc0;
+	}
+	#classTitle{
+	    width:240px;
+	    text-overflow:ellipsis;
+	    white-space:nowrap;
+	    overflow:hidden;
+	    display:inline-block;
+    }
 </style>
 </head>
 <body>
@@ -230,19 +272,18 @@
                     <div class="class-list">
 
                         <c:forEach var="m" items="${ mList }">
-	                        <div class="thumbnail" align="center">
+	                        <div class="thumbnail" align="center" onclick="location.href='detail.lec?cno=${m.classNo}'">
 	                            <input type="hidden" name="classNo" value="${ m.classNo }">
-	                            <input type="hidden" name="teacherNo" value="">
+	                            <input type="hidden" name="teacherNo" value="${ m.teacherNo }">
 	                            <div id="class-thumb">
 	                                <img src="${ m.thumbnail }" width="240" height="150" id="">
 	                            </div>
 	        
 	                            <p style="margin-top: 5px;">
-	                                <b>${ m.classTitle }</b><br>
+	                                <b id="classTitle">${ m.classTitle }</b><br>
 	                                <progress id="pro_value" value="20" max="100"></progress>
 	                                <span id="progress" style="font-size:14px">진행률 65%</span> 
 	                            </p>
-	                            <!-- 진행률 100%시 설문조사 버튼 if문 처리 -->
 	                            <button type="button" class="btn" id="modal-open">설문조사</button>
 	                        </div>
                         </c:forEach>
@@ -272,7 +313,7 @@
         
         <!-- 설문조사 클릭시 모달창 -->
         <!-- modal area -->
-        <form action="survey.lec" method="POST">
+        <!-- <form action="survey.lec" method="POST"> -->
 
             <div id="survey">
                 <div class="popup-wrap" id="popup"> <!--모달을 감싸는 박스-->
@@ -290,51 +331,76 @@
 
                                     <strong>퀄리티</strong>
                                     <div class="class-quality rating rating2">
-                                        <button type="button" class="btn qual" title="Give 5 stars" id="clickQual5">★</button>
-                                        <button type="button" class="btn qual" title="Give 4 stars" id="clickQual4">★</button>
-                                        <button type="button" class="btn qual" title="Give 3 stars" id="clickQual3">★</button>
-                                        <button type="button" class="btn qual" title="Give 2 stars" id="clickQual2">★</button>
-                                        <button type="button" class="btn qual" title="Give 1 star" id="clickQual1">★</button>
+	                                      <input type="radio" id="q-5-stars" name="q-rating" value="5" />
+										  <label for="q-5-stars" class="star">&#9733;</label>
+										  <input type="radio" id="q-4-stars" name="q-rating" value="4" />
+										  <label for="q-4-stars" class="star">&#9733;</label>
+										  <input type="radio" id="q-3-stars" name="q-rating" value="3" />
+										  <label for="q-3-stars" class="star">&#9733;</label>
+										  <input type="radio" id="q-2-stars" name="q-rating" value="2" />
+										  <label for="q-2-stars" class="star">&#9733;</label>
+										  <input type="radio" id="q-1-star" name="q-rating" value="1" />
+										  <label for="q-1-star" class="star">&#9733;</label> 
                                     </div>
 
                                     <strong>만족도</strong>
                                     <div class="class-sati rating rating2">
-                                        <button type="button" class="btn sati" title="Give 5 stars" id="clickSati5">★</button>
-                                        <button type="button" class="btn sati" title="Give 4 stars" id="clickSati4">★</button>
-                                        <button type="button" class="btn sati" title="Give 3 stars" id="clickSati3">★</button>
-                                        <button type="button" class="btn sati" title="Give 2 stars" id="clickSati2">★</button>
-                                        <button type="button" class="btn sati" title="Give 1 star" id="clickSati1">★</button>
+	                                      <input type="radio" id="s-5-stars" name="s-rating" value="5" />
+										  <label for="s-5-stars" class="star">&#9733;</label>
+										  <input type="radio" id="s-4-stars" name="s-rating" value="4" />
+										  <label for="s-4-stars" class="star">&#9733;</label>
+										  <input type="radio" id="s-3-stars" name="s-rating" value="3" />
+										  <label for="s-3-stars" class="star">&#9733;</label>
+										  <input type="radio" id="s-2-stars" name="s-rating" value="2" />
+										  <label for="s-2-stars" class="star">&#9733;</label>
+										  <input type="radio" id="s-1-star" name="s-rating" value="1" />
+										  <label for="s-1-star" class="star">&#9733;</label>
                                     </div>
                                     
                                     <strong>난이도</strong>
-                                    <div class="class-price rating rating2">
-                                        <button type="button" class="btn diffi" title="Give 5 stars" id="clickDiffi5">★</button>
-                                        <button type="button" class="btn diffi" title="Give 4 stars" id="clickDiffi4">★</button>
-                                        <button type="button" class="btn diffi" title="Give 3 stars" id="clickDiffi3">★</button>
-                                        <button type="button" class="btn diffi" title="Give 2 stars" id="clickDiffi2">★</button>
-                                        <button type="button" class="btn diffi" title="Give 1 star" id="clickDiffi1">★</button>
+                                    <div class="class-diffi rating rating2">
+	                                      <input type="radio" id="d-5-stars" name="d-rating" value="5" />
+										  <label for="d-5-stars" class="star">&#9733;</label>
+										  <input type="radio" id="d-4-stars" name="d-rating" value="4" />
+										  <label for="d-4-stars" class="star">&#9733;</label>
+										  <input type="radio" id="d-3-stars" name="d-rating" value="3" />
+										  <label for="d-3-stars" class="star">&#9733;</label>
+										  <input type="radio" id="d-2-stars" name="d-rating" value="2" />
+										  <label for="d-2-stars" class="star">&#9733;</label>
+										  <input type="radio" id="d-1-star" name="d-rating" value="1" />
+										  <label for="d-1-star" class="star">&#9733;</label>
                                     </div>
 
                                     <strong>가격</strong>
                                     <div class="class-price rating rating2">
-                                        <button type="button" class="btn pri" title="Give 5 stars" id="clickPri5">★</button>
-                                        <button type="button" class="btn pri" title="Give 4 stars" id="clickPri4">★</button>
-                                        <button type="button" class="btn pri" title="Give 3 stars" id="clickPri3">★</button>
-                                        <button type="button" class="btn pri" title="Give 2 stars" id="clickPri2">★</button>
-                                        <button type="button" class="btn pri" title="Give 1 star" id="clickPri1">★</button>
+                                          <input type="radio" id="p-5-stars" name="p-rating" value="5" />
+										  <label for="p-5-stars" class="star">&#9733;</label>
+										  <input type="radio" id="p-4-stars" name="p-rating" value="4" />
+										  <label for="p-4-stars" class="star">&#9733;</label>
+										  <input type="radio" id="p-3-stars" name="p-rating" value="3" />
+										  <label for="p-3-stars" class="star">&#9733;</label>
+										  <input type="radio" id="p-2-stars" name="p-rating" value="2" />
+										  <label for="p-2-stars" class="star">&#9733;</label>
+										  <input type="radio" id="p-1-star" name="p-rating" value="1" />
+										  <label for="p-1-star" class="star">&#9733;</label>
                                     </div>
 
                                     <strong>평점</strong>
                                     <div class="class-star rating rating2" >
-                                        <button type="button" class="btn sco" title="Give 5 stars" id="clickSco5">★</button>
-                                        <button type="button" class="btn sco" title="Give 4 stars" id="clickSco4">★</button>
-                                        <button type="button" class="btn sco" title="Give 3 stars" id="clickSco3">★</button>
-                                        <button type="button" class="btn sco" title="Give 2 stars" id="clickSco2">★</button>
-                                        <button type="button" class="btn sco" title="Give 1 star" id="clickSco1">★</button>
+                                          <input type="radio" id="t-5-stars" name="t-rating" value="5" />
+										  <label for="t-5-stars" class="star">&#9733;</label>
+										  <input type="radio" id="t-4-stars" name="t-rating" value="4" />
+										  <label for="t-4-stars" class="star">&#9733;</label>
+										  <input type="radio" id="t-3-stars" name="t-rating" value="3" />
+										  <label for="t-3-stars" class="star">&#9733;</label>
+										  <input type="radio" id="t-2-stars" name="t-rating" value="2" />
+										  <label for="t-2-stars" class="star">&#9733;</label>
+										  <input type="radio" id="t-1-star" name="t-rating" value="1" />
+										  <label for="t-1-star" class="star">&#9733;</label>
                                     </div>
 
                                     <strong>후기</strong> 
-                                    <input type="text" name="review" id="" style="width: 300px;">
+                                    <input type="text" name="review" id="review-input" style="width: 300px;" value="">
                                 </div>
                             </div>
                             <div class="popup-foot">
@@ -346,28 +412,39 @@
                 </div>
             </div>
             
-        </form>
+        <!-- </form> -->
 
         <script>
         
-        	var uno = '${loginUser.userNo}';
+        	var uno = ${loginUser.userNo};
         	var cno = $('input[name=classNo]').val();
         	var tno = $('input[name=teacherNo]').val();
         	
-        	$(".qual").click(function(){
-        		var qual = $(this).attr("id");
+        	var qual = 0;
+        	var sati = 0;
+        	var diffi = 0;
+        	var pri = 0;
+        	var sco = 0;
+        	var re= "";
+        	$('input[name=q-rating]').on('click', function() {
+        		qual = $(this).val();
+        		$(this).attr("checked", true);
+            });
+        	$('input[name=s-rating]').click(function(){
+        		 sati = $(this).val();
+        		 $(this).attr("checked", true);
         	});
-        	$(".sati").click(function(){
-        		var sati = $(this).attr("id");
+        	$('input[name=d-rating]').click(function(){
+        		 diffi = $(this).val();
+        		 $(this).attr("checked", true);
         	});
-        	$(".diffi").click(function(){
-        		var diffi = $(this).attr("id");
+        	$('input[name=p-rating]').click(function(){
+        		 pri = $(this).val();
+        		 $(this).attr("checked", true);
         	});
-        	$(".pri").click(function(){
-        		var pri = $(this).attr("id");
-        	});
-        	$(".sco").click(function(){
-        		var sco = $(this).attr("id");
+        	$('input[name=t-rating]').click(function(){
+        		 sco = $(this).val();
+        		 $(this).attr("checked", true);
         	});
         	
         	// 진행률 
@@ -394,6 +471,14 @@
         	
         	// 설문조사
         	$(".confirm").click(function(){
+        		console.log(qual);
+        		console.log(sati);
+        		console.log(diffi);
+        		console.log(pri);
+        		console.log(sco);
+        		console.log($("input[name=review]").val());
+        		console.log(tno);
+        		
         		$.ajax({
         			url: "survey.lec",
         			data: {
@@ -403,14 +488,17 @@
         				difficulty: diffi,
         				price : pri,
         				score : sco,
+        				review : $("input[name=review]").val(),
         				classNo : cno,
         				teacherNo : tno
         			}, success:function(result){
+        				
         				if(result > 0){
-	        				alert("설문 조사에 제출되었습니다!");
+	        				alert("설문 조사가 성공적으로 제출되었습니다!");
         				}else{
         					console.log("설문조사 디비 실패");
         				}
+        				
         			}, error:function(){
         				console.log("설문조사 통신 실패");
         			}

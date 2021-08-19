@@ -3,6 +3,8 @@ package com.kh.surf.lecture.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ import com.kh.surf.lecture.model.vo.ClassIntro;
 import com.kh.surf.lecture.model.vo.ClassStuding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.lecture.model.vo.Survey;
+import com.kh.surf.member.model.vo.Member;
+import com.kh.surf.payment.model.vo.Payment;
 
 @Controller
 public class LectureController {
@@ -109,11 +113,28 @@ public class LectureController {
 	 * 클래스 상세 조회
 	 */
 	@RequestMapping("detail.lec")
-	public ModelAndView selectLecture(ModelAndView mv, int cno) {
+	public ModelAndView selectLecture(ModelAndView mv, int cno, HttpSession session) {
 		Lecture l = lService.selectLecture(cno);
+		int count = 0;
+		if(session.getAttribute("loginUser") != null) {
+			int uno = ((Member)session.getAttribute("loginUser")).getUserNo();
+			Payment p = new Payment();
+			p.setClassNo(cno);
+			p.setUserNo(uno);
+			
+			int payCount = lService.selectPayCount(p);
+			if(payCount > 0) {
+				count += 1;
+			}
+			
+		}
+		
 		ArrayList<ClassIntro> cList = lService.selectLectureIntro(cno);
+		
 		mv.addObject("l", l)
+		  .addObject("count", count)
 		  .addObject("c", cList)
+		  .addObject("cList", cList)
 		  .setViewName("lecture/lectureDetailView");
 		return mv;
 	}
@@ -182,15 +203,9 @@ public class LectureController {
 	 * 유저 찜한 클래스 목록
 	 */
 	@RequestMapping("scrapList.lec")
-	public ModelAndView selectScrapList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage, int uno) {
-		System.out.print(uno);
-		int listCount = lService.selectScrapCount(uno);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 4, 12);
-		ArrayList<Lecture> sList = lService.selectScrapList(uno, pi);
-		
+	public ModelAndView selectScrapList(ModelAndView mv, int uno) {
+		ArrayList<Lecture> sList = lService.selectScrapList(uno);
 		mv.addObject("sList", sList)
-		  .addObject("pi", pi)
 		  .setViewName("member/scrapLectureList");
 		
 		return mv;

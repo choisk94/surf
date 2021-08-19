@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.surf.admin.model.vo.Ad;
+import com.kh.surf.lecture.model.vo.ClassFunding;
 import com.kh.surf.lecture.model.vo.Lecture;
 import com.kh.surf.main.model.dao.MainDao;
 import com.kh.surf.studyBoard.model.vo.Study;
@@ -35,6 +36,12 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public ArrayList<Study> selectPostList() {
 		return mDao.selectPostList(sqlSession);
+	}
+
+
+	@Override
+	public ArrayList<ClassFunding> selectFundingList() {
+		return mDao.selectFundingList(sqlSession);
 	}
 
 

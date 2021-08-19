@@ -134,11 +134,10 @@
 							<c:otherwise>
 								<img id="classThumbnail">
 							</c:otherwise>
-
-						</c:choose>
-						
+						</c:choose>						
 					</div>
 					<input id="thumbnail" type="file" name="upfile" class="inputFile" onchange="loadThumbnail(this);">
+					<input type="hidden" name="thumbnail" value="${l.thumbnail}">
 				</div>
 				<div>
 					<label for="classTitle" class="subGuide">클래스 제목</label>
@@ -163,6 +162,7 @@
 						<img id="intro-img" class="intro-file" onerror="this.src='resources/uploadFiles/lec_upfiles/writing.png'">
 					</div>
 					<input id="introFile" type="file" name="upfile" class="inputFile" onchange="loadIntroFile(this);">
+					<input type="hidden" name="introFile" value="${l.introFile}">
 				</div>
 				<div>
 					<div>
@@ -244,13 +244,11 @@
 					$('#video-info').text('동영상', fileName.split('/').reverse()[0].toLowerCase());
 				}
 
-
 				// 3. 저장하기 조건검사
 				var checkThumbnail = $('#classThumbnail').attr('src');
 				var classTitleLength = $('#classTitle').val().length;
 				var checkIntroImage = $('#intro-img').attr('src');
 				var checkIntroVideo = $('#video-info').text().length;
-
 
 				// 처음 강의 수정하기 조건검사
 				if(!isEmpty(checkThumbnail) && classTitleLength > 5 && (!isEmpty(checkIntroImage) || checkIntroVideo > 6)){
@@ -279,7 +277,9 @@
 				// intro 파일 유무
 				introFileFileLength =  document.getElementById('introFile').files.length;
 				
-				if(thumbnailFileLength == 1 && classTitleLength > 5 && introFileFileLength == 1){
+				if((thumbnailFileLength == 1 || $('#classThumbnail').attr('src') != 'undefined') 
+					&& classTitleLength > 5 
+					&& (introFileFileLength == 1 || $('#intro-img').attr('src') != 'undefined')){
 					checkSuccess();
 				}else{
 					checkFail();
@@ -288,20 +288,22 @@
 
 			// thumbnail 이미지 업로드 미리보기
 			function loadThumbnail(inputFile){
+
 				if(inputFile.files.length == 1){    //선택한 파일이 존재하는 경우
 					var reader = new FileReader();
 					reader.readAsDataURL(inputFile.files[0]);
 					reader.onload = function(e){$(inputFile).siblings('div').children('img').attr("src", e.target.result);}
 				}else{
-					$(inputFile).siblings('.addImage').children('img').attr("src", null);
+					$(inputFile).siblings('.addImage').children('img').attr("src", '${l.thumbnail}');
 				}
+
+				enableSubmit();
 			}
 			
 			// video or img 미리보기
 			function loadIntroFile(inputFile){
-				console.log('aa');
+				
 				var status = document.getElementById('file-area').className;
-				console.log(inputFile.files.length);
 				
 				if(inputFile.files.length == 1){    //선택한 파일이 존재
 
@@ -315,20 +317,18 @@
 						reader.readAsDataURL(inputFile.files[0]);
 						reader.onload = function(e){$(inputFile).siblings('div').children('img').attr("src", e.target.result);}
 						$(inputFile).siblings('div').children('div').text("동영상 등록");
-						console.log('axa');
 					} 
 
 				}else{ // 선택한 파일이 없는 경우
-					console.log(status + 'x');
+					
 					if(status == 'addRepVideo'){ // 비디오
 						$(inputFile).attr("src", null);
-						$(inputFile).siblings('div').children('img').attr("src", null);
+						$(inputFile).siblings('div').children('img').attr("src", '${l.introFile}');
 						$(inputFile).siblings('div').children('div').text("동영상 등록");
 					}else{ // 이미지
-						console.log('aa');
 						$(inputFile).attr("src", null);
 						$('.intro-file').removeAttr("src");
-						$('#intro-img').attr('src', null);
+						$('#intro-img').attr('src', '${l.introFile}');
 					}
 
 				}

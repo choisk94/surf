@@ -43,7 +43,7 @@ public interface TeacherService {
 	Lecture selectLectureInput(Lecture l);
 	ArrayList<ClassIntro> selectIntroList2(Lecture l);
 	ArrayList<Chapter> selectChapterList(int classNo);
-	ArrayList<ClassVideo> ajaxSelectVideoList(int classNo);
+	ArrayList<ClassVideo> ajaxSelectVideoList(Lecture l);
 	
 	// 9. 클래스 입력페이지 정보 저장(0-4)
 	int updateLecture0(Lecture l);
@@ -53,6 +53,8 @@ public interface TeacherService {
 	int updateClassIntro2(ArrayList<ClassIntro> classIntroList);
 	int deleteClassIntro2(Lecture introInfo);
 	
+	int deleteVideoList(String[] deleteFileName);
+	int deleteChapterList(Chapter deleteChap);
 	int updateChapterList(ArrayList<Chapter> chList);
 	int updateVideoList(ArrayList<ClassVideo> cvList);
 	
@@ -106,5 +108,10 @@ public interface TeacherService {
 	
 	// 19. 강사 신청
 	int applyTeacher(Teacher t);
+
+	
+
+	
+
 	
 }

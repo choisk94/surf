@@ -21,6 +21,7 @@
 		<result column="price" property="classPrice"/>
 		<result column="nickname" property="teacherName"/>
 		<result column="score" property="score"/>
+		<result column="scrapCount" property="scrapCount"/>
 	</resultMap>
 	
 	<resultMap id="studyResult" type="Study">
@@ -34,6 +35,15 @@
 		<result column="count" property="count"/>
 		<result column="create_date" property="createDate"/>
 		<result column="modify_date" property="modifyDate"/>
+	</resultMap>
+	
+	<resultMap id="classFundingResult" type="ClassFunding">
+		<result column="class_no" property="classNo"/>
+		<result column="standard" property="standard"/>
+		<result column="count" property="count"/>
+		<result column="start_date" property="startDate"/>
+		<result column="class_title" property="classTitle"/>
+		<result column="thumbnail" property="thumbnail"/>
 	</resultMap>
 	
 	<select id="selectMainAdList" resultMap="adResult">
@@ -54,6 +64,7 @@
 		     , thumbnail
 		     , to_char(price, '999,999,999')||'원' as price
 		     , nickname
+		     , 찜수 as scrapCount
 		     , trim(평점평균) as score
 		from (
 		select 
@@ -118,6 +129,23 @@
 		           and s.status = 'Y'
 		         order by study_no desc)
 		<![CDATA[where rownum <= 4]]>
+	</select>
+	
+	<select id="selectFundingList" resultMap="classFundingResult">
+		select *
+		  from (
+		        select
+				       f.class_no
+				     , standard
+				     , count
+				     , l.class_title
+				     , l.thumbnail
+				  from class_funding f
+				  join lecture l on(f.class_no = l.class_no)
+				 <![CDATA[where standard > count]]>
+				   and l.status = 'F'
+				 order by dbms_random.value)
+		 <![CDATA[where rownum <= 5]]>
 	</select>
 	
 </mapper>

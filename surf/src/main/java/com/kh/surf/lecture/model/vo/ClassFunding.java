@@ -13,4 +13,7 @@ public class ClassFunding {
 	private int standard;
 	private int count;
 	private String startDate;
+	
+	private String classTitle;
+	private String thumbnail;
 }
