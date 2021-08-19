@@ -149,7 +149,7 @@
                             <c:when test="${ c.status eq 'O' }">
                                 <div class="img openClass" onclick="moveClassDetail(${c.classNo});">
                                     <input type="hidden" name="classNo" value="${ c.classNo }">
-                                    <img src="${ c.thumbnail }" width="100%" height="100%">
+                                    <img src="${ c.thumbnail }" width="100%" height="100%" onclick="moveDetailView(${ c.classNo });">
                                 </div>
                             </c:when>
                             <c:otherwise>
@@ -360,8 +360,8 @@
         }
 
         // 강의 디테일 뷰로 이동
-        function moveClassDetail(classNo){
-
+        function moveDetailView(classNo){
+            location.href='detail.lec?cno=' + classNo;
         }
 
     </script>
