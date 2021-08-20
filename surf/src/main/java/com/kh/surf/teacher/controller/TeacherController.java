@@ -626,7 +626,7 @@ public class TeacherController {
 		if(beforeIntroLength <= intro.getClassIntroList().size()) {
 			// 전 보다 많거나 같은경우
 			result = result * tService.updateClassIntro2(intro.getClassIntroList());
-		}else {
+		} else {
 			// 전 보다 적은경우 SQL(delete) 될 파일 지우기
 			for(int i=0; i<deleteName.length; i++) {
 				new File(session.getServletContext().getRealPath(savePath) + 
@@ -635,6 +635,7 @@ public class TeacherController {
 			result = result * tService.updateClassIntro2(intro.getClassIntroList());
 			result = result * tService.deleteClassIntro2(introInfo);
 		}
+		
 				
 		if(result > 0) {
 			alertMsg = "소개 저장성공";
@@ -667,51 +668,19 @@ public class TeacherController {
 
 	l.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
 	
-	System.out.println("처음 들어왔을때");
-	System.out.println(chapter.getChList());
-	System.out.println(classVideo.getCvList());
-	
 	String savePath = "resources/uploadFiles/class_video/";
 	
 	String alertMsg = "";
 	int result1 = 1;
 	int result2 = 1;
+	int result3 = 1;
+	int result0 = 1;
 	
-	// 1. 지우는 파일 있는 경우
-	if(!deleteFileName[0].equals("nodata")) {
-		
-		for(int i=0; i<deleteFileName.length; i++) {
-			System.out.println("삭제");
-			
-			new File(session.getServletContext().getRealPath(savePath) + 
-					deleteFileName[i].substring(deleteFileName[i].lastIndexOf("/")+1)).delete();
-			
-			System.out.println(deleteFileName[i]);
-		}
-		result1 = tService.deleteVideoList(deleteFileName);
-	}
-	
-	// 2. 챕터 지우기
-	if(deleteCno[0] != 0 && beforeCno > chapter.getChList().size()) {
-				
-		Chapter deleteChap = new Chapter();
-		
-		deleteChap.setClassNo(l.getClassNo());
-		deleteChap.setChapOrder(beforeCno - deleteCno.length);
-		System.out.println("챕터지우기");
-		System.out.println(deleteChap);
-		
-		result2 = tService.deleteChapterList(deleteChap);
-		
-	}
-	
-	// 3. 파일있으면 파일 업로드하고 originName, ChangeName가져옴
+	// 1. 파일있으면 파일 업로드하고 originName, ChangeName가져옴
 	for(int i=0; i < classVideo.getCvList().size(); i++) {
 		
 		if(classVideo.getCvList().get(i).getUpfile() != null && !classVideo.getCvList().get(i).getUpfile().getOriginalFilename().equals("")) { //파일이 있다면?
-			System.out.println("파일 업로드");
-			System.out.println(classVideo.getCvList().get(i).getUpfile().getOriginalFilename());
-			System.out.println(i);
+			
 			String changeName = saveFile(session, classVideo.getCvList().get(i).getUpfile(), "/"+savePath);
 			classVideo.getCvList().get(i).setChangeName(savePath + changeName);
 			classVideo.getCvList().get(i).setOriginName(classVideo.getCvList().get(i).getUpfile().getOriginalFilename());
@@ -719,25 +688,48 @@ public class TeacherController {
 		}
 	}
 	
-	System.out.println("들어가기 전");
-	System.out.println(chapter.getChList());
-	System.out.println(classVideo.getCvList());
-	int result3 = tService.updateChapterList(chapter.getChList());
-	int result4 = tService.updateVideoList(classVideo.getCvList());
+	// 2. 지우는 파일 있는 경우 + 비디오 지우기
+	if(!deleteFileName[0].equals("nodata")) {
+		
+		for(int i=0; i<deleteFileName.length; i++) {
+			
+			new File(session.getServletContext().getRealPath(savePath) + 
+					deleteFileName[i].substring(deleteFileName[i].lastIndexOf("/")+1)).delete();
+			
+		}
+		result1 = tService.deleteVideoList(deleteFileName);
+	}
 	
-	System.out.println(result1);
-	System.out.println(result2);
-	System.out.println(result3);
-	System.out.println(result4);
+	// 3. 첫 저장인 경우_insert 실행	
+	if(beforeCno == 0) {
+		
+		result0 = tService.insertChapter(chapter.getChList()) 
+				* tService.insertClassVideo(classVideo.getCvList());
+		
+	} else {
+		// 4. 수정 요청인경우 merge_into
+		result3 = tService.updateChapterList(chapter.getChList())
+				* tService.updateVideoList(classVideo.getCvList());
+		
+	}
 	
-	int result = result1 * result2 * result3 * result4;
+	// 4. 챕터 지우기
+	if(deleteCno[0] != 0 && beforeCno > chapter.getChList().size()) {
+		
+		Chapter deleteChap = new Chapter();
+		deleteChap.setClassNo(l.getClassNo());
+		deleteChap.setChapOrder(beforeCno - deleteCno.length);
+		result2 = tService.deleteChapterList(deleteChap);
+		
+	}
+	
+	int result = result0 * result1 * result2 * result3;
 	
 	if(result > 0) {
 		alertMsg = "커리큘럼 저장성공";
 	}else {
 		alertMsg = "커리큘럼 저장실패";
 	}
-	
 	
 	mv.addObject("currentPage", currentPage)
 	.addObject("classNo", l.getClassNo())

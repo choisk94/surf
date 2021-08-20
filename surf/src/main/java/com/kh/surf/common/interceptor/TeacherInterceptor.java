@@ -30,9 +30,9 @@ public class TeacherInterceptor extends HandlerInterceptorAdapter{
 		}
 		
 		if(!((Member)session.getAttribute("loginUser")).getUserCode().equals("T")) {
+			
 			session.setAttribute("alertMsg", "강사신청, 승인 이후 이용 가능한 서비스입니다.");
-			// 강사 신청 페이지 보내기 _ 수정할것
-			response.sendRedirect(request.getContextPath());
+			response.sendRedirect(request.getContextPath() + "/enrollTeacher.tea");
 			return false;
 		}
 		

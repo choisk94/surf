@@ -53,6 +53,9 @@ public interface TeacherService {
 	int updateClassIntro2(ArrayList<ClassIntro> classIntroList);
 	int deleteClassIntro2(Lecture introInfo);
 	
+	int insertChapter(ArrayList<Chapter> chList);
+	int insertClassVideo(ArrayList<ClassVideo> cvList);
+	
 	int deleteVideoList(String[] deleteFileName);
 	int deleteChapterList(Chapter deleteChap);
 	int updateChapterList(ArrayList<Chapter> chList);
@@ -108,6 +111,10 @@ public interface TeacherService {
 	
 	// 19. 강사 신청
 	int applyTeacher(Teacher t);
+
+
+	
+
 
 	
 

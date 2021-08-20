@@ -310,13 +310,17 @@ public class TeacherDao {
 	}
 	
 	// 3번 페이지
+	public int insertChapter(ArrayList<Chapter> chList, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.insertChapter", chList);
+	}
+	public int insertClassVideo(ArrayList<ClassVideo> cvList, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("lectureMapper.insertClassVideo", cvList);
+	}
 	public int deleteVideoList(String[] deleteFileName, SqlSessionTemplate sqlSession) {
 		return sqlSession.delete("lectureMapper.deleteVideoList", deleteFileName);
 	}
-	public int deleteChapterList(Chapter deleteChap, SqlSessionTemplate sqlSession) {
-		int result = sqlSession.delete("lectureMapper.deleteVideoListCount", deleteChap) *
-			         sqlSession.delete("lectureMapper.deleteChapterList", deleteChap);
-		return result;
+	public int deleteChapterList(Chapter deleteChap, SqlSessionTemplate sqlSession) { 
+		return sqlSession.delete("lectureMapper.deleteChapterList", deleteChap);
 	}
 	public int updateChapterList(ArrayList<Chapter> chList, SqlSessionTemplate sqlSession) {
 		return sqlSession.insert("lectureMapper.updateChapterList", chList);
@@ -345,6 +349,10 @@ public class TeacherDao {
 	public int updateStatus(Lecture l, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("lectureMapper.updateStatus", l);
 	}
+
+	
+
+	
 
 
 
