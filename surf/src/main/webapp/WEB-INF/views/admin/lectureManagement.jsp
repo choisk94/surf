@@ -142,14 +142,14 @@
         <thead>
           <tr style="background-color: rgb(224, 224, 224)">
             <td width="70"><input id="allCheck" type="checkbox"
-						name="allCheck" /></td>
+						name="allCheck" /></td>w
             <td width="130">아이디</td>
             <td width="100">강사 이름</td>
-            <td width="110">카테고리</td>
+            <td width="100">카테고리</td>
             <td width="290">클래스명 및 소개</td>
             <td width="130">등록일</td>
-            <td width="80">상태</td>
-            <td width="20">번호</td>
+            <td width="100">상태</td>
+            <td width="15">번호</td>
           </tr>
           </thead>
           <tbody>
@@ -162,7 +162,26 @@
 						<td>${ l.maincatName }</td>
 						<td>${ l.introTitle }</td>
 						<td>${ l.createDate }</td>
-						<td>${ l.status }</td>
+						<c:choose>
+			           	  <c:when test="${ l.status == 'I' }">
+			              	<td>검토중</td>
+			              </c:when>
+			           	  <c:when test="${ l.status == 'A' }">
+			              	<td>재검토중</td>
+			              </c:when>
+			              <c:when test="${ l.status == 'O' }">
+			              	<td>오픈</td>
+			              </c:when>
+			              <c:when test="${ l.status == 'R' }">
+			              	<td>반려</td>
+			              </c:when>
+			              <c:when test="${ l.status == 'Q' }">
+			              	<td>펀딩문의</td>
+			              </c:when>
+			              <c:when test="${ l.status == 'W' }">
+			              	<td>작성중</td>
+			              </c:when>
+			            </c:choose>
 						<td class="lno">${ l.classNo }</td>
 					</tr>
 		  </c:forEach>

@@ -91,6 +91,12 @@ public class AdminController {
 		return mv;
 
 	}
+	@RequestMapping("adEnroll.ad")
+	public String adEnroll() {
+
+		return "admin/adEnroll";
+
+	}
 
 	// 정산내역 리스트조회
 	@RequestMapping("settleList.ad")

@@ -155,7 +155,9 @@
 		    ON S.SUBCAT_NO = L.SUBCAT_NO
 		    JOIN MAINCAT A
 		    ON S.MAINCAT_NO = A.MAINCAT_NO
-		    WHERE T.STATUS = 'Y')
+		    WHERE T.STATUS = 'Y'
+		    and L.status != 'D'
+		    and L.status != 'F')
 	</select>
 	
 	<!-- 클래스등록관리 페이징 -->
@@ -179,6 +181,8 @@
 		    JOIN MAINCAT A
 		    ON S.MAINCAT_NO = A.MAINCAT_NO
 		    WHERE T.STATUS = 'Y'
+		    and L.status != 'D'
+		    and L.status != 'F'
     </select>
 	
 	<insert id="insertAd">
