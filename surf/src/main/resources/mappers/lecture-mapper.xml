@@ -786,6 +786,7 @@
 	 	 </where>
 	 </delete>
 	  -->
+	  <!-- 
 	  <delete id="deleteVideoListCount">
 	 	<![CDATA[
 	 	delete from class_video
@@ -793,6 +794,7 @@
 	 	   and class_no = #{ classNo } 	
 	 	   ]]>
 	 </delete>
+	   -->
 	 <delete id="deleteChapterList">
 	 	<![CDATA[
 	 	delete from chapter
@@ -832,20 +834,59 @@
 	 	     	 		 	  , d.chap_name
 	 	     	 		 </trim>
 	 </insert>
+	 <insert id="insertChapter" parameterType="java.util.List">
+	 	     <foreach collection="list" item="ch" separator=" " open="insert all" close="select * from dual">
+	 	  into chapter
+	 	     (
+	 	       chap_order
+		 	 , class_no
+		 	 , chap_name
+	 	     )
+	 	     values
+	 	     (
+	 	       #{ch.chapOrder}
+	 	     , #{ch.classNo}
+	 	     , #{ch.chapName}
+	 	     )
+	 	     </foreach>
+	 </insert>
+	 <insert id="insertClassVideo" parameterType="java.util.List">
+	 	insert
+	 	  into class_video
+	 	     (
+	 	       video_no
+		 	 , class_no
+		 	 , chap_order
+		 	 , video_order
+		 	 , sub_title
+		 	 , origin_name
+		 	 , change_name
+	 	     )
+	 	     select seq_vno.nextval, input.* from
+	 	     <foreach collection="list" item="cv" separator="union all" open="(" close=") input">
+	 	       select 
+	 	     	 	  #{cv.classNo} as class_no
+	 	     		, #{cv.chapOrder} as chapOrder
+	 	     		, #{cv.videoOrder} as videoOrder
+	 	     		, #{cv.subTitle} as sub_title
+	 	     		, #{cv.originName} as origin_name
+	 	     		, #{cv.changeName} as change_name
+	 	     	 from dual
+	 	     </foreach>
+	 </insert>
 	 <insert id="updateVideoList" parameterType="java.util.List">
 	 	merge into class_video cv
 	 	     using (
-	 	     		<foreach collection="list" item="cv" open="" close="" separator="union">
+	 	     		<foreach collection="list" item="cv" open="(" close=") order by chap_order asc, video_order desc" separator="union all">
 	 	     			select #{cv.videoNo} as video_no
+	 	     			     , #{cv.videoOrder} as video_order
 	 	     			     , #{cv.classNo} as class_no
 	 	     			     , #{cv.chapOrder} as chap_order
-	 	     			     , #{cv.videoOrder} as video_order
 	 	     			     , #{cv.subTitle} as sub_title
 	 	     			     , #{cv.originName} as origin_name
 	 	     			     , #{cv.changeName} as change_name
 	 	     			  from dual
 	 	     		</foreach>
-	 	     		order by chap_order asc, video_order desc
 	 	     		) d
 	 	     	on (
 	 	     		 cv.video_no = d.video_no
@@ -853,6 +894,8 @@
 	 	     	 	when matched then
 	 	     	 		 update
 	 	     	 		 <set>
+	 	     	 		 	cv.chap_order = d.chap_order,
+	 	     	 		 	cv.video_order = d.video_order,
 	 	     	 		 	cv.sub_title = d.sub_title,
 	 	     	 		 	cv.origin_name = d.origin_name,
 	 	     	 		 	cv.change_name = d.change_name

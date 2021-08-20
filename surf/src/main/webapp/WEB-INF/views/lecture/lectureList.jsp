@@ -275,7 +275,6 @@
         
         
         function detail(_cno) {
-        	//location.href='/surf/detail.lec?cno=${l.classNo}'
         	if(!_cno) return false;
         	location.href = '/surf/detail.lec?cno=' + _cno;
         }
@@ -284,11 +283,14 @@
         	
         	if (event.stopPropagation) event.stopPropagation();
 			else event.cancelBubble = true;
-        	
         	/*
-        	$(".text").click(function(){
-        		e.stopPropagation();
-        	});*/
+            if (event.preventDefault) {
+            	event.preventDefault();
+            } else {
+            	event.returnValue = false;
+            	return false;
+            }
+        	*/
 
         	$.ajax({
         		url: "scrapCheck.lec",
@@ -308,16 +310,6 @@
         		}
         	})
         	
-        	if (event.stopPropagation) event.stopPropagation();
-			else event.cancelBubble = true;
-        	/*
-            if (event.preventDefault) {
-            	event.preventDefault();
-            } else {
-            	event.returnValue = false;
-            	return false;
-            }
-        	*/
         	return false;
         	
         }

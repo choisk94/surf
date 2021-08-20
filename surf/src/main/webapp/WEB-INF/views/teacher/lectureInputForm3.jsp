@@ -231,10 +231,7 @@
 					$(this).parent('.subTitle-box').remove();
 					info[chapNo][1] -= 1;
 					--vno;
-					console.log($(this));
 					var deleteChangeName = $(this).parent('.subTitle-box').children('input[type=hidden]').eq(5).val();
-
-					console.log(deleteChangeName);
 
 					if(deleteChangeName != ""){
 						$('#inputForm').prepend('<input type="hidden" name="deleteFileName" value="' + deleteChangeName + '">');
@@ -280,7 +277,7 @@
 					var sum = 1;
 					
 					// 복사할때 file 제거하고 추가버튼으로 되돌리고 name값 변경
-					$clone.children('input[type=file]').val("");
+					//$clone.children('input[type=file]').val("");
 					$clone.children('input[type=file]').siblings('.video-img').css('background-size', '20px').text('추가').css('padding-left', 20).css('width', '50px');
 					// input text 값 제거하고 name 값 변경
 					$clone.children('input[type=text]').val("").attr('name', 'cvList[' + (vno-1) + '].subTitle').attr('id', 'subTitle' + vno);
@@ -329,7 +326,6 @@
 				$clone.children('.curriculum-box').children('input[type=hidden]').eq(1).attr('name', 'chList[' + (cno-1) + '].classNo').val(${l.classNo});
 				$clone.children('.curriculum-box').children('input[type=text]').eq(0).attr('name', 'chList[' + (cno-1) + '].chapName').attr('id', 'chapName' + cno);
 				// 복사할때 file 제거하고 추가버튼으로 되돌리고 name값 변경
-				$clone.find('input[type=file]').val("");
 				$clone.find('input[type=file]').attr('name', 'cvList[' + (vno-1) + '].upfile');
 				$clone.find('input[type=file]').siblings('.video-img').css('background-size', '20px').text('추가').css('padding-left', 20).css('width', '50px');
 				// input text 값 제거하고 name 값 변경
@@ -344,6 +340,31 @@
 
 				// subTitle 숫자 변경 
 				$clone.find('.subTitle').text(info[cno-1][0] + '.' + info[cno-1][1]);
+
+				var sum = 1;
+				for(var i=0; i<cno; i++){
+					//var $chap = $('.chap' + (i+1)).children('.subTitle-box');
+
+					$('#input-box').children('div').eq(i).find('.chap-head').text('챕터' + (i+1));
+					$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(0).attr('name', 'chList[' + i + '].chapOrder').val(i + 1);
+					$('#input-box').children('div').eq(i).find('input[type=hidden]').eq(1).attr('name', 'chList[' + i + '].classNo');
+					$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
+
+					var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
+
+					for(var j=sum; j<=sum+info[i][1]; j++){
+						$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(2).attr('name', 'cvList[' + (j-1) + '].chapOrder').val(i + 1);
+						$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
+						$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
+						$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
+						$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
+						$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
+						$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
+					}
+					sum += info[i][1];
+				}
 
 				afterCheck(cno, vno);
 			})
@@ -399,9 +420,9 @@
 						$chap.eq(j-sum).children('input[type=hidden]').eq(3).attr('name', 'cvList[' + (j-1) + '].videoOrder').val(j-sum+1);
 						$chap.eq(j-sum).children('input[type=hidden]').eq(4).attr('name', 'cvList[' + (j-1) + '].originName');
 						$chap.eq(j-sum).children('input[type=hidden]').eq(5).attr('name', 'cvList[' + (j-1) + '].changeName');
+						$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 						$chap.eq(j-sum).children('.subTitle').text((i+1) + '.' + (j-sum+1));
 						$chap.eq(j-sum).children('input[type=text]').attr('id', 'subTitle' + j).attr('name', 'cvList[' + (j-1) + '].subTitle');
-						$chap.eq(j-sum).children('input[type=file]').attr('name', 'cvList[' + (j-1) + '].upfile');
 					}
 					sum += info[i][1];
 				}
@@ -427,7 +448,7 @@
 						info.push([i, 0]);
 						++cno;
 					}
-					console.log(videoList);
+
 					for(var i in videoList){
 
 						$('.chap' + videoList[i].chapOrder)
@@ -460,8 +481,7 @@
 						$('#input-box').children('div').eq(i).find('input[type=text]').eq(0).attr('name', 'chList[' + i + '].chapName').removeAttr('id').attr('id', 'chapName' + (i + 1));
 
 						var $chap = $('#input-box').children('div').eq(i).find('.subTitle-box');
-							//  3   
-							console.log(cno);
+							
 						for(var j=sum; j<=sum+info[i][1]; j++){
 							$chap.eq(j-sum).children('input[type=hidden]').eq(0).attr('name', 'cvList[' + (j-1) + '].videoNo');
 							$chap.eq(j-sum).children('input[type=hidden]').eq(1).attr('name', 'cvList[' + (j-1) + '].classNo');
@@ -491,8 +511,6 @@
 					}
 					
 					beforeCheck(cno, vno);
-					console.log(info);
-					console.log(vno);
 
 	//				$('input[name=beforeVno]').val(info);
 				}, error : function(){

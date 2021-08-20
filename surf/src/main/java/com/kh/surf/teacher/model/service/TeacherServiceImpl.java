@@ -369,6 +369,24 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 	
 	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '챕터 목록' insert
+	 */
+	@Override
+	public int insertChapter(ArrayList<Chapter> chList) {
+		return tDao.insertChapter(chList, sqlSession);
+	}
+	
+	/**
+	 * @author HeeRak
+	 * 강의 등록|수정 '비디오 목록' insert
+	 */
+	@Override
+	public int insertClassVideo(ArrayList<ClassVideo> cvList) {
+		return tDao.insertClassVideo(cvList, sqlSession);
+	}
+	
+	/**
 	 * 강의 등록|수정 '비디오 목록' 제거
 	 */
 	@Override
@@ -422,6 +440,11 @@ public class TeacherServiceImpl implements TeacherService{
 	public int updateStatus(Lecture l) {
 		return tDao.updateStatus(l, sqlSession);
 	}
+
+
+	
+
+
 
 
 	

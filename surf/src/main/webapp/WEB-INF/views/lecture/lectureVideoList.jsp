@@ -310,9 +310,10 @@
             $('.home-btn').click(function(){
                 location.href="<%=request.getContextPath()%>";
             })
-            $('.lecture-list-btn').click(function(){
-                //                                                                  ★강의목록 페이지 요청값 넣을것
-                location.href="";
+            $('.lecture-list-btn').click(function(){ // 내 강의 목록 이동
+
+                location.href="/myLecture.lec?uno=${loginUser.userNo}";
+
             })
             
             // video duration관련 (시청여부)

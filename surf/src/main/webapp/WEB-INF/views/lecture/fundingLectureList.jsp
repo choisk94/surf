@@ -47,7 +47,7 @@
         /*background: rgba(0, 120, 52, 0.1);*/
     }
     /*.thumbnail span{margin-bottom: 5px;}*/
-    .thumbnail>p{height: 150px;}
+    .thumbnail>p{height: 55px;}
     .class-thumb{position: relative;}
     .scrap-icon img{position:absolute;top: 20px;}
     #pagingArea{width:fit-content;margin:auto;}
@@ -170,8 +170,10 @@
 
 				<c:forEach var="f" items="${ fList }">
                     <div class="thumbnail" align="center">
-                        <input type="hidden" name="classNo" value="${ f.classNo }">
-                        <div id="class-thumb">
+                    	<div class="user-no">
+                        	<input type="hidden" name="classNo" value="${ f.classNo }">
+                        </div>
+                        <div class="class-thumb">
                              <img src="${ f.thumbnail }" width="240" height="150" id="">
                         </div>
     
@@ -181,10 +183,11 @@
                             <span style="font-size:14px">
                                  <i class="fas fa-heart"></i> ${ f.fundingCount }
                             </span> <br>
-                            <button type="button" class="btn support-btn" id="modal-open"
-                            	style="background-color: rgb(32, 155, 212); color:white; font-weight:bold;"
-                            >응원하기</button>
                         </p>
+                        <button type="button" class="btn support-btn" id="modal-open"
+                      	style="background-color: rgb(32, 155, 212); color:white; font-weight:bold;">
+                        	응원하기
+                        </button>
                     </div>
 				</c:forEach>
                     
@@ -244,7 +247,7 @@
 	                                <div class="body-contentbox">
 	                                    
 	                                    <div class="modal-img">
-	                                        <img src="../resource/img/dog.jpeg" class="funding-img" 
+	                                        <img src="" class="funding-img" 
 	                                        style="width: 640px; height: 400px; ">
 	                                        <!--클래스 대표 이미지 넣기-->
 	                                        <div class="text">
@@ -272,15 +275,31 @@
 
         <script>
         
-        	var cno = $('input[name=classNo]').val();
-        	var uno = ${loginUser.userNo};
+	     	// 모달
+	        $(function(){
+	            $("#confirm").click(function(){
+	                modalClose(); 
+	            });
+	            $(document).on("click","#modal-open", function(){        
+	                $("#popup").css('display','flex').hide().fadeIn();
+	            });
+	            $("#close").click(function(){
+	                modalClose(); 
+	            });
+	            function modalClose(){
+	                $("#popup").fadeOut(); 
+	            }
+	        });
+        
+        	var cno = $(".user-no").children().val();
+        	var uno = '${loginUser.userNo}';
         	
         	// 모달 상세 조회
-        	$("#modal-open").click(function(){
+        	$(document).on("click", "#modal-open", function(){
         	//function selectLecture(){
-        		
+        	
         		$.ajax({
-        			url : '/surf/fundingDetail.lec?cno=' + cno,
+        			url : '/surf/fundingDetail.lec?cno=' + $(".user-no").children().val(),
         			//data : { classNo : cno },
         			success: function(data){
         				
@@ -334,46 +353,33 @@
         	// 응원하기 에이작스
             function supportLecture(){
                 
-            	$.ajax({
-        			url : '/surf/support.lec?cno=' + cno,
-        			type : "get", 
-        			data : { userNo : uno },
-        			success: function(result){
-        				
-        				if(result == 1 ){
-        					
-	        				alert("클래스를 응원했습니다!");
-	        				
-        				} else {
-        					alert("응원 실패!");
-        				}
-        				
-        			}, error : function(){
-        				console.log("응원하기 ajax 실패");
-        			}
+        		if(${empty loginUser}){
+        			alert("로그인 후 이용가능합니다.")
+        		}else{
         		
-        		}) // End of ajax
+	            	$.ajax({
+	        			url : '/surf/support.lec?cno=' + cno,
+	        			type : "get", 
+	        			data : { userNo : uno },
+	        			success: function(result){
+	        				
+	        				if(result == 1 ){
+	        					
+		        				alert("클래스를 응원했습니다!");
+		        				
+	        				} else {
+	        					alert("응원 실패!");
+	        				}
+	        				
+	        			}, error : function(){
+	        				console.log("응원하기 ajax 실패");
+	        			}
+	        		
+	        		}) // End of ajax
+	        		
+        		}
         		
             } // End of supportLecture
-        	
-
-         	// 모달
-            $(function(){
-                $("#confirm").click(function(){
-                    modalClose(); 
-                });
-                $("#modal-open").click(function(){        
-                    $("#popup").css('display','flex').hide().fadeIn();
-                });
-                $("#close").click(function(){
-                    modalClose(); 
-                });
-                function modalClose(){
-                    $("#popup").fadeOut(); 
-                }
-            });
-            
-        
     
         </script>
 

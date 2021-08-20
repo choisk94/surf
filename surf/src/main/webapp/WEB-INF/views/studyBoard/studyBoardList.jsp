@@ -107,6 +107,7 @@
 		</div>
 		
 		<!--맨위로 이동 => 수정좀 해야됨..
+		-->
 		<button id="goTopBtn">
 			<i class="fas fa-angle-double-up"></i>		
 		</button>
@@ -126,7 +127,6 @@
 			    });
 			})
 		</script>
-		-->
 
 		<div style="width: 750px; margin: auto; margin-top: 60px;">
 
@@ -139,60 +139,7 @@
 						<button id="searchBtn" class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
 					</div>
 				</div>
-				<script>
-					$(function(){
-						$("#searchBtn").on("click", function(){
-							$.ajax({
-								url:"more.sb",
-								data:{
-									currentPage:1,
-									keyword:$("#keyword").val()
-									},
-								success:function(slist){
-									var result = "";
-									
-									if(slist == ''){
-										result += '<tr>'
-													+ '<td width="800" align="center">'
-													+ '게시물이 존재하지 않습니다.'
-													+ '</td>'
-												+ '</tr>'
-										$("#moreStudy").attr("disabled", true);
-									} else {
-										for(var i in slist){
-										
-										result += '<tr>'
-													+ '<input class="studyNo" type="hidden" value="' + slist[i].studyNo + '">'
-													+ '<td width="600">'
-														+ '<div class="studyTitle">' + slist[i].studyTitle + '</div>'
-														+ '<div class="studyContent" style="font-weight:normal; font-size: 12px; color:rgb(94, 94, 94);">'
-														+ slist[i].studyContent
-														+ '</div>'
-													+ '</td>'
-													+ '<td width="200">'
-														+ '<div align="center">'
-														if(slist[i].recruit == 'Y'){
-															result += '<img style="width: 40px;" src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />'
-														} else {
-															result += '<img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />'
-														}
-												result += '</div>'
-														+ '<div class="writerInfo">'
-															+ '작성자 : ' + slist[i].writer + '<br> 작성일 : ' + slist[i].createDate + '<br> 조회수 : ' + slist[i].count
-														+ '</div>'
-													+ '</td>'
-												+ '</tr>'
-										}
-									}
-									$("#studyList").html(result);								
-									
-								}, error:function(){
-									console.log("ajax통신 실패!!");	
-								}
-							})
-						})
-					})
-				</script>
+
 				<!-- 글쓰기 버튼 -->
 				<c:if test="${ !empty loginUser }">
 					<div style="width: 39%; float: left;" align="right">
@@ -209,62 +156,6 @@
 				<a class="selBy" id="NN">모집완료</a>
 			</div>
 			<input id="btnSelBy" type="hidden" value="">
-			<script>
-				$(function(){
-					$(".selBy").on("click", function(){
-						$("#btnSelBy").val($(this).attr("id"));
-						$("#keyword").val("");
-						$.ajax({
-							url:"more.sb",
-							data:{
-								currentPage:1,
-								recruit:$(this).attr("id")
-								},
-							success:function(slist){
-								var result = "";
-								
-								if(slist == ''){
-									result += '<tr>'
-												+ '<td width="800" align="center">'
-												+ '게시물이 존재하지 않습니다.'
-												+ '</td>'
-											+ '</tr>'
-									$("#moreStudy").attr("disabled", true);
-
-								} else {
-									for(var i in slist){
-									result += '<tr>'
-												+ '<input class="studyNo" type="hidden" value="' + slist[i].studyNo + '">'
-												+ '<td width="600">'
-													+ '<div class="studyTitle">' + slist[i].studyTitle + '</div>'
-													+ '<div class="studyContent" style="font-weight:normal; font-size: 12px; color:rgb(94, 94, 94);">'
-													+ slist[i].studyContent
-													+ '</div>'
-												+ '</td>'
-												+ '<td width="200">'
-													+ '<div align="center">'
-													if(slist[i].recruit == 'Y'){
-														result += '<img style="width: 40px;" src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />'
-													} else {
-														result += '<img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />'
-													}
-											result += '</div>'
-													+ '<div class="writerInfo">'
-														+ '작성자 : ' + slist[i].writer + '<br> 작성일 : ' + slist[i].createDate + '<br> 조회수 : ' + slist[i].count
-													+ '</div>'
-												+ '</td>'
-											+ '</tr>'
-									}
-								}
-								$("#studyList").html(result);
-								
-							}, error:function(){
-								console.log("ajax통신 실패!!");	
-							}
-						})
-					})
-				})
-			</script>
 			
 			<br>
 			<!-- 게시글 목록 -->
@@ -311,6 +202,39 @@
 	</div>
 
 	<script>
+	
+		// 스터디 글목록 가져오기 함수
+		function makeList(slist){
+			var result = "";
+			
+			for(var i in slist){
+			
+			result += '<tr>'
+						+ '<input class="studyNo" type="hidden" value="' + slist[i].studyNo + '">'
+						+ '<td width="600">'
+							+ '<div class="studyTitle">' + slist[i].studyTitle + '</div>'
+							+ '<div class="studyContent" style="font-weight:normal; font-size: 12px; color:rgb(94, 94, 94);">'
+							+ slist[i].studyContent
+							+ '</div>'
+						+ '</td>'
+						+ '<td width="200">'
+							+ '<div align="center">'
+							if(slist[i].recruit == 'Y'){
+								result += '<img style="width: 40px;" src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />'
+							} else {
+								result += '<img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />'
+							}
+					result += '</div>'
+							+ '<div class="writerInfo">'
+								+ '작성자 : ' + slist[i].writer + '<br> 작성일 : ' + slist[i].createDate + '<br> 조회수 : ' + slist[i].count
+							+ '</div>'
+						+ '</td>'
+					+ '</tr>'
+			}
+			
+			return result;
+		}
+	
 		$(function() {
 			// 게시글 항목에 hover했을 때 효과
 			$("#studyList").on("mouseover", "tr", function(){
@@ -336,40 +260,90 @@
 						  },
 					success:function(slist){
 						
+						var result = "";
 						if(slist == ''){
 							$("#moreStudy").attr("disabled", true);
 							alert("마지막 게시물 입니다.");
+							page = 2;
 						}
-						var result = "";
 						
-						for(var i in slist){
-						
-						result += '<tr>'
-									+ '<input class="studyNo" type="hidden" value="' + slist[i].studyNo + '">'
-									+ '<td width="600">'
-										+ '<div class="studyTitle">' + slist[i].studyTitle + '</div>'
-										+ '<div class="studyContent" style="font-weight:normal; font-size: 12px; color:rgb(94, 94, 94);">'
-										+ slist[i].studyContent
-										+ '</div>'
-									+ '</td>'
-									+ '<td width="200">'
-										+ '<div align="center">'
-										if(slist[i].recruit == 'Y'){
-											result += '<img style="width: 40px;" src="https://img.shields.io/badge/모집중-00B388?style=flat-square&&logoColor=white" />'
-										} else {
-											result += '<img style="width: 50px;" src="https://img.shields.io/badge/모집완료-6E6E6E?style=flat-square&&logoColor=white" />'
-										}
-								result += '</div>'
-										+ '<div class="writerInfo">'
-											+ '작성자 : ' + slist[i].writer + '<br> 작성일 : ' + slist[i].createDate + '<br> 조회수 : ' + slist[i].count
-										+ '</div>'
-									+ '</td>'
-								+ '</tr>'
-						}
+						result = makeList(slist);
+
 						$("#studyList").append(result);
 						page++;
 					}, error:function(){
 						
+					}
+				})
+			})
+			
+			// 전체 | 모집중 | 모집완료 버튼
+			$(".selBy").on("click", function(){
+				page = 2;
+				$("#moreStudy").attr("disabled", false);
+				$("#btnSelBy").val($(this).attr("id"));
+				$("#keyword").val("");
+				$.ajax({
+					url:"more.sb",
+					data:{
+						currentPage:1,
+						recruit:$(this).attr("id")
+						},
+					success:function(slist){
+						var result = "";
+						
+						if(slist == ''){
+							result += '<tr>'
+										+ '<td width="800" align="center">'
+										+ '게시물이 존재하지 않습니다.'
+										+ '</td>'
+									+ '</tr>'
+							$("#moreStudy").attr("disabled", true);
+
+						} else {
+							result = makeList(slist);
+							
+						}
+						
+						$("#studyList").html(result);
+						
+					}, error:function(){
+						console.log("ajax통신 실패!!");	
+					}
+				})
+			})
+			
+			// 검색버튼
+			$("#searchBtn").on("click", function(){
+				$("#moreStudy").attr("disabled", false);
+				$("#btnSelBy").val("");
+				page = 2;
+				$.ajax({
+					url:"more.sb",
+					data:{
+						currentPage:1,
+						keyword:$("#keyword").val()
+						},
+					success:function(slist){
+						
+						
+						var result = "";
+						
+						if(slist == ''){
+							result += '<tr>'
+										+ '<td width="800" align="center">'
+										+ '게시물이 존재하지 않습니다.'
+										+ '</td>'
+									+ '</tr>'
+							$("#moreStudy").attr("disabled", true);
+						} else {
+							
+							result = makeList(slist);
+						}
+						$("#studyList").html(result);								
+						
+					}, error:function(){
+						console.log("ajax통신 실패!!");	
 					}
 				})
 			})
