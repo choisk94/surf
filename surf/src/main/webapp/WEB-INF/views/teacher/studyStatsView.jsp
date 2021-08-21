@@ -47,8 +47,8 @@
 
 #stats-date {
 	float: left;
-	margin-top: 38px;
-	margin-left: 60px;
+	margin-top: 47px;
+	margin-left: 70px;
 }
 
 #stats-wrap {
@@ -102,6 +102,7 @@ svg {
 	top: 16px;
 	left: 710px;
 	z-index: 6;
+	color: gray;
 }
 
 #stats-sort div {
@@ -114,7 +115,7 @@ svg {
 
 .vertical-line {
 	float: left;
-	border-color: gray;
+	border-color: lightgray;
 	border-style: solid;
 	border-width: 0 0 0 1px;
 	margin: 4px 8px;
@@ -172,19 +173,31 @@ svg {
 			<div id="stats1">
 				<div class="stats-title">신규 수강 건수</div>
 				<div id="stats-sort">
-					<input type="hidden" value="" name="condition">
+					<input type="hidden" value="daily" name="condition">
 					<div id="daily">최근 1주일</div>
 					<div class="vertical-line"></div>
 					<div id="monthly">최근 6개월</div>
 				</div>
 				<script>
+					$(function(){
+						if($("input[name=condition]").val() == "daily") {
+							$("#daily").css("color", "black");
+						}else {
+							$("#monthly").css("color", "black");
+						}
+					})
+				
 					$("#daily").click(function(){
 			    		$("input[name=condition]").val("daily");
+			    		$("#monthly").css("color", "gray");
+	            		$(this).css("color", "black");
 			    		ajaxNewOrderStats();
 			    		resetSelectTime();
 			   		})
 			   		$("#monthly").click(function(){
 			   			$("input[name=condition]").val("monthly");
+			   			$("#daily").css("color", "gray");
+	            		$(this).css("color", "black");
 			   			ajaxNewOrderStats();
 		    			resetSelectTime();
 			    	})
