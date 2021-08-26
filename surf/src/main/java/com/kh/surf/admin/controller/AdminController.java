@@ -221,14 +221,6 @@ public class AdminController {
 		return "redirect:memList.ad";
 	}
 
-	// 광고 수정
-	@RequestMapping("updateForm.ad")
-	public String updateForm(int bno, Model model) {
-
-		model.addAttribute("Ad", aService.selectAd(bno));
-		return "admin/adUpdateForm";
-	}
-
 	// 클래스 승인
 	@RequestMapping("lecApproval.ad")
 	public String lecture1(HttpServletRequest request) throws Exception {
@@ -429,7 +421,7 @@ public class AdminController {
 		return mv;
 
 	}
-
+	//광고베너 등록
 	@RequestMapping("insert.ad")
 	public String insertAdmin(Ad a, MultipartFile upfile, HttpSession session, Model model) {
 
@@ -452,6 +444,15 @@ public class AdminController {
 		}
 
 	}
+
+	// 광고 수정
+	@RequestMapping("updateForm.ad")
+	public String updateForm(int bno, Model model) {
+
+		model.addAttribute("Ad", aService.selectAd(bno));
+		return "admin/adUpdateForm";
+	}
+
 
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 

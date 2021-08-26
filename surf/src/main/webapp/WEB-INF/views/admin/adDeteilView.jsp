@@ -28,6 +28,9 @@
                         <td>${ Ad.originName }</td>
                     </tr>
                     <tr>
+                        <td colspan="2"><img src="${ Ad.changeName }"width="800" height="300"></td>
+                    </tr>
+                    <tr>
                         <th ><label for="content">링크</label></th>
                         <td >${ Ad.adLink }</td>
                     </tr>
@@ -44,6 +47,7 @@
 	            	<input type="hidden" name="filePath" value="${ Ad.changeName }">
 	            </form>
 	            
+	            
 	            <script>
 	            	function postFormSubmit(num){
 	            		if(num == 1){ // 수정하기 클릭시
@@ -52,6 +56,7 @@
 	            			$("#postForm").attr("action", "delete.ad").submit();
 	            		}
 	            	}
+	            	
 	            </script>
 	            </div>
       </div>

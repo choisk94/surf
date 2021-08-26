@@ -68,6 +68,8 @@ div {
 .img-box>img {
 	display: block;
 	width: 100%;
+	height: 357px;
+	object-fit: fill;
 }
 
 /* 메인 부모 */
