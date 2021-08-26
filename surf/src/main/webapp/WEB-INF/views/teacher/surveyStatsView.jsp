@@ -47,8 +47,8 @@
 
 #stats-date {
 	float: left;
-	margin-top: 40px;
-	margin-left: 63px;
+	margin-top: 47px;
+	margin-left: 70px;
 }
 
 #stats-wrap {

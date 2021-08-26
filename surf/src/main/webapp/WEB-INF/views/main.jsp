@@ -164,6 +164,7 @@ div {
 }
 .condition {
 	font-size: 15px;
+	color: gray;
 }
 .condition:hover {
 	cursor: pointer;
@@ -645,7 +646,7 @@ div {
 	            console.clear();
 	            $('.slide-list1').slick({
 	                autoplay: true,
-	                autoplaySpeed: 5000,
+	                autoplaySpeed: 4000,
 	                dots:true
 	            });
 	        
@@ -717,8 +718,20 @@ div {
 					</div>
 				</div>
 				<script>
+					$(function(){
+						if($("input[name=condition]").val() == "1") {
+							$(".condition input[value=1]").parent().css("color", "black");
+						}else if($("input[name=condition]").val() == "2") {
+							$(".condition input[value=2]").parent().css("color", "black");
+						}else {
+							$(".condition input[value=3]").parent().css("color", "black");
+						}
+					})
+				
 	            	$(".condition").click(function(){
 	            		$("input[name=condition]").val($(this).children("input").val());
+	            		$(".condition").css("color", "gray");
+	            		$(this).css("color", "black");
 	            		ajaxRecomClassList();
 	            	});
 	            </script>
@@ -941,7 +954,7 @@ div {
 	            console.clear();
 	           $('.slide-list2').slick({
 	                autoplay: true,
-	                autoplaySpeed: 5000,
+	                autoplaySpeed: 4000,
 	                dots:true
 	            });
 	        
