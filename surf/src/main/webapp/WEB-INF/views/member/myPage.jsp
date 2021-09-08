@@ -106,10 +106,12 @@
                     						email:'${loginUser.email}',
                     						nickname:$("#nickname").val(),
                     						gender:$("input[type = radio]:checked").val(),
-                    						ageRange:$("#ageRange").val()
+                    						ageRange:$("#ageRange").val(),
+                    						enrollType:'${loginUser.enrollType}'
                     						},
                    						success:function(updateUser){
-                        						$("#nickName").text(updateUser.nickname);
+                   								console.log(updateUser);
+                        						//$("#nickName").text(updateUser.nickname);
                         						
                         						$("input[type=radio]").each(function(){
                         							if($(this).val() == updateUser.gender){
