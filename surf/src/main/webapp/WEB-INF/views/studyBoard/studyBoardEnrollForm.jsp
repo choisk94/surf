@@ -10,15 +10,9 @@
 
 
 <!-- include summernote css/js -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css"
-	rel="stylesheet">
-<script
-	src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
-
-
+<link href="resources/css/summernote/summernote-lite.css" rel="stylesheet">
+<script	src="resources/js/summernote/summernote-lite.js"></script>
+<script	src="resources/js/summernote/lang/summernote-ko-KR.js"></script>
 
 <script>
 //JQuery 충돌 처리를한다 (function( $ ) { })( jQuery );

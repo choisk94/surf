@@ -250,26 +250,26 @@ public class MemberController {
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
-		//가입된 이메일이 없을 경우
+		// 1) 이메일 가입여부 확인
+		// 가입된 이메일이 없을 경우
 		if(mService.idCheck(m) == 0) {
 			out.print("등록되지 않은 아이디입니다.");
 			out.close();
-			
+		
+		// 가입된 이메일 있을 경우
 		} else {
-			// 임시 비밀번호 생성
+			// 2) 임시 비밀번호 생성
 			String pw = "";
 			for(int i = 0; i < 12; i++) {
 				pw += (char)((Math.random() * 26) + 97);
 			}
 			
+			// 3) 임시 비밀번호 사용하여 메일 발송
 			m.setPassword(pw);
-			
-			// 비밀번호 변경 메일 발송
 			sendEmail(m, "findPwd");
 			
-			// 비밀번호 암호화
+			// 4) 비밀번호 암호화하여 DB에 저장
 			m.setPassword(bcryptPasswordEncoder.encode(pw));
-			// DB의 비밀번호 변경
 			mService.updateMemPwd(m);
 			
 			out.print("이메일로 임시 비밀번호를 발송하였습니다");
@@ -282,13 +282,13 @@ public class MemberController {
 	 * 비밀번호 찾기 - 이메일 발송
 	 */
 	public void sendEmail(Member m, String str) throws Exception {
-		// Mail Server설정
+		// 1) Mail Server설정
 		String charSet = "utf-8";
 		String hostSMTP = "smtp.gmail.com"; // 네이버는 smtp.naver.com
 		String hostSMTPid = "surfer79790@gmail.com";	// 서버 이메일 주소(보내는사람 이메일 주소)
 		String hostSMTPpwd = "surfonhobby"; // 서버 이메일 비번(보내는 사람 이메일 비번)
 		
-		// 보내는 사람 이메일, 제목, 내용
+		// 2) 보내는 사람 이메일, 제목, 내용
 		String fromEmail = "admin@surf.com"; // 보내는 사람 이메일 주소(받는 사람 이메일에 표시됨)
 		String fromName = "SURF 관리운영팀"; // 프로젝트이름 또는 보내는 사람 이름
 		String subject = ""; // 이메일 제목(밑에서 작성)
@@ -328,29 +328,35 @@ public class MemberController {
 	 * @param code
 	 */
 	@RequestMapping(value = "klogin.do", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelAndView mv) throws Exception {
+	public ModelAndView kakaoLogin(@RequestParam("code") String code	// authorize_code
+								 , HttpServletRequest request
+								 , HttpServletResponse response
+								 , HttpSession session
+								 , ModelAndView mv) throws Exception {
 		
-		JsonNode node = KakaoController.getAccessToken("login", code);
+		// 1) access_token엳기
+		JsonNode node = KakaoController.getAccessToken("login", code);	
 		JsonNode accessToken = node.get("access_token");
 		String token = accessToken.toString();
 		session.setAttribute("token", token);
-		// 사용자 정보
+		
+		// 2) 사용자 정보 가져오기
 		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
 		String kemail = null;
 		String kgender = null;
 		String kage = null;
 		
-		//유저정보 카카오에서 가져오기
-		JsonNode properties = userInfo.path("properties");
-		JsonNode kakao_account = userInfo.path("kakao_account");
+		JsonNode properties = userInfo.path("properties");			// path() : get()처럼 값을 가져오는 메소드
+		JsonNode kakao_account = userInfo.path("kakao_account");	// 카카오 계정 정보 가져오기
 		
 		kemail = kakao_account.path("email").asText();
 		kgender = kakao_account.path("gender").asText();
 		kage = kakao_account.path("age_range").asText();
 		
-		//계정 Member에담기 
+		// 3)vo객체에 맞게 사용자 정보 가공 =>  Member에 담기
 		Member m = getKakaoMember(kemail, kgender, kage);
 		
+		// 4) 사용자 정보 사용하여 기능 구현
 		// 조회한 이메일이 DB에 존재할 경우
 		if(mService.idCheck(m) > 0) {
 			// 그런데 탈퇴여부가 Y일 경우 => 사용불가
@@ -687,31 +693,7 @@ public class MemberController {
 	 **********************************************************************/
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	/**
 	 * @author HeeRak

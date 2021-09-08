@@ -140,11 +140,14 @@
       </div>
       
       <script>
+      	// 화면의 모든 요소가 생성된 후 바로 실행
       	$(function(){
+      		// 카카오 authorize code가져오는 url화면에 가져오기
             $.ajax({
             	url:"kauth.do",
-            	data:{type:"enroll"},
+            	data:{type:"enroll"},	// redirect uri설정 위함
             	success:function(kUrl){
+            		// 카카오가입 버튼 클릭하면 url연결
             		$("#kJoinBtn").on("click", function(){
             			location.href=kUrl;
             		})
@@ -153,10 +156,12 @@
             	}
             })
             
+      		// 네이버 authorize code가져오는 url화면에 가져오기            
             $.ajax({
             	url:"nauth.do",
             	data:{type:"enroll"},
             	success:function(nUrl){
+            		// 네이버가입 버튼 클릭하면 url연결
             		$("#nJoinBtn").on("click", function(){
             			location.href=nUrl;
             		})
@@ -184,55 +189,58 @@
 		$checkId = $("#checkId");
 		$checkResult = "";
 		
-		
+		// 1)userId에 keyup이벤트가 발생했을 때
 		$("#userId").keyup(function(){
 			
+			// 아이디 입력 값이 5글자 초과일 때
 			if($userId.val().length > 5){
+				// 아이디 중복체크를 시행
 				$.ajax({
 					url:"idCheck.me",
-					data:{email:$userId.val(),
-						  enrollType:$("#enrollType").val()
+					data:{email:$userId.val(),					// 아이디 입력 값
+						  enrollType:$("#enrollType").val()		// 회원가입 유형(L-계정 생성 | K-카카오 | N-네이버)
 					}, success:function(result){
-						if(result == "NN"){
-							// 아이디 사용불가
+						
+						if(result == "NN"){		// 아이디 사용불가
 							$("#checkResult").css("visibility", "visible");
 							$("#checkResult").css("color", "red").text("중복된 아이디가 존재합니다.");
 							$("#submitBtn").attr("disabled", true);
 							$checkResult = "NN";
 							
-						} else {
-							// 아이디 사용가능
+						} else {	// 아이디 사용가능
 							$("#checkResult").css("visibility", "visible");
 							$("#checkResult").css("color", "green").text("멋진 아이디군요!");
 							$checkResult = "YY";
-							
 						}
 						
 					}, error:function() {
 						console.log("아이디 중복 체크 ajax통신 실패");	
 					}
-				})
-			} else {
+				})	// End of idCheck Ajax
+				
+			} else {	// 아이디 입력 값이 5글자 이하일 때 => 아이디 중복검사 결과가 노출되지 않고 가입버튼 비활성화
 				$("#checkResult").css("visibility", "hidden");
 				$("#submitBtn").attr("disabled", true);
-			}
+			}	// End of if-else
 			
+				
+				
 			// disabled : userId checkId 일치하는 상태(false)였다가 userId지우면 true가 되는데(위의 else블럭때문), 다시 일치상태로 만들면 false로 바꿔주기 위한 if문
 			// (keyup이 발생한건 userId쪽이어서 아래의 checkId keyup에 if문은 실행하지 않으므로 false로 안됨..)
+			
+			// userId=checkId이면서 checkId에 입력값이 있을 때
 			if($("#userId").val() == $("#checkId").val() && $checkId.val() !=""){
-				$("#submitBtn").removeAttr("disabled");
+				$("#submitBtn").removeAttr("disabled");	// 가입버튼 활성화
 			} else {
 				$("#submitBtn").attr("disabled", true);
 			}
 		})
 
-		// 아이디(이메일) 재확인
+		// 2)checkId에 keyup이벤트가 발생했을 때
 		$("#checkId").keyup(function(){
-			
-			console.log($checkResult);
-		
+			// 아이디 중복체크 결과 YY이고 checkId에 입력값이 있고  userId==checkId일 때
 			if($checkResult == "YY" && $checkId.val() !="" && $userId.val() == $checkId.val()){
-				// userPwd checkPwd 모두 비었을 경우 가입버튼 비활성화
+				// 단, userPwd=checkPwd 모두 비었을 경우 가입버튼 비활성화
 				if($userPwd.val() == "" && $checkPwd.val() == "" && $userPwd.val() == $checkPwd.val()){
 					$("submitBtn").attr("disabled", true);
 				} else {
@@ -251,7 +259,8 @@
 		/************ 비밀번호 재확인 ***********/
 		$userPwd = $("#userPwd");
 		$checkPwd = $("#checkPwd");
-
+		
+		// 3)userPwd에 keyup이벤트가 발생했을 때
 		$("#userPwd").keyup(function(){
 			if($userPwd.val() == $checkPwd.val()){
 				$("#checkPwdResult").css("visibility", "hidden");				
@@ -263,6 +272,7 @@
 			}
 		})
 		
+		// 4)checkPwd에 keyup 이벤트가 발생했을 때
 		$("#checkPwd").keyup(function(){
 			if($userPwd.val() == $checkPwd.val()){
 				$("#checkPwdResult").css("visibility", "hidden");				

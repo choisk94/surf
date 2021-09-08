@@ -52,7 +52,7 @@ public class KakaoController {
 		
 		String redirectUri = "";
 		
-		// 로그인 버튼 눌렀을 때
+		// 카카오로 로그인 버튼 눌렀을 때
 		if(type.equals("login")) {
 			redirectUri = "http://localhost:8888/surf/klogin.do";
 		// 카카오로 시작하기 버튼 눌렀을 때	
@@ -108,6 +108,7 @@ public class KakaoController {
 			// clear resources
 		}
 		
+		System.out.println("이건가" + returnNode);
 		return returnNode;
 	}
 
@@ -137,6 +138,7 @@ public class KakaoController {
 		} finally {
 			// clear resources
 		}
+		System.out.println("토큰 나와라~ : " + returnNode);
 		return returnNode;
 		
 	}

@@ -60,7 +60,7 @@
     				type:"post",
     				data:{
     					email:$("#userId").val(),
-    					enrollType:"L"
+    					enrollType:"L"	// 서프에서 생성한 계정만 비번찾기 가능
     				}, success:function(result){
     					alert(result);
     				}, error:function(){
